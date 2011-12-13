@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:outputPanel id="updteTabelUser">
+		<p:dataTable var="user" value="#{userBean.lazyModel}" id="userTable" paginator="true" rows="10" lazy="true" paginatorPosition="bottom"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}" 
+			currentPageReportTemplate="{currentPage}/{totalPages}" emptyMessage="#{msgs.empty_data_msg}" selectionMode="single">
+			<f:facet name="header">用户列表</f:facet>
+			<p:column headerText="用户名"><h:outputText value="#{user.userName}" /></p:column>
+			<p:column headerText="姓名"><h:outputText value="#{user.name}" /></p:column>
+			<p:column headerText="电话"><h:outputText value="#{user.cellphoneNo}" /></p:column>
+
+			<p:column headerText="操作" styleClass="operating_90">
+				<p:commandButton rendered="#{loginBean.contains('03')}" update="carDetail" image="ui-icon ui-icon-zoomin" oncomplete="singleCarDialog.show()" title="查看">
+					<f:setPropertyActionListener value="#{user}" target="#{userBean.currentUser}" />
+				</p:commandButton>
+
+				<p:commandButton ajax="false" image="ui-icon ui-icon-person" title="角色设置" rendered="#{loginBean.contains('04')}" action="#{userBean.roleSet}">
+					<f:setPropertyActionListener value="#{user}" target="#{userBean.currentUser}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+
+</ui:composition>

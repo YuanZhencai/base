@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	template="/template/template.xhtml">
+
+	<ui:define name="title">角色查询</ui:define>
+	<ui:define name="styleAndScript">
+		<script type="text/javascript" src="#{request.contextPath}/scripts/material.js"></script>
+	</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{roleBean.initConversation}" />
+		</f:metadata>
+		
+		<input type="hidden" id="menuOne" value="M101" />
+		<input type="hidden" id="menuTwo" value="M10103" />
+		<h:form prependId="false" id="roleTableForm">
+			<p:panel styleClass="panel1">
+				<f:facet name="header">
+					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
+					<h:outputLabel value="角色管理  " />
+					<div class="header_title_right">
+						<img src="#{request.contextPath}/images/icons/shortcuts.gif" alt="" />
+						<p:commandLink value="添加角色" update="addRoleInputDetail,roleNameId,roleStatusId" action="#{roleBean.clear}" oncomplete="roleAddDialog.show()" />
+					</div>
+				</f:facet>			
+				<p:message id="rolemessgeId" for="rolemessgeId"></p:message>
+				
+				<div class="style1">
+					<h:panelGrid columns="8" id="roleSerchrPanel" columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+						<h:outputLabel value="角色名：" />
+						<p:inputText id="filter_LIKES_name" value="#{roleBean.queryMap['LIKES_roleName']}" />
+					</h:panelGrid>
+					<div>
+						<p:commandButton action="#{roleBean.search}" ajax="false" id="roleSerch" value="查询" image="ui-icon ui-icon-search" />
+					</div>
+				</div><br/>
+				
+				<p:outputPanel id="roleTabelOut">
+					<p:dataTable var="role" value="#{roleBean.lazyModel}" id="roleTable" paginator="true" rows="10" lazy="true" paginatorPosition="bottom"
+						paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}" currentPageReportTemplate="{currentPage}/{totalPages}"
+						emptyMessage="#{msgs.empty_data_msg}" selectionMode="single">
+						<f:facet name="header">角色列表</f:facet>
+						<p:column headerText="角色名"><h:outputText value="#{role.roleName}" /></p:column>
+						<p:column headerText="角色状态">
+							<ui:fragment rendered="#{role.state == 1}">
+								<h:outputText value="激活"></h:outputText>
+							</ui:fragment>
+							<ui:fragment rendered="#{role.state == 2}">
+								<h:outputText value="冻结"></h:outputText>
+							</ui:fragment>
+						</p:column>
+						<p:column headerText="角色描述">
+							<h:outputText value="#{role.description}" />
+						</p:column>
+
+						<p:column headerText="操作" styleClass="operating_90">
+							<p:commandButton rendered="true" update="carDetail,roleName_msg,state_msg" action="#{roleBean.editInit}" oncomplete="singleCarDialog.show()" image="ui-icon ui-icon-pencil" title="编辑">
+								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
+							</p:commandButton>
+
+							<p:commandButton oncomplete="confirmation.show()" update="roleTable" image="ui-icon ui-icon-close" title="删除">
+								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
+							</p:commandButton>
+
+							<p:commandButton action="#{roleBean.resourceJump}" ajax="false" image="ui-icon ui-icon-key" title="角色资源设置">
+								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
+				
+				<p:confirmDialog message="是否删除此角色" modal="true" header="信息确认" severity="alert" widgetVar="confirmation">
+					<p:commandButton update="roleTable,roleTableForm" value="确定" image="ui-icon ui-icon-check" oncomplete="confirmation.hide()" action="#{roleBean.deleteRole}" />
+					<p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+		<h:form prependId="false" id="roleEditForm">
+			<p:dialog header="角色信息编辑" widgetVar="singleCarDialog" resizable="false" modal="true" width="600">
+				<p:message id="roleName_msg" for="roleName"></p:message>
+				<p:message id="state_msg" for="state"></p:message>
+				<h:panelGrid id="carDetail" columns="4" columnClasses="column41,column42,column41,column42" footerClass="footer1">
+
+					<h:outputLabel value="角色名称：" />
+					<h:panelGroup>
+						<p:inputText id="roleName" value="#{roleBean.roleVo.roleName}" maxlength="50" required="true" requiredMessage="角色名称必须填写" />
+						<h:outputText style="color:red;" value="  *" />
+					</h:panelGroup>
+					<h:outputLabel value="角色状态：" />
+					<h:selectOneMenu value="#{roleBean.roleVo.state}" id="state" required="true" requiredMessage="选择角色状态" styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
+						<f:selectItem itemLabel="请选择" itemValue="0" />
+						<f:selectItem itemLabel="激活" itemValue="1" />
+						<f:selectItem itemLabel="冻结" itemValue="2" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="角色描述：" />
+					<p:inputTextarea id="roleDesc" style="width:135px;height:50px;" maxlength="50" maxHeight="50" rows="4" effectDuration="200" value="#{roleBean.roleVo.description}" />
+					<f:facet name="footer">
+						<p:commandButton action="#{roleBean.update}" value="保存" id="roleEditID2" image="ui-icon ui-icon-disk" update="roleTabelOut,rolemessgeId,roleName_msg,state_msg"
+							oncomplete="handleComplete(singleCarDialog,args);" async="true" />
+						<p:commandButton value="取消" onclick="singleCarDialog.hide()" id="roleBACKID" image="ui-icon ui-icon-cancel" title="取消" />
+					</f:facet>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		<h:form prependId="false" id="roleAddForm">
+			<p:dialog header="添加角色" widgetVar="roleAddDialog" modal="true" resizable="false" width="600">
+				<p:message id="roleNameId" for="roleNameAdd"></p:message>
+				<p:message id="roleStatusId" for="roleStateAdd"></p:message>
+				<h:panelGrid id="addRoleInputDetail" columns="4" columnClasses="column41,column42,column41,column42" footerClass="footer1">
+					<h:outputLabel value="角色名称：" />
+					<h:panelGroup>
+						<p:inputText id="roleNameAdd" value="#{roleBean.currentRole.roleName}" required="true" maxlength="50" requiredMessage="角色名称必须填写" />
+						<h:outputText style="color:red;" value="  *" />
+					</h:panelGroup>
+
+					<h:outputLabel value="角色状态：" />
+					<h:panelGroup>
+						<h:selectOneMenu id="roleStateAdd" value="#{roleBean.currentRole.state}" required="true" styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all" requiredMessage="选择角色状态">
+							<f:selectItem itemLabel="请选择" />
+							<f:selectItem itemLabel="激活" itemValue="1" />
+							<f:selectItem itemLabel="冻结" itemValue="2" />
+						</h:selectOneMenu>
+						<h:outputText style="color:red;" value="  *" />
+					</h:panelGroup>
+					<h:outputLabel value="角色描述：" />
+					<p:inputTextarea id="roleDesAdd" style="width:135px;height:50px;" maxHeight="50" rows="4" maxlength="50" effectDuration="30" value="#{roleBean.currentRole.description}" />
+					<f:facet name="footer">
+						<p:commandButton id="roleSave" action="#{roleBean.saveRole}" oncomplete="handleComplete(roleAddDialog,args);" update="roleTabelOut,roleNameId,roleStatusId,rolemessgeId" value="保存"
+							image="ui-icon ui-icon-disk" title="保存" />
+						<p:commandButton value="取消" id="roleAddCanel" onclick="roleAddDialog.hide()" type="button" />
+					</f:facet>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+
+		<br />
+	</ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	template="/template/template.xhtml">
+
+	<ui:define name="title">角色分配</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{userBean.initConversation}" />
+			<f:event type="preRenderView" listener="#{userBean.initSelect}" />
+		</f:metadata>
+		
+		<input type="hidden" id="menuOne" value="M101" />
+		<input type="hidden" id="menuTwo" value="M10101" />
+		<h:form id="userroleInputForm" onsubmit="statusComplete();">
+			<p:panel styleClass="panel1">
+				<f:facet name="header">
+					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
+					<h:outputLabel value="用户角色分配 " />
+					<div class="header_title_right">
+						<img src="#{request.contextPath}/images/icons/shortcuts.gif" alt="" />
+						<p:commandLink style="width:150px;" value="用户管理" id="userManagerID" action="#{userBean.goBack}" ajax="false" />
+					</div>
+				</f:facet>
+				
+				<p:message id="usermessgeId" for="usermessgeId"></p:message>
+				
+				<div class="style1">
+					<h:panelGrid columns="4" cellpadding="5" cellspacing="1" columnClasses="column0,column2,column0,column2">
+						<h:outputLabel value="账号：" /><p:inputText disabled="true" id="AccountId" value="#{userBean.currentUser.userName}" />
+						<h:outputLabel value="电子邮箱：" /><p:inputText disabled="true" id="EmailId" value="#{userBean.currentUser.email}" />
+						<h:outputLabel value="角色列表：" />
+						<h:column>
+							<h:selectManyCheckbox id="roleList" value="#{userBean.urole}" layout="pageDirection" layoutWidth="4" required="true" requiredMessage="选择角色" styleClass="checkbox">
+								<f:selectItems value="#{userBean.rolelist}" />
+							</h:selectManyCheckbox>
+						</h:column>
+					</h:panelGrid>
+					
+					<div>
+						<p:commandButton action="#{userBean.saveUserRole}" value="保存" image="ui-icon ui-icon-disk" ajax="false" id="saveUserRoleID" oncomplete="singleCarDialog.hide()">
+							<f:param name="flag" value="1"></f:param>
+						</p:commandButton>
+					</div>
+				</div>
+			</p:panel>
+		</h:form>
+		<br />
+	</ui:define>
+
+</ui:composition>
+

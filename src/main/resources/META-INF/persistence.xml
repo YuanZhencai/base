@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="pu" transaction-type="JTA">
+		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+        <jta-data-source>jdbc/btcbase</jta-data-source>
+
+        <class>com.wcs.base.entity.IdEntity</class>
+        <class>com.wcs.base.entity.BaseEntity</class>
+
+        <class>com.wcs.common.model.Dict</class>
+        <class>com.wcs.common.model.User</class>
+        <class>com.wcs.common.model.Role</class>
+        <class>com.wcs.common.model.Resource</class>
+        <class>com.wcs.common.model.UserRole</class>
+        <class>com.wcs.common.model.RoleResource</class>
+
+        <class>com.wcs.demo.model.Person</class>
+        <class>com.wcs.demo.model.Product</class>
+        <class>com.wcs.demo.model.Game</class>
+
+		<properties>
+			<property name="openjpa.Log" value="DefaultLevel=INFO,SQL=TRACE"/>
+            <property name="openjpa.DynamicEnhancementAgent" value="false"/>
+            <property name="openjpa.jdbc.DBDictionary" value="useWildCardForCount=true"/> <!-- support count(*) -->
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+		</properties>
+	</persistence-unit>
+</persistence>

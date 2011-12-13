@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core">
+	<style type="text/css">
+</style>
+ 
+	<ul id="nav">
+		<ui:repeat var="keyResouce" value="#{loginBean.leftMenuResouceKeys}"
+			varStatus="current">
+			<li><a
+				href="#{request.contextPath}/template/template.xhtml#"
+				id="#{keyResouce.number}"><h:outputText
+						value="#{keyResouce.name}" /> </a>
+				<ul>
+					<ui:repeat var="child"
+						value="#{loginBean.leftMenuResouce[keyResouce]}">
+
+						<li id="#{child.number}"><a
+							href="#{request.contextPath}#{child.uri}"><h:outputText
+									value="#{child.name}" /> </a></li>
+					</ui:repeat>
+				</ul>
+			</li>
+
+		</ui:repeat>
+	</ul>
+	
+
+</ui:composition>

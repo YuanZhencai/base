@@ -1,0 +1,134 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+def defaultEncoding = "UTF-8"
+
+def localMavenRepo = new File('d:/repo').toURL().toString()
+
+buildDir = 'target/gradle-build'
+
+libraryVersions = [
+   junit: '4.8.1', arquillian: '1.0.0.Alpha5', jbossJavaeeSpec: '1.0.0.Beta7', weld: '1.0.1-Final',
+   slf4j: '1.5.8', log4j: '1.2.14', jbossas: '6.0.0.Final', glassfish: '3.0.1-b20', cdi: '1.0-SP2'
+]
+
+repositories {
+	mavenRepo urls: localMavenRepo
+	flatDir(dirs: "D:/MyCode/xsqlbuilder-1.0.4/dist")
+
+	mavenCentral()
+	mavenRepo urls: 'http://repository.jboss.org/nexus/content/groups/public'
+	mavenRepo urls: 'http://repository.jboss.org/nexus/content/repositories/deprecated'
+
+	mavenRepo urls: ["http://repository.jboss.org/nexus/content/groups/public-jboss"]
+	mavenRepo urls: ["http://download.java.net/maven/2"]
+	mavenRepo urls: ["http://download.java.net/maven/glassfish"]
+	mavenRepo urls: ["http://repository.prime.com.tr"]
+	mavenRepo urls: ["http://repo1.maven.org/maven2"]
+
+
+}
+
+configurations {
+   compileOnly
+   weldEmbeddedTestRuntime { extendsFrom testRuntime }
+   jbossasRemoteTestRuntime { extendsFrom testRuntime, compileOnly }
+   glassfishEmbeddedTestRuntime { extendsFrom testRuntime }
+}
+
+dependencies {
+	compile "xsqlbuilder:xsqlbuilder:1.0.4"
+	compile "commons-lang:commons-lang:2.3"
+	compile "commons-codec:commons-codec:1.5"
+	compile "commons-collections:commons-collections:3.1"
+	compile "commons-digester:commons-digester:2.1"
+	compile "commons-configuration:commons-configuration:1.6"
+	compile "com.google.guava:guava:r06"
+	compile "joda-time:joda-time:1.6"
+	compile "com.sun.faces:jsf-api:2.1.2"
+	compile "com.sun.faces:jsf-impl:2.1.2"
+	compile "org.primefaces:primefaces:2.2.1"
+	compile "javax.transaction:jta:1.1"
+	compile "org.jboss.seam.solder:seam-solder:3.0.0.Final"
+	compile "org.jboss.seam.international:seam-international:3.0.0.Final"
+	compile "org.jboss.seam.servlet:seam-servlet:3.0.0.Final"
+	compile "org.jboss.seam.catch:seam-catch:3.0.0.Final"
+	compile "org.jboss.seam.config:seam-config-xml:3.0.0.Final"
+	compile "org.jboss.seam.persistence:seam-persistence:3.0.0.Final"
+
+	testCompile "org.jboss.weld:weld-core:1.1.1.Final"
+	testCompile "org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-alpha-12"
+	testCompile "org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-alpha-12"
+
+	compile "org.jboss.seam.solder:seam-solder-tooling:3.0.0.Final"
+	compile("org.hibernate:hibernate-entitymanager:3.5.6-Final") {
+		exclude(module: 'javassist')
+		}
+	compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final"
+
+	compile "org.hibernate.:hibernate-validator:4.1.0.Final"
+	compile "javax.enterprise:cdi-api:1.0-SP4"
+	compile "org.jboss.spec:jboss-javaee-6.0:1.0.0.Final"
+
+	// add logger
+	compile "org.slf4j:slf4j-api:1.5.10"
+	compile "org.slf4j:slf4j-ext:1.5.10"
+
+//    compile "javax.servlet:servlet-api:2.5"
+//    compile "javax.servlet.jsp:jsp-api:2.1"
+	compile "org.javassist:javassist:3.13.0-GA"
+
+//compile "org.jboss.weld:weld-api:1.1.Final"
+//compile "org.jboss.weld:weld-core:1.1.1.Final"
+//compile "org.jboss.weld:weld-spi:1.1.Final"
+
+   compileOnly group: 'javax.enterprise', name: 'cdi-api', version: libraryVersions.cdi
+
+   testCompile group: 'junit', name: 'junit', version: libraryVersions.junit
+   testCompile group: 'org.jboss.arquillian', name: 'arquillian-junit', version: libraryVersions.arquillian
+
+   // temporarily downgrade the weld-ee-embedded-1.1 container
+   weldEmbeddedTestRuntime group: 'org.jboss.arquillian.container', name: 'arquillian-weld-ee-embedded-1.1', version: '1.0.0.Alpha5'
+   weldEmbeddedTestRuntime group: 'org.jboss.spec', name: 'jboss-javaee-6.0', version: libraryVersions.jbossJavaeeSpec
+   weldEmbeddedTestRuntime group: 'org.jboss.weld', name: 'weld-core', version: libraryVersions.weld
+   weldEmbeddedTestRuntime group: 'org.slf4j', name: 'slf4j-log4j12', version: libraryVersions.slf4j
+   weldEmbeddedTestRuntime group: 'log4j', name: 'log4j', version: libraryVersions.log4j
+
+   jbossasRemoteTestRuntime group: 'org.jboss.arquillian.container', name: 'arquillian-jbossas-remote-6', version: libraryVersions.arquillian
+   jbossasRemoteTestRuntime group: 'org.jboss.jbossas', name: 'jboss-as-server', classifier: 'client', version: libraryVersions.jbossas, transitive: false
+   jbossasRemoteTestRuntime group: 'org.jboss.jbossas', name: 'jboss-as-profileservice', classifier: 'client', version: libraryVersions.jbossas
+
+   glassfishEmbeddedTestRuntime group: 'org.jboss.arquillian.container', name: 'arquillian-glassfish-embedded-3', version: libraryVersions.arquillian
+   glassfishEmbeddedTestRuntime group: 'org.glassfish.extras', name: 'glassfish-embedded-all', version: libraryVersions.glassfish
+}
+
+sourceSets {
+   main {
+      compileClasspath = configurations.compile + configurations.compileOnly
+   }
+   test {
+      compileClasspath = compileClasspath + configurations.compileOnly
+   }
+}
+
+task weldEmbeddedTest(type: Test) {
+   testClassesDir = sourceSets.test.classesDir
+   classpath = sourceSets.test.classes + sourceSets.main.classes + configurations.weldEmbeddedTestRuntime
+}
+
+task jbossasRemoteTest(type: Test) {
+   testClassesDir = sourceSets.test.classesDir
+   classpath = sourceSets.test.classes + sourceSets.main.classes + files('src/test/resources-jbossas') + configurations.jbossasRemoteTestRuntime
+}
+
+task glassfishEmbeddedTest(type: Test) {
+   testClassesDir = sourceSets.test.classesDir
+   classpath = sourceSets.test.classes + sourceSets.main.classes + configurations.glassfishEmbeddedTestRuntime
+}
+
+compileJava {
+    options.encoding = defaultEncoding
+}
+compileTestJava {
+    options.encoding = defaultEncoding
+}

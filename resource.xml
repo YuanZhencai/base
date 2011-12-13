@@ -1,0 +1,27 @@
+<resource>
+	<topmenu name="系统管理" uri="">
+		<leftmenu name="权限管理">
+			<url ismenu="true" name="用户管理" uri="/faces/permissions/user/list.xhtml">
+				<component name="组织用户分配"></component>
+				<component name="查询"></component>
+				<component name="查看"></component>
+				<component name="角色设置"></component>
+				<component name="组织分配"></component>
+			</url>
+			<url ismenu="true" name="角色管理" uri="/faces/permissions/role/list.xhtml">
+				<component name="添加角色"></component>
+				<component name="查询"></component>
+				<component name="编辑"></component>
+				<component name="查看"></component>
+				<component name="删除"></component>
+				<component name="角色资源设置"></component>
+			</url>
+			<url ismenu="false" name="角色设置" uri="/faces/permissions/user/user-role.xhtml">
+				<component name="用户管理"></component>
+			</url>
+			<url ismenu="false" name="角色资源" uri="/faces/permissions/role/resource-role.xhtml">
+				<component name="角色管理"></component>
+			</url>
+		</leftmenu>
+	</topmenu>
+</resource>
