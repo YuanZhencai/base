@@ -7,8 +7,9 @@ package com.wcs.demo.controller;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
-import javax.inject.Inject;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
@@ -27,11 +28,12 @@ import com.wcs.demo.service.ProductService;
 * @author <a href="mailto:yangshiyun@wcs-global.com">Yang Shiyun</a> 
 */
 
+//@ManagedBean
 @Named
 @ConversationScoped
 @SuppressWarnings("serial")
 public class ProductBean extends ConversationBaseBean<Product> {
-	@Inject
+	@EJB
 	ProductService productService;
 	
 	private Map<String,Object> filterMap = Maps.newHashMapWithExpectedSize(5);

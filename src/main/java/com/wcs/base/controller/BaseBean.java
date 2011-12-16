@@ -3,6 +3,7 @@ package com.wcs.base.controller;
 import java.io.Serializable;
 
 import javax.inject.Inject;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -26,8 +27,7 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
     //分页选择模板
     private String rowsPerPageTemplate;
 
-    @Inject
-    protected LoginBean loginBean;
+
 	@Inject
 	protected StatelessEntityService entityService;
 	private Long id;
@@ -87,17 +87,21 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
 
 	public void saveEntity() {
 		if (idIsEmpty()) {
-			this.instance.setUpdatedBy(loginBean.getUser().getName());
+
 			entityService.update(getInstance());
 		} else {
-			if(loginBean.getUser() != null){
-				this.instance.setCreatedBy(loginBean.getUser().getName());
-			}
 			this.getInstance().setId(null);//修改人：liaowei
 			entityService.create(getInstance());
-			//Validate.isTrue(entityService.isManaged(getInstance()));
 		}
 	}
+
+	public void setUpdatedBy(String userName){
+            this.instance.setUpdatedBy(userName);
+    }
+
+    public void setCreatedBy(String userName){
+            this.instance.setUpdatedBy(userName);
+    }
 	
 	public void deleteEntity() {
         T entity = getInstance();

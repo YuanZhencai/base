@@ -3,13 +3,15 @@ package com.wcs.base.controller;
 import javax.enterprise.context.Conversation;
 import javax.inject.Inject;
 
-import com.wcs.base.entity.BaseEntity; 
+import com.wcs.base.entity.BaseEntity;
+
+import java.io.Serializable;
 
 public abstract class ConversationBaseBean<T extends BaseEntity> 
 		extends BaseBean<T> implements IBaseBean {
 
 	@Inject
-	private Conversation conversation;
+	protected Conversation conversation;
 	
 	public void initConversation() {
 		if (conversation.isTransient()) {

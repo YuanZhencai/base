@@ -107,9 +107,10 @@ public abstract class EntityService extends AbstractEntityService {
         String countHql = prepareCountHql(jpql);
 
         try {
-            Long count = findUnique(countHql.trim(), values);
+            Long count = findUnique(countHql, values);
             return count;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("jpql can't be auto count, jpql is:" + countHql, e);
         }
     }
@@ -127,6 +128,7 @@ public abstract class EntityService extends AbstractEntityService {
 
         int beginPos = fromClause.toUpperCase().indexOf("FROM");
         int endPos = fromClause.toUpperCase().indexOf("WHERE");
+        if (endPos==-1) endPos = fromClause.length();
         String countObj = StringUtils.substring(fromClause,beginPos,endPos).trim();
 
         countObj =  countObj.substring(countObj.lastIndexOf(" ") + 1) ;

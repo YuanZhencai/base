@@ -8,23 +8,21 @@
 </style>
  
 	<ul id="nav">
-		<ui:repeat var="keyResouce" value="#{loginBean.leftMenuResouceKeys}"
-			varStatus="current">
-			<li><a
-				href="#{request.contextPath}/template/template.xhtml#"
-				id="#{keyResouce.number}"><h:outputText
-						value="#{keyResouce.name}" /> </a>
-				<ul>
-					<ui:repeat var="child"
-						value="#{loginBean.leftMenuResouce[keyResouce]}">
-
-						<li id="#{child.number}"><a
-							href="#{request.contextPath}#{child.uri}"><h:outputText
-									value="#{child.name}" /> </a></li>
-					</ui:repeat>
-				</ul>
-			</li>
-
+		<ui:repeat var="keyResouce" value="#{resourceBean.allResList[1]}" varStatus="current">
+			<ui:fragment rendered="#{sessionScope.selectId==keyResouce.parentId}">
+				<li>
+					<a id="#{keyResouce.number}" href="#{request.contextPath}/template/template.xhtml">#{keyResouce.name}</a>
+					<ul>
+						<ui:repeat var="child" value="#{resourceBean.allResList[2]}">
+							<ui:fragment rendered="#{(keyResouce.id==child.parentId) and child.ismenu}">
+								<li id="#{child.number}">
+									<a id="#{child.number}" href="#{request.contextPath}#{child.uri}">#{child.name}</a>
+								</li>
+							</ui:fragment>
+						</ui:repeat>
+					</ul>
+				</li>
+			</ui:fragment>
 		</ui:repeat>
 	</ul>
 	

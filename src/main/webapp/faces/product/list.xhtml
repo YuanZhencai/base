@@ -1,4 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
+		
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,12 +8,16 @@
     xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/template.xhtml">
 
-    <ui:define name="title">商品查询</ui:define>
-
-    <ui:define name="content">
+	<ui:define name="metadata">
         <f:metadata>
 			<f:event type="preRenderView" listener="#{productBean.initConversation}" />
 		</f:metadata>
+	</ui:define>
+	
+    <ui:define name="title">商品查询</ui:define>
+
+    <ui:define name="content">
+
 
 		<p:panel styleClass="panel1">      
 			<f:facet name="header">

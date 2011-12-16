@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
@@ -30,10 +31,9 @@ import com.wcs.demo.service.PersonService;
 
 @ManagedBean
 @ViewScoped
-@SuppressWarnings("serial")
 public class PersonBean extends ViewBaseBean<Person> {
 
-	@EJB
+	@Inject
 	PersonService personService;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);

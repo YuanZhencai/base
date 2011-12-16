@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.wcs.base.conf.SystemConfiguration;
-import com.wcs.base.exception.AccessExceptionKeyMessage;
-import com.wcs.base.exception.AccessExceptionMessage;
+import com.wcs.base.exception.ExceptionKeyMessage;
+import com.wcs.base.exception.ExceptionMessage;
 
 public class JSFUtils {
 	public static Flash flashScope (){
@@ -47,7 +47,7 @@ public class JSFUtils {
 
 	public static <E extends Enum<?>> void handleException(E key, Object... args) {
 		try {
-			AccessExceptionMessage message = new AccessExceptionKeyMessage(key,args);
+			ExceptionMessage message = new ExceptionKeyMessage(key,args);
 
 			JSFUtils.flashScope().put("exceptionMessage", message.getAsString());
 			JSFUtils.redirect(JSFUtils.contextPath() + SystemConfiguration.EXCEPTION_HANDLE_PAGE);

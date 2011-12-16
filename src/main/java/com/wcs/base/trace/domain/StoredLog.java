@@ -1,14 +1,9 @@
 package com.wcs.base.trace.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,14 +14,13 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "StoredLog")
-public class StoredLog {
+public class StoredLog implements  java.io.Serializable{
 
     private Long id;
 
-   /* @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)*/
-    @Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+     @Id
+	@GeneratedValue(strategy=GenerationType.TABLE, generator="myGen")
+	@TableGenerator(name="myGen", table="ID_GEN",initialValue=5000)
     public Long getId() {
         return id;
     }

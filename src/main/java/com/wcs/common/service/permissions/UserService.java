@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
+import com.wcs.base.exception.ServiceException;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 import com.wcs.common.model.Resource;
@@ -44,21 +45,7 @@ public class UserService implements Serializable {
        
     }
 
-    /**
-     * 
-     * <p>Description: 通过用户名查询唯一用户</p>
-     * @param userName
-     * @return
-     */
-    public User findUniqueUser(String userName) {
-        String sql = "select c from User c where c.name='" + userName + "'";
-        List list = entityService.createQuery(sql).getResultList();
-        User u = null;
-        if (!list.isEmpty()) {
-            u = (User) list.get(0);
-        }
-        return u == null ? null : u;
-    }
+
 
     /**
      * 
@@ -90,13 +77,13 @@ public class UserService implements Serializable {
      * @param roleList
      * @return
      */
-    public List<Resource> findAllResouceOfRoleList(List<Role> roleList) throws Exception{
+    public List<Resource> findAllResouceOfRoleList(List<Role> roleList) throws ServiceException {
         List<Resource> distinctResource = new ArrayList<Resource>();
         try{
-            if (roleList.isEmpty()) {
+            if (CollectionUtils.isEmpty(roleList)){
                 return distinctResource;
             }
-            String jpql = "select res from RoleResource rr join rr.resource res join rr.role role where role in (?1)";
+            String jpql = "select res from RoleResource rr join rr.resource res join rr.role role where role in ?1";
             List<Resource> resourceList = entityService.findList(jpql, roleList);
             for (Resource resource : resourceList) {
                 if (!distinctResource.contains(resource)) {
@@ -110,7 +97,7 @@ public class UserService implements Serializable {
             }
             return distinctResource;
         }catch(Exception e){
-            throw e;
+            throw new ServiceException(e);
         }
     }
     
@@ -125,7 +112,7 @@ public class UserService implements Serializable {
      * @return
      * @throws Exception
      */
-    public List<Role> findAllRoleOfUser(User user) throws Exception {
+    public List<Role> findAllRoleOfUser(User user)  {
         String jpql = "select r from UserRole ur join ur.user u join ur.role r where r.state=1 and u.id=" + user.getId();
         return entityService.findList(jpql);
     }
@@ -260,14 +247,6 @@ public class UserService implements Serializable {
         }
     }
 
-    /**
-     * 
-     * <p>Description: 创建用户收购组织</p>
-     * @param user
-     * @param purchaseLocId
-     * @param purchaseentityId
-     * @throws Exception
-     */
 //    public int saveOrUpdateUserOrg(User user,Long purchaseLocId,Long purchaseentityId) throws Exception{
 //        int flag = 0;
 //        try{
@@ -301,13 +280,8 @@ public class UserService implements Serializable {
 //        }
 //       return flag;
 //    }
-    
-    /**
-     * 
-     * <p>Description: 保存组织方法</p>
-     * @param user
-     * @param plocentity
-     */
+
+
 //    private void saveUserOrg(User user,PurchaseLocEntity plocentity){
 //        // 添加收购组织
 //        UserOrg uog = new UserOrg();
@@ -318,4 +292,6 @@ public class UserService implements Serializable {
 //        this.updateUserPlocEntity(user, plocentity.getPurchaseLoc().getPurchaseLocName(), plocentity
 //                .getPurchaseEntity().getPurchaseEntityName());
 //    }
+
+
 }

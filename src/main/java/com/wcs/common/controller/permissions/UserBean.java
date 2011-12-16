@@ -84,7 +84,7 @@ public class UserBean extends PerimissionsConversationManager implements Seriali
 
     @PostConstruct
     private void initLazyModel() {
-        String sql = "from User";
+        String sql = "SELECT u FROM User u";
         lazyModel = this.entityService.findPage(sql);
     }
 

@@ -17,7 +17,7 @@ public class AccessExceptionAdvice implements Serializable{
       public Object handleAccessException(InvocationContext joinPoint) throws Exception {
     	  try{
     		  return joinPoint.proceed();
-    	  } catch(AccessException ae){
+    	  } catch(ServiceException ae){
     		  JSFUtils.flashScope().put("exceptionMessage", ae.getMessage());
     		  JSFUtils.redirect(JSFUtils.contextPath()+SystemConfiguration.EXCEPTION_HANDLE_PAGE);
     		  return null;

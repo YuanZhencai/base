@@ -21,11 +21,13 @@
 	</properties>
 
 	<repositories>
+	
 		<repository>
 			<id>codehaus</id>
 			<name>Maven Codehaus repository</name>
 			<url>http://repository.codehaus.org/</url>
 		</repository>
+		
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
@@ -49,12 +51,14 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		
 		<repository>
 			<id>jboss-public-repository-group</id>
 			<name>JBoss Public Maven Repository Group</name>
 			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 			<layout>default</layout>
 		</repository>
+        
 	</repositories>
 
 	<pluginRepositories>
@@ -75,13 +79,6 @@
 	</pluginRepositories>
 
 	<dependencies>
-        <!---
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>${groovy.version}</version>
-		</dependency>
-		 -->
 
 		<!-- util -->
 		<dependency>
@@ -114,12 +111,14 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.3</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<artifactId>commons-collections</artifactId>
 			<groupId>commons-collections</groupId>
 			<version>3.2.1</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -154,6 +153,7 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.3</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -177,26 +177,13 @@
 			<scope>provided</scope>
 		</dependency>
 
-        <dependency>
-           <groupId>org.apache.myfaces.core</groupId>
-           <artifactId>myfaces-api</artifactId>
-           <version>2.1.4</version>
-        </dependency>
-
-        <dependency>
-           <groupId>org.apache.myfaces.core</groupId>
-           <artifactId>myfaces-impl</artifactId>
-           <version>2.1.4</version>
-        </dependency>
-
-<!--
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-       -->
+
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
@@ -209,6 +196,12 @@
 			<version>1.0.4</version>
 			<scope>system</scope>
 			<systemPath>${basedir}\src\main\webapp\WEB-INF\lib\xsqlbuilder.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa-all</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 
         <dependency>

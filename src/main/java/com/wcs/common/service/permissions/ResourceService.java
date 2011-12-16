@@ -39,7 +39,7 @@ public class ResourceService implements Serializable{
     StatelessEntityService entityService;
 	
 	public List<Resource> findAllSysResource(){
-		String sql = "from Resource rs  order by number";
+		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.number";
 		return this.entityService.findList(sql);
 	}
 	
@@ -279,4 +279,6 @@ public class ResourceService implements Serializable{
     	}
     	return userCompoentList;
     }
+
+
 }

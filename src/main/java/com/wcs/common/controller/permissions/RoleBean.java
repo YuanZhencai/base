@@ -293,7 +293,7 @@ public class RoleBean extends PerimissionsConversationManager implements Seriali
         root = new ResourcesNode("系统资源", null);
         // 若该角色已经分配过资源则查询已有的资源 并设置选中
         try {
-            this.roleService.isSelectedResourceByRole(root, resourceBean.getSysResouce(), this.currentRole);
+            this.roleService.isSelectedResourceByRole(root, resourceBean.getAllResList(), this.currentRole);
         } catch (Exception e) {
             e.printStackTrace();
         }

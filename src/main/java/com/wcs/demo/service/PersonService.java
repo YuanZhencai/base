@@ -1,5 +1,6 @@
 package com.wcs.demo.service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ import com.wcs.demo.model.Person;
 */
 
 @Stateless
-public class PersonService {
+public class PersonService implements  Serializable{
 	@Inject
 	public StatelessEntityService entityService;
 

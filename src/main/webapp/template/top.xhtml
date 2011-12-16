@@ -7,17 +7,17 @@
 	<div id="top_up_menu">
 		<h:form prependId="false" id="up_menu">
 			<ul>
-				<ui:repeat var="topMenu" value="#{loginBean.topResource}">
+				<ui:repeat var="topMenu" value="#{resourceBean.allResList[0]}">
 
-					<ui:fragment rendered="#{loginBean.selectId == topMenu.id}">
-						<li class="top_up_menu_ul_li_B"><p:commandLink
-								value="#{topMenu.name}"
+					<ui:fragment rendered="#{sessionScope.selectId == topMenu.id}">
+						<li class="top_up_menu_ul_li_B">
+                            <p:commandLink value="#{topMenu.name}"
 								action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 						</li>
 					</ui:fragment>
-					<ui:fragment rendered="#{loginBean.selectId != topMenu.id}">
-						<li class="top_up_menu_ul_li_A"><p:commandLink
-								value="#{topMenu.name}"
+					<ui:fragment rendered="#{sessionScope.selectId != topMenu.id}">
+						<li class="top_up_menu_ul_li_A">
+                            <p:commandLink value="#{topMenu.name}"
 								action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 						</li>
 					</ui:fragment>

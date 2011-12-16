@@ -1,35 +1,26 @@
 package com.wcs.common.controller.permissions;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.wcs.base.conf.Constants;
 import com.wcs.base.util.BaseUtils;
+import com.wcs.base.util.CollectionUtils;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.common.model.Resource;
-import com.wcs.common.model.Role;
 import com.wcs.common.model.User;
 import com.wcs.common.service.permissions.LoginService;
 import com.wcs.common.service.permissions.ResourceService;
 import com.wcs.common.service.permissions.UserService;
 import com.wcs.common.util.MessageUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * <p>Project: btcbase</p> 
@@ -41,38 +32,19 @@ import com.wcs.common.util.MessageUtils;
  */
 @ManagedBean
 @SessionScoped
-@SuppressWarnings("serial")
 public class LoginBean implements Serializable {
 	final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
-	@EJB
-	private UserService userService;
-	@Inject
-	private ResourceBean resouceBean;
-	@EJB
-	private ResourceService resourceService;
-	@EJB
-	private LoginService loginService;
+    @Inject
+    LoginService loginService;
 
-	private User user;
-	private String userName; 												// 当前用户账号
-	private List<Role> rolelist; 											// 用户角色集合
-	private CopyOnWriteArrayList<Resource> allUserResouce; 				// 用户资源
-	private ConcurrentHashMap<Resource, List<Resource>> leftMenuResouce; 	// 导航资源
-	private List<Resource> topResource; 									// 一级菜单资源
-	private Long selectId; 												// 选中的Top资源ID
-	private boolean isManager; 											// 是否是管理员
-
-	private Map<String, List<Resource>> compomentMap; // 页面组件Map
+	private List<Resource> allUserResources = new ArrayList<Resource>(); 				// 用户资源
+	private boolean isManager = false; 											// 是否是管理员
 
 	private static final String LOGIN_SUCCESS = "/template/template.xhtml";
 
 	public LoginBean() {
-		this.rolelist = new ArrayList<Role>();
-		this.allUserResouce = new CopyOnWriteArrayList<Resource>();
-		this.leftMenuResouce = new ConcurrentHashMap<Resource, List<Resource>>();
-		this.topResource = new ArrayList<Resource>();
-		this.isManager = false;
+        logger.info("Login => construct()");
 	}
 
 	/**
@@ -80,7 +52,9 @@ public class LoginBean implements Serializable {
 	 * @return
 	 */
 	public String userLogin() {
-		this.user = userService.findUniqueUser(this.userName);
+        String userName = JSFUtils.getRequestParam("userName") ;
+
+		User user = loginService.findUniqueUser(userName);
 		if (user == null) {
 			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return Constants.FAILURED;
@@ -88,18 +62,23 @@ public class LoginBean implements Serializable {
 
 		// 用户资源初始化
 		try {
-			initUserResource(user);
-			if (allUserResouce.isEmpty()) {
+            this.allUserResources = loginService.loadResourceByUser(user.getId());
+
+			if (CollectionUtils.isEmpty( allUserResources)) {
 				MessageUtils.addErrorMessage("longmessgeId", "用户没有权限，请检查！");
-				return Constants.FAILURED;
-			} else if (leftMenuResouce.isEmpty()) {
-				MessageUtils.addErrorMessage("longmessgeId", "用户角色被冻结，请检查！");
 				return Constants.FAILURED;
 			}
 		} catch (Exception e) {
+            e.printStackTrace();
 			logger.info("用户资源初始化失败！");
-			e.printStackTrace();
+			MessageUtils.addErrorMessage("longmessgeId", "用户资源初始化失败！");
+			return Constants.FAILURED;
 		}
+
+        this.isManager=  loginService.isAdmin(user.getId());
+        JSFUtils.getSession().put("loginName",user.getUserName());
+        JSFUtils.getSession().put("userName",user.getName());
+        JSFUtils.getSession().put("selectId",1);  //选中的菜单
 
 		return Constants.SUCCESS;
 	}
@@ -108,9 +87,6 @@ public class LoginBean implements Serializable {
 	 * 注销用户
 	 */
 	public String doLogout() {
-		// 清除用户登录信息
-		this.user = null;
-		
 		// 关闭Session
 		HttpSession session = BaseUtils.getSession();
 		session.invalidate();
@@ -119,296 +95,59 @@ public class LoginBean implements Serializable {
 	}
 
 	/**
-	 * 菜单初始化
-	 * @param user
-	 */
-	private void initUserResource(User user) {
-		// 初始化当前用户的所有Role
-		try {
-			if (this.rolelist == null) {
-				this.rolelist = new ArrayList<Role>();
-			}
-			rolelist = this.userService.findAllRoleOfUser(user);
-			
-			// 得到用户资源
-			allUserResouce.clear();
-			allUserResouce.addAll(userService.findAllResouceOfRoleList(rolelist));
-			if (allUserResouce.isEmpty()) {
-				this.topResource.clear();
-				this.leftMenuResouce.clear();
-				
-				return;
-			}
-			
-			// 系统全部资源
-			List<Resource> sysResouceList = resouceBean.getSysResouce();
-			
-			// 初始化top导航菜单
-			topResource.clear();
-			this.topResource.addAll(loginService.findTopResourceByUser(allUserResouce, sysResouceList));
-			// 设置默认选中
-			if (!topResource.isEmpty()) {
-				this.selectId = topResource.get(0).getId();
-				this.leftMenuResouce.clear();
-				
-				// 初始化左边导航
-				loginService.intitLeftMenu(selectId, leftMenuResouce, allUserResouce, sysResouceList);
-			}
-		} catch (Exception e) {
-			logger.info("角色初始化失败！");
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 
-	 * <p>
-	 * Description: 判断用户所有角色中是否有管理员角色
-	 * </p>
-	 * 
-	 * @param rlist
+	 * 改变导航菜单
+	 *
+	 * @param selectId
 	 * @return
 	 */
-	@SuppressWarnings("unused")
-	private boolean isAdmin(List<Role> rlist) {
-		boolean flag = false;
-		if (!rlist.isEmpty()) {
-			for (Role r : rlist) {
-				if (r.isAdmin()) {
-					flag = true;
-					return flag;
-				}
-			}
-		}
-		return flag;
-	}
-
-	/**
-	 * 
-	 * <p>
-	 * Description:改变导航菜单
-	 * </p>
-	 * 
-	 * @param selectID
-	 * @return
-	 */
-	public String changeMenu(Long selectID) {
-		this.selectId = selectID;
-		leftMenuResouce.clear();
-		// intitLeftMenu(selectId);
-		// 系统全部资源
-		List<Resource> sysResouceList = resouceBean.getSysResouce();
-		loginService.intitLeftMenu(selectId, leftMenuResouce, allUserResouce, sysResouceList);
+	public String changeMenu(Long selectId) {
+        JSFUtils.getSession().put("selectId",selectId);
+		//this.selectId = selectId;
 		return LOGIN_SUCCESS;
 	}
 
 	/**
-	 * 菜单资源Key封装
-	 * 
-	 * @return
-	 */
-	public List<Resource> getLeftMenuResouceKeys() {
-		List<Resource> keyResources = new ArrayList<Resource>();
-		if (!leftMenuResouce.isEmpty()) {
-			for (Resource res : this.leftMenuResouce.keySet()) {
-				keyResources.add(res);
-			}
-			// 菜单排序
-			Collections.sort(keyResources);
-		}
-		return keyResources;
-	}
-
-	/**
-	 * 
-	 * <p>
-	 * Description: 资源权限判断
-	 * </p>
-	 * 
-	 * @param url
+	 *  资源权限判断
+	 *
 	 * @return
 	 */
 	public boolean contains(String id) {
 		String uri = JSFUtils.getViewId();
-		initResouce(uri);
-		return estimate(id, uri);
-	}
 
-	/**
-	 * 
-	 * <p>
-	 * Description: 资源权限判断 URL带参数
-	 * </p>
-	 * 
-	 * @param id
-	 * @param url
-	 * @return
-	 */
-	public boolean contains(String url, String id) {
-		initResouce(url);
-		return estimate(id, url);
-	}
+        Resource urlResource = null;
+        for (Resource r : this.allUserResources){
+            if ( r.getUri().equals(uri) ){
+                  urlResource = r;
+                break;
+            }
+        }
+        if (urlResource==null)  return false;
 
-	/**
-	 * 得到当前请求资源的路径
-	 * @return
-	 */
-	@SuppressWarnings("unused")
-	private String resourceUrl() {
-		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-		String url = viewRoot.getViewId();
+        for (Resource r : this.allUserResources){
+            if (r.getId().equals(urlResource.getId())){
+                return true;
+            }
+        }
 
-		return url;
-	}
-
-	/**
-	 * 
-	 * <p>
-	 * Description:是否有该资源判断
-	 * </p>
-	 * 
-	 * @param id
-	 * @param uri
-	 * @return
-	 */
-	private boolean estimate(String id, String uri) {
-		boolean flag = false;
-		List<Resource> componentResource = this.compomentMap.get(uri);
-		try {
-			Resource currentResource = this.resourceService.findResourceByCompenet(getAllUserResouce(), id, uri);
-			if (currentResource == null || componentResource == null) {
-				return flag;
-			} else {
-				for (Resource resource : componentResource) {
-					if (resource.getId().equals(currentResource.getId())) {
-						flag = true;
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return flag;
-	}
-
-	private void initResouce(String url) {
-		List<Resource> componentResource = new ArrayList<Resource>();
-		/*
-		 * if(compomentMap.get(url) != null){ return; }
-		 */
-		compomentMap = new HashMap<String, List<Resource>>();
-		List<Resource> allResource = getAllUserResouce();
-		Resource menuResource;
-		try {
-			menuResource = this.resourceService.findResourceByUrl(allResource, url);
-			List<Resource> compoentList = this.resourceService.findMenuComponentResouce(allResource, menuResource);
-			List<Resource> userCompoentResource = this.resourceService.findUserCompoentResource(allResource, compoentList);
-			componentResource.addAll(userCompoentResource);
-			compomentMap.put(url, userCompoentResource);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        return false;
 	}
 
 	// ----------------------------- set & get -------------------------------//
 
-	/**
-	 * @return the selectId
-	 */
-	public Long getSelectId() {
-		return selectId;
+	public List<Resource> getAllUserResources() {
+		return allUserResources;
 	}
 
-	/**
-	 * @param selectId
-	 *            the selectId to set
-	 */
-	public void setSelectId(Long selectId) {
-		this.selectId = selectId;
+	public void setAllUserResources(CopyOnWriteArrayList<Resource> allUserResources) {
+		this.allUserResources = allUserResources;
 	}
 
-	/**
-	 * @return the allUserResouce
-	 */
-	public List<Resource> getAllUserResouce() {
-		return allUserResouce;
-	}
-
-	/**
-	 * @param allUserResouce
-	 *            the allUserResouce to set
-	 */
-	public void setAllUserResouce(CopyOnWriteArrayList<Resource> allUserResouce) {
-		this.allUserResouce = allUserResouce;
-	}
-
-	/**
-	 * @return the leftMenuResouce
-	 */
-	public Map<Resource, List<Resource>> getLeftMenuResouce() {
-		return leftMenuResouce;
-	}
-
-	/**
-	 * @param leftMenuResouce
-	 *            the leftMenuResouce to set
-	 */
-	public void setLeftMenuResouce(ConcurrentHashMap<Resource, List<Resource>> leftMenuResouce) {
-		this.leftMenuResouce = leftMenuResouce;
-	}
-
-	/**
-	 * @return the rolelist
-	 */
-	public List<Role> getRolelist() {
-		return rolelist;
-	}
-
-	/**
-	 * @param rolelist
-	 *            the rolelist to set
-	 */
-	public void setRolelist(List<Role> rolelist) {
-		this.rolelist = rolelist;
-	}
-
-	/**
-	 * @return the isManager
-	 */
 	public boolean isManager() {
 		return isManager;
 	}
 
-	public boolean isQueryDeleted() {
-		return false;
-	}
-
 	public void setManager(boolean isManager) {
 		this.isManager = isManager;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<Resource> getTopResource() {
-		return topResource;
-	}
-
-	public void setTopResource(List<Resource> topResource) {
-		this.topResource = topResource;
 	}
 
 }

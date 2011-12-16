@@ -47,6 +47,9 @@ public interface Constants {
         public static final String PREFIX_PLACEHOLDER_FILTER = "filter_";
         
    	 	// Define page navigation string
-        public static final String SUCCESS = "success";
-        public static final String FAILURED = "failured";
+        public static final String SUCCESS = "/template/template.xhtml";
+        public static final String FAILURED = "/500.xhtml";
+        public static final String BAD_REQUEST_400 = "/400.xhtml";
+        public static final String NOT_FOUND_404 = "/404.xhtml";
+        public static final String INTERNAL_SERVER_ERROR_500  = "/500.xhtml";
 }

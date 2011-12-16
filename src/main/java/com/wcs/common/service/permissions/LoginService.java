@@ -14,19 +14,50 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import com.wcs.base.exception.ServiceException;
 import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.util.CollectionUtils;
 import com.wcs.common.model.Resource;
+import com.wcs.common.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Stateless
 public class LoginService implements Serializable{
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
+    final Logger logger = LoggerFactory.getLogger(LoginService.class);
+
     @Inject
     private StatelessEntityService entityService;
 
+    /**
+     *
+     * <p>Description: 通过用户名查询唯一用户</p>
+     * @param userName
+     * @return
+     */
+    public User findUniqueUser(String userName) {
+        String sql = "select c from User c where c.name=?1";
+        List<User> list  = this.entityService.findList(sql,userName);
+        if (!CollectionUtils.isEmpty(list)) {
+            return list.iterator().next();
+        }
+        return  null;
+    }
+
+    public Boolean isAdmin(Long userId){
+        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?";
+        List list = this.entityService.findList(jpql,userId);
+        if (CollectionUtils.isEmpty(list)){
+            return false;
+        }
+        return true;
+    }
+
+    public List<Resource> loadResourceByUser(Long userId){
+        String jpql = "select rr.resource from RoleResource rr, UserRole ur where ur.role=rr.role AND ur.user.id=?1";
+        return this.entityService.findList(jpql,userId);
+    }
    
     /**
      * 
@@ -34,12 +65,11 @@ public class LoginService implements Serializable{
      * Description: 初始化Left导航菜单
      * </p>
      * 
-     * @param selectResouce
      */
     public void intitLeftMenu(Long selectId,ConcurrentHashMap<Resource, List<Resource>> leftMenuResouce,CopyOnWriteArrayList<Resource> allUserResouce,List<Resource> sysResouceList) {
       
         // 选中菜单的下属资源
-        List<Resource> currentUserLeftResource = getLeftResourceByTopResouce(selectId, sysResouceList,allUserResouce);
+        List<Resource> currentUserLeftResource = loadSecondResourceByTopResouce(selectId, sysResouceList, allUserResouce);
         for (Resource r : currentUserLeftResource) {
             if ("1".equals(r.getLevel())) {
                 if (!leftMenuResouce.containsKey(r) && leftMenuResouce.get(r) == null) {
@@ -82,7 +112,7 @@ public class LoginService implements Serializable{
      * @return
      * @throws Exception
      */
-    public List<Resource> findTopResourceByUser(List<Resource> userResource,List<Resource> sysResouce) throws Exception{
+    public List<Resource> findTopResourceByUser(List<Resource> userResource,List<Resource> sysResouce) throws ServiceException{
         List<Resource> distinctTopResource = new ArrayList<Resource>();
         try{
             if(!userResource.isEmpty()){
@@ -126,7 +156,7 @@ public class LoginService implements Serializable{
             }
             return distinctTopResource;
         }catch(Exception e){
-            throw e;
+            throw new ServiceException(e);
         }
        
     }
@@ -142,7 +172,7 @@ public class LoginService implements Serializable{
      * @param sysResouce
      * @return
      */
-    private List<Resource> getLeftResourceByTopResouce(Long selectID, List<Resource> sysResouce,CopyOnWriteArrayList<Resource> allUserResouce) {
+    private List<Resource> loadSecondResourceByTopResouce(Long selectID, List<Resource> sysResouce, CopyOnWriteArrayList<Resource> allUserResouce) {
         List<Resource> selectList = new ArrayList<Resource>();
         if (selectID == 0 || allUserResouce.isEmpty()) {
             return selectList;

@@ -51,20 +51,20 @@ public class RoleService implements Serializable {
         return (List<Role>) query.getResultList();
     }
 
-    /**
-     * 
-     * <p>
-     * Description:得到最顶层资源
-     * </p>
-     * 
-     * @return
-     */
-    public List<Resource> getSysTopResource() {
-        String sql = "SELECT r FROM Resource r WHERE r.parentId = 0";
-        List<Resource> list = this.entityService.findList(sql);
-        System.out.println(list);
-        return list;
-    }
+//    /**
+//     *
+//     * <p>
+//     * Description:得到最顶层资源
+//     * </p>
+//     *
+//     * @return
+//     */
+//    public List<Resource> getSysTopResource() {
+//        String sql = "SELECT r FROM Resource r WHERE r.parentId = 0";
+//        List<Resource> list = this.entityService.findList(sql);
+//        System.out.println(list);
+//        return list;
+//    }
 
     /**
      * 
@@ -371,8 +371,8 @@ public class RoleService implements Serializable {
      * @param role
      * @throws Exception
      */
-
-    public void isSelectedResourceByRole(TreeNode root, List<Resource> sysResource, Role role) throws Exception {
+    @Deprecated
+    public void isSelectedResourceByRole(TreeNode root, List sysResource, Role role) throws Exception {
         List<Resource> roleResource = this.resourceService.findResouceByRole(role);
         Map<Long, Resource> map = new HashMap<Long, Resource>();
         if (!roleResource.isEmpty()) {

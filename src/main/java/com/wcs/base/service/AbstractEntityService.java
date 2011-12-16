@@ -215,7 +215,7 @@ public abstract class AbstractEntityService implements Serializable {
 
     public Query createQuery(final String queryString, final Object... values) {
         Validate.hasText(queryString, "queryString不能为空");
-        Query query = entityManager.createQuery(queryString);
+        Query query = entityManager.createQuery(queryString.trim());
 
         if (values != null && values.length>0) {
             for (int i = 1; i <= values.length; i++) {
@@ -235,7 +235,7 @@ public abstract class AbstractEntityService implements Serializable {
      */
     public Query createQuery(final String queryString, final Map<String, ?> values) {
         Validate.hasText(queryString, "queryString不能为空");
-        Query query = entityManager.createQuery(queryString);
+        Query query = entityManager.createQuery(queryString.trim());
         for (Map.Entry<String, ?> kv : values.entrySet()) {
             query.setParameter(kv.getKey(), kv.getValue());
         }
