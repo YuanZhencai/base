@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1" 
+         xmlns:naming="http://geronimo.apache.org/xml/ns/naming-1.2" 
+         xmlns:sec="http://geronimo.apache.org/xml/ns/security-2.0" 
+         xmlns:sys="http://geronimo.apache.org/xml/ns/deployment-1.2">
+
+  <sys:environment>
+    <sys:moduleId>
+      <sys:groupId>com.wcs.btcbase</sys:groupId>
+      <sys:artifactId>btc-base</sys:artifactId>
+      <sys:version>0.0.6</sys:version>
+      <sys:type>car</sys:type>
+    </sys:moduleId>
+    <sys:dependencies>
+        <sys:dependency>
+            <sys:groupId>console.dbpool</sys:groupId>
+            <sys:artifactId>jdbc_myBtcbase</sys:artifactId>
+        </sys:dependency>
+    </sys:dependencies>
+    <sys:hidden-classes/>
+    <sys:non-overridable-classes/>
+  </sys:environment>
+
+  <context-root>/btcbase</context-root>
+  
+    <!-- security settings, if any, go here -->
+
+    <resource-ref>
+        <ref-name>jdbc/MyDataSource</ref-name>
+        <resource-link>jdbc/myBtcbase</resource-link>
+    </resource-ref>  
+
+</web-app>
