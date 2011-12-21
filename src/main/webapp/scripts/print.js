@@ -23,7 +23,7 @@ function coreHtmlSetting(print_id, title) {
 	hideAllButton();
 	LODOP = getLodop(document.getElementById('LODOP'), document
 			.getElementById('LODOP_EM'));
-	LODOP.PRINT_INIT("cmdpms");
+	LODOP.PRINT_INIT("btcbase");
 	LODOP.SET_PRINT_STYLE("FontSize", 14);
 	LODOP.SET_PRINT_STYLE("Bold", 1);
 
