@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+            <h:outputLabel value="value:"/>
+            <p:inputText id="dict_value" value="#{dictBean.instance.value}"/>
+            
+            <h:outputLabel value="parentCode:"/>
+            <p:inputText id="dict_parentCode" value="#{dictBean.instance.parentCode}"/>
+            
+            <h:outputLabel value="code:"/>
+            <p:inputText id="dict_code" value="#{dictBean.instance.code}"/>
+            
+            <h:outputLabel value="name:"/>
+            <p:inputText id="dict_name" value="#{dictBean.instance.name}"/>
+            
+
+</ui:composition>
