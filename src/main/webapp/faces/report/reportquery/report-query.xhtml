@@ -7,7 +7,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="/template/template.xhtml">
 
-	<ui:define name="title">报表列表</ui:define>
 	<ui:define name="content">
 		<h:form id="reportTreeForm" prependId="false" style="float:left; margin-right: 10px;">
 			<p:tree value="#{reportQueryBean.root}" var="node" dynamic="true" cache="false" selectionMode="single" selection="#{reportQueryBean.selectedNode}" style="width:200px;" >
@@ -18,8 +17,10 @@
 			</p:tree>
 		</h:form>
 
+		<div>
 		<h:form id="reportQueryForm" prependId="false">
 			<p:fieldset>
+			
 				<h:panelGrid id="reportQueryPanel" columns="4">
 					<f:facet name="header">报表参数</f:facet>
 					<ui:repeat var="reportParameter" value="#{reportQueryBean.reportParameterList}">
@@ -29,13 +30,26 @@
 							<p:inputText value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}"/>
 						</ui:fragment>
 						<ui:fragment rendered="#{reportQueryBean.uiTypeCalendar(reportParameter.uiType)}">
-							<p:calendar value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}"/>
+							<p:calendar value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}" pattern="yyyy-MM-dd">
+								<f:convertDateTime pattern="yyyy-MM-dd"/>
+							</p:calendar>
 						</ui:fragment>
 					</ui:repeat>
-					<p:commandButton id="btn_report_preview" action="#{reportQueryBean.preview}" value="预览" image="ui-icon ui-icon-search" />
+					<p:commandButton id="btn_report_preview" action="#{reportQueryBean.preview}" value="预览" update="reportContent" image="ui-icon ui-icon-search" />
 				</h:panelGrid>
 			</p:fieldset>
 		</h:form>
+		
+		<h:form id="reportContentForm" prependId="false">
+			<p:panel styleClass="panel1" style="margin: 5px 0 0 224px;">
+				<f:facet name="header">报表预览</f:facet>
+				<h:panelGroup style="width:100%;text-align:center;" id="reportContent">
+					<p:commandButton style="display:none"/>
+				    #{reportQueryBean.reportContent}
+				</h:panelGroup>
+			</p:panel>
+		</h:form>
+		</div>
 	</ui:define>
 </ui:composition>
 

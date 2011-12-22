@@ -211,4 +211,22 @@ public class ReportFileService {
         }
         return map;
     }
+    
+    /**
+	 * 获得报表文件
+	 * @param reportMstrId
+	 * @return
+	 */
+	public ReportFile getReportFile(Long reportMstrId) {
+		String hql = "select rf from ReportFile rf where rf.useInd = true and  rf.reportMstr.id = ?1";
+		Query query = entityService.createQuery(hql);
+		query.setParameter(1, reportMstrId);
+		List<ReportFile> list = query.getResultList();
+		if(list != null && list.size() > 0) {
+			ReportFile reportFile = list.get(0);
+			return reportFile;
+		}
+		
+		return null;		
+	}
 }
