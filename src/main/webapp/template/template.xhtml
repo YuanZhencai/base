@@ -28,34 +28,9 @@
 
 	</h:head>
 	<h:body>
-		<div class="top" style="z-index: 3">
-			<div id="top_up">
-				<div id="top_up_left">
-					<div id="title">
-						<img height="22" src="#{request.contextPath}/images/logo_01.gif" alt="" /><span>益海嘉里《基础工程 V0.0.1》</span>
-					</div>
-				</div>
-
-				<ui:include src="top.xhtml" />
-				<div id="top_up_right"></div>
-			</div>
-			<div id="top_down" style="z-index: 2">
-				<div id="top_down_left">
-					<h:inputHidden id="requestContextPath" value="#{request.contextPath}" />
-				</div>
-				<div id="top_down_center" style="z-index: 1">
-
-					<ui:include src="navigation.xhtml" />
-
-				</div>
-				<div id="top_down_right">
-					<span class="img"> <img src="#{request.contextPath}/images/user.gif" alt="" />
-					</span> <span class="fon">当前用户：<h:outputText value="#{sessionScope.userName}" />
-					</span>
-				</div>
-			</div>
-		</div>
-
+	<!-- 
+		<ui:include src="menu.xhtml" />
+ 	-->
 		<div id="main_id" class="main">
 			<ui:insert name="content">
 				<ui:include src="/main.xhtml" />
