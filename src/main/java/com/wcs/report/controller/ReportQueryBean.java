@@ -111,7 +111,7 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	 * @return
 	 */
 	public boolean uiTypeWenbk(String uiType) {
-		if("wenbenkuang".equals(uiType)) {
+		if("CONT001".equals(uiType)) {
 			return true;
 		} else {
 			return false;
@@ -124,7 +124,7 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	 * @return
 	 */
 	public boolean uiTypeCalendar(String uiType) {
-		if("calendar".equals(uiType)) {
+		if("CONT002".equals(uiType)) {
 			return true;
 		} else {
 			return false;
@@ -136,16 +136,9 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	 * 报表预览
 	 */
 	public void preview() {
-		Map map1 = this.getReportMap();
+		/*Map map1 = this.getReportMap();
 		Date date = (Date) map1.get("productdate");
-		if(date == null) {
-			System.out.println("aaaaaaaa");
-		} else {
-			System.out.println("bbbbbbb" + date.toString());
-		}
-		map1.put("productdate", date);
-		
-	
+		map1.put("productdate", date);*/
 		ReportFile reportFile = reportFileService.getReportFile(this.getReportMstrId());
 		if(reportFile == null) {
 			return ;
@@ -163,7 +156,7 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	    	//map.put("productdate", "2011-12-19");
 	    	//super.genneralReport(map);
 	    	
-			super.genneralReport(map1);
+			super.genneralReport(this.getReportMap());
 		} catch (JRException e) {
 			e.printStackTrace();
 		}

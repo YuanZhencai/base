@@ -10,11 +10,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
 
 import com.wcs.base.controller.ViewBaseBean;
+import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportMstr;
 import com.wcs.report.model.ReportParameter;
 import com.wcs.report.service.ReportParameterService;
@@ -34,8 +36,13 @@ import com.wcs.report.service.ReportParameterService;
 public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	@Inject
 	ReportParameterService reportParameterService;
+	@Inject
+	public DictService dictService;
 	private List<ReportParameter> reportParameterList = new ArrayList<ReportParameter>();
 	private boolean disable;
+	
+	private List<SelectItem> controlTypeList = new ArrayList<SelectItem>();    // 控件类型下拉框
+	private List<SelectItem> javaDataTypeList = new ArrayList<SelectItem>();    // 控件类型下拉框
 	
 	/**
 	 * 构造函数
@@ -50,8 +57,16 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
-		
+		this.initSelectItem();
 	}
+	
+	/**
+     * 初始化报表分类、报表模式下拉框
+     */
+    public void initSelectItem() {
+    	this.setControlTypeList(dictService.findWithSelectItem("CONT"));
+    	this.setJavaDataTypeList(dictService.findWithSelectItem("JADT"));
+    }
 	
 	/**
 	 * 保存报表参数信息
@@ -158,6 +173,22 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 
 	public void setDisable(boolean disable) {
 		this.disable = disable;
+	}
+
+	public List<SelectItem> getControlTypeList() {
+		return controlTypeList;
+	}
+
+	public void setControlTypeList(List<SelectItem> controlTypeList) {
+		this.controlTypeList = controlTypeList;
+	}
+
+	public List<SelectItem> getJavaDataTypeList() {
+		return javaDataTypeList;
+	}
+
+	public void setJavaDataTypeList(List<SelectItem> javaDataTypeList) {
+		this.javaDataTypeList = javaDataTypeList;
 	}
 
 }
