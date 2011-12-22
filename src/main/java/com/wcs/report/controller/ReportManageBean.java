@@ -51,7 +51,6 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 	public ReportRoleService reportRoleService;
 	@Inject
 	public ReportParameterService reportParameterService;
-	
 	private Map<String, Object> filterMap = new HashMap<String, Object>();
 	private LazyDataModel<ReportMstr> lazyModel;               // 动态分页使用
 	
@@ -206,6 +205,7 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 			return ;
 		}
 		this.getParameterTabList(reportMstrId);	
+		JSFUtils.getRequest().setAttribute("rowSelect", reportMstrId);
 	}
     
     /**

@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 
@@ -90,7 +91,7 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
              * if(this.getInstance().getUseInd()){ this.reportFileService.updateUseInd(getInstance().getId()); }
              */
             JSFUtils.getRequest().setAttribute("rptManagerFlag", 1);
-            findRptTableData();
+            findRptTableData(this.mastrId);
         } catch (ServiceException e) {
             e.printStackTrace();
             MessageUtils.addErrorMessage("rptFileId", e.getMessage());
@@ -113,18 +114,27 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
                 this.reportFileService.updateUseInd(getInstance().getId(),this.mastrId);
             }*/
             JSFUtils.getRequest().setAttribute("rptManagerFlag", 1);
-            findRptTableData();
+            findRptTableData(this.mastrId);
         } catch (Exception e) {
             e.printStackTrace();
         }
        // return "/faces/report/reportmanage/list.xhtml";
     }
 
-    private void findRptTableData() {
-        reportFileModel = this.reportFileService.findRptFileDataModel(mastrId);
-       
+    public void findRptTableData(Long masId) {
+        reportFileModel = this.reportFileService.findRptFileDataModel(masId);
+        this.setReportFileModel(reportFileModel);
     }
-
+    
+    public void onTabChange(TabChangeEvent event){
+        Object id  = JSFUtils.getRequestParam("masId");
+        System.out.println(JSFUtils.getRequestParam("masId"));
+        String title = event.getTab().getTitle();
+        if("报表文件".equals(title) && id  != null){
+            reportFileModel = this.reportFileService.findRptFileDataModel(Long.parseLong((String)id));
+        }
+    }
+    
     private int validatorFile() throws Exception {
         if (rptFile == null || rptFile.getSize() == 0) {
             JSFUtils.getRequest().setAttribute("rptflag", 1);
