@@ -50,7 +50,9 @@
 						value="#{reportManageBean.lazyModel}" paginator="true" rows="10"
 						lazy="true" paginatorPosition="bottom"
 						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-						onRowSelectUpdate="display">
+						selectionMode="single"  rowKey="#{reportMstr.id}">
+						
+						<p:ajax event="rowSelect" listener="#{reportManageBean.onRowSelect}"  update="reportManageTab" />  
 						<f:facet name="header">报表列表</f:facet>
 
 						<p:column headerText="报表分类">
@@ -123,7 +125,7 @@
 
 			<br />
 			<h:form id="reportManager" prependId="false">
-				<p:tabView dynamic="true" cache="false">
+				<p:tabView dynamic="true" cache="false" id="reportManageTab">
 					<p:tab title="报表文件" id="tabl1">
 						<p:toolbar id="rptFilepanelBar">
 							<p:toolbarGroup align="right">
@@ -133,8 +135,10 @@
 						</p:toolbar>
 						<ui:include src="../reportfile/inc-list.xhtml" />
 					</p:tab>
+					<p:tab title="报表参数" id="tabl2">
+						<ui:include src="parameter-tab.xhtml" />
+					</p:tab>
 				</p:tabView>
-
 			</h:form>
 
 			<h:form prependId="false" id="rptFileForm"

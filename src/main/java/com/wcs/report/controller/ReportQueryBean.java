@@ -138,10 +138,14 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	public void preview() {
 		Map map1 = this.getReportMap();
 		Date date = (Date) map1.get("productdate");
+		if(date == null) {
+			System.out.println("aaaaaaaa");
+		} else {
+			System.out.println("bbbbbbb" + date.toString());
+		}
+		map1.put("productdate", date);
 		
-		System.out.println(DateUtils.dateToString(date));
-		map1.put("productdate", DateUtils.dateToString(date));
-		int leng = map1.size();
+	
 		ReportFile reportFile = reportFileService.getReportFile(this.getReportMstrId());
 		if(reportFile == null) {
 			return ;

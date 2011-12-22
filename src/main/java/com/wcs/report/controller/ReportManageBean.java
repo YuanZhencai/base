@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
@@ -23,8 +24,10 @@ import com.wcs.base.util.JSFUtils;
 import com.wcs.common.model.Role;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportMstr;
+import com.wcs.report.model.ReportParameter;
 import com.wcs.report.model.ReportRole;
 import com.wcs.report.service.ReportManageService;
+import com.wcs.report.service.ReportParameterService;
 import com.wcs.report.service.ReportRoleService;
 
 /** 
@@ -46,6 +49,8 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 	public DictService dictService;
 	@Inject
 	public ReportRoleService reportRoleService;
+	@Inject
+	public ReportParameterService reportParameterService;
 	
 	private Map<String, Object> filterMap = new HashMap<String, Object>();
 	private LazyDataModel<ReportMstr> lazyModel;               // 动态分页使用
@@ -57,6 +62,8 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 	
 	private List<SelectItem> reportCategoryList = new ArrayList<SelectItem>();        // 报表分类下拉框
 	private List<SelectItem> reportModeList = new ArrayList<SelectItem>();            // 报表模式下拉框
+	
+	private List<ReportParameter> parameterTabList = new ArrayList<ReportParameter>();         // tab的参数列表
 	
 	 /**
      * 构造函数
@@ -188,6 +195,27 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
     	this.getInstance().setReportConfig(reportRoles);
     }
     
+    /**
+	 * 当报表列表行选中，然后调用此单击方法
+	 * @param event
+	 */
+	public void onRowSelect(SelectEvent event) { 
+		ReportMstr reportMstr = (ReportMstr)event.getObject();
+		Long reportMstrId = reportMstr.getId();
+		if(reportMstrId == null) {
+			return ;
+		}
+		this.getParameterTabList(reportMstrId);	
+	}
+    
+    /**
+     * 查询报表参数列表
+     * @param reportMstrId
+     */
+    public void getParameterTabList(Long reportMstrId) {
+    	this.parameterTabList = reportParameterService.findReportParameterList(reportMstrId);
+    }
+    
 	
 	//-------------------- setter & getter --------------------//
 
@@ -237,6 +265,14 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 
 	public void setReportModeList(List<SelectItem> reportModeList) {
 		this.reportModeList = reportModeList;
+	}
+
+	public List<ReportParameter> getParameterTabList() {
+		return parameterTabList;
+	}
+
+	public void setParameterTabList(List<ReportParameter> parameterTabList) {
+		this.parameterTabList = parameterTabList;
 	}
 	
 }
