@@ -164,7 +164,7 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         String fileName = rptCode.concat("_").concat(String.valueOf(version)).concat("_").concat(rptFile.getFileName());
         File file = createRptFile(rptCode, fileName);
         getInstance().setFileName(fileName);
-        getInstance().setFileStoreLocation(FileUtil.FLODER_NAME + File.separator + fileName);
+        getInstance().setFileStoreLocation(FileUtil.FLODER_NAME + File.separator +rptCode+File.separator+ fileName);
         getInstance().setReportMstr(rptMstr);
         getInstance().setVersionNo(version);
         getInstance().setUpLoadedDatetime(new Date());
