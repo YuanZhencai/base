@@ -7,10 +7,7 @@ package com.wcs.report.controller;
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
 import java.util.Map;
 
 import javax.naming.InitialContext;
@@ -30,7 +27,6 @@ import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.wcs.base.report.service.ProductReportDataSource;
 import com.wcs.base.util.JSFUtils;
 
 /** 

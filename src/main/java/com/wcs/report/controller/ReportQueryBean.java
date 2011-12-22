@@ -20,7 +20,6 @@ import net.sf.jasperreports.engine.JRException;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
 
-import com.wcs.base.report.service.ProductReportService;
 import com.wcs.base.util.DateUtils;
 import com.wcs.common.model.Dict;
 import com.wcs.common.service.DictService;
@@ -55,8 +54,6 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	ReportFileService reportFileService;
 	@Inject
 	DictService dictService;
-	@Inject
-	ProductReportService productReportService;
 	
     private TreeNode root;            // 资源树
     private TreeNode selectedNode;    // 选择的节点
