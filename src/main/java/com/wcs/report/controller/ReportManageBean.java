@@ -274,5 +274,7 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 	public void setParameterTabList(List<ReportParameter> parameterTabList) {
 		this.parameterTabList = parameterTabList;
 	}
+
+   
 	
 }

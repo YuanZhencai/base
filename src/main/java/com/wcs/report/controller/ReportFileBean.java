@@ -130,7 +130,7 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         Object id  = JSFUtils.getRequestParam("masId");
         System.out.println(JSFUtils.getRequestParam("masId"));
         String title = event.getTab().getTitle();
-        if("报表文件".equals(title) && id  != null){
+        if("报表文件".equals(title) && id  != null && !"null".equals(id)){
             reportFileModel = this.reportFileService.findRptFileDataModel(Long.parseLong((String)id));
         }
     }

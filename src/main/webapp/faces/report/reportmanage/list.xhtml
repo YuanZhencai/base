@@ -53,7 +53,7 @@
 						selectionMode="single" rowKey="#{reportMstr.id}">
 
 						<p:ajax event="rowSelect"
-							listener="#{reportManageBean.onRowSelect}" update="reportManageTab,tabl2" />
+							listener="#{reportManageBean.onRowSelect}" update="reportManager,reportManageTab,tab1" oncomplete="tabManager.select(0)"/>
 						<f:facet name="header">报表列表</f:facet>
 
 						<p:column headerText="报表分类">
@@ -126,7 +126,8 @@
 
 			<br />
 			<h:form id="reportManager" prependId="false">
-				<p:tabView dynamic="true" cache="false" id="reportManageTab" >
+			    
+				<p:tabView dynamic="true" cache="false" id="reportManageTab"  widgetVar="tabManager">
 					<p:ajax event="tabChange" listener="#{reportFileBean.onTabChange}" update="tabl2"/>
 					<f:param name="masId" value="#{requestScope.rowSelect}"/>
 					<p:tab title="报表参数" id="tabl1">
