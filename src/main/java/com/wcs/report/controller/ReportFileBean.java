@@ -5,16 +5,14 @@
 package com.wcs.report.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 
 import com.wcs.base.controller.ViewBaseBean;
@@ -38,12 +36,14 @@ import com.wcs.report.util.FileUtil;
 @ViewScoped
 @SuppressWarnings("serial")
 public class ReportFileBean extends ViewBaseBean<ReportFile> {
-    /** 报表文件List*/
-    private List<ReportFile> reportFileList = new ArrayList<ReportFile>();
+    /** 选中的RPT*/
+    private ReportFile selectReport;
+    private LazyDataModel<ReportFile> reportFileModel;
     /** 报表主数据Id*/
     private Long mastrId;
     /** 上传模板文件对象*/
     private UploadedFile rptFile;
+    private Integer version;
     @Inject
     private ReportFileService reportFileService;
 
@@ -61,61 +61,134 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     @SuppressWarnings("unused")
     @PostConstruct
     private void postConstruct() {
-        reportFileList.clear();
         File file = new File(FileUtil.getProjectAbsolute());
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            file.mkdirs();
         }
+    }
+
+    public void befforeAdd() {
+        this.setInstance(new ReportFile());
         getInstance().setUpLoadedBy((String) JSFUtils.getSession().get("userName"));
     }
 
-    public void saveRptFile() {
+    /**
+     * 
+     * <p>Description: </p>
+     * @return
+     */
+    public String saveRptFile() {
+        String viewId = JSFUtils.getViewId();
         try {
-            if (rptFile == null) {
-                MessageUtils.addErrorMessage("rptFileId", "请选择上传文件");
-                return;
-            }
-            String str = rptFile.getFileName();
-            str = str.substring(str.indexOf(".") + 1);
-            boolean flag = reportFileService.isUpload(str, rptFile.getSize());
-            if (!flag) {
-                MessageUtils.addErrorMessage("rptFileId", "文件大小或者文件类型不符合标准");
-                return;
-            }
-            ReportMstr rptMstr = reportFileService.findRepMstrById(mastrId);
-            String rptCode = rptMstr.getReportCode();
-            int version = reportFileService.findReptFileNumber(mastrId);
-            String fileName = rptCode.concat("_").concat(String.valueOf(version)).concat("_").concat(rptFile.getFileName());
-            File file = createRptFile(rptCode, fileName);
-            getInstance().setFileName(fileName);
+            int validtorReult = validatorFile();
+            if (validtorReult == 1) { return viewId; }
+            File file = fillRptFile();
+            // saveRptFile 做了 上传的模板设置了为使用 其他模板属性更新为不使用
             reportFileService.saveRptFile(getInstance(), rptFile.getInputstream(), file);
+            // 上传的模板设置了为使用 其他模板属性更新为不使用
+            /*
+             * if(this.getInstance().getUseInd()){ this.reportFileService.updateUseInd(getInstance().getId()); }
+             */
+            JSFUtils.getRequest().setAttribute("rptManagerFlag", 1);
+            findRptTableData();
         } catch (ServiceException e) {
             e.printStackTrace();
+            MessageUtils.addErrorMessage("rptFileId", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return "/faces/report/reportmanage/list.xhtml";
     }
 
-    public void handleFileUpload(FileUploadEvent event) {
-        UploadedFile file = event.getFile();
-        this.setRptFile(file);
+    /**
+     * 
+     * <p>Description: 是否使用模板</p>
+     */
+    public void update() {
+        try {
+            this.reportFileService.updateRptFile(getInstance(),this.mastrId);
+            // 上传的模板设置了为使用 其他模板属性更新为不使用
+          /*  if (this.getInstance().getUseInd()) {
+                this.reportFileService.updateUseInd(getInstance().getId(),this.mastrId);
+            }*/
+            JSFUtils.getRequest().setAttribute("rptManagerFlag", 1);
+            findRptTableData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       // return "/faces/report/reportmanage/list.xhtml";
     }
 
+    private void findRptTableData() {
+        reportFileModel = this.reportFileService.findRptFileDataModel(mastrId);
+       
+    }
+
+    private int validatorFile() throws Exception {
+        if (rptFile == null || rptFile.getSize() == 0) {
+            JSFUtils.getRequest().setAttribute("rptflag", 1);
+            MessageUtils.addErrorMessage("rptFileId", "请选择上传文件");
+            return 1;
+        }
+        String str = rptFile.getFileName();
+        str = str.substring(str.indexOf(".") + 1);
+        boolean flag = reportFileService.isUpload(str, rptFile.getSize());
+        if (!flag) {
+            JSFUtils.getRequest().setAttribute("rptflag", 1);
+            MessageUtils.addErrorMessage("rptFileId", "文件大小或者文件类型不符合标准");
+            return 1;
+        }
+        return 2;
+    }
+
+
+    /**
+     * 
+     * <p>Description:填充报表文件对象 </p>
+     * @return
+     */
+    private File fillRptFile() {
+        ReportMstr rptMstr = reportFileService.findRepMstrById(mastrId);
+        String rptCode = rptMstr.getReportCode().toLowerCase();
+        String fileName = rptCode.concat("_").concat(String.valueOf(version)).concat("_").concat(rptFile.getFileName());
+        File file = createRptFile(rptCode, fileName);
+        getInstance().setFileName(fileName);
+        getInstance().setFileStoreLocation(FileUtil.FLODER_NAME + File.separator + fileName);
+        getInstance().setReportMstr(rptMstr);
+        getInstance().setVersionNo(version);
+        getInstance().setUpLoadedDatetime(new Date());
+        return file;
+    }
+
+    /**
+     * 
+     * <p>Description: 创建报表文件路径</p>
+     * @param rptCode
+     * @param fileName
+     * @return
+     */
     private File createRptFile(String rptCode, String fileName) {
         try {
             String path = FileUtil.getProjectAbsolute();
-            path.concat(File.separator).concat(rptCode);
+            path = path.concat(File.separator).concat(rptCode.toLowerCase());
             File file = new File(path);
+            boolean flag = false;
             if (!file.exists()) {
-                file.createNewFile();
+                flag = file.mkdir();
+            } else {
+                flag = true;
             }
-            path.concat(File.separator).concat(fileName);
-            file = new File(path);
+            if (flag) {
+                path = path.concat(File.separator).concat(fileName);
+                file = new File(path);
+                if (file.exists()) {
+                    file.delete();
+                    file.createNewFile();
+                } else {
+                    file.createNewFile();
+                }
+            }
             return file;
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,13 +198,6 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     }
 
     // -------------------- setter & getter --------------------//
-    public List<ReportFile> getReportFileList() {
-        return reportFileList;
-    }
-
-    public void setReportFileList(List<ReportFile> reportFileList) {
-        this.reportFileList = reportFileList;
-    }
 
     public Long getMastrId() {
         return mastrId;
@@ -139,6 +205,9 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
 
     public void setMastrId(Long mastrId) {
         this.mastrId = mastrId;
+        if (mastrId != null) {
+            version = reportFileService.findReptFileNumber(mastrId) + 1;
+        }
     }
 
     public UploadedFile getRptFile() {
@@ -149,4 +218,29 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         this.rptFile = rptFile;
     }
 
+    public Integer getVersion() {
+
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public ReportFile getSelectReport() {
+        return selectReport;
+    }
+
+    public void setSelectReport(ReportFile selectReport) {
+        this.selectReport = selectReport;
+    }
+
+    public LazyDataModel<ReportFile> getReportFileModel() {
+        return reportFileModel;
+    }
+
+    public void setReportFileModel(LazyDataModel<ReportFile> reportFileModel) {
+        this.reportFileModel = reportFileModel;
+    }
+    
 }

@@ -5,8 +5,10 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+
 	<p:dialog header="上传模板" widgetVar="uploadAddDialog" modal="true"
 		resizable="false" width="600">
+		<p:message id="rptFileId" for="rptFileId" />
 		<h:panelGrid id="addRoleInputDetail" columns="2"
 			columnClasses="column41,column42" footerClass="footer1">
 			<h:outputLabel value="上传人姓名：" />
@@ -17,7 +19,12 @@
 			<h:outputLabel value="版本号：" />
 			<h:panelGroup>
 				<p:inputText id="fileVersion" disabled="true"
-					value="#{reportFileBean.instance.versionNo}" />
+					value="#{reportFileBean.version}" />
+			</h:panelGroup>
+			<h:outputLabel value="是否使用：" />
+			<h:panelGroup>
+				<p:selectBooleanCheckbox id="useInd"
+					value="#{reportFileBean.instance.useInd}" />
 			</h:panelGroup>
 			<h:outputLabel value="备注：" />
 			<p:inputTextarea id="file" style="width:135px;height:50px;"
@@ -25,12 +32,13 @@
 				value="#{reportFileBean.instance.remarks}">
 			</p:inputTextarea>
 			<p:column colspan="2">
-				<p:fileUpload value="#{reportFileBean.rptFile}" mode="simple" allowTypes="/(\.|\/)(jrxml|jasper)$/"/>
+				<p:fileUpload value="#{reportFileBean.rptFile}" mode="simple" description="Images" image="/images/icons/upload.png"/>
 			</p:column>
-			
+
 			<f:facet name="footer">
-				<p:commandButton id="rptFileSave" 
-					actionListener="#{reportFileBean.saveRptFile}" value="保存" 
+				<p:commandButton id="rptFileSave" ajax="false" 
+					
+					actionListener="#{reportFileBean.saveRptFile}" value="保存"
 					image="ui-icon ui-icon-disk" />
 						&#160;&#160;
 				<p:commandButton value="取消" id="rptFileCanel"
@@ -39,6 +47,5 @@
 			</f:facet>
 		</h:panelGrid>
 	</p:dialog>
-
 </ui:composition>
 

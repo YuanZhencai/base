@@ -13,9 +13,14 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
+
+import org.primefaces.model.LazyDataModel;
+
+import com.wcs.base.LazyDataModelBase;
 import com.wcs.base.exception.ServiceException;
 import com.wcs.base.message.ExceptionMessage;
 import com.wcs.base.service.StatelessEntityService;
+import com.wcs.common.model.Resource;
 import com.wcs.report.model.ReportFile;
 import com.wcs.report.model.ReportMstr;
 import com.wcs.report.util.FileUtil;
@@ -52,7 +57,7 @@ public class ReportFileService {
      */
     public List<ReportFile> findRepFileByMsId(Long mstrId) throws ServiceException {
         try {
-            String sql = "select rpf from ReportFile rpf where rpf.reportMstr.id=? ";
+            String sql = "select rpf from ReportFile rpf where rpf.reportMstr.id=? and rpf.defunctInd=false";
             Query query = this.entityService.createQuery(sql);
             query.setParameter(1, mstrId);
             return query.getResultList();
@@ -85,7 +90,7 @@ public class ReportFileService {
      */
     public int findReptFileNumber(Long mstrId) throws ServiceException {
         try {
-            String sql = "select rpf from ReportFile rpf where rpf.reportMstr.id=? ";
+            String sql = "select rpf from ReportFile rpf where rpf.reportMstr.id=? and rpf.defunctInd=false";
             Query query = this.entityService.createQuery(sql);
             query.setParameter(1, mstrId);
             return query.getResultList().size();
@@ -93,7 +98,7 @@ public class ReportFileService {
             throw new ServiceException(ExceptionMessage.RPTFILE_MSTRID, e);
         }
     }
-    
+
     /**
      * 
      * <p>Description: 上传保存文件</p>
@@ -106,8 +111,41 @@ public class ReportFileService {
         try {
             FileUtil.readFile(input, targertFile);
             this.entityService.create(rptFile);
+            if (rptFile.getUseInd()) {
+                this.updateUseInd(rptFile.getId(),rptFile.getReportMstr().getId());
+            }
         } catch (Exception e) {
             throw new ServiceException(ExceptionMessage.RPTFILE_SAVE, e);
+        }
+    }
+
+    /**
+     * 
+     * <p>Description: 更新报表模板文件</p>
+     * @param rptFile
+     */
+    public void updateRptFile(ReportFile rptFile,Long mastrId) throws ServiceException {
+        try {
+            rptFile.setUseInd(true);
+            this.entityService.update(rptFile);
+            this.updateUseInd(rptFile.getId(), mastrId);
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * 
+     * <p>Description: 批量更新报表模板使用状态为不使用</p>
+     * @param id
+     * @throws ServiceException
+     */
+    public void updateUseInd(Long id,Long mastrId) throws ServiceException {
+        try {
+            String sql = "update ReportFile rpf set rpf.useInd=false where rpf.id !=?   and rpf.reportMstr.id=? and rpf.defunctInd=false ";
+            this.entityService.batchExecute(sql, id,mastrId);
+        } catch (Exception e) {
+            throw new ServiceException(e);
         }
     }
 
@@ -127,10 +165,32 @@ public class ReportFileService {
         if (fileType == null && "".equals(fileType)) { return flag; }
         if (fileSize == 0) { return flag; }
         Long size = sysFileType().get(fileType.toLowerCase());
+        if (size == null) {
+            flag = false;
+            return flag;
+        }
         if (fileSize != 0 && fileSize <= size) {
             flag = true;
         }
         return flag;
+    }
+    
+    /**
+     * 
+     * <p>Description: </p>
+     * @param mstrId
+     * @return
+     * @throws ServiceException
+     */
+    public LazyDataModel<ReportFile> findRptFileDataModel(Long mstrId) throws ServiceException {
+        try {
+            List<ReportFile> rsList = this.findRepFileByMsId(mstrId);
+            LazyDataModel<ReportFile> lazyMode = new LazyDataModelBase<ReportFile>(rsList);
+            return lazyMode;
+        } catch (ServiceException e) {
+            throw e;
+        }
+
     }
 
     /**
