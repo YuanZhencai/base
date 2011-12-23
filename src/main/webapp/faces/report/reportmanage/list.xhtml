@@ -53,7 +53,9 @@
 						selectionMode="single" rowKey="#{reportMstr.id}">
 
 						<p:ajax event="rowSelect"
-							listener="#{reportManageBean.onRowSelect}" update="reportManager,reportManageTab,tab1" oncomplete="tabManager.select(0)"/>
+							listener="#{reportManageBean.onRowSelect}"
+							update="reportManager,reportManageTab,tab1,masID"
+							oncomplete="tabManager.select(0)" />
 						<f:facet name="header">报表列表</f:facet>
 
 						<p:column headerText="报表分类">
@@ -126,18 +128,24 @@
 
 			<br />
 			<h:form id="reportManager" prependId="false">
-			    
-				<p:tabView dynamic="true" cache="false" id="reportManageTab"  widgetVar="tabManager">
-					<p:ajax event="tabChange" listener="#{reportFileBean.onTabChange}" update="tabl2"/>
-					<f:param name="masId" value="#{requestScope.rowSelect}"/>
+
+				<p:tabView dynamic="true" cache="false" id="reportManageTab"
+					widgetVar="tabManager">
+					<p:ajax event="tabChange" listener="#{reportFileBean.onTabChange}"
+						update="tabl2" />
+					<f:param name="masId" value="#{requestScope.rowSelect}" id="masID" />
 					<p:tab title="报表参数" id="tabl1">
 						<ui:include src="parameter-tab.xhtml" />
 					</p:tab>
-					<p:tab title="报表文件" id="tabl2" >
+					<p:tab title="报表文件" id="tabl2">
 						<p:toolbar id="rptFilepanelBar">
 							<p:toolbarGroup align="right">
 								<p:commandButton value="上传模板" image="ui-icon ui-icon-plus"
-									id="addRptPanel" oncomplete="uploadAddDialog.show();" />
+									update="rptFileForm" action="#{reportFileBean.befforeAdd}"
+									id="addRptPanel" oncomplete="uploadAddDialog.show();">
+									<f:param name="master" value="#{param.masId}"/>
+										 
+								</p:commandButton>
 							</p:toolbarGroup>
 						</p:toolbar>
 						<ui:include src="../reportfile/inc-list.xhtml" />

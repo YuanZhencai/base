@@ -7,10 +7,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:dialog header="上传模板" widgetVar="uploadAddDialog" modal="true"
-		resizable="false" width="600">
+		resizable="false" width="300">
 		<p:message id="rptFileId" for="rptFileId" />
 		<h:panelGrid id="addRoleInputDetail" columns="2"
-			columnClasses="column41,column42" footerClass="footer1">
+			columnClasses="column41,column42">
 			<h:outputLabel value="上传人姓名：" />
 			<h:panelGroup>
 				<p:inputText id="uploadPName" disabled="true"
@@ -31,21 +31,25 @@
 				autoResize="false" rows="4"
 				value="#{reportFileBean.instance.remarks}">
 			</p:inputTextarea>
-			<p:column colspan="2">
-				<p:fileUpload value="#{reportFileBean.rptFile}" mode="simple" description="Images" image="/images/icons/upload.png"/>
-			</p:column>
-
-			<f:facet name="footer">
-				<p:commandButton id="rptFileSave" ajax="false" 
-					
-					actionListener="#{reportFileBean.saveRptFile}" value="保存"
-					image="ui-icon ui-icon-disk" />
-						&#160;&#160;
-				<p:commandButton value="取消" id="rptFileCanel"
-					onclick="uploadAddDialog.hide()" image="ui-icon ui-icon-cancel"
-					type="button" />
-			</f:facet>
 		</h:panelGrid>
+		
+		<h:panelGrid columns="2">
+			<p:fileUpload value="#{reportFileBean.rptFile}" mode="simple"
+				description="Images" image="/images/icons/upload.png" />
+		</h:panelGrid>
+
+		<br/>
+		<div align="center">
+
+			<p:commandButton id="rptFileSave" ajax="false"
+				actionListener="#{reportFileBean.saveRptFile}" value="保存"
+				image="ui-icon ui-icon-disk" />
+			&#160;&#160;
+			<p:commandButton value="取消" id="rptFileCanel"
+				onclick="uploadAddDialog.hide()" image="ui-icon ui-icon-cancel"
+				type="button" />
+		</div>
+
 	</p:dialog>
 </ui:composition>
 
