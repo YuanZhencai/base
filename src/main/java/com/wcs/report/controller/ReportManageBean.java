@@ -206,6 +206,7 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 		}
 		this.getParameterTabList(reportMstrId);	
 		JSFUtils.getRequest().setAttribute("rowSelect", reportMstrId);
+		JSFUtils.getRequest().setAttribute("enable", 1);
 	}
     
     /**

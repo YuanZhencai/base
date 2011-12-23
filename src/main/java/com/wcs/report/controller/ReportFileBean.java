@@ -48,6 +48,7 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     @Inject
     private ReportFileService reportFileService;
 
+    
     /**
      * 构造函数
      */
@@ -75,14 +76,22 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     public void befforeAdd() {
         this.setInstance(new ReportFile());
         getInstance().setUpLoadedBy((String) JSFUtils.getSession().get("userName"));
-        String str = JSFUtils.getRequestParam("master");
-        if (str != null && !"null".equals(str)) {
-            mastrId = Long.parseLong(str);
-            version = reportFileService.findReptFileNumber(mastrId) + 1;
-        } else {
+        if (mastrId != null) {
             version = reportFileService.findReptFileNumber(mastrId) + 1;
         }
 
+    }
+
+    public void befforeTabAdd() {
+        this.setInstance(new ReportFile());
+        getInstance().setUpLoadedBy((String) JSFUtils.getSession().get("userName"));
+        String str = JSFUtils.getRequestParam("master");
+        if (str != null && "null".equals(str)) {
+            MessageUtils.addErrorMessage("rptFileMessage", "请先选择报表主数据");
+            return;
+        }
+        mastrId = Long.parseLong(str);
+        version = reportFileService.findReptFileNumber(mastrId) + 1;
     }
 
     /**
