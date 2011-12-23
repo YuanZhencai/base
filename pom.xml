@@ -233,7 +233,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>3.0.M4</version>
+			<version>3.0.RC2</version>
 		</dependency>
 
 		<dependency>
