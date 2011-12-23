@@ -37,8 +37,6 @@ import com.wcs.report.util.FileUtil;
 @ViewScoped
 @SuppressWarnings("serial")
 public class ReportFileBean extends ViewBaseBean<ReportFile> {
-    /** 选中的RPT*/
-    private ReportFile selectReport;
     private LazyDataModel<ReportFile> reportFileModel;
     /** 报表主数据Id*/
     private Long mastrId;
@@ -86,12 +84,10 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         this.setInstance(new ReportFile());
         getInstance().setUpLoadedBy((String) JSFUtils.getSession().get("userName"));
         String str = JSFUtils.getRequestParam("master");
-        if (str != null && "null".equals(str)) {
-            MessageUtils.addErrorMessage("rptFileMessage", "请先选择报表主数据");
-            return;
+        if (str != null && !"null".equals(str)) {
+            mastrId = Long.parseLong(str);
+            version = reportFileService.findReptFileNumber(mastrId) + 1;
         }
-        mastrId = Long.parseLong(str);
-        version = reportFileService.findReptFileNumber(mastrId) + 1;
     }
 
     /**
@@ -255,13 +251,6 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         this.version = version;
     }
 
-    public ReportFile getSelectReport() {
-        return selectReport;
-    }
-
-    public void setSelectReport(ReportFile selectReport) {
-        this.selectReport = selectReport;
-    }
 
     public LazyDataModel<ReportFile> getReportFileModel() {
         return reportFileModel;

@@ -143,12 +143,11 @@
 						<p:toolbar id="rptFilepanelBar">
 							<p:toolbarGroup align="right">
 								<p:commandButton value="上传模板" image="ui-icon ui-icon-plus"
-									disabled="#{param.isUpload !=1}"
-									update="rptFileForm,rptFileMessage"
+									disabled="#{param.isUpload eq 'null' }" 
+									update="rptFileForm"
 									action="#{reportFileBean.befforeTabAdd}" id="addRptPanel"
 									oncomplete="uploadAddDialog.show();">
 									<f:param name="master" value="#{param.masId}" />
-
 								</p:commandButton>
 							</p:toolbarGroup>
 						</p:toolbar>
