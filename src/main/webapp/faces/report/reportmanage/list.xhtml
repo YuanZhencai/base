@@ -24,7 +24,7 @@
 			</f:facet>
 			<h:form id="reportForm" prependId="false">
 				<p:fieldset>
-					<h:panelGrid columns="4">
+					<h:panelGrid columns="8" columnClasses="column1,column2, column1,column2, column1,column2, column1,column2">
 						报表编号：<p:inputText
 							value="#{reportManageBean.filterMap['LIKES_reportCode']}" />
 						报表名称：<p:inputText
@@ -39,11 +39,13 @@
 							<f:selectItem itemLabel="--请选择--" itemValue="" />
 							<f:selectItems value="#{reportManageBean.reportCategoryList}" />
 						</h:selectOneMenu>
+					</h:panelGrid>
+					<div style="text-align: right;">
 						<p:commandButton id="btn_report_search"
 							actionListener="#{reportManageBean.search}"
 							update="reportDataPanel" value="查询"
 							image="ui-icon ui-icon-search" />
-					</h:panelGrid>
+					</div>
 				</p:fieldset>
 				<br />
 
@@ -163,24 +165,22 @@
 
 			<h:form id="dialogForm" prependId="false">
 				<p:dialog header="报表信息" widgetVar="reportDialog" id="reportDlg"
-					resizable="false" width="550" modal="true">
+					resizable="false" width="590" modal="true">
 					<p:messages id="msg" />
-					<h:panelGrid id="reportInput" columns="2" cellpadding="5"
-						cellspacing="1" styleClass="style1" rowClasses="row1,row2"
-						columnClasses="column1,column2" footerClass="footer1">
+					<h:panelGroup id="reportInput" >
 
 						<ui:include src="input-item.xhtml" />
 
-						<f:facet name="footer">
+						<div style="text-align:center; margin: 5px 0;">
 							<p:commandButton id="btn_report_save"
 								actionListener="#{reportManageBean.saveReportInfo}" value="保存"
 								update="reportDataPanel, msg" rendered="#{!param.readOnly}"
 								oncomplete="handleComplete(reportDialog,args);"
-								image="ui-icon ui-icon-disk" />
+								image="ui-icon ui-icon-disk" style="margin-right: 10px;"/>
 							<p:commandButton value="#{param.readOnly ? '关闭' : '取消'}"
 								onclick="reportDialog.hide()" image="ui-icon ui-icon-cancel" />
-						</f:facet>
-					</h:panelGrid>
+						</div>
+					</h:panelGroup>
 				</p:dialog>
 
 				<p:dialog header="角色配置" widgetVar="reportRoleDialog"
@@ -198,15 +198,19 @@
 				</p:dialog>
 
 				<p:confirmDialog header="信息确认" message="是否删除此报表" severity="alert"
-					widgetVar="confirmation">
-					<p:commandButton update="reportDataPanel" value="确定"
-						oncomplete="confirmation.hide()"
-						actionListener="#{reportManageBean.delete}" />
-					<p:commandButton value="取消" onclick="confirmation.hide()"
-						image="ui-icon ui-icon-cancel" />
+					widgetVar="confirmation" >
+					<div style="width: 300px; text-align: center;">
+						<p:commandButton update="reportDataPanel" value="确定"
+							oncomplete="confirmation.hide()"
+							actionListener="#{reportManageBean.delete}" />
+						<p:commandButton value="取消" onclick="confirmation.hide()"
+							image="ui-icon ui-icon-cancel" />
+					</div>
 				</p:confirmDialog>
 			</h:form>
+			
 			<ui:include src="report-parameter.xhtml" />
+			
 		</p:panel>
 	</ui:define>
 </ui:composition>

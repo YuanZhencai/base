@@ -41,8 +41,8 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	private List<ReportParameter> reportParameterList = new ArrayList<ReportParameter>();
 	private boolean disable;
 	
-	private List<SelectItem> controlTypeList = new ArrayList<SelectItem>();    // 控件类型下拉框
-	private List<SelectItem> javaDataTypeList = new ArrayList<SelectItem>();    // 控件类型下拉框
+	private List<SelectItem> controlTypeList = new ArrayList<SelectItem>();     // 控件类型下拉框
+	private List<SelectItem> javaDataTypeList = new ArrayList<SelectItem>();    // java数据类型下拉框
 	
 	/**
 	 * 构造函数
@@ -61,7 +61,7 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	}
 	
 	/**
-     * 初始化报表分类、报表模式下拉框
+     * 初始化控件类型、java数据类型下拉框
      */
     public void initSelectItem() {
     	this.setControlTypeList(dictService.findWithSelectItem("CONT"));
