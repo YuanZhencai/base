@@ -149,7 +149,8 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	      return ;
 	    }
 	    String jasper = fileStoreLocation.replace("jrxml", "jasper");
-	    super.setupPage(fileStoreLocation, jasper);
+	    String printFile = fileStoreLocation.replace("jrxml", "jrprint");
+	    super.setupPage(fileStoreLocation, jasper,printFile);
 	    try {
 	    	//Map<String, Object> map = new HashMap<String, Object>();
 	    	//map.put("productname", "");
@@ -163,6 +164,15 @@ public class ReportQueryBean extends ReportBase implements Serializable{
 	}
 	
 
+	public void exportReport(){
+	    try {
+            this.exportHtml();
+            this.exportPdf();
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	//-------------------- setter & getter --------------------//
 	
 	public TreeNode getRoot() {
