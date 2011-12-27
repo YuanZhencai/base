@@ -7,11 +7,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<p:outputPanel id="reportFileTable">
 		<p:dataTable var="reportFile"
-			value="#{reportFileBean.reportFileModel}" lazy="true" rows="10"
+			value="#{reportFileBean.reportFileModel}"  rows="10" lazy="true"
 			paginator="true" paginatorPosition="bottom"
 			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+			selectionMode="single" rowKey="#{reportFile.id}"
 			emptyMessage="无满足条件的结果">
-			
+
 			<p:column headerText="版本号">
 				<h:outputText value="#{reportFile.versionNo}" />
 			</p:column>
@@ -26,6 +27,7 @@
 			</p:column>
 			<p:column headerText="使用">
 				<ui:fragment rendered="#{reportFile.useInd}">
+					<h:outputText value="#{dictBean.queryCode('RPTM')}" />
 					<h:outputText value="√" />
 				</ui:fragment>
 			</p:column>
@@ -33,7 +35,7 @@
 				<h:outputText value="#{reportFile.remarks}" />
 			</p:column>
 			<p:column headerText="操作" styleClass="operating_30">
-				<p:commandButton id="rptSet" image="ui-icon ui-icon-key" ajax="true"
+				<p:commandButton id="rptSet" image="ui-icon ui-icon-key" ajax="true" 
 					update="reportFileTable,reportManager" title="是否使用该模板"
 					action="#{reportFileBean.update}">
 					<f:setPropertyActionListener target="#{reportFileBean.instance}"

@@ -46,7 +46,6 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     @Inject
     private ReportFileService reportFileService;
 
-    
     /**
      * 构造函数
      */
@@ -99,7 +98,10 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
         String viewId = JSFUtils.getViewId();
         try {
             int validtorReult = validatorFile();
-            if (validtorReult == 1) { return viewId; }
+            if (validtorReult == 1) { 
+                JSFUtils.getRequest().setAttribute("rptFileMessage", 1);
+                return viewId;
+            }
             File file = fillRptFile();
             // saveRptFile 做了 上传的模板设置了为使用 其他模板属性更新为不使用
             reportFileService.saveRptFile(getInstance(), rptFile.getInputstream(), file);
@@ -139,8 +141,10 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     }
 
     public void findRptTableData(Long masId) {
-        reportFileModel = this.reportFileService.findRptFileDataModel(masId);
-        this.setReportFileModel(reportFileModel);
+        String sql = "select rpf from ReportFile rpf where rpf.reportMstr.id=? and rpf.defunctInd=false";
+        reportFileModel = this.entityService.findPage(sql, masId);
+        // reportFileModel = this.reportFileService.findRptFileDataModel(masId);
+        // this.setReportFileModel(reportFileModel);
     }
 
     public void onTabChange(TabChangeEvent event) {
@@ -250,7 +254,6 @@ public class ReportFileBean extends ViewBaseBean<ReportFile> {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
 
     public LazyDataModel<ReportFile> getReportFileModel() {
         return reportFileModel;

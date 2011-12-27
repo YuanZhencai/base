@@ -35,13 +35,13 @@
 		
 		<h:panelGrid columns="2">
 			&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<p:fileUpload value="#{reportFileBean.rptFile}" mode="simple"
-				description="Images" image="/images/icons/upload.png" />
+				 />
 		</h:panelGrid>
 
 		<br/>
 		<div align="center">
 
-			<p:commandButton id="rptFileSave" ajax="false"
+			<p:commandButton id="rptFileSave" ajax="false" oncomplete="handleComplete(args)"
 				actionListener="#{reportFileBean.saveRptFile}" value="保存"
 				image="ui-icon ui-icon-disk" />
 			&#160;&#160;
