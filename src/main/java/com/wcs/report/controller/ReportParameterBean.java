@@ -16,6 +16,9 @@ import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 
 import com.wcs.base.controller.ViewBaseBean;
+import com.wcs.common.constant.IReportDictConst;
+import com.wcs.common.constant.IReportDictDetailConst;
+import com.wcs.common.model.Dict;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportMstr;
 import com.wcs.report.model.ReportParameter;
@@ -39,7 +42,8 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	@Inject
 	public DictService dictService;
 	private List<ReportParameter> reportParameterList = new ArrayList<ReportParameter>();
-	private boolean disable;
+	private Boolean buttonIsDisable;     // 按钮是否显示
+	private Boolean sqlIsDisable;        // SQL文本域是否显示
 	
 	private List<SelectItem> controlTypeList = new ArrayList<SelectItem>();     // 控件类型下拉框
 	private List<SelectItem> javaDataTypeList = new ArrayList<SelectItem>();    // java数据类型下拉框
@@ -64,12 +68,26 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
      * 初始化控件类型、java数据类型下拉框
      */
     public void initSelectItem() {
-    	this.setControlTypeList(dictService.findWithSelectItem("CONT"));
-    	this.setJavaDataTypeList(dictService.findWithSelectItem("JADT"));
+    	this.setControlTypeList(dictService.findWithSelectItem(IReportDictConst.CONT));
+    	this.setJavaDataTypeList(dictService.findWithSelectItem(IReportDictConst.JADT));
+    }
+    
+    /**
+     * 控件类型下拉框值变事件后调用
+     */
+    public void onSelectItemChange() {
+    	String uiType = this.getInstance().getUiType();
+    	//如果控件类型是下拉框
+    	if(IReportDictDetailConst.CONT_3.equals(uiType)) {
+    		this.setSqlIsDisable(true);
+    	} else {
+    		this.setSqlIsDisable(false);
+    	}
+    	
     }
 	
 	/**
-	 * 保存报表参数信息
+	 * 保存、更新报表参数信息
 	 * @see com.wcs.base.controller.ViewBaseBean#save()
 	 */
 	public void saveParameter() {
@@ -142,9 +160,9 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	public void setControlStatus() {
 		Long id = this.getInstance().getId();
 		if(id != null) {
-			this.setDisable(true);
+			this.setButtonIsDisable(true);
 		} else {
-			this.setDisable(false);
+			this.setButtonIsDisable(false);
 		}
 		
 	}
@@ -167,14 +185,6 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 		this.reportParameterList = reportParameterList;
 	}
 
-	public boolean isDisable() {
-		return disable;
-	}
-
-	public void setDisable(boolean disable) {
-		this.disable = disable;
-	}
-
 	public List<SelectItem> getControlTypeList() {
 		return controlTypeList;
 	}
@@ -189,6 +199,22 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 
 	public void setJavaDataTypeList(List<SelectItem> javaDataTypeList) {
 		this.javaDataTypeList = javaDataTypeList;
+	}
+
+	public Boolean getButtonIsDisable() {
+		return buttonIsDisable;
+	}
+
+	public void setButtonIsDisable(Boolean buttonIsDisable) {
+		this.buttonIsDisable = buttonIsDisable;
+	}
+
+	public Boolean getSqlIsDisable() {
+		return sqlIsDisable;
+	}
+
+	public void setSqlIsDisable(Boolean sqlIsDisable) {
+		this.sqlIsDisable = sqlIsDisable;
 	}
 
 }

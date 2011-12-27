@@ -14,6 +14,8 @@ import javax.persistence.Query;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.StatelessEntityService;
+
+import com.wcs.common.constant.IReportDictConst;
 import com.wcs.common.model.Dict;
 import com.wcs.common.model.Role;
 import com.wcs.report.model.ReportMstr;
@@ -76,7 +78,7 @@ public class ReportManageService {
 	public List<Dict> getReportCategory() {
 		String hql = "select d from Dict d where d.defunctInd = false and d.parentCode = ?1";
 		Query query = entityService.createQuery(hql);
-		query.setParameter(1, "RPTC");
+		query.setParameter(1, IReportDictConst.RPTC);
 		List<Dict> list = query.getResultList();
 		
 		return list;
