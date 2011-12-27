@@ -8,8 +8,23 @@
 	template="/template/template.xhtml">
 
 	<ui:define name="title">报表查询</ui:define>
+
 	<ui:define name="styleAndScript">
+		<script type="text/javascript"
+			src="#{facesContext.externalContext.requestContextPath}/scripts/material.js"></script>
 		<script type="text/javascript">
+		function handleComplete(args) {
+        	if(args.validationFailed){
+            } else {
+            	uploadAddDialog.show()
+            }
+        }
+			
+		jQuery(window).load(function() {
+			if( #{requestScope.rptFileMessage} ==1) {
+				uploadAddDialog.show();
+			}
+		});
         </script>
 	</ui:define>
 	<ui:define name="content">
@@ -24,7 +39,8 @@
 			</f:facet>
 			<h:form id="reportForm" prependId="false">
 				<p:fieldset>
-					<h:panelGrid columns="8" columnClasses="column1,column2, column1,column2, column1,column2, column1,column2">
+					<h:panelGrid columns="8"
+						columnClasses="column1,column2, column1,column2, column1,column2, column1,column2">
 						报表编号：<p:inputText
 							value="#{reportManageBean.filterMap['LIKES_reportCode']}" />
 						报表名称：<p:inputText
@@ -63,7 +79,7 @@
 						<f:facet name="header">报表列表</f:facet>
 
 						<p:column headerText="报表分类">
-							<h:outputText value="#{reportMstr.reportCategory}" />
+							<h:outputText value="#{dictBean.queryCode(reportMstr.reportCategory)}" />
 						</p:column>
 
 						<p:column headerText="报表编号">
@@ -137,7 +153,7 @@
 					<p:ajax event="tabChange" listener="#{reportFileBean.onTabChange}"
 						update="tabl2" />
 					<f:param name="masId" value="#{requestScope.rowSelect}" id="masID" />
-					<f:param name="isUpload" value="#{requestScope.enable}"/>
+					<f:param name="isUpload" value="#{requestScope.enable}" />
 					<p:tab title="报表参数" id="tabl1">
 						<ui:include src="parameter-tab.xhtml" />
 					</p:tab>
@@ -145,8 +161,7 @@
 						<p:toolbar id="rptFilepanelBar">
 							<p:toolbarGroup align="right">
 								<p:commandButton value="上传模板" image="ui-icon ui-icon-plus"
-									disabled="#{param.isUpload eq 'null' }" 
-									update="rptFileForm"
+									disabled="#{param.isUpload eq 'null' }" update="rptFileForm"
 									action="#{reportFileBean.befforeTabAdd}" id="addRptPanel"
 									oncomplete="uploadAddDialog.show();">
 									<f:param name="master" value="#{param.masId}" />
@@ -167,16 +182,16 @@
 				<p:dialog header="报表信息" widgetVar="reportDialog" id="reportDlg"
 					resizable="false" width="590" modal="true">
 					<p:messages id="msg" />
-					<h:panelGroup id="reportInput" >
+					<h:panelGroup id="reportInput">
 
 						<ui:include src="input-item.xhtml" />
 
-						<div style="text-align:center; margin: 5px 0;">
+						<div style="text-align: center; margin: 5px 0;">
 							<p:commandButton id="btn_report_save"
 								actionListener="#{reportManageBean.saveReportInfo}" value="保存"
 								update="reportDataPanel, msg" rendered="#{!param.readOnly}"
 								oncomplete="handleComplete(reportDialog,args);"
-								image="ui-icon ui-icon-disk" style="margin-right: 10px;"/>
+								image="ui-icon ui-icon-disk" style="margin-right: 10px;" />
 							<p:commandButton value="#{param.readOnly ? '关闭' : '取消'}"
 								onclick="reportDialog.hide()" image="ui-icon ui-icon-cancel" />
 						</div>
@@ -198,7 +213,7 @@
 				</p:dialog>
 
 				<p:confirmDialog header="信息确认" message="是否删除此报表" severity="alert"
-					widgetVar="confirmation" >
+					widgetVar="confirmation">
 					<div style="width: 300px; text-align: center;">
 						<p:commandButton update="reportDataPanel" value="确定"
 							oncomplete="confirmation.hide()"
@@ -208,9 +223,9 @@
 					</div>
 				</p:confirmDialog>
 			</h:form>
-			
+
 			<ui:include src="report-parameter.xhtml" />
-			
+
 		</p:panel>
 	</ui:define>
 </ui:composition>
