@@ -33,7 +33,7 @@ import com.wcs.demo.service.PersonService;
 @ViewScoped
 public class PersonBean extends ViewBaseBean<Person> {
 
-	@Inject
+	@EJB
 	PersonService personService;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);

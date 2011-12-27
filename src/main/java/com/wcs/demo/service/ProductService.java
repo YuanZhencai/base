@@ -37,7 +37,7 @@ public class ProductService {
     	List<Product> list = entityService.findAll(Product.class);
     	
 		return  list;	
-	}	
+	}
 
     /**
      * 动态分页， XSQL 查询 （推荐使用）

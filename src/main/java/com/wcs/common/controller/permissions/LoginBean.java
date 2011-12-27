@@ -1,27 +1,29 @@
 package com.wcs.common.controller.permissions;
 
-import com.wcs.base.conf.Constants;
-import com.wcs.base.util.BaseUtils;
-import com.wcs.base.util.CollectionUtils;
-import com.wcs.base.util.JSFUtils;
-import com.wcs.common.model.Resource;
-import com.wcs.common.model.User;
-import com.wcs.common.service.permissions.LoginService;
-import com.wcs.common.service.permissions.ResourceService;
-import com.wcs.common.service.permissions.UserService;
-import com.wcs.common.util.MessageUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.wcs.base.conf.Constants;
+import com.wcs.base.util.BaseUtils;
+import com.wcs.base.util.CollectionUtils;
+import com.wcs.base.util.JSFUtils;
+import com.wcs.common.controller.HelloBean;
+import com.wcs.common.model.Resource;
+import com.wcs.common.model.User;
+import com.wcs.common.service.HelloService;
+import com.wcs.common.service.permissions.LoginService;
+import com.wcs.common.util.MessageUtils;
 /**
  * <p>Project: btcbase</p> 
  * <p>Title: LoginBean.java</p> 
@@ -30,6 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
+//@Named
 @ManagedBean
 @SessionScoped
 public class LoginBean implements Serializable {
@@ -37,6 +40,11 @@ public class LoginBean implements Serializable {
 
     @Inject
     LoginService loginService;
+    @EJB
+    HelloService helloService;
+    @Inject
+    HelloBean helloBean;
+    
 
 	private List<Resource> allUserResources = new ArrayList<Resource>(); 				// 用户资源
 	private boolean isManager = false; 											// 是否是管理员
@@ -44,7 +52,7 @@ public class LoginBean implements Serializable {
 	private static final String LOGIN_SUCCESS = "/template/template.xhtml";
 
 	public LoginBean() {
-        logger.info("Login => construct()");
+        logger.info("LoginBean => construct()");
 	}
 
 	/**
@@ -79,7 +87,21 @@ public class LoginBean implements Serializable {
         JSFUtils.getSession().put("loginName",user.getUserName());
         JSFUtils.getSession().put("userName",user.getName());
         JSFUtils.getSession().put("selectId",1);  //选中的菜单
+        
+        System.out.println(helloBean.hello());
+        
+        System.out.println(helloService.hello("李四哥"));
 
+		return Constants.SUCCESS;
+	}
+	
+	public String userLogin2() {
+		String s = helloService.hello("张三哥");
+        
+        helloBean.hello();
+		
+		System.out.println(s);
+		
 		return Constants.SUCCESS;
 	}
 	

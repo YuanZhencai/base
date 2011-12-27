@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -28,14 +27,13 @@ import com.wcs.common.service.permissions.ResourceService;
  * @author <a href="mailto:yourname@wcs-global.com">Your Name</a>
  */
 
-@Named
-@ApplicationScoped
-//@Singleton
+//@ManagedBean
+//@ApplicationScoped
 public class ResourceBean implements Serializable {
     private static final long serialVersionUID = 1L;
     final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
-    @EJB
+    @Inject
     private ResourceService resourceService;
 
     /** 系统的全部资源 */
@@ -43,7 +41,7 @@ public class ResourceBean implements Serializable {
 
     public ResourceBean() {}
 
-    @PostConstruct
+    //@PostConstruct
     private void initAllResources() {
         logger.info("ResourceBean => initAllResources()");
         List<Resource> resList = resourceService.findAllSysResource();        
@@ -70,6 +68,9 @@ public class ResourceBean implements Serializable {
     //--------------------------------------------setter & getter---------------------------------------------------//
 
     public List<List<Resource>> getAllResList() {
+    	if (CollectionUtils.isEmpty(allResList)){
+    		this.initAllResources();
+    	}
         return allResList;
     }
 

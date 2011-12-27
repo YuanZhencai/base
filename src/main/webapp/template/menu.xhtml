@@ -9,7 +9,7 @@
 	<div id="top_up">
 		<div id="top_up_left">
 			<div id="title">
-				<img height="22" src="#{request.contextPath}/images/logo_01.gif" alt="" /><span>Òæº£¼ÎÀï¡¶»ù´¡¹¤³Ì V0.0.1¡·</span>
+				<img height="22" src="#{request.contextPath}/images/logo_01.gif" alt="" /><span>åŸºç¡€å·¥ç¨‹V0.0.1ç‰ˆ</span>
 			</div>
 		</div>
 
@@ -25,13 +25,13 @@
 									action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 							</li>
 						</ui:fragment>
+						
 						<ui:fragment rendered="#{sessionScope.selectId != topMenu.id}">
 							<li class="top_up_menu_ul_li_A">
 	                            <p:commandLink value="#{topMenu.name}"
 									action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 							</li>
 						</ui:fragment>
-	
 	
 					</ui:repeat>
 				</ul>
@@ -84,7 +84,7 @@
 		</div>
 		<div id="top_down_right">
 			<span class="img"> <img src="#{request.contextPath}/images/user.gif" alt="" />
-			</span> <span class="fon">µ±Ç°ÓÃ»§£º<h:outputText value="#{sessionScope.userName}" />
+			</span> <span class="fon">å½“å‰ç”¨æˆ·ï¼š<h:outputText value="#{sessionScope.userName}" />
 			</span>
 		</div>
 	</div>

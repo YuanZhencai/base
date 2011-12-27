@@ -10,8 +10,11 @@ import javax.persistence.Query;
 
 import com.wcs.base.service.StatelessEntityService;
 import org.primefaces.model.TreeNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.wcs.base.util.ResourcesNode;
+import com.wcs.common.controller.permissions.LoginBean;
 import com.wcs.common.model.Resource;
 import com.wcs.common.model.Role;
 import com.wcs.common.model.RoleResource;
@@ -26,6 +29,7 @@ import com.wcs.common.model.RoleResource;
  */
 @Stateless
 public class ResourceService implements Serializable{
+	final Logger logger = LoggerFactory.getLogger(ResourceService.class);
 	/**
 	 * 
 	 */
@@ -39,6 +43,8 @@ public class ResourceService implements Serializable{
     StatelessEntityService entityService;
 	
 	public List<Resource> findAllSysResource(){
+		logger.info("ResourceService => findAllSysResource()");
+		logger.debug("ResourceService => findAllSysResource()");
 		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.number";
 		return this.entityService.findList(sql);
 	}
