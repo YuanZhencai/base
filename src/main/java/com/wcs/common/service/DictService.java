@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -126,6 +127,26 @@ public class DictService implements Serializable {
 				parentCode);
 		List<SelectItem> items = Lists.newArrayList();
 
+		for (Dict d : dicts) {
+			items.add(new SelectItem(d.getCode(), d.getName()));
+		}
+		return items;
+	}
+	
+	/**
+	 * 根据hql，查询该parentCode下的所有子项 以 List<SelectItem> 形式返回
+	 * @param hql
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectItem> findSelectItemByHql(String hql) {
+		Query query = entityService.createQuery(hql);
+		List<Dict> dicts = query.getResultList();
+		if(dicts == null || dicts.size() == 0) {
+			return null;
+		}
+		
+		List<SelectItem> items = Lists.newArrayList();
 		for (Dict d : dicts) {
 			items.add(new SelectItem(d.getCode(), d.getName()));
 		}

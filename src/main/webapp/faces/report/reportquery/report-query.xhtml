@@ -29,31 +29,53 @@
 				<h:form id="reportQueryForm" prependId="false">
 					<p:panel>
 						<f:facet name="header">报表参数</f:facet>
-						<h:panelGrid id="reportQueryPanel" columns="4">
+						<p:messages id="parameterMessage"/> 
+						<h:panelGrid id="reportQueryPanel" columns="8" >
 							<ui:repeat var="reportParameter"
 								value="#{reportQueryBean.reportParameterList}">
 								
-								#{reportParameter.uiLabel}:
+								<ui:fragment rendered="#{reportParameter.displayInd}">
+									#{reportParameter.uiLabel}:
+								</ui:fragment>
 								<ui:fragment
-									rendered="#{reportQueryBean.uiTypeWenbk(reportParameter.uiType)}">
-									<p:inputText
-										value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}" />
+									rendered="#{reportQueryBean.uiTypeText(reportParameter.uiType)}">
+									<h:panelGroup>
+										<p:inputText rendered="#{reportParameter.displayInd}" disabled="#{!reportParameter.editInd}" required="#{reportParameter.mandatoryInd}" 
+										requiredMessage="#{reportParameter.uiLabel}不能为空！" value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}" />
+										<h:outputText style="color:red;" value="  *" rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									 </h:panelGroup>	
 								</ui:fragment>
 								<ui:fragment
 									rendered="#{reportQueryBean.uiTypeCalendar(reportParameter.uiType)}">
-									<p:calendar
-										value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}"
-										pattern="yyyy-MM-dd">
-										<f:convertDateTime pattern="yyyy-MM-dd" />
-									</p:calendar>
+									<h:panelGroup>
+										<p:calendar  rendered="#{reportParameter.displayInd}" disabled="#{!reportParameter.editInd}" required="#{reportParameter.mandatoryInd}" 
+											requiredMessage="#{reportParameter.uiLabel}不能为空！"  value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}"
+											pattern="yyyy-MM-dd">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</p:calendar>
+										<h:outputText style="color:red;" value="  *" rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									 </h:panelGroup>
 								</ui:fragment>
+								<ui:fragment rendered="#{reportQueryBean.uiTypeSelect(reportParameter.uiType)}">
+								    <h:panelGroup>
+										<h:selectOneMenu  rendered="#{reportParameter.displayInd}" disabled="#{!reportParameter.editInd}" required="#{reportParameter.mandatoryInd}"
+										  requiredMessage="#{reportParameter.uiLabel}不能为空！"  value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}">
+											<f:selectItem itemLabel="--请选择--" />
+											<f:selectItems value="#{reportQueryBean.getSelectItem(reportParameter.sqlStatement)}" />
+										</h:selectOneMenu>
+										<h:outputText style="color:red;" value="  *" rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									</h:panelGroup>
+								</ui:fragment>
+								
 							</ui:repeat>
+						</h:panelGrid>
+						<div style="text-align: right;">
 							<p:commandButton id="btn_report_preview"
 								action="#{reportQueryBean.preview}" value="预览"
-								update="reportContent" image="ui-icon ui-icon-search" />
+								update="reportContent, :reportQueryForm:parameterMessage" image="ui-icon ui-icon-search" />
 							&#160;&#160;
 							<p:commandButton id="btn_report_export" action="#{reportQueryBean.exportReport}" value="导出" image="ui-icon ui-icon-disk" ajax="false"/>
-						</h:panelGrid>
+						</div>
 					</p:panel>
 				</h:form>
 

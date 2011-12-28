@@ -7,6 +7,7 @@ package com.wcs.report.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -21,6 +23,7 @@ import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
+import com.wcs.common.constant.IReportDictDetailConst;
 import com.wcs.common.model.Dict;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportFile;
@@ -97,10 +100,9 @@ public class ReportQueryBean extends ReportBase implements Serializable {
         ReportTreeNode treeNode = (ReportTreeNode) event.getTreeNode();
         Long rmId = treeNode.getReportMstrId();
         if (rmId == null) { return; }
-        List<ReportParameter> parameterList = reportParameterService.findReportParameterList(rmId);
+        List<ReportParameter> parameterList = reportParameterService.findReportParameterList(rmId);       
         this.setReportMstrId(rmId);
         this.setReportParameterList(parameterList);
-
     }
 
     /**
@@ -108,8 +110,8 @@ public class ReportQueryBean extends ReportBase implements Serializable {
      * @param uiType
      * @return
      */
-    public boolean uiTypeWenbk(String uiType) {
-        if ("CONT001".equals(uiType)) {
+    public boolean uiTypeText(String uiType) {
+        if (IReportDictDetailConst.CONT_1.equals(uiType)) {
             return true;
         } else {
             return false;
@@ -122,12 +124,52 @@ public class ReportQueryBean extends ReportBase implements Serializable {
      * @return
      */
     public boolean uiTypeCalendar(String uiType) {
-        if ("CONT002".equals(uiType)) {
+        if (IReportDictDetailConst.CONT_2.equals(uiType)) {
             return true;
         } else {
             return false;
         }
     }
+    
+    /**
+     * 判断控件类型是否为下拉框
+     * @param uiType
+     * @return
+     */
+    public boolean uiTypeSelect(String uiType) {
+    	 if (IReportDictDetailConst.CONT_3.equals(uiType)) {
+             return true;
+         } else {
+             return false;
+         }
+    }
+    
+    /**
+     * 判断控件类型是否为复选框
+     * @param uiType
+     * @return
+     */
+    public boolean uiTypeCheckBox(String uiType) {
+   	 if (IReportDictDetailConst.CONT_4.equals(uiType)) {
+            return true;
+        } else {
+            return false;
+        }
+   }
+    
+    /**
+     * 查询数据字典parentCode下的所有子项
+     * @param hql
+     * @return
+     */
+   public List<SelectItem> getSelectItem(String hql) {
+	   if(hql == null || "".equals(hql)) {
+		   return null;
+	   }
+	   
+	   List<SelectItem> list = dictService.findSelectItemByHql(hql);
+	   return list;
+   }
 
     /**
      * 报表预览
