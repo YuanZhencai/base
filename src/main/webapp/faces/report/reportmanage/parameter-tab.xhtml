@@ -18,11 +18,11 @@
             </p:column>
 
             <p:column headerText="字段类型">
-                 <h:outputText value="#{reportParameter.javaDataType}"/>
+                 <h:outputText value="#{dictBean.queryCode(reportParameter.javaDataType)}"/>
             </p:column>
 
             <p:column headerText="控件类型">
-                 <h:outputText value="#{reportParameter.uiType}"/>
+                 <h:outputText value="#{dictBean.queryCode(reportParameter.uiType)}"/>
             </p:column>
 
             <p:column headerText="参数默认值">
@@ -30,7 +30,7 @@
             </p:column>
                     	
             <p:column headerText="参数默认类型">
-                 <h:outputText value="#{reportParameter.defaultValueType}"/>
+                 <h:outputText value="#{dictBean.queryCode(reportParameter.defaultValueType)}"/>
             </p:column>
                     	       				
         </p:dataTable>

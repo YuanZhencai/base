@@ -41,6 +41,24 @@ public class ReportParameterService {
 		return list;
 	}
 	
+	/**
+	 * 根据报表参数reportParameterId查询报表参数
+	 * @param reportParameterId
+	 * @return
+	 */
+	public ReportParameter findReportParameter(Long reportParameterId) {
+		String hql = "select r from ReportParameter r where r.defunctInd = false and r.id = ?1";
+		Query query = entityService.createQuery(hql);
+		query.setParameter(1, reportParameterId);
+		List<ReportParameter> list = query.getResultList();
+		if(list != null && list.size() != 0) {
+			ReportParameter reportParameter = list.get(0);
+			return reportParameter;
+		} else {
+			return null;
+		}
+	}
+	
 	//-------------------- setter & getter --------------------//
 
 	public StatelessEntityService getEntityService() {

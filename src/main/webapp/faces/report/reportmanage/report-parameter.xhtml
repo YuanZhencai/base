@@ -89,7 +89,7 @@
 						rendered="#{reportParameterBean.sqlIsDisable}" />
 				</h:panelGrid>
 
-				<h:panelGrid columns="2">
+				<h:panelGrid id="remarksPanelGrid" columns="2" >
 					<h:outputLabel value="备注：" />
 					<p:inputTextarea id="reportParameter_remarks"
 						value="#{reportParameterBean.instance.remarks}" maxLength="600" maxHeight="120"
@@ -101,21 +101,21 @@
 						<p:commandButton disabled="#{reportParameterBean.buttonIsDisable}"
 							image="ui-icon ui-icon-plus" value="增加" 
 							actionListener="#{reportParameterBean.saveParameter}"
-							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel, buttonGroup"
+							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel,sqlPanelGrid,remarksPanelGrid, buttonGroup"
 							style="margin: 0 3px;" />
 						<p:commandButton disabled="#{!reportParameterBean.buttonIsDisable}"
 							image="ui-icon ui-icon-close" value="删除"
 							actionListener="#{reportParameterBean.deleteParameter}"
-							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel, buttonGroup"
+							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel,sqlPanelGrid,remarksPanelGrid, buttonGroup"
 							style="margin: 0 3px;" />
 						<p:commandButton disabled="#{!reportParameterBean.buttonIsDisable}"
 							image="ui-icon ui-icon-pencil" value="更新"
 							actionListener="#{reportParameterBean.saveParameter}"
-							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel, buttonGroup"
+							update="reportParameterDataTable, reportParameterMsg, eportParameterItemDataPanel, sqlPanelGrid,remarksPanelGrid,buttonGroup"
 							style="margin: 0 3px;" />
 						<p:commandButton image="ui-icon ui-icon-cancel" value="清除" 
 							actionListener="#{reportParameterBean.clearParameter}" process="@this"
-							update="eportParameterItemDataPanel, reportParameterMsg, buttonGroup"
+							update="eportParameterItemDataPanel, sqlPanelGrid,remarksPanelGrid, reportParameterMsg, buttonGroup"
 							style="margin: 0 3px;" />
 					</h:panelGroup>
 				</div>
@@ -131,7 +131,7 @@
 
 					<p:ajax event="rowSelect"
 						listener="#{reportParameterBean.onRowSelect}"
-						update="eportParameterItemDataPanel, reportParameterMsg, buttonGroup" />
+						update="eportParameterItemDataPanel, sqlPanelGrid, remarksPanelGrid,reportParameterMsg, buttonGroup" />
 					<f:facet name="header">报表参数列表</f:facet>
 
 					<p:column headerText="参数编码">
@@ -143,11 +143,11 @@
 					</p:column>
 
 					<p:column headerText="字段类型">
-						<h:outputText value="#{reportParameter.javaDataType}" />
+						<h:outputText value="#{dictBean.queryCode(reportParameter.javaDataType)}" />
 					</p:column>
 
 					<p:column headerText="控件类型">
-						<h:outputText value="#{reportParameter.uiType}" />
+						<h:outputText value="#{dictBean.queryCode(reportParameter.uiType)}" />
 					</p:column>
 
 					<p:column headerText="参数默认值">
@@ -155,7 +155,7 @@
 					</p:column>
 
 					<p:column headerText="参数默认类型">
-						<h:outputText value="#{reportParameter.defaultValueType}" />
+						<h:outputText value="#{dictBean.queryCode(reportParameter.defaultValueType)}" />
 					</p:column>
 
 				</p:dataTable>

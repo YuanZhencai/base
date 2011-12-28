@@ -94,8 +94,9 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 		super.saveEntity();
 		this.findReportParameterList();
 		this.clearParameter();
+		this.setSqlIsDisable(false);
 		this.setCheckBoxDefaultValue();
-		this.setControlStatus();
+		this.setControlStatus();		
 	}
 	
 	/**
@@ -105,6 +106,7 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 		super.deleteEntity();
 		this.findReportParameterList();
 		this.clearParameter();
+		this.setSqlIsDisable(false);
 		this.setControlStatus();
 	}
 	
@@ -115,6 +117,7 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 		ReportMstr reportMstr = this.getInstance().getReportMstr();	
 		this.setInstance(null);
 		this.getInstance().setReportMstr(reportMstr);
+		this.setSqlIsDisable(false);
 		this.setControlStatus();
 	}
 	
@@ -149,9 +152,16 @@ public class ReportParameterBean extends ViewBaseBean<ReportParameter>  {
 	 * @param event
 	 */
 	public void onRowSelect(SelectEvent event) { 
-		ReportParameter reportParameter = (ReportParameter)event.getObject();
+		ReportParameter rp = (ReportParameter)event.getObject();
+		ReportParameter reportParameter = reportParameterService.findReportParameter(rp.getId());
 		this.setInstance(reportParameter);
 		this.setControlStatus();
+		//控制sql文本域是否显示
+		if (IReportDictDetailConst.CONT_3.equals(reportParameter.getUiType())) {
+			this.setSqlIsDisable(true);
+		} else {
+			this.setSqlIsDisable(false);
+		}
 	}
 	
 	/**

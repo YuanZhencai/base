@@ -127,7 +127,7 @@ public class DictService implements Serializable {
 		List<SelectItem> items = Lists.newArrayList();
 
 		for (Dict d : dicts) {
-			items.add(new SelectItem(d.getValue(),d.getName()));
+			items.add(new SelectItem(d.getCode(), d.getName()));
 		}
 		return items;
 	}
