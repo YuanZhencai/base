@@ -5,13 +5,19 @@
 package com.wcs.report.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import net.sf.jasperreports.engine.JRException;
@@ -115,16 +121,62 @@ public abstract class ReportBase implements Serializable {
     public JasperPrint loadReportPrint() throws JRException {
         return (JasperPrint) JRLoader.loadObject(this.getPrintFile());
     }
-    
-    public void exportPdf() throws JRException{
-        JasperExportManager.exportReportToPdfFile(this.getPrintFile());
+
+    public String exportPdf(HttpServletResponse response) throws JRException, IOException {
+        String destFile = JasperExportManager.exportReportToPdfFile(this.getPrintFile());
+        File file = new File(destFile);
+        if (file.exists()) {
+            FileInputStream ins = new FileInputStream(file);
+            this.fileExport(response, ins, file.getName());
+            FacesContext.getCurrentInstance().responseComplete();
+        }
+        return destFile;
     }
-   
-    public void exportHtml() throws JRException{
+
+    public void exportHtml() throws JRException {
         JasperExportManager.exportReportToHtmlFile(this.getPrintFile());
     }
-    
-    
+
+    /**
+     * 
+     * <p>Description:得到文件输入流 </p>
+     * @param filePath
+     * @return
+     * @throws FileNotFoundException
+     */
+    private FileInputStream createInputStream(String filePath) throws FileNotFoundException {
+        File file = new File(filePath);
+        FileInputStream ins = null;
+        if (file.exists()) {
+            ins = new FileInputStream(file);
+            return ins;
+        }
+        return ins;
+    }
+
+    /**
+     * 
+     * <p>Description: 通过输入输出流向客户端写文件</p>
+     * @param response
+     * @param fis
+     * @param fileName
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    private void fileExport(HttpServletResponse response, FileInputStream fis, String fileName) throws FileNotFoundException,
+            IOException {
+        fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setContentType("application/x-msdownload;charset=UTF-8");
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        byte[] b = new byte[1024];
+        int i = 0;
+        while ((i = fis.read(b)) > 0) {
+            servletOutputStream.write(b, 0, i);
+        }
+        servletOutputStream.flush();
+        servletOutputStream.close();
+    }
 
     /**
      * 获得连接conn
