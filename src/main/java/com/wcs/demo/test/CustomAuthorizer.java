@@ -22,8 +22,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.wcs.common.model.Permission;
 import com.wcs.common.model.Role;
@@ -53,7 +51,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String loginName = (String) principals.fromRealm(getName()).iterator().next();
+        String loginName = principals.fromRealm(getName()).iterator().next().toString().toLowerCase();
         loginService = this.getBean(LoginService.class);
         User user = loginService.findUniqueUser(loginName);
         if (user != null) {

@@ -47,8 +47,8 @@ public class UserService implements Serializable {
     * @param userName
     * @return
     */
-    public User findUniqueUser(String userName) {
-        String sql = "select c from User c where c.name='" + userName + "'";
+    public User findUniqueUser(String loginName) {
+        String sql = "select u from User u where u.loginName ='" + loginName + "'";
         List<?> list = entityService.createQuery(sql).getResultList();
         User u = null;
         if (!list.isEmpty()) {

@@ -49,12 +49,13 @@ public class LoginService implements Serializable{
      * @param userName
      * @return
      */
-    public User findUniqueUser(String userName) {
-        String sql = "select c from User c where c.name=?1";
-        List<User> list  = this.entityService.findList(sql,userName);
+    public User findUniqueUser(String loginName) {
+        String sql = "SELECT u FROM User u WHERE u.loginName=?1";
+        List<User> list  = this.entityService.findList(sql,loginName);
         if (!CollectionUtils.isEmpty(list)) {
             return list.iterator().next();
         }
+        
         return  null;
     }
 

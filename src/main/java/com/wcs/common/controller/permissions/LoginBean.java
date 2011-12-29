@@ -85,7 +85,7 @@ public class LoginBean implements Serializable {
 	 * @return
 	 */
 	public String userLogin() {
-        String userName = JSFUtils.getRequestParam("userName");
+        String loginName = JSFUtils.getRequestParam("loginName");
         
         Subject currentUser = SecurityUtils.getSubject();
 
@@ -95,16 +95,13 @@ public class LoginBean implements Serializable {
         }*/
 
         // 用户认证
-        User user = loginService.findUniqueUser(userName);
+        User user = loginService.findUniqueUser(loginName);
 		if (user == null) {
 			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return Constants.FAILURED;
 		}        
         UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getUserPass());
-        
-        //token.setHost("localhost");
         token.setRememberMe(true);        
-
         try {
             currentUser.login(token);
         } catch (UnknownAccountException uae) {
