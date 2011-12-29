@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<div class="top" style="z-index: 3">
+	<div id="top_up">
+		<div id="top_up_left">
+			<div id="title">
+				<img height="22" src="#{request.contextPath}/images/logo_01.gif" alt="" /><span>益海嘉里《基础工程 V0.0.1》</span>
+			</div>
+		</div>
+
+<!-- top menu -->
+		<div id="top_up_menu">
+			<h:form prependId="false" id="up_menu">
+				<ul>
+					<ui:repeat var="topMenu" value="#{resourceBean.allResList[0]}">
+	
+						<ui:fragment rendered="#{sessionScope.selectId == topMenu.id}">
+							<li class="top_up_menu_ul_li_B">
+	                            <p:commandLink value="#{topMenu.name}"
+									action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
+							</li>
+						</ui:fragment>
+						<ui:fragment rendered="#{sessionScope.selectId != topMenu.id}">
+							<li class="top_up_menu_ul_li_A">
+	                            <p:commandLink value="#{topMenu.name}"
+									action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
+							</li>
+						</ui:fragment>
+	
+	
+					</ui:repeat>
+				</ul>
+			</h:form>
+		</div>
+		<div id="top_up_center">
+			<h:form prependId="false" id="up_center">
+				<ul>
+					<li>
+						<img src="#{request.contextPath}/images/icons/exit.gif" />
+						<h:commandLink action="#{loginBean.doLogout}">娉ㄩ攢</h:commandLink>
+					</li>
+					<li><img
+						src="#{request.contextPath}/images/icons/help.gif" />甯姪</li>
+					<li><img
+						src="#{request.contextPath}/images/icons/mytable.gif" />妗岄潰</li>
+				</ul>
+			</h:form>
+		</div>
+		
+		<div id="top_up_right"></div>
+	</div>
+
+<!-- level2 & level3 menu -->
+	<div id="top_down" style="z-index: 2">
+		<div id="top_down_left">
+			<h:inputHidden id="requestContextPath" value="#{request.contextPath}" />
+		</div>
+		<div id="top_down_center" style="z-index: 1">
+
+	<ul id="nav">
+		<ui:repeat var="keyResouce" value="#{resourceBean.allResList[1]}" varStatus="current">
+			<ui:fragment rendered="#{sessionScope.selectId==keyResouce.parentId}">
+				<li>
+					<a id="#{keyResouce.number}" href="#{request.contextPath}/template/template.xhtml">#{keyResouce.name}</a>
+					<ul>
+						<ui:repeat var="child" value="#{resourceBean.allResList[2]}">
+							<ui:fragment rendered="#{(keyResouce.id==child.parentId) and child.ismenu}">
+								<li id="#{child.number}">
+									<a id="#{child.number}" href="#{request.contextPath}#{child.uri}">#{child.name}</a>
+								</li>
+							</ui:fragment>
+						</ui:repeat>
+					</ul>
+				</li>
+			</ui:fragment>
+		</ui:repeat>
+	</ul>
+
+		</div>
+		<div id="top_down_right">
+			<span class="img"> <img src="#{request.contextPath}/images/user.gif" alt="" />
+			</span> <span class="fon">当前用户：<h:outputText value="#{sessionScope.userName}" />
+			</span>
+		</div>
+	</div>
+</div>
+
+</ui:composition>

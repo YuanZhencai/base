@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/template.xhtml">
+
+	<ui:define name="title">用户管理</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{userBean.initConversation}" />
+			<f:event type="preRenderView" listener="#{userBean.searchUser}" />
+		</f:metadata>
+		
+		<input type="hidden" id="menuOne" value="M101" />
+		<input type="hidden" id="menuTwo" value="M10101" />
+		<h:form id="UserFrom" prependId="false">
+			<p:growl id="growl" sticky="true"/>
+			<p:panel styleClass="panel1">
+				<f:facet name="header">
+					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
+					<h:outputLabel value="用户管理     " />
+				</f:facet>
+				<p:message id="usermessgeId" for="usermessgeId"></p:message>
+				<div id="userSearchFrom" class="style1">
+					<h:panelGrid columns="1" id="userSerachGrid" columnClasses="column1">
+						<h:outputLabel value="用户账号：" /><p:inputText id="loginName" value="#{userBean.instance.loginName}" />
+					</h:panelGrid>
+					<div align="right">
+						<p:commandButton id="searchUserBtn" value="查询" action="#{userBean.searchUser}" update="userListTable" image="ui-icon ui-icon-search"/>
+						<p:commandButton id="addUserBtn" value="添加" action="#{userBean.clean}" oncomplete="userDialog.show()" disabled="#{userBean.isDisplay}" image="ui-icon ui-icon-search">
+							<f:param name="isDisplay" value="false" />
+						</p:commandButton>
+						<p:commandButton id="modUserBtn" value="修改" oncomplete="userDialog.show()" disabled="#{!userBean.isDisplay}" image="ui-icon ui-icon-search">
+							<f:param name="isDisplay" value="true"/>
+						</p:commandButton>
+						<p:commandButton id="delUserBtn" value="删除" oncomplete="confirmation.show()" disabled="#{!userBean.isDisplay}" image="ui-icon ui-icon-search"/>
+						<p:commandButton id="assignUserBtn" value="分配角色" action="#{userBean.searchUser}" update="userListTable"  disabled="#{!userBean.isDisplay}" image="ui-icon ui-icon-search"/>
+						<p:commandButton id="cleanBtn" value="清空" action="#{userBean.clean}" update="UserFrom" immediate="true" process="@this" image="ui-icon ui-icon-search"/>
+					</div>
+				</div>
+				<br/>
+				<p:outputPanel id="userPanel">
+					<p:dataTable id="userListTable" var="user" value="#{userBean.lazyModel}" paginator="true" rows="15" lazy="true" paginatorPosition="bottom"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						rowKey="#{user.id}" selection="#{userBean.instance}" selectionMode="single">
+						<p:ajax event="rowSelect"  listener="#{userBean.onRowSelect}" update="userSearchFrom"/>
+						<f:facet name="header">用户列表</f:facet>
+						<p:column headerText="姓名"><h:outputText value="#{user.userName}" /></p:column>
+						<p:column headerText="账号"><h:outputText value="#{user.loginName}" /></p:column>
+						<p:column headerText="地址"><h:outputText value="#{user.address}" /></p:column>
+						<p:column headerText="电话"><h:outputText value="#{user.telephone}" /></p:column>
+						<p:column headerText="手机"><h:outputText value="#{user.cellPhone}" /></p:column>
+						<p:column headerText="邮件"><h:outputText value="#{user.email}"/></p:column>
+					</p:dataTable>
+				</p:outputPanel>
+			</p:panel>
+			<ui:include src="/faces/permissions/user/userDialog.xhtml"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
