@@ -121,6 +121,7 @@ public class LoginBean implements Serializable {
         this.isManager=  loginService.isAdmin(user.getId());
         JSFUtils.getSession().put("loginName",user.getLoginName());
         JSFUtils.getSession().put("userName",user.getUserName());
+        JSFUtils.getSession().put("user", user);
         JSFUtils.getSession().put("selectId",2);  //选中的菜单
 
 		return Constants.SUCCESS;

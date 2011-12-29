@@ -15,7 +15,7 @@
 						<p:tree value="#{reportQueryBean.root}" var="node" dynamic="true"
 							cache="false" selectionMode="single"
 							selection="#{reportQueryBean.selectedNode}" style="width:200px;">
-							<p:ajax update="reportQueryPanel" event="select"
+							<p:ajax update="reportQueryPanel, btn_report_preview" event="select"
 								listener="#{reportQueryBean.onNodeSelect}" />
 							<p:treeNode>
 								<h:outputText value="#{node}" />
@@ -81,12 +81,16 @@
 											rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
 									</h:panelGroup>
 								</ui:fragment>
-
+								<ui:fragment
+									rendered="#{reportQueryBean.uiTypeCheckBox(reportParameter.uiType)}">
+									<h:selectBooleanCheckbox rendered="#{reportParameter.displayInd}" disabled="#{!reportParameter.editInd}" 
+		 								value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}" styleClass="selectBooleanCheckbox" />
+								</ui:fragment>
 							</ui:repeat>
 						</h:panelGrid>
 						<div style="text-align: right;">
 							<p:commandButton id="btn_report_preview"
-								action="#{reportQueryBean.preview}" value="预览"
+								actionListener="#{reportQueryBean.preview}" value="预览" disabled="#{!reportQueryBean.previewIsDisable}"
 								update="reportContent,export, :reportQueryForm:parameterMessage"
 								image="ui-icon ui-icon-search" />
 						</div>

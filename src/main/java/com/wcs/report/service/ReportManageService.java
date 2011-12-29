@@ -75,10 +75,10 @@ public class ReportManageService {
 	 * 查询报表分类
 	 * @return
 	 */
-	public List<Dict> getReportCategory() {
+	public List<Dict> getReportCategory(String parentCode) {
 		String hql = "select d from Dict d where d.defunctInd = false and d.parentCode = ?1";
 		Query query = entityService.createQuery(hql);
-		query.setParameter(1, IReportDictConst.RPTC);
+		query.setParameter(1, parentCode);
 		List<Dict> list = query.getResultList();
 		
 		return list;

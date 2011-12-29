@@ -397,4 +397,19 @@ public class RoleService implements Serializable {
 
         return resourceList;
     }
+    
+    /**
+     * 根据用户id查询该用户所具有的角色
+     * @param userId
+     * @return
+     */
+    public List<UserRole> getUserRoleList(Long userId) {
+    	String hql ="select ur from UserRole ur where ur.user.id = ?1";
+    	Query query = entityService.createQuery(hql);
+    	query.setParameter(1, userId);
+    	
+    	List<UserRole> list = query.getResultList();
+    	
+    	return list;
+    }
 }

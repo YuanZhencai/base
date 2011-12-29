@@ -41,6 +41,20 @@ public class ReportRoleService {
 		return list;
 	}
 	
+	/**
+	 * 根据reportMstrId获得查看该报表所具有的角色(不包括删除的)
+	 * @param reportMstrId
+	 * @return List<ReportRole>
+	 */
+	public List<ReportRole> getReportRoleList(Long reportMstrId) {
+		String hql = "select rr from ReportRole rr where rr.defunctInd = false and rr.reportMstr.id = ?1";
+		Query query = entityService.createQuery(hql);
+		query.setParameter(1, reportMstrId);
+		List<ReportRole> list = query.getResultList();
+		
+		return list;
+	}
+	
 	
 	//-------------------- setter & getter --------------------//
 	

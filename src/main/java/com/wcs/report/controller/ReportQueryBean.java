@@ -26,13 +26,18 @@ import org.primefaces.model.TreeNode;
 
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
+import com.wcs.common.constant.IReportDictConst;
 import com.wcs.common.constant.IReportDictDetailConst;
 import com.wcs.common.controller.dict.DictBean;
 import com.wcs.common.model.Dict;
+import com.wcs.common.model.User;
+import com.wcs.common.model.UserRole;
 import com.wcs.common.service.DictService;
+import com.wcs.common.service.permissions.RoleService;
 import com.wcs.report.model.ReportFile;
 import com.wcs.report.model.ReportMstr;
 import com.wcs.report.model.ReportParameter;
+import com.wcs.report.model.ReportRole;
 import com.wcs.report.service.ReportFileService;
 import com.wcs.report.service.ReportManageService;
 import com.wcs.report.service.ReportParameterService;
@@ -62,11 +67,15 @@ public class ReportQueryBean extends ReportBase implements Serializable {
     @Inject
     DictService dictService;
     @Inject
+    RoleService roleService;
+    @Inject
     private DictBean dictBean;
+    
     private TreeNode root; // 资源树
     private TreeNode selectedNode; // 选择的节点
 
     private Long reportMstrId; // 报表基本信息ID
+    private Boolean previewIsDisable;   // 预览按钮是否可用
     List<ReportParameter> reportParameterList = null; // 报表参数列表
     Map<String, Object> reportMap = new HashMap<String, Object>(); // 报表参数map
     /** 报表导出类型*/
@@ -88,14 +97,32 @@ public class ReportQueryBean extends ReportBase implements Serializable {
      */
     private void initTreeNode() {
         root = new ReportTreeNode("Root", null);
-        List<Dict> categoryList = reportManageService.getReportCategory();
+        User user = (User) JSFUtils.getSession().get("user");
+        //当前用户的角色列表
+        List<UserRole> userRoleList = roleService.getUserRoleList(user.getId());
+        List<Dict> categoryList = reportManageService.getReportCategory(IReportDictConst.RPTC);
         for (int i = 0; i < categoryList.size(); i++) {
             ReportTreeNode fnode = new ReportTreeNode(categoryList.get(i).getName(), root);
             // 加载子节点
-            List<ReportMstr> reportList = reportManageService.getReportByCategory(categoryList.get(i).getValue());
+            List<ReportMstr> reportList = reportManageService.getReportByCategory(categoryList.get(i).getCode());
             for (int j = 0; j < reportList.size(); j++) {
-                ReportTreeNode childNode = new ReportTreeNode(reportList.get(j).getReportName(), fnode);
-                childNode.setReportMstrId(reportList.get(j).getId());
+            	//报表所具有的角色列表
+            	List<ReportRole> reportRoleList = reportRoleService.getReportRoleList(reportList.get(j).getId());
+            	for (UserRole userRole : userRoleList) {
+            		Boolean bl = false;
+            		for(ReportRole reportRole : reportRoleList) {
+            			if(userRole.getRole().getId().equals(reportRole.getRole().getId())) {
+            				 bl = true;
+            				 ReportTreeNode childNode = new ReportTreeNode(reportList.get(j).getReportName(), fnode);
+            	             childNode.setReportMstrId(reportList.get(j).getId());
+            	             break;
+            			}
+            		}
+            		
+            		if(bl) {
+            			break;
+            		}
+            	}
             }
         }
     }
@@ -105,9 +132,15 @@ public class ReportQueryBean extends ReportBase implements Serializable {
      * @param event
      */
     public void onNodeSelect(NodeSelectEvent event) {
-        ReportTreeNode treeNode = (ReportTreeNode) event.getTreeNode();
+    	ReportTreeNode treeNode = (ReportTreeNode) event.getTreeNode();
         Long rmId = treeNode.getReportMstrId();
-        if (rmId == null) { return; }
+        if (rmId == null) {
+        	this.setPreviewIsDisable(false);
+        	this.setReportParameterList(null);
+        	return; 
+        } else {
+        	this.setPreviewIsDisable(true);
+        }
         List<ReportParameter> parameterList = reportParameterService.findReportParameterList(rmId);       
         this.setReportMstrId(rmId);
         this.setReportParameterList(parameterList);
@@ -195,16 +228,13 @@ public class ReportQueryBean extends ReportBase implements Serializable {
         String printFile = fileStoreLocation.replace("jrxml", "jrprint");
         super.setupPage(fileStoreLocation, jasper, printFile);
         try {
-            // Map<String, Object> map = new HashMap<String, Object>();
-            // map.put("productname", "");
-            // map.put("productdate", "2011-12-19");
-            // super.genneralReport(map);
-
             super.genneralReport(this.getReportMap());
             JSFUtils.getRequest().setAttribute("exportFlag", 1);
         } catch (JRException e) {
             e.printStackTrace();
         }
+        
+        reportMap.clear();
     }
 
     /**
@@ -301,5 +331,13 @@ public class ReportQueryBean extends ReportBase implements Serializable {
     public void setExportTypeList(List<SelectItem> exportTypeList) {
         this.exportTypeList = exportTypeList;
     }
+
+	public Boolean getPreviewIsDisable() {
+		return previewIsDisable;
+	}
+
+	public void setPreviewIsDisable(Boolean previewIsDisable) {
+		this.previewIsDisable = previewIsDisable;
+	}
 
 }
