@@ -9,12 +9,11 @@
 	<div id="top_up_menu">
 		<h:form prependId="false" id="up_menu">
 			<ul>
-				<c:forEach var="topMenu" items="${sysResourceBean.allResList[0]}" varStatus="topMenuStatus">
+				<c:forEach var="topMenu" items="${loginBean.allResList[1]}" varStatus="topMenuStatus">
 					<c:set var="keyName" value="view:#{topMenu.keyName}"/>
 					<shiro:hasPermission name="${keyName}">
 						<c:if test="${sessionScope.selectId == topMenu.id}">
 							<li class="top_up_menu_ul_li_B">
-								
 	                            	<p:commandLink value="#{topMenu.name}"
 										action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 							</li>

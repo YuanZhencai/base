@@ -12,69 +12,18 @@
 		<script type="text/javascript" src="#{request.contextPath}/scripts/material.js"></script>
 	</ui:define>
 	<ui:define name="content">
-		<f:metadata>
-			<f:event type="preRenderView" listener="#{resourceBean.initConversation}"/>
-			<f:event type="preRenderView" listener="#{resourceBean.searchResource}"/>
-		</f:metadata>
-		<h:form id="resourceForm" prependId="false">
-			<p:panel styleClass="panel1">
-				<f:facet name="header">
-					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
-					<h:outputLabel value="资源参数管理" />
-				</f:facet>			
-				<p:message id="rolemessgeId" for="rolemessgeId"></p:message>
-				 <p:fieldset> 
-					<h:panelGrid id="searchPanel" columns="4">
-							<h:outputLabel value="资源名：" /> 
-							<p:inputText id="resourceName" value="#{resourceBean.searchResourceName}" />
-							<p:commandButton id="searchBtn" actionListener="#{resourceBean.searchResource}" update="resourcesPanel" ajax="false" value="查询" image="ui-icon ui-icon-search"/> 
-							<p:commandButton id="addBtn" action="#{resourceBean.addResource}"  oncomplete="addResourceDialog.show()"  value="添加" image="ui-icon ui-icon-search" />
-					</h:panelGrid>
-				</p:fieldset>
-				
-				<p:outputPanel id="resourcesPanel">
-					<p:dataTable id="resourceTable" var="resources" value="#{resourceBean.lazyModel}" paginator="true" rows="15" lazy="true" paginatorPosition="bottom"
-						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
-						rowKey="#{resources.id}" selection="#{resourceBean.selectedResource}" selectionMode="single">
-						<f:facet name="header">资源列表</f:facet>
-						<p:column headerText="序号" ><h:outputText value="#{resources.id}" /></p:column>
-						<p:column headerText="资源名" >
-							<p:cellEditor>  
-				                <f:facet name="output">  
-				                    <h:outputText value="#{resources.name}" />  
-				                </f:facet>  
-				                <f:facet name="input">  
-				                    <p:inputText value="#{resources.name}" style="width:100%"/>  
-				                </f:facet>  
-				            </p:cellEditor> 
-						</p:column>
-						<p:column headerText="URL" ><h:outputText value="#{resources.url}" /></p:column>
-						<p:column headerText="上级菜单名" ><h:outputText value="#{resources.parentName}"/></p:column>
-						<p:column headerText="是否是菜单" ><h:outputText value="#{resources.isMenuLang}" /></p:column>
-						<p:column headerText="是否有子菜单" ><h:outputText value="#{resources.isLeafLang}" /></p:column>
-						<p:column headerText="操作" styleClass="operating_90">
-							<p:commandButton update="resourcesPanel" oncomplete="modResourceDialog.show()" image="ui-icon ui-icon-search" title="查看">
-								<f:param name="readOnly" value="true"/>			
-                            	<f:setPropertyActionListener value="#{resources}" target="#{resourceBean.instance}"/>
-                        	</p:commandButton>
-                        	<p:commandButton update="modResourcesPanel" oncomplete="modResourceDialog.show()" image="ui-icon ui-icon-pencil" title="修改">
-								<f:param name="readOnly" value="false" />							
-                            	<f:setPropertyActionListener value="#{resources}" target="#{resourceBean.instance}"/>
-                        	</p:commandButton>
-							<p:commandButton id="delBtn" update="resourcesPanel" oncomplete="confirmation.show()" image="ui-icon-close" title="删除"/>
-						</p:column>
-					</p:dataTable>
-				</p:outputPanel>
-				<p:confirmDialog message="是否删除此资源" modal="true" header="信息确认" severity="alert" widgetVar="confirmation">
-					<p:commandButton value="确定" image="ui-icon ui-icon-check" oncomplete="confirmation.hide()" action="#{resourceBean.deleteRole}" />
-					<p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
-				</p:confirmDialog>
-			</p:panel>
-			<ui:include src="/faces/permissions/resource/addResourceDialog.xhtml" />
-			<ui:include src="/faces/permissions/resource/modResourceDialog.xhtml" />
-		</h:form>
-		<br/>
+		<p:layout fullPage="true">
+		    <p:layoutUnit position="west" size="370" resizable="true" closable="true" collapsible="true">
+		    	<ui:include src="/faces/permissions/resource/leftTree.xhtml"/>
+		    </p:layoutUnit>  
+		    
+		    <p:layoutUnit position="center">  
+		    	<ui:include src="/faces/permissions/resource/resViewManage.xhtml"/> 
+		    </p:layoutUnit>  
+		</p:layout> 
+		
+		<!-- 删除弹出确认 -->
+		<ui:include src="/faces/permissions/resource/delResourceDialog.xhtml" />
 	</ui:define>
-
 </ui:composition>
 

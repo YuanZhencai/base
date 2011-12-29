@@ -35,3 +35,15 @@ function handleComplete(panel, args) {
 function statusComplete() {
 	jQuery("#submitDiv").css("display", "");
 }
+
+function alertMsg() {
+	alert("dsfsdf");
+	var msg= document.getElementById("resMsg")
+	if (msg) {
+		alert(msg);
+	} 
+}
+
+function cleanText(var idName) {
+	alert(idName);
+}

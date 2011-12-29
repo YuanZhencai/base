@@ -281,17 +281,29 @@ public class ResourceService implements Serializable{
     	return userCompoentList;
     }
     
+    /**
+     * 查找所有资源
+     * @return
+     */
+    public LazyDataModel<Resource> searchAllResource() {
+        String sql = "SELECT r FROM Resource r WHERE r.id > 1";
+        Query query = this.entityService.createQuery(sql);
+        List<?> queryList = query.getResultList();
+        List<Resource> rsList = getResourceList(queryList);
+        
+        // 转换成LazyModel
+        LazyDataModel<Resource> lazyMode = LazyModelUtil.getLazyResourceDataModel(rsList);
+        
+        return lazyMode;
+    }
     
     /**
      * 根据条件查询资源
+     * @param searchResourceName
+     * @return
      */
-    public LazyDataModel<Resource> searchResource(String searchResourceName) {
-        List<Resource> rsList = new ArrayList<Resource>();
-        if (searchResourceName == null ) {
-            rsList = findAllResource();
-        } else {
-            rsList = findResourceByName(searchResourceName);
-        }
+    public LazyDataModel<Resource> searchResourceByName(String searchResourceName) {
+        List<Resource> rsList = findResourceByName(searchResourceName);
         
         // 转换成LazyModel
         LazyDataModel<Resource> lazyMode = LazyModelUtil.getLazyResourceDataModel(rsList);
@@ -305,7 +317,7 @@ public class ResourceService implements Serializable{
      * @return
      */
     private List<Resource> findResourceByName(String searchResourceName) {
-        String sql = "SELECT r FROM Resource r WHERE r.name LIKE :name";
+        String sql = "SELECT r FROM Resource r WHERE r.id > 1 and r.name LIKE :name";
         Query query = this.entityService.createQuery(sql);
         query.setParameter("name", "%" + searchResourceName + "%");
         List<?> queryList = query.getResultList();
@@ -317,12 +329,12 @@ public class ResourceService implements Serializable{
      * 无参查找资源列表
      * @return
      */
-    private List<Resource> findAllResource() {
+    public List<Resource> findAllResource() {
        String sql = "SELECT r FROM Resource r";
        Query query = this.entityService.createQuery(sql);
        List<?> queryList = query.getResultList();
        
-        return getResourceList(queryList);
+       return getResourceList(queryList);
     }
     
     
@@ -342,7 +354,7 @@ public class ResourceService implements Serializable{
             if (resource.getIsmenu()) {
                 resource.setIsMenuLang("是");
             } else {
-                resource.setIsMenuLang("不是");
+                resource.setIsMenuLang("否");
             }
             
             // 上级菜单名
@@ -381,5 +393,86 @@ public class ResourceService implements Serializable{
     public void deleteRolePermission(Role role) {
         String sql = "delete Permission p where p.role.id=?1";
         this.entityService.batchExecute(sql, role.getId());
+    }
+
+    /**
+     * 删除当前选中资源
+     * @param currentResource
+     */
+    public void deleteResource(Resource res) {
+        String sql = "DELETE FROM Resource r WHERE r.id=?1";
+        this.entityService.batchExecute(sql, res.getId());
+    }
+
+    /**
+     * 修改当前选中资源
+     * @param currentResource
+     */
+    public void modResource(Resource res) {
+        this.entityService.update(res);
+    }
+
+    /**
+     * 更新当前资源有子菜单:isLeaf:0
+     * @param selectedResource
+     */
+    public void updateCurrentResource(Resource selectedResource) {
+        String sql = "Update Resource SET IS_LEAF= :IsLeaf WHERE id= :id";
+        Query query = this.entityService.createQuery(sql);
+        if (selectedResource.getIsLeaf()) {
+            query.setParameter("IsLeaf", 1);
+        } else {
+            query.setParameter("IsLeaf", 0);
+        }
+        query.setParameter("id", selectedResource.getId());
+        query.executeUpdate();
+    }
+
+    /**
+     * 判断关键字是否唯一
+     * @param keyName
+     * @return
+     */
+    public Boolean judgeKeyNameUnique(String keyName) {
+        String sql = "SELECT COUNT(*) FROM Resource r WHERE r.keyName = :keyName";
+        Query query = this.entityService.createQuery(sql);
+        query.setParameter("keyName", keyName);
+        Long count = (Long) query.getSingleResult();
+        if (count > 0) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * 检查更新前资源上级菜单是否应该为叶子节点
+     * @param parentId
+     * @return
+     */
+    public Boolean checkCurrentResIsLeaf(Long parentId) {
+        String sql = "SELECT COUNT(*) FROM Resource r WHERE r.parentId = :parentId";
+        Query query = this.entityService.createQuery(sql);
+        query.setParameter("parentId", parentId);
+        Long count = (Long) query.getSingleResult();
+        if (count > 0) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * 判断keyName对象是否为同一资源
+     * @param keyName
+     * @return
+     */
+    public Resource findResourceByKeyName(String keyName) {
+        String sql = "SELECT r FROM Resource r WHERE r.keyName = :keyName";
+        Query query = entityService.createQuery(sql);
+        query.setParameter("keyName", keyName);
+        Resource resource = (Resource) query.getSingleResult();
+        
+        return resource;
     }
 }

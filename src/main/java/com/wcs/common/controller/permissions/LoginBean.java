@@ -2,18 +2,15 @@ package com.wcs.common.controller.permissions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -24,13 +21,15 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.wcs.base.conf.Constants;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.common.model.Resource;
 import com.wcs.common.model.User;
 import com.wcs.common.service.permissions.LoginService;
-import com.wcs.demo.test.CustomAuthorizer;
+import com.wcs.common.service.permissions.ResourceService;
 
 /**
  * <p>Project: btcbase</p> 
@@ -47,12 +46,39 @@ public class LoginBean implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(LoginBean.class);
     private static final String LOGIN_SUCCESS = "/template/template.xhtml";
 
-    @Inject
+    @EJB
     private LoginService loginService;
+    @EJB
+    private ResourceService resourceService;
     
-    private boolean isManager = false; // 是否是管理员
+    private List<List<Resource>> allResList = Lists.newArrayList();     // 系统的全部资源
+    private boolean isManager = false;                                // 是否是管理员
 
     public LoginBean() {}
+    
+    @SuppressWarnings("unused")
+    @PostConstruct
+    private void initAllResources() {
+        log.info("ResourceBean => initAllResources()");
+        List<Resource> resList = resourceService.findAllSysResource();        
+        Map<String,List<Resource>> allResMap = Maps.newHashMap();
+        
+        for (Resource r : resList){
+            String level = "level"+r.getLevel();
+            
+            List<Resource> list = allResMap.get(level);
+            
+            if (CollectionUtils.isEmpty(list)){
+                allResMap.put(level, new ArrayList<Resource>());
+            }
+            
+            allResMap.get(level).add(r);
+        }
+        
+        for (int i=0;i<allResMap.size();i++){
+            allResList.add(allResMap.get("level"+i));
+        }
+    }
     
 	/**
 	 * 用户登录验证
@@ -64,9 +90,9 @@ public class LoginBean implements Serializable {
         Subject currentUser = SecurityUtils.getSubject();
 
         // 当前用户是否已经登录
-        if (currentUser.isAuthenticated()) {
+/*        if (currentUser.isAuthenticated()) {
             if (userName.equals(currentUser.getPrincipal())) { return Constants.FAILURED; }
-        }
+        }*/
 
         // 用户认证
         User user = loginService.findUniqueUser(userName);
@@ -98,7 +124,7 @@ public class LoginBean implements Serializable {
         this.isManager=  loginService.isAdmin(user.getId());
         JSFUtils.getSession().put("loginName",user.getUserName());
         JSFUtils.getSession().put("userName",user.getName());
-        JSFUtils.getSession().put("selectId",1);  //选中的菜单
+        JSFUtils.getSession().put("selectId",2);  //选中的菜单
 
 		return Constants.SUCCESS;
 	}    
@@ -165,4 +191,11 @@ public class LoginBean implements Serializable {
         this.isManager = isManager;
     }
 
+    public List<List<Resource>> getAllResList() {
+        return allResList;
+    }
+
+    public void setAllResList(List<List<Resource>> allResList) {
+        this.allResList = allResList;
+    }
 }

@@ -8,14 +8,14 @@
 
  
 	<ul id="nav">
-		<c:forEach var="keyResouce" items="${sysResourceBean.allResList[1]}" varStatus="topMenuStatus">
+		<c:forEach var="keyResouce" items="${loginBean.allResList[2]}" varStatus="topMenuStatus">
 			<c:if test="${sessionScope.selectId==keyResouce.parentId}">
 				<li>
 					<c:set var="keyName" value="view:#{keyResouce.keyName}"/>
 					<shiro:hasPermission name="${keyName}">
-						<a id="#{keyResouce.number}" href="#{request.contextPath}#{keyResouce.url}">#{keyResouce.name}</a>
+						<a id="#{keyResouce.number}" href="#">#{keyResouce.name}</a>
 						<ul>
-							<c:forEach var="child" items="${sysResourceBean.allResList[2]}">
+							<c:forEach var="child" items="${loginBean.allResList[3]}">
 								<shiro:hasPermission name="view:${child.keyName}">
 									<c:if test="#{(keyResouce.id==child.parentId) and child.ismenu}">
 										<li id="#{child.number}">

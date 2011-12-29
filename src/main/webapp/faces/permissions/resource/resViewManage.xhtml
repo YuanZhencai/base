@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:panelGroup id="resPanel" styleClass="panel1">
+		<p:panel id="resHeadPanel" style="height:30px;">
+			<f:facet name="header">
+				<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
+				<h:outputLabel value="资源参数管理" />
+			</f:facet>
+		</p:panel>
+		<br/>
+		<p:panel id="resFromPanel">
+			<h:form id="resForm" prependId="false">
+				<p:growl id="growl" sticky="true"/>
+				<h:panelGrid id="resFormGridPanel" columns="6" columnClasses="resLabel,resText,resLabel,resText,resLabel,resText">
+					<h:outputLabel value="上级资源名*：" />
+					<p:inputText id="parentResName"  value="#{resourceBean.selectedResource.name}" disabled="true" maxlength="100"/>
+					<h:outputLabel value="【资源名*】：" />
+					<p:inputText  id="resName" value="#{resourceBean.instance.name}" maxlength="100" required="true" requiredMessage="资源名不能为空！"/>
+					<h:outputLabel value="关键字*："  />
+			        <p:inputText id="keyName" value="#{resourceBean.instance.keyName}" maxlength="100" required="true" requiredMessage="关键字不能为空！"/>
+					<h:outputLabel value="资源URL：" />
+					<p:inputText id="resUrl" value="#{resourceBean.instance.url}" />
+					<h:outputLabel value="是否是菜单*："  />
+					<p:selectOneMenu value="#{resourceBean.instance.ismenu}" style="width:120px;" required="true" requiredMessage="是否为菜单为必选！">  
+			            <f:selectItem itemLabel="--请选择--" />  
+			            <f:selectItem itemLabel="是" itemValue="true" />  
+			            <f:selectItem itemLabel="否" itemValue="false" />  
+			        </p:selectOneMenu>
+				</h:panelGrid>
+				<div align="right">
+			        	<p:commandButton id="searchBtn" actionListener="#{resourceBean.searchResource}" update="resourceTable" immediate="true" value="查询" image="ui-icon ui-icon-search"/>
+						<p:commandButton id="addBtn" actionListener="#{resourceBean.addResource}"  update="resourceTable,resTree, growl"  value="添加" disabled="#{resourceBean.addBtnDisplay}" image="ui-icon ui-icon-search"/>
+						<p:commandButton id="modBtn" actionListener="#{resourceBean.modResource}"  update="resourceTable,resTree, growl"  value="修改" disabled="#{resourceBean.modBtnDisplay}" image="ui-icon ui-icon-pencil"/>
+						<p:commandButton id="delBtn" value="删除" oncomplete="confirmation.show()" immediate="true"  disabled="#{resourceBean.delBtnDisplay}" image="ui-icon-close"/>
+						<p:commandButton id="cleanBtn" actionListener="#{resourceBean.clean}" update="resourceTable, resTree, resForm"  value="清空" immediate="true"  image="ui-icon ui-icon-pencil" process="cleanBtn" />
+			    </div> 
+			</h:form>
+		</p:panel>
+		<br/>
+		<p:panel id="resListPanel">
+			<h:form id="resListForm" prependId="false">
+				<p:dataTable id="resourceTable" var="resources" value="#{resourceBean.lazyModel}" paginator="true" rows="15" lazy="true" paginatorPosition="bottom"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
+					rowKey="#{resources.id}"  selection="#{resourceBean.instance}" selectionMode="single">
+					<p:ajax event="rowSelect"  listener="#{resourceBean.onRowSelect}" update="resForm"/>
+					<f:facet name="header">资源列表</f:facet>
+					<p:column headerText="序号" ><h:outputText value="#{resources.id}" /></p:column>
+					<p:column headerText="资源名" >
+						<p:cellEditor>  
+			                <f:facet name="output">  
+			                    <h:outputText value="#{resources.name}" />  
+			                </f:facet>  
+			                <f:facet name="input">  
+			                    <p:inputText value="#{resources.name}" style="width:100%"/>  
+			                </f:facet>  
+			            </p:cellEditor> 
+					</p:column>
+					<p:column headerText="URL" ><h:outputText value="#{resources.url}" /></p:column>
+					<p:column headerText="上级菜单名" ><h:outputText value="#{resources.parentName}"/></p:column>
+					<p:column headerText="是否是菜单" ><h:outputText value="#{resources.isMenuLang}" /></p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+	</h:panelGroup>
+</ui:composition>
+

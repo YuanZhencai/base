@@ -6,6 +6,9 @@ package com.wcs.base.util;
 
 import java.io.Serializable;
 
+import javax.faces.application.Application;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
 public class BaseUtils implements Serializable {
+    
 	/**
 	 * 得到Session
 	 * @return

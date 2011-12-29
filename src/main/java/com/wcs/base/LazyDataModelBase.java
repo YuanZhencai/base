@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.wcs.base.entity.BaseEntity;
@@ -24,17 +25,21 @@ import com.wcs.base.entity.BaseEntity;
 */
 
 @SuppressWarnings("serial")
-public class LazyDataModelBase<T extends BaseEntity> extends LazyDataModel<T> {
+public class LazyDataModelBase<T extends BaseEntity> extends LazyDataModel<T> implements SelectableDataModel<T> {
     private List<T> datasource;
 
     public LazyDataModelBase(List<T> datasource) {
         this.datasource = datasource;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T getRowData(String rowKey) {
-        for (T type : datasource) {
-            if (type.getId().equals(rowKey)) { return type; }
+        List<T> types = (List<T>) getWrappedData();  
+        for (T type : types) {
+            if (type.getId().equals(rowKey)) { 
+                return type; 
+            }
         }
 
         return null;
@@ -43,6 +48,15 @@ public class LazyDataModelBase<T extends BaseEntity> extends LazyDataModel<T> {
     @Override
     public Object getRowKey(T type) {
         return type.getId();
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        if (rowIndex == -1 || getPageSize() == 0) {
+            super.setRowIndex(-1);
+        } else {
+            super.setRowIndex(rowIndex % getPageSize());
+        }
     }
 
     @Override

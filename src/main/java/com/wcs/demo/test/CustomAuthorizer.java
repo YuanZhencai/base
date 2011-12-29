@@ -39,18 +39,12 @@ import com.wcs.common.service.permissions.LoginService;
 * @author <a href="mailto:yujingu@wcs-global.com">Yu JinGu</a> 
 */
 @SuppressWarnings("serial")
-//@Named
 public class CustomAuthorizer extends AuthorizingRealm implements Serializable {   
-    private static final Logger log = LoggerFactory.getLogger(CustomAuthorizer.class);
-    
-    
     private BeanManager beanManager;
     
-    //@Inject
     private LoginService loginService;
     
     public CustomAuthorizer() throws NamingException {
-       log.info("CustomAuthorizer => constructor().");
        this.beanManager = (BeanManager) new InitialContext().lookup("java:comp/BeanManager");
     }
     
@@ -60,6 +54,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String loginName = (String) principals.fromRealm(getName()).iterator().next();
+        loginService = this.getBean(LoginService.class);
         User user = loginService.findUniqueUser(loginName);
         if (user != null) {
            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();

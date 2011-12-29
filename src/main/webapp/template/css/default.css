@@ -619,6 +619,19 @@ a:hover{
 	
 }
 
+.resLabel label {
+	text-align: right;
+	width: 140px;
+}
+.resText input{
+	text-align: left;
+	width: 300px;
+}
+.resBtn {
+	text-align: right;
+	width: 10%;
+}
+
 .column0 {
 	text-align: right;
 	width: 95px;
