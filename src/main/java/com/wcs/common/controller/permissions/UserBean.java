@@ -5,18 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.ConversationScoped;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.wcs.base.conf.SystemConfiguration;
-import com.wcs.base.controller.ConversationBaseBean;
+import com.wcs.base.controller.ViewBaseBean;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
@@ -35,12 +36,10 @@ import com.wcs.common.service.permissions.UserService;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 @SuppressWarnings("serial")
-@Named
-@ConversationScoped
-public class UserBean extends ConversationBaseBean<User> {
-    private static final Logger log = LoggerFactory.getLogger(UserBean.class);
-
-    @Inject
+@ManagedBean
+@ViewScoped
+public class UserBean extends ViewBaseBean<User> {
+    @EJB
     private UserService userService;
     @Inject
     private User user;
@@ -51,8 +50,10 @@ public class UserBean extends ConversationBaseBean<User> {
     
     private LazyDataModel<User> lazyModel;
     private User currentUser;
-    private List<SelectItem> roleList;// 角色下拉列表
+    private List<SelectItem> roleList;  // 角色下拉列表
     private Long[] selectedUserRole;
+    
+    private Boolean isDisplay;
    
     /** 角色Id */
     private Long roleId;
@@ -72,11 +73,11 @@ public class UserBean extends ConversationBaseBean<User> {
     private static final String LIST_PAGE = "/faces/permissions/user/list.xhtml";
     private static final String USER_ROLE_PAGE = "/faces/permissions/user/user-role.xhtml";
 
-    /*
-     * 构造函数
-     */
-    public UserBean() {
-        log.info("UserBean start.");
+    public UserBean() {}
+    
+    @PostConstruct
+    public void initUser() {
+        this.lazyModel = userService.findAllUser();
     }
 
     /**
@@ -84,8 +85,80 @@ public class UserBean extends ConversationBaseBean<User> {
      * @return
      */
     public void searchUser() {
-        log.info("Search user start.");
-        this.lazyModel = userService.searchUser(this.user);
+        String loginName = JSFUtils.getRequestParam("loginName");
+        this.lazyModel = userService.searchUserByName(loginName);
+    }
+    
+    /**
+     * 添加用户
+     */
+    public void addUser() {
+        try { 
+            this.save();
+            MessageUtils.addSuccessMessage("resMsg", "添加用户成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageUtils.addErrorMessage("resMsg", "添加用户失败，请检查！");
+        }
+        
+        // 刷新
+        refresh();
+    }
+    
+    /**
+     * 修改用户
+     */
+    public void modUser() {
+        User user = getInstance();
+        try { 
+            this.userService.modUser(user);
+            MessageUtils.addSuccessMessage("resMsg", "修改用户成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageUtils.addErrorMessage("resMsg", "修改用户失败，请检查！");
+        }
+        
+        // 刷新
+        refresh();
+    }
+    
+    public void delUser() {
+        User user = getInstance();
+        try { 
+            Boolean isSucceed = this.userService.delUser(user);
+            if (isSucceed) {
+                MessageUtils.addSuccessMessage("resMsg", "删除用户成功！");
+            } else {
+                MessageUtils.addErrorMessage("resMsg", "删除用户失败，请检查！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 刷新
+     */
+    private void refresh() {
+        this.lazyModel = userService.findAllUser();
+    }
+    
+    /**
+     * 清除
+     */
+    public void clean() {
+        setInstance(null);
+        this.isDisplay = false;
+    }
+    
+    /**
+     * 选中用户记录
+     * @param event
+     */
+    public void onRowSelect(SelectEvent event) {
+        User user = (User)event.getObject();
+        this.setInstance(user);
+        this.isDisplay = true;
     }
 
     /**
@@ -316,5 +389,13 @@ public class UserBean extends ConversationBaseBean<User> {
 
     public void setLazyModel(LazyDataModel<User> lazyModel) {
         this.lazyModel = lazyModel;
+    }
+
+    public Boolean getIsDisplay() {
+        return isDisplay;
+    }
+
+    public void setIsDisplay(Boolean isDisplay) {
+        this.isDisplay = isDisplay;
     }
 }

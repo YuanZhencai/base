@@ -206,22 +206,6 @@ public class UserService implements Serializable {
         return null;
     }
 
-   /**
-    * 更新指定用户的收购点和收购方信息
-    * @param user
-    * @param plocname
-    * @param pentityname
-    */
-    public void updateUserPlocEntity(User user, String plocname, String pentityname) {
-        try {
-            user.setPurchaseLocName(plocname);
-            user.setPurchaseEntityName(pentityname);
-            this.entityService.update(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * 得到所有菜单
      * @return
@@ -238,50 +222,36 @@ public class UserService implements Serializable {
 
     /**
      * 查询用户列表
-     * @param user
+     * @param loginName
      * @return
      */
-    public LazyDataModel<User> searchUser(User user) {
-        List<User> rsList = new ArrayList<User>();
-        String userName = user.getName();
-        if (userName == null ) {
-            rsList = findAllUser();
-        } else {
-            rsList = findUserByName(userName);
-        }
-
+    @SuppressWarnings("unchecked")
+    public LazyDataModel<User> searchUserByName(String loginName) {
+        String sql = "SELECT u FROM User u WHERE u.loginName LIKE :loginName";
+        Query query = this.entityService.createQuery(sql);
+        query.setParameter("loginName", "%" + loginName + "%");
+        List<User> rsList = query.getResultList();
+        
         // 转换成LazyModel
         LazyDataModel<User> lazyMode = LazyModelUtil.getLazyUserDataModel(rsList);
         
         return lazyMode;
     }
-
-    /**
-     * 根据用户名查找用户列表
-     * @param user
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    private List<User> findUserByName(String name) {
-        String sql = "SELECT u FROM User u WHERE u.name LIKE :name";
-        Query query = this.entityService.createQuery(sql);
-        query.setParameter("name", "%" + name + "%");
-        List<User> rsList = query.getResultList();
-        
-        return rsList;
-    }
-
+    
     /**
      * 查找所有用户列表
      * @return
      */
     @SuppressWarnings("unchecked")
-    private List<User> findAllUser() {
+    public LazyDataModel<User> findAllUser() {
         String sql = "SELECT u FROM User u";
         Query query = this.entityService.createQuery(sql);
         List<User> rsList = query.getResultList();
         
-        return rsList;
+        // 转换成LazyModel
+        LazyDataModel<User> lazyMode = LazyModelUtil.getLazyUserDataModel(rsList);
+        
+        return lazyMode;
     }
 
     /**
@@ -301,7 +271,7 @@ public class UserService implements Serializable {
 
     @SuppressWarnings({ "unused", "null" })
     public Long[] assignUserRole(User user) {
-        User currentUser = this.findUniqueUser(user.getName());
+        User currentUser = this.findUniqueUser(user.getLoginName());
         Set<Role> roles = null; // currentUser.getRole();
         Object[] userRole = roles.toArray();
         Long[] uRole = new Long[userRole.length];
@@ -313,5 +283,27 @@ public class UserService implements Serializable {
         }
 
         return uRole;
+    }
+
+    /**
+     * 修改用户
+     * @param user
+     */
+    public void modUser(User user) {
+       this.entityService.update(user);
+    }
+
+    /**
+     * 删除当前选中用户
+     * @param user
+     */
+    public Boolean delUser(User user) {
+        String sql = "DELETE FROM User u WHERE u.id=?1";
+        int rs = this.entityService.batchExecute(sql, user.getId());
+        if (rs > 0) {
+            return true;  
+        }
+        
+        return false;
     }
 }

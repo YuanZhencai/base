@@ -100,7 +100,7 @@ public class LoginBean implements Serializable {
 			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return Constants.FAILURED;
 		}        
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getName(), user.getUserPass());
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getUserPass());
         
         //token.setHost("localhost");
         token.setRememberMe(true);        
@@ -122,8 +122,8 @@ public class LoginBean implements Serializable {
         }
 
         this.isManager=  loginService.isAdmin(user.getId());
-        JSFUtils.getSession().put("loginName",user.getUserName());
-        JSFUtils.getSession().put("userName",user.getName());
+        JSFUtils.getSession().put("loginName",user.getLoginName());
+        JSFUtils.getSession().put("userName",user.getUserName());
         JSFUtils.getSession().put("selectId",2);  //选中的菜单
 
 		return Constants.SUCCESS;
