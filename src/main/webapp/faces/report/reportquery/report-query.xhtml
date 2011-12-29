@@ -15,7 +15,7 @@
 						<p:tree value="#{reportQueryBean.root}" var="node" dynamic="true"
 							cache="false" selectionMode="single"
 							selection="#{reportQueryBean.selectedNode}" style="width:200px;">
-							<p:ajax update="reportQueryPanel, btn_report_preview" event="select"
+							<p:ajax update="reportQueryPanel, btn_report_preview, reportContent" event="select"
 								listener="#{reportQueryBean.onNodeSelect}" />
 							<p:treeNode>
 								<h:outputText value="#{node}" />

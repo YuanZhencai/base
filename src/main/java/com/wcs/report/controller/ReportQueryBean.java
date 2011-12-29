@@ -137,6 +137,7 @@ public class ReportQueryBean extends ReportBase implements Serializable {
         if (rmId == null) {
         	this.setPreviewIsDisable(false);
         	this.setReportParameterList(null);
+        	super.setReportContent("");
         	return; 
         } else {
         	this.setPreviewIsDisable(true);
@@ -144,6 +145,8 @@ public class ReportQueryBean extends ReportBase implements Serializable {
         List<ReportParameter> parameterList = reportParameterService.findReportParameterList(rmId);       
         this.setReportMstrId(rmId);
         this.setReportParameterList(parameterList);
+        //清空报表展示信息
+        super.setReportContent("");
     }
 
     /**
