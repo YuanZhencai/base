@@ -51,7 +51,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String loginName = principals.fromRealm(getName()).iterator().next().toString().toLowerCase();
+        String loginName = principals.fromRealm(getName()).iterator().next().toString();
         loginService = this.getBean(LoginService.class);
         User user = loginService.findUniqueUser(loginName);
         if (user != null) {
@@ -77,9 +77,9 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
     public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         loginService = this.getBean(LoginService.class);
-        User user = loginService.findUniqueUser(token.getUsername().toLowerCase());
+        User user = loginService.findUniqueUser(token.getUsername());
         if (user != null) {
-            return new SimpleAuthenticationInfo(user.getUserName(), user.getUserPass(), getName());
+            return new SimpleAuthenticationInfo(user.getLoginName(), user.getUserPass(), getName());
         } else {
             return null;
         }
