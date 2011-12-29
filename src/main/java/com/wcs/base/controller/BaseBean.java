@@ -1,21 +1,12 @@
 package com.wcs.base.controller;
 
-import java.io.Serializable;
-
-import javax.inject.Inject;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.entity.BaseEntity;
-import com.wcs.base.service.StatelessEntityService;
-import com.wcs.base.util.ReflectionUtils;
-import com.wcs.common.controller.permissions.LoginBean;
 
-public class BaseBean<T extends BaseEntity> implements Serializable {
+public class BaseBean<T extends BaseEntity>  extends AbstractBaseBean<T> {
 	private static final long serialVersionUID = 1L;
 
 	final Logger logger = LoggerFactory.getLogger(getClass());
@@ -28,10 +19,8 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
     private String rowsPerPageTemplate;
 
 
-	@Inject
-	protected StatelessEntityService entityService;
-	private Long id;
-	private T instance;        //currentEntity
+	
+
     
 	/**
      *
@@ -45,37 +34,12 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
         if (!StringUtils.isEmpty(viewPage)) this.viewPage = viewPage;
     }
 
-	protected void initInstance() {
-		if (instance == null) {
-			if (id != null) {
-				instance = loadInstance();
-			} else {
-				instance = createInstance();
-			}
-		}
-	}
-
-
-	public T loadInstance() {
-		return entityService.findUnique(getClassType(), getId());
-	}
-
-	public T createInstance() {
-		try {
-			return getClassType().newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 判断实体 instance 的id是否有值 
-	 * @return
-	 */
-	public boolean idIsEmpty() {
-		return getInstance().getId() != null && getInstance().getId()>0l;//修改人：liaowei
-	}
+    
+    public void deleteEntity() {
+        T entity = getInstance();
+        entity.setDefunctInd(true);
+        entityService.update(entity);
+    }
 	
 	/**
 	 * 判断 instance 是否处于EJB容器托管状态
@@ -85,15 +49,6 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
 		return entityService.isManaged(getInstance());
 	}
 
-	public void saveEntity() {
-		if (idIsEmpty()) {
-
-			entityService.update(getInstance());
-		} else {
-			this.getInstance().setId(null);//修改人：liaowei
-			entityService.create(getInstance());
-		}
-	}
 
 	public void setUpdatedBy(String userName){
             this.instance.setUpdatedBy(userName);
@@ -103,34 +58,12 @@ public class BaseBean<T extends BaseEntity> implements Serializable {
             this.instance.setUpdatedBy(userName);
     }
 	
-	public void deleteEntity() {
-        T entity = getInstance();
-        entity.setDefunctInd(true);
-		entityService.update(entity);
-	}
 	
-	private Class<T> getClassType() {
-		return ReflectionUtils.getSuperClassGenricType(getClass());
-	}
+	
 	
 	//----------------------------- set & get --------------------------------//
 
-	public T getInstance() {
-		initInstance();
-		return instance;
-	}
 	
-    public void setInstance(T instance) {
-        this.instance = instance;
-    } 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
     public String getInputPage() {
         return inputPage;

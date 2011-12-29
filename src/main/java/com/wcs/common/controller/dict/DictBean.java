@@ -44,7 +44,7 @@ public class DictBean implements Serializable {
     public void initDictCode() {
         String sql = "select dict from Dict dict ";
         codeCaseMap = new MapMaker().concurrencyLevel(4).softKeys().weakValues().maximumSize(10000)
-                .expireAfterWrite(1, TimeUnit.HOURS).makeComputingMap(new Function<String, String>() {
+                .expireAfterWrite(24, TimeUnit.HOURS).makeComputingMap(new Function<String, String>() {
                     @Override
                     public String apply(String codeNumber) {
                         String name = findByCode(codeNumber).getName();

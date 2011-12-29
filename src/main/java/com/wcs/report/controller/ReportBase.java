@@ -4,6 +4,7 @@
 
 package com.wcs.report.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +21,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -28,7 +30,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXhtmlExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
@@ -118,10 +124,6 @@ public abstract class ReportBase implements Serializable {
         // System.out.println(sbuffer.toString());
     }
 
-    public JasperPrint loadReportPrint() throws JRException {
-        return (JasperPrint) JRLoader.loadObject(this.getPrintFile());
-    }
-
     public String exportPdf(HttpServletResponse response) throws JRException, IOException {
         String destFile = JasperExportManager.exportReportToPdfFile(this.getPrintFile());
         File file = new File(destFile);
@@ -133,8 +135,102 @@ public abstract class ReportBase implements Serializable {
         return destFile;
     }
 
-    public void exportHtml() throws JRException {
-        JasperExportManager.exportReportToHtmlFile(this.getPrintFile());
+    /**
+     * 
+     * <p>Description:导出PDF </p>
+     * @param response
+     * @throws JRException
+     * @throws IOException
+     */
+    public void exportToPdf(HttpServletResponse response) throws JRException, IOException {
+        JRPdfExporter exporter = new JRPdfExporter();
+        reportfileexport(response, exporter, ".pdf");
+    }
+
+    /**
+     * 
+     * <p>Description: 导出Excel2003</p>
+     * @param response
+     * @throws JRException
+     * @throws IOException
+     */
+    public void exportToExcel(HttpServletResponse response) throws JRException, IOException {
+        JRXlsExporter exporter = new JRXlsExporter();
+        reportfileexport(response, exporter, ".xls");
+    }
+
+    /**
+     * 
+     * <p>Description: 导出Excel2007</p>
+     * @param response
+     * @throws JRException
+     * @throws IOException
+     */
+    public void exportToExcels(HttpServletResponse response) throws JRException, IOException {
+        JRXlsxExporter exporter = new JRXlsxExporter();
+        reportfileexport(response, exporter, ".xlsx");
+    }
+    
+    /**
+     * 
+     * <p>Description: 导出Xhtml</p>
+     * @param response
+     * @throws JRException
+     * @throws IOException 
+     */
+    public void exportToXHtml(HttpServletResponse response) throws JRException, IOException {
+        JRXhtmlExporter exporter = new JRXhtmlExporter();
+        reportfileexport(response, exporter, ".xhtml");
+    }
+
+    /**
+     * 
+     * <p>Description: 导出Word2007</p>
+     * @param response
+     * @throws JRException
+     * @throws IOException
+     */
+    public void exportToDocx(HttpServletResponse response) throws JRException, IOException{
+        JRDocxExporter exporter = new JRDocxExporter();
+        reportfileexport(response, exporter, ".docx");
+    }
+    
+    /**
+     * 
+     * <p>Description: 得到JasperPrint对象</p>
+     * @return
+     * @throws JRException
+     */
+    private JasperPrint loadReportPrint() throws JRException {
+        return (JasperPrint) JRLoader.loadObject(this.getPrintFile());
+    }
+
+    /**
+     * 
+     * <p>Description: 通过输出流向客户端写文件</p>
+     * @param response
+     * @param jasperPrint
+     * @param bytes
+     * @param fileName
+     * @throws IOException
+     * @throws JRException 
+     */
+    private void reportfileexport(HttpServletResponse response, JRAbstractExporter exporter, String type) throws IOException,
+            JRException {
+        JasperPrint jasperPrint = loadReportPrint();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
+        exporter.exportReport();
+        byte[] bytes = baos.toByteArray();
+        String fileName = jasperPrint.getName().concat(type);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setContentType("application/x-msdownload;charset=UTF-8");
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        servletOutputStream.write(bytes, 0, bytes.length);
+        servletOutputStream.flush();
+        servletOutputStream.close();
+        FacesContext.getCurrentInstance().responseComplete();
     }
 
     /**

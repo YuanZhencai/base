@@ -11,7 +11,6 @@ public abstract class IdEntity implements java.io.Serializable {
 	private Long id;
     
 	@Id
-	
 	@GeneratedValue(strategy=GenerationType.TABLE, generator="myGen")
 	@TableGenerator(name="myGen", table="ID_GEN",initialValue=5000)
 	

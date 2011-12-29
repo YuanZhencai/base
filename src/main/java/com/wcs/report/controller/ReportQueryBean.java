@@ -4,13 +4,13 @@
 
 package com.wcs.report.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -18,12 +18,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.jasperreports.engine.JRException;
+
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
+
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.common.constant.IReportDictDetailConst;
+import com.wcs.common.controller.dict.DictBean;
 import com.wcs.common.model.Dict;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportFile;
@@ -57,14 +61,16 @@ public class ReportQueryBean extends ReportBase implements Serializable {
     ReportFileService reportFileService;
     @Inject
     DictService dictService;
-
+    @Inject
+    private DictBean dictBean;
     private TreeNode root; // 资源树
     private TreeNode selectedNode; // 选择的节点
 
     private Long reportMstrId; // 报表基本信息ID
     List<ReportParameter> reportParameterList = null; // 报表参数列表
     Map<String, Object> reportMap = new HashMap<String, Object>(); // 报表参数map
-    
+    /** 报表导出类型*/
+    private List<SelectItem> exportTypeList;
     public ReportQueryBean() {
 
     }
@@ -73,6 +79,8 @@ public class ReportQueryBean extends ReportBase implements Serializable {
     @PostConstruct
     private void initConstruct() {
         this.initTreeNode();
+        exportTypeList = new ArrayList<SelectItem>();
+        exportTypeList.addAll(this.dictService.findWithSelectItem("EXRP"));
     }
 
     /**
@@ -205,24 +213,43 @@ public class ReportQueryBean extends ReportBase implements Serializable {
      */
     public void exportReport() {
         try {
-            Object exportFlag = JSFUtils.getRequestParam("exportFlag");
-            if(exportFlag != null && !"null".equals(exportFlag)){
-                MessageUtils.addErrorMessage("exportMsg", "请先预览报表内容，再进行导出报表");
-                return;
-            }
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext()
                     .getResponse();
-            this.exportHtml();
-            String destFile = this.exportPdf(response);
-            File file = new File(destFile);
-            if (file.exists()) {
-                file.delete();
+            String type =  findExportType();
+            if(type != null ){
+                String exportMethod = type.toLowerCase();
+                if(exportMethod.contains("pdf")){
+                    this.exportToPdf(response);
+                }else if(exportMethod.contains("excel")){
+                    this.exportToExcel(response);
+                }else if(exportMethod.contains("html")){
+                    this.exportToXHtml(response);
+                }else if(exportMethod.contains("word")){
+                    this.exportToDocx(response);
+                }
+                
             }
+            
         } catch (JRException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public String findExportType(){
+        for(SelectItem it : exportTypeList){
+            String param = JSFUtils.getRequestParam(String.valueOf(it.getValue()));
+            if(param != null && param != "null"){
+                return param;
+            }
+        }
+        return null;
+    }
+    
+    
+    public void handExport(){
+        exportReport();
     }
 
     // -------------------- setter & getter --------------------//
@@ -265,6 +292,14 @@ public class ReportQueryBean extends ReportBase implements Serializable {
 
     public void setReportMstrId(Long reportMstrId) {
         this.reportMstrId = reportMstrId;
+    }
+
+    public List<SelectItem> getExportTypeList() {
+        return exportTypeList;
+    }
+
+    public void setExportTypeList(List<SelectItem> exportTypeList) {
+        this.exportTypeList = exportTypeList;
     }
 
 }
