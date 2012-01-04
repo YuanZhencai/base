@@ -298,12 +298,41 @@ public class UserService implements Serializable {
      * @param user
      */
     public Boolean delUser(User user) {
-        String sql = "DELETE FROM User u WHERE u.id=?1";
-        int rs = this.entityService.batchExecute(sql, user.getId());
-        if (rs > 0) {
+        // 删除用户对应中间表
+        String sql = "DELETE FROM UserRole ur WHERE ur.user.id = ?1";
+        Query query = entityService.createQuery(sql,  user.getId());
+        int rs = query.executeUpdate();
+        
+        // 删除用户
+        sql = "DELETE FROM User u WHERE u.id=?1";
+        int rs1 = this.entityService.batchExecute(sql, user.getId());
+        if (rs > 0 && rs1 > 0) {
             return true;  
         }
         
         return false;
+    }
+    
+    /**
+     * 根据用户得到当前用户角色
+     * @param user
+     * @return
+     */
+    public List<Role> findRolesByUser(User user) {
+        String sql = "select r from UserRole ur join ur.user u join ur.role r where r.state=1 and u.id=" + user.getId();
+        return entityService.findList(sql);
+    }
+
+    /**
+     * 根据角色ID找到角色
+     * @param object
+     * @return
+     */
+    public Role findRoleById(Long roleId) {
+        String sql = "SELECT r FROM Role r WHERE r.id = " + roleId;
+        Query query = entityService.createQuery(sql);
+        Role role = (Role) query.getSingleResult();
+        
+        return role;
     }
 }

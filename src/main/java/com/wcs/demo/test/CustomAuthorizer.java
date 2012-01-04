@@ -92,6 +92,6 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
     	  @SuppressWarnings("unchecked")
     	  T obj = (T) beanManager.getReference(bean, clazz, ctx);
     	  return obj;
-    	 }
+   }
 
 }

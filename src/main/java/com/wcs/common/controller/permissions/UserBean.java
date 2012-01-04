@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
 import com.google.common.collect.Lists;
@@ -52,7 +53,6 @@ public class UserBean extends ViewBaseBean<User> {
     private User currentUser;
     private List<SelectItem> roleList;  // 角色下拉列表
     private Long[] selectedUserRole;
-    
     private Boolean isDisplay;
    
     /** 角色Id */
@@ -68,16 +68,19 @@ public class UserBean extends ViewBaseBean<User> {
     private String userAccount;
     /** 查询条件Map封装 */
     private Map<String, Object> queryMap = new HashMap<String, Object>();
+    
+    private DualListModel<Role> roles; 
 
     /** 页面路径 */
     private static final String LIST_PAGE = "/faces/permissions/user/list.xhtml";
-    private static final String USER_ROLE_PAGE = "/faces/permissions/user/user-role.xhtml";
+    //private static final String USER_ROLE_PAGE = "/faces/permissions/user/user-role.xhtml";
 
     public UserBean() {}
     
     @PostConstruct
     public void initUser() {
         this.lazyModel = userService.findAllUser();
+        assignUserRole();
     }
 
     /**
@@ -90,38 +93,36 @@ public class UserBean extends ViewBaseBean<User> {
     }
     
     /**
-     * 添加用户
+     * 添加或者修改用户
      */
-    public void addUser() {
-        try { 
-            this.save();
-            MessageUtils.addSuccessMessage("resMsg", "添加用户成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.addErrorMessage("resMsg", "添加用户失败，请检查！");
-        }
-        
-        // 刷新
-        refresh();
-    }
-    
-    /**
-     * 修改用户
-     */
-    public void modUser() {
+    public void saveUser() {
         User user = getInstance();
+        
+        // 判断用户是添加还是修改
+        Long userId = null;
+        if (user != null) {
+            userId = user.getId();
+        }
         try { 
-            this.userService.modUser(user);
-            MessageUtils.addSuccessMessage("resMsg", "修改用户成功！");
+            if (userId == null) {
+                this.save();
+                MessageUtils.addSuccessMessage("resMsg", "添加用户成功！");
+            } else {
+                this.userService.modUser(user);
+                MessageUtils.addSuccessMessage("resMsg", "修改用户成功！");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            MessageUtils.addErrorMessage("resMsg", "修改用户失败，请检查！");
+            MessageUtils.addErrorMessage("resMsg", "保存用户失败，请检查！");
         }
         
-        // 刷新
+        // 刷新页面数据
         refresh();
     }
-    
+
+    /**;PLK
+     * 删除用户
+     */
     public void delUser() {
         User user = getInstance();
         try { 
@@ -134,21 +135,18 @@ public class UserBean extends ViewBaseBean<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    /**
-     * 刷新
-     */
-    private void refresh() {
-        this.lazyModel = userService.findAllUser();
+        
+        // 刷新
+        refresh();
     }
     
     /**
      * 清除
      */
-    public void clean() {
+    public void refresh() {
         setInstance(null);
         this.isDisplay = false;
+        this.lazyModel = userService.findAllUser();
     }
     
     /**
@@ -176,29 +174,40 @@ public class UserBean extends ViewBaseBean<User> {
      * 当前用户角色
      * @param user
      */
-    public String assignUserRole() {
-        this.selectedUserRole = this.userService.getRoleIdByUser(this.currentUser);
-        return USER_ROLE_PAGE;
+    public void assignUserRole() {
+        List<Role> allRoles = roleService.getRoleList();
+        List<Role> userRoles = new ArrayList<Role>();
+        User user = getInstance();
+        if (user != null) {
+            userRoles = userService.findRolesByUser(getInstance());
+            for (Role role : userRoles) {
+                allRoles.remove(role);
+            }
+        }
+        roles = new DualListModel<Role>(allRoles, userRoles);
     }
 
     /**
      * 保存或者更新当前用户角色
      * @return
      */
+    @SuppressWarnings("rawtypes")
     public String saveUserRole() {
+        User user = getInstance();
         try {
-            List<Role> listrole = this.roleService.getSelectRoleById(this.getSelectedUserRole());
-            if (listrole != null) {
-                this.roleService.deleteUserRole(this.currentUser.getId());
-                for (Role role : listrole) {
-                    UserRole userrole = new UserRole();
-                    userrole.setUser(currentUser);
+            roleService.deleteUserRole(user.getId());
+            List roleIdList = roles.getTarget();
+            for (int i = 0; i < roleIdList.size(); i++) {
+                UserRole userrole = new UserRole();
+                Long roleId = Long.valueOf(roleIdList.get(i).toString());
+                Role role = userService.findRoleById(roleId);
+                if (role != null) {
                     userrole.setRole(role);
-                    this.entityService.create(userrole);
                 }
-                MessageUtils.addSuccessMessage("usermessgeId", "用户角色分配成功");
+                userrole.setUser(user);
+                this.entityService.create(userrole);
             }
-
+            MessageUtils.addSuccessMessage("usermessgeId", "用户角色分配成功");
         } catch (Exception e) {
             MessageUtils.addErrorMessage("usermessgeId", "用户角色分配失败");
             e.printStackTrace();
@@ -397,5 +406,13 @@ public class UserBean extends ViewBaseBean<User> {
 
     public void setIsDisplay(Boolean isDisplay) {
         this.isDisplay = isDisplay;
+    }
+
+    public DualListModel<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(DualListModel<Role> roles) {
+        this.roles = roles;
     }
 }
