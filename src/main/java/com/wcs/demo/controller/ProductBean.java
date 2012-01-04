@@ -4,10 +4,13 @@
 
 package com.wcs.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,6 +18,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ConversationBaseBean;
+import com.wcs.common.service.DictService;
 import com.wcs.demo.model.Product;
 import com.wcs.demo.service.ProductService;
 
@@ -33,9 +37,12 @@ import com.wcs.demo.service.ProductService;
 public class ProductBean extends ConversationBaseBean<Product> {
 	@Inject
 	ProductService productService;
+	@Inject
+	private DictService dictService;
 	
 	private Map<String,Object> filterMap = Maps.newHashMapWithExpectedSize(5);
     private LazyDataModel<Product> lazyModel;
+    private List<SelectItem> productCategoryList = new ArrayList<SelectItem>();        // 商品分类下拉框
     
     /**
      * 构造函数
@@ -51,6 +58,7 @@ public class ProductBean extends ConversationBaseBean<Product> {
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
+		this.setProductCategoryList(dictService.findWithSelectItem("PROT"));
     	this.search();	
 	}
 	
@@ -74,6 +82,14 @@ public class ProductBean extends ConversationBaseBean<Product> {
 	}
 	public void setLazyModel(LazyDataModel<Product> lazyModel) {
 		this.lazyModel = lazyModel;
+	}
+
+	public List<SelectItem> getProductCategoryList() {
+		return productCategoryList;
+	}
+
+	public void setProductCategoryList(List<SelectItem> productCategoryList) {
+		this.productCategoryList = productCategoryList;
 	}
 
 }

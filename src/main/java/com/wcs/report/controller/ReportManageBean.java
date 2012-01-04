@@ -21,6 +21,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.controller.ViewBaseBean;
 import com.wcs.base.util.JSFUtils;
+import com.wcs.common.constant.IReportDictConst;
 import com.wcs.common.model.Role;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportMstr;
@@ -46,11 +47,11 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
 	@Inject
 	ReportManageService reportManageService;
 	@Inject
-	public DictService dictService;
+	private DictService dictService;
 	@Inject
-	public ReportRoleService reportRoleService;
+	private ReportRoleService reportRoleService;
 	@Inject
-	public ReportParameterService reportParameterService;
+	private ReportParameterService reportParameterService;
 	private Map<String, Object> filterMap = new HashMap<String, Object>();
 	private LazyDataModel<ReportMstr> lazyModel;               // 动态分页使用
 	
@@ -96,8 +97,8 @@ public class ReportManageBean extends ViewBaseBean<ReportMstr> {
      * 初始化报表分类、报表模式下拉框
      */
     public void initSelectItem() {
-    	this.setReportCategoryList(dictService.findWithSelectItem("RPTC"));
-    	this.setReportModeList(dictService.findWithSelectItem("RPTM"));
+    	this.setReportCategoryList(dictService.findWithSelectItem(IReportDictConst.RPTC));
+    	this.setReportModeList(dictService.findWithSelectItem(IReportDictConst.RPTM));
     }
     
     /**
