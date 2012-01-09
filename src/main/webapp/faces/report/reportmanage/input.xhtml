@@ -31,9 +31,11 @@
         <h:form id="reportRoleForm" prependId="false">
              <p:dialog header="角色配置" widgetVar="reportRoleDialog" id="reportRoleDlg" resizable="false" width="550" modal="true"  >
         		<p:pickList value = "#{reportManageBean.dualModel}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.id}" />
-        		<f:facet name="footer">
-                    <p:commandButton id="btn_report_role_config"  actionListener="#{reportManageBean.roleConfig}" update=":formInputReport:report_roles" oncomplete="reportRoleDialog.hide()" value="确定" image="ui-icon ui-icon-disk" />
-					<p:commandButton value="取消" onclick="reportRoleDialog.hide()" image="ui-icon ui-icon-cancel"/>
+        		<f:facet name="footer" >
+        			<div style="text-align: center;">
+                    	<p:commandButton id="btn_report_role_config"  actionListener="#{reportManageBean.roleConfig}" update=":formInputReport:report_roles" oncomplete="reportRoleDialog.hide()" value="确定" image="ui-icon ui-icon-disk" />
+						<p:commandButton value="取消" onclick="reportRoleDialog.hide()" image="ui-icon ui-icon-cancel" style="margin-left: 10px;" />
+					</div>
                 </f:facet>
 			</p:dialog>
         </h:form>

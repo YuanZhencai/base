@@ -99,6 +99,9 @@ public class ReportQueryBean extends ReportBase implements Serializable {
         root = new ReportTreeNode("Root", null);
         User user = (User) JSFUtils.getSession().get("user");
         //当前用户的角色列表
+        if(user == null) {
+        	return ;
+        }
         List<UserRole> userRoleList = roleService.getUserRoleList(user.getId());
         List<Dict> categoryList = reportManageService.getReportCategory(IReportDictConst.RPTC);
         for (int i = 0; i < categoryList.size(); i++) {
@@ -200,6 +203,19 @@ public class ReportQueryBean extends ReportBase implements Serializable {
             return false;
         }
    }
+    
+    /**
+     * 判断java数据类型是否为整型
+     * @param dataType
+     * @return
+     */
+    public boolean isDataTypeNumber(String dataType) {
+    	if (IReportDictDetailConst.JADT_3.equals(dataType)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     /**
      * 查询数据字典parentCode下的所有子项
