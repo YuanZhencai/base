@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld"
+	  xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>Hello  World</title>
+        <meta  http-equiv="keywords"  content="enter,your,keywords,here"  />
+        <meta  http-equiv="description"  content="A  short  description  of  this  page."  />
+        <meta  http-equiv="content-type"  content="text/html;  charset=UTF-8"  />
+    </h:head>
+    <h:body>
+    
+        <h:form  id="form">
+            <!-- <jr:source id="bookSource" type="jndi" value="db2test" />
+    		
+	    	<jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource" 
+	    		value="/jasperreports/report2.jrxml">
+	    		<h:outputText value="View Report" />
+	    	</jr:reportLink> -->
+            <div>
+
+			   	<p:panel id="panel"> 
+			        <p:commandButton value="testSendMessageBean"  actionListener="#{testSendMessage.sendMessageOne}" />/
+			        <p:inputText value="#{testSendMessage.name}" />
+					<br/>
+					<p:commandButton value="testSendMessageJPA"  actionListener="#{testSendMessage.sendMessageTwo}" />
+			    </p:panel>  
+                    
+            </div>
+	       <!--  <jr:reportFrame id="reportFrame" source="bookSource"
+	        	value="/jasperreports/report2.jrxml"
+	        	format="pdf" height="400px" width="80%" 
+	        />-->
+        </h:form>
+    </h:body>
+</html> 
