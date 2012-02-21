@@ -14,7 +14,7 @@ import javax.ejb.Startup;
  * @author <a href="mailto:yansong@wcs-global.com">Yan Song</a>
  * $Rev::               $:  Revision of last commit
  * $Author::            $:  Author of last commit
- * $Date::              $:  Date of last commit 
+ * $Date::              $:  Date of last commit
  */
 @Singleton
 @Startup
