@@ -12,9 +12,7 @@ import javax.ejb.Startup;
  * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
  * <p>All Rights Reserved.</p>
  * @author <a href="mailto:yansong@wcs-global.com">Yan Song</a>
- * $Rev$
- * $Author$ 
- * $Date$
+ * $Author$
  */
 @Singleton
 @Startup 
