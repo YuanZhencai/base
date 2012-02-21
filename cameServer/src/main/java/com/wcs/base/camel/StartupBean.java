@@ -12,9 +12,9 @@ import javax.ejb.Startup;
  * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
  * <p>All Rights Reserved.</p>
  * @author <a href="mailto:yansong@wcs-global.com">Yan Song</a>
- * $Rev::               $:  Revision of last commit
- * $Author::            $:  Author of last commit
- * $Date::              $:  Date of last commit
+ * $Rev$
+ * $Author$
+ * $Date$
  */
 @Singleton
 @Startup
