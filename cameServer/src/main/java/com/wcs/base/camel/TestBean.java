@@ -19,6 +19,9 @@ package com.wcs.base.camel;
 
 /**
  * @version $Revision: 211 $
+ * $Rev$
+ * $Author$ 
+ * $Date$
  */
 public class TestBean  implements java.io.Serializable {
 	TestBean(){
