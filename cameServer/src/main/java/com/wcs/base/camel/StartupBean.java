@@ -12,7 +12,7 @@ import javax.ejb.Startup;
  * $Date$
  */
 @Singleton
-@Startup
+@Startup 
 public class StartupBean{
 
 	@EJB
