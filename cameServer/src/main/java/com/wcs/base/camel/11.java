@@ -17,7 +17,9 @@
 package com.wcs.base.camel;
 
 
-
+ * $Rev$
+ * $Author$
+ * $Date$
 public class TestBean  implements java.io.Serializable {
 	TestBean(){
 		System.out.println("init HelloBean");
