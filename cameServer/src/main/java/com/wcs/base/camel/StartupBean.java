@@ -7,10 +7,6 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 /**
- * <p>Project: came</p>
- * <p>Description: </p>
- * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
- * <p>All Rights Reserved.</p>
  * $Rev$
  * $Author$
  * $Date$
