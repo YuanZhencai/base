@@ -1,23 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core" 
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<style>
-	body{
-		background: #F1F6FA;
-	}
-	#welcome{
-		width: 100%;
-		text-align: center;
-	}
-	</style>
-
-	<div id="welcome">
-    	<img src="#{facesContext.externalContext.requestContextPath}/images/bj.jpg"/>
-    </div>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/jquery-ui-themes.css"  />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/axure_rp_page.css"/>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/Index_Search_files/axurerp_pagespecificstyles.css"/>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/reset.css"/>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css"/>
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/plugins/sitemap/styles/sitemap.css" />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/plugins/page_notes/styles/page_notes.css" />
+	<link type="text/css" rel="stylesheet" href="#{request.contextPath}/styles/welcome.css"/>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/axurerp_beforepagescript.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/messagecenter.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/splitter.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/axutils.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/axprototype.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/resources/scripts/messagecenter.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/data/configuration.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/data/sitemap.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/plugins/sitemap/sitemap.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/plugins/page_notes/page_notes.js"></script>
+	<script type="text/javascript"  src="#{request.contextPath}/scripts/main.js"></script>
+	<h:body>
+		<div id="outerContainer">
+			<div id="rightPanel">
+				<ui:include src="/Index_Search.xhtml"/>
+			</div>
+		</div>
+	</h:body>
 </ui:composition>
 

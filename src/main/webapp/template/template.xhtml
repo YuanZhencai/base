@@ -23,7 +23,6 @@
 		<link href="#{request.contextPath}/template/css/default.css" rel="stylesheet" type="text/css" />
 		<link href="#{request.contextPath}/styles/defaultprimeface.css" rel="stylesheet" type="text/css" />
 		<link href="#{request.contextPath}/styles/syntaxhighlighter.css" rel="stylesheet" type="text/css" />
-
 		<ui:insert name="styleAndScript"></ui:insert>
 	</h:head>
 	<h:body>
@@ -128,17 +127,6 @@
 				&nbsp;&nbsp;&nbsp;
 			</div>
 		</div>
-		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();">
-			<f:facet name="start">
-				<div class="ajaxStatus">
-					<span> <h:graphicImage value="/template/img/loading.gif" /> <br /> <h:outputLabel value="数据加载中,请稍后..." />
-					</span>
-				</div>
-			</f:facet>
-			<f:facet name="complete">
-				<h:outputText value="" />
-			</f:facet>
-		</p:ajaxStatus>
 		<div id="submitDiv" style="display: none;">
 			<div class="ajaxStatus">
 				<span> <h:graphicImage value="/template/img/loading.gif" /> <br /> <h:outputLabel value="数据加载中,请稍后..." />
