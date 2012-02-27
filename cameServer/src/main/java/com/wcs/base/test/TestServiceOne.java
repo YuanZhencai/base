@@ -17,6 +17,8 @@
 package com.wcs.base.test;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 
@@ -28,8 +30,11 @@ import com.wcs.base.camel.TestBean;
 @Stateless
 public class TestServiceOne  implements Serializable{
 
-    public void hello(TestBean testBean) {
+    public List hello(TestBean testBean) {
+    	List lisResult= new ArrayList();
+    	lisResult.add("TestServiceOne:" + testBean.getName());
     	System.out.println("***********************Invoking HelloBean with 2:" + testBean.getName());
+    	return lisResult;
     }
 
 }
