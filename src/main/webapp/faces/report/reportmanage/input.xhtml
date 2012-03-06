@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/template.xhtml">
+
+	<ui:define name="title">添加报表</ui:define>
+
+	<ui:define name="content">				
+		<h:form  id="formInputReport" prependId="false">
+            <p:panel styleClass="panel1">
+				<f:facet name="header">
+                    <img src="#{request.contextPath}/images/calculator_edit.png" alt=""/>
+                    <h:outputLabel value="添加报表    |    "/>
+                    <h:outputLink value="#{request.contextPath}/faces/report/reportmanage/list.xhtml">
+                        <h:outputText value="报表查询"/>
+                    </h:outputLink>
+                </f:facet>
+                
+                <p:messages/>    
+                 
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="1" styleClass="style1" rowClasses="row1,row2" columnClasses="column1,column2" footerClass="footer1">
+
+                    <ui:include src="input-item.xhtml"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btn_product_Save" action="#{reportManageBean.saveReportInfo}" value="保存" image="ui-icon ui-icon-disk" ajax="false" title="保存"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+        
+        <h:form id="reportRoleForm" prependId="false">
+             <p:dialog header="角色配置" widgetVar="reportRoleDialog" id="reportRoleDlg" resizable="false" width="550" modal="true"  >
+        		<p:pickList value = "#{reportManageBean.dualModel}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.id}" />
+        		<f:facet name="footer">
+                    <p:commandButton id="btn_report_role_config"  actionListener="#{reportManageBean.roleConfig}" update=":formInputReport:report_roles" oncomplete="reportRoleDialog.hide()" value="确定" image="ui-icon ui-icon-disk" />
+					<p:commandButton value="取消" onclick="reportRoleDialog.hide()" image="ui-icon ui-icon-cancel"/>
+                </f:facet>
+			</p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

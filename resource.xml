@@ -1,0 +1,11 @@
+<resource>
+	<topmenu id="permissionManage" name="权限管理">
+		<dropmenu id="userManage" isleaf="true" ismenu="true" name="用户管理" url="/faces/permissions/user/list.xhtml"/>
+		<dropmenu id="roleManage" isleaf="true" ismenu="true" name="角色管理" url="/faces/permissions/role/list.xhtml"/>
+		<dropmenu id="resourceManage" isleaf="true" ismenu="true" name="资源参数维护" url="/faces/permissions/resource/list.xhtml"/>
+	</topmenu>
+	<topmenu id="reportManage" name="报表管理">
+		<dropmenu id="reportMaintain" isleaf="true" ismenu="true" name="报表维护" url="/faces/permissions/role/list.xhtml"/>
+		<dropmenu id="reportSearch" isleaf="true" ismenu="true" name="报表查询" url="/faces/permissions/role/list.xhtml"/>
+	</topmenu>
+</resource>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:c="http://java.sun.com/jstl/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/template.xhtml">
+
+	<ui:define name="title">用户管理</ui:define>
+	<ui:define name="content">
+		<f:metadata>
+			<f:event type="preRenderView" listener="#{userBean.searchUser}" />
+		</f:metadata>
+		
+		<input type="hidden" id="menuOne" value="M101" />
+		<input type="hidden" id="menuTwo" value="M10101" />
+		<h:form id="UserFrom" prependId="false">
+			<p:panel styleClass="panel1">
+				<f:facet name="header">
+					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
+					<h:outputLabel value="用户管理     " />
+				</f:facet>
+				<p:message id="usermessgeId" for="usermessgeId"></p:message>
+				<div class="style1">
+					<h:panelGrid columns="8" id="userSerachGrid" columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
+						<h:outputLabel value="用户账号：" /><p:inputText id="Account" value="#{userBean.user.loginName}" />
+						<p:commandButton id="searchUser" value="查询" action="#{userBean.searchUser}" update="userPanel" image="ui-icon ui-icon-search"/>
+					</h:panelGrid>
+					
+				</div>
+				<br/>
+				<ui:include src="/faces/permissions/user/inc-list-item.xhtml" />
+				
+				<p:dialog header="用户详细信息" widgetVar="userDialog" modal="true" resizable="false" width="600">
+					<h:panelGrid id="userDetail" columns="4" columnClasses="column41,column42,column41,column42" footerClass="footer1">
+						<h:outputLabel value="账号：" />
+						<p:inputText disabled="true" id="userName" value="#{userBean.currentUser.userName}" />
+
+						<h:outputLabel value="姓名：" />
+						<p:inputText disabled="true" id="name" value="#{userBean.currentUser.name}" />
+
+						<h:outputLabel value="手机：" />
+						<p:inputText disabled="true" id="cellphoneNo" value="#{userBean.currentUser.cellphoneNo}" />
+
+						<h:outputLabel value="联系电话：" />
+						<p:inputText disabled="true" id="contactTelephoneNo" value="#{userBean.currentUser.contactTelephoneNo}" />
+
+						<h:outputLabel value="电子邮件：" />
+						<p:inputText disabled="true" id="email" value="#{userBean.currentUser.email}" />
+
+						<h:outputLabel value="联系地址：" />
+						<p:inputText disabled="true" id="contactAddress" value="#{userBean.currentUser.contactAddress}" />
+
+						<f:facet name="footer">
+							<p:commandButton id="userBack" value="关闭" onclick="userDialog.hide()" image="ui-icon ui-icon-cancel" />
+						</f:facet>
+					</h:panelGrid>
+				</p:dialog>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
