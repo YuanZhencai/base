@@ -291,22 +291,7 @@
 			<version>1.5</version>
 		</dependency>
 
-		<!-- Test Dependencies Start -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- <dependency> <groupId>org.jboss.arquillian</groupId> <artifactId>arquillian-junit</artifactId> 
-			<version>${arquillian.version}</version> <scope>test</scope> </dependency> -->
-		<dependency>
-			<groupId>org.jboss.arquillian.junit</groupId>
-			<artifactId>arquillian-junit-container</artifactId>
-			<version>1.0.0.CR5</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Test Dependencies End -->
+		
 		<dependency>
 			<groupId>jfree</groupId>
 			<artifactId>jcommon</artifactId>
@@ -385,6 +370,23 @@
 			<artifactId>lucene-smartcn</artifactId>
 			<version>3.5.0</version>
 		</dependency>
+		
+		<!-- Test Dependencies Start -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- <dependency> <groupId>org.jboss.arquillian</groupId> <artifactId>arquillian-junit</artifactId> 
+			<version>${arquillian.version}</version> <scope>test</scope> </dependency> -->
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>1.0.0.CR5</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Test Dependencies End -->
 	</dependencies>
 
 	<build>
@@ -591,4 +593,5 @@
 			</dependencies>
 		</profile>
 	</profiles>
+	
 </project>
