@@ -28,12 +28,14 @@
 						商品名称：<p:inputText value="#{productBean.filterMap['LIKES_name']}"/>
 						商品类别：<h:selectOneMenu  value="#{productBean.filterMap['EQS_category']}" >
 									 <f:selectItem itemLabel="--请选择--" itemValue="" />
-  									 <f:selectItems value="#{productBean.productCategoryList}" />
+  									 <f:selectItem itemLabel="衣服" itemValue="衣服" />
+ 									 <f:selectItem itemLabel="裤子" itemValue="裤子" />
+     								 <f:selectItem itemLabel="鞋子" itemValue="鞋子" />
         						  </h:selectOneMenu>
      					商品价格：<p:inputText value="#{productBean.filterMap['EQN_smallPrice']}"/> 
      							  <h:outputText value="~" style="text-align:center; display: block;" /> 
      							  <p:inputText value="#{productBean.filterMap['EQN_bigPrice']}"/>
-                     	<p:commandButton id="btn_product_Search" actionListener="#{productBean.search}" update="productDataPanel" value="查询" icon="ui-icon ui-icon-search"/>
+                     	<p:commandButton id="btn_product_Search" actionListener="#{productBean.search}" update="productDataPanel" value="查询" image="ui-icon ui-icon-search"/>
                     </h:panelGrid>
                 </p:fieldset>
                 <br/>
@@ -52,7 +54,7 @@
                    		</p:column>
 
                     	<p:column headerText="商品类别">
-                       		<h:outputText value="#{dictBean.queryCode(product.category)}"/>
+                       		<h:outputText value="#{product.category}"/>
                     	</p:column>
 
                     	<p:column headerText="商品价格">
@@ -72,17 +74,17 @@
                     	</p:column>
 
                     	<p:column headerText="操作" style="width:120px; text-align:center;">
- 							<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="productDialog.show()" icon="ui-icon ui-icon-search" title="查看">
+ 							<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="productDialog.show()" image="ui-icon ui-icon-search" title="查看">
 								<f:param name="readOnly" value="true"/>			
                             	<f:setPropertyActionListener value="#{product}" target="#{productBean.instance}"/>
                         	</p:commandButton>
 
-                        	<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="productDialog.show()" icon="ui-icon ui-icon-pencil" title="修改">
+                        	<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="productDialog.show()" image="ui-icon ui-icon-pencil" title="修改">
 								<f:param name="readOnly" value="false" />							
                             	<f:setPropertyActionListener value="#{product}" target="#{productBean.instance}"/>
                         	</p:commandButton>
 
-                        	<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="confirmation.show()" icon="ui-icon ui-icon-close" title="删除">
+                        	<p:commandButton update=":dialogForm:productInput, :dialogForm:msg" oncomplete="confirmation.show()" image="ui-icon ui-icon-close" title="删除">
                             	<f:setPropertyActionListener value="#{product}" target="#{productBean.instance}"/>
                         	</p:commandButton>
                    		</p:column>
@@ -100,8 +102,8 @@
 						
                         <f:facet name="footer">
                             <p:commandButton id="btn_product_Save" actionListener="#{productBean.save}" value="保存" update="productDataPanel, msg" rendered="#{!param.readOnly}"
-                                	oncomplete="handleComplete(productDialog,args);"  icon="ui-icon ui-icon-disk"/>
-							<p:commandButton value="#{param.readOnly ? '关闭' : '取消'}" onclick="productDialog.hide()" icon="ui-icon ui-icon-cancel"/>
+                                	oncomplete="handleComplete(productDialog,args);"  image="ui-icon ui-icon-disk"/>
+							<p:commandButton value="#{param.readOnly ? '关闭' : '取消'}" onclick="productDialog.hide()" image="ui-icon ui-icon-cancel"/>
                         </f:facet>
                     </h:panelGrid>
                 </p:dialog>

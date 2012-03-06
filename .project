@@ -40,16 +40,4 @@
 		<nature>org.jboss.tools.jst.web.kb.kbnature</nature>
 		<nature>org.jboss.tools.ws.jaxrs.nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>lib-global_dsld_support</name>
-			<type>2</type>
-			<location>C:/Users/Administrator/.groovy/greclipse/global_dsld_support</location>
-		</link>
-		<link>
-			<name>lib-plugin_dsld_support</name>
-			<type>2</type>
-			<location>D:/eclipse3.7/plugins/org.codehaus.groovy_1.8.3.xx-20111110-1600-e37/plugin_dsld_support</location>
-		</link>
-	</linkedResources>
 </projectDescription>

@@ -21,7 +21,9 @@
         <h:panelGroup>
         	<h:selectOneMenu id="product_category" value="#{productBean.instance.category}" disabled="#{param.readOnly}" required="true" requiredMessage="商品类别必须选择！" >
         		<f:selectItem itemLabel="--请选择--" />
-        		<f:selectItems value="#{productBean.productCategoryList}" />
+        		<f:selectItem itemLabel="衣服" itemValue="衣服"/>
+        		<f:selectItem itemLabel="裤子" itemValue="裤子" />
+        		<f:selectItem itemLabel="鞋子" itemValue="鞋子" />
         	</h:selectOneMenu>
         	<h:outputText style="color:red;" value="  *" rendered="#{!param.readOnly}" />
         </h:panelGroup>
