@@ -50,7 +50,7 @@ public class ResourceService implements Serializable{
 	@SuppressWarnings("unchecked")
     public List<Resource> getChildListById(Long parentid){
 		try{
-			Query query = entityService.createQuery("from Resource r where r.parentId = ?");
+			Query query = entityService.createQuery("select r from Resource r where r.parentId = ?1");
 			query.setParameter(1, parentid);
 			return (List<Resource>)query.getResultList();
 		}catch(Exception e){
@@ -69,7 +69,7 @@ public class ResourceService implements Serializable{
 	@SuppressWarnings("unchecked")
     public List<Resource> getAllTree(){
 		try{
-			return (List<Resource>)entityService.createQuery("from Resource").getResultList();
+			return (List<Resource>)entityService.createQuery("select r from Resource r").getResultList();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ public class ResourceService implements Serializable{
 	@SuppressWarnings("unchecked")
     public List<Resource> getFatherTree(){
 	    try{
-	         String sql = "from Resource t where t.parentId is null";
+	         String sql = "select t from Resource t where t.parentId is null";
 	         return (List<Resource>)entityService.createQuery(sql).getResultList();
 	    }catch(Exception e){
 	        e.printStackTrace();
@@ -148,7 +148,7 @@ public class ResourceService implements Serializable{
 	@SuppressWarnings("unchecked")
     public List<RoleResource> getResourceListByRole(Role role){
 		try{
-			String sql = "from RoleResource rs where rs.role= ?1 ";
+			String sql = "select rs from RoleResource rs where rs.role= ?1 ";
 			Query query = entityService.createQuery(sql);
 			query.setParameter(1, role);
 			return (List<RoleResource>)query.getResultList();
