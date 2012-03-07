@@ -47,7 +47,7 @@ public class RoleService implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public List<Role> getRoleList() {
-        Query query = entityService.createQuery("select r from Role r order by roleName asc");
+        Query query = entityService.createQuery("from Role r order by roleName asc");
         return (List<Role>) query.getResultList();
     }
 
@@ -82,7 +82,7 @@ public class RoleService implements Serializable {
     public List<Role> getResultByPage(int first, int pageSize, String sortField, boolean sortOrder,
             Map<String, String> filtermap) {
         try {
-            String sql = "select role from Role  role where role.state=1 ";
+            String sql = "from Role  role where role.state=1 ";
             Query query = this.entityService.createQuery(sql);
             query.setFirstResult(first);
             query.setMaxResults(pageSize);
@@ -124,7 +124,7 @@ public class RoleService implements Serializable {
     public List<String> searchRole(String rolename) {
         List<String> rnamelist = Lists.newArrayList();
         try {
-            Query query = entityService.createQuery("select r from Role r where r.roleName like :roleNames order by roleName asc");
+            Query query = entityService.createQuery("from Role r where r.roleName like :roleNames order by roleName asc");
             query.setParameter("roleNames", "%" + rolename + "%");
             List<Role> rlist = query.getResultList();
             for (Role r : rlist) {
@@ -149,7 +149,7 @@ public class RoleService implements Serializable {
 
     public Role getRoleByName(String name) {
         try {
-            String sql = "select r from Role r where r.roleName = ?1";
+            String sql = "from Role r where r.roleName = ?1";
             Query query = this.entityService.createQuery(sql);
             query.setParameter(1, name);
             List st = query.getResultList();
@@ -228,7 +228,7 @@ public class RoleService implements Serializable {
         if ((userId != null && userId != 0) && (roleId != null && roleId != 0)) {
             return null;
         }
-        String sql = "select ur from UserRole ur where  ur.user.id=?1 and ur.role.id=?2";
+        String sql = "from UserRole ur where  ur.user.id=?1 and ur.role.id=?2";
         Query query = this.entityService.createQuery(sql);
         query.setParameter(1, userId);
         query.setParameter(2, roleId);
@@ -253,7 +253,7 @@ public class RoleService implements Serializable {
         if (userId == 0) {
             return;
         }
-        String sql = "select ur from UserRole ur where  ur.user.id=?1 ";
+        String sql = "from UserRole ur where  ur.user.id=?1 ";
         Query query = this.entityService.createQuery(sql);
         query.setParameter(1, userId);
         List<UserRole> userRoleList = query.getResultList();

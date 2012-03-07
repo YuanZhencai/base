@@ -203,12 +203,14 @@
 					<p:pickList value="#{reportManageBean.dualModel}" var="role"
 						itemLabel="#{role.roleName}" itemValue="#{role.id}" />
 					<f:facet name="footer">
-						<p:commandButton id="btn_report_role_config"
-							actionListener="#{reportManageBean.roleConfig}"
-							update="report_roles" oncomplete="reportRoleDialog.hide()"
-							value="确定" image="ui-icon ui-icon-disk" />
-						<p:commandButton value="取消" onclick="reportRoleDialog.hide()"
-							image="ui-icon ui-icon-cancel" />
+						<div style="text-align: center;">
+							<p:commandButton id="btn_report_role_config"
+								actionListener="#{reportManageBean.roleConfig}"
+								update="report_roles" oncomplete="reportRoleDialog.hide()"
+								value="确定" image="ui-icon ui-icon-disk" />
+							<p:commandButton value="取消" onclick="reportRoleDialog.hide()"
+								image="ui-icon ui-icon-cancel" style="margin-left: 10px;" />
+						</div>
 					</f:facet>
 				</p:dialog>
 

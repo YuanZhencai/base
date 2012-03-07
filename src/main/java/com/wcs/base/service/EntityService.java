@@ -121,51 +121,25 @@ public abstract class EntityService extends AbstractEntityService {
      * @return 与 jpql对应的 count 语句
      */
     private String prepareCountHql(String jpql) {
-//        StringBuilder countJpql = new StringBuilder("SELECT COUNT(");
-//
-//        String fromClause = jpql.substring(jpql.toUpperCase().indexOf("FROM"));
-//
-//        int beginPos = fromClause.toUpperCase().indexOf("FROM");
-//        int endPos = fromClause.toUpperCase().indexOf("WHERE");
-//        String countObj = StringUtils.substring(fromClause,beginPos,endPos).trim();
-//
-//        countObj =  countObj.substring(countObj.lastIndexOf(" ") + 1) ;
-//
-//        countJpql.append(countObj).append(") ");
-//
-//        int pos = fromClause.toUpperCase().indexOf("ORDER BY");
-//        if (pos != -1) {
-//            fromClause = fromClause.substring(0, pos);
-//        }
-//
-//        countJpql.append(fromClause);
-//        return countJpql.toString();
-    	boolean distinct= false;
-		if(jpql.toUpperCase().contains("DISTINCT")){
-			distinct = true;
-		}
-        String fromQl = jpql.substring(jpql.toUpperCase().indexOf("FROM"));
+        StringBuilder countJpql = new StringBuilder("SELECT COUNT(");
 
-        int pos = fromQl.toUpperCase().indexOf("ORDER BY");
+        String fromClause = jpql.substring(jpql.toUpperCase().indexOf("FROM"));
+
+        int beginPos = fromClause.toUpperCase().indexOf("FROM");
+        int endPos = fromClause.toUpperCase().indexOf("WHERE");
+        String countObj = StringUtils.substring(fromClause,beginPos,endPos).trim();
+
+        countObj =  countObj.substring(countObj.lastIndexOf(" ") + 1) ;
+
+        countJpql.append(countObj).append(") ");
+
+        int pos = fromClause.toUpperCase().indexOf("ORDER BY");
         if (pos != -1) {
-            fromQl = fromQl.substring(0, pos);
+            fromClause = fromClause.substring(0, pos);
         }
-        String[] fromQls =fromQl.split("\\s+");//多个空格
-        String fromQl1 ="";
-		if("AS".equals(fromQls[2].toUpperCase())){
-			fromQl1= fromQls[3];
-		}else{
-			fromQl1= fromQls[2];
-		}
-		StringBuilder countOfQuery = new StringBuilder("SELECT COUNT("+ (distinct ? "DISTINCT "+fromQl1+".id" : fromQl1+".id")+") ");
-        //StringBuilder countOfQuery = new StringBuilder("SELECT COUNT("+fromQl1+") ");
-        //StringBuilder distinctCount = new StringBuilder("SELECT count(dc) from ("+jpql +") as dc");
-        //if(distinct){
-        //	countOfQuery = distinctCount;
-        //}else{
-        	countOfQuery.append(fromQl);
-        //}
-        return countOfQuery.toString();
+
+        countJpql.append(fromClause);
+        return countJpql.toString();
     }
 
 

@@ -60,7 +60,7 @@ public class LoginService implements Serializable{
     }
 
     public Boolean isAdmin(Long userId){
-        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?1";
+        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?";
         List list = this.entityService.findList(jpql,userId);
         if (CollectionUtils.isEmpty(list)){
             return false;

@@ -66,7 +66,7 @@ public class UserService implements Serializable {
     public List<UserRole> getRoleByUser(User user) throws Exception {
         try {
             if (user != null) {
-                String sql1 = "select urole from UserRole urole where   urole.user.id='" + user.getId() + "')";
+                String sql1 = "from UserRole urole where   urole.user.id='" + user.getId() + "')";
                 return this.entityService.findList(sql1);
             }
         } catch (Exception e) {
@@ -85,11 +85,7 @@ public class UserService implements Serializable {
         List<Resource> distinctResource = new ArrayList<Resource>();
         try {
             if (roleList.isEmpty()) { return distinctResource; }
-            List<Long> roleId = new ArrayList<Long>();
-            for(Role r :roleList){
-            	roleId.add(r.getId());
-            }
-            String jpql = "select res from RoleResource rr join rr.resource res join rr.role role where role.id in (?1)";
+            String jpql = "select res from RoleResource rr join rr.resource res join rr.role role where role in (?1)";
             List<Resource> resourceList = entityService.findList(jpql, roleList);
             for (Resource resource : resourceList) {
                 if (!distinctResource.contains(resource)) {
@@ -174,7 +170,7 @@ public class UserService implements Serializable {
     @SuppressWarnings("unchecked")
     public List<String> getUserAccountByInput(String account) {
         try {
-            String sql = "select u from User u where  u.defunctInd=false and u.userName like :account";
+            String sql = "from User u where  u.defunctInd=false and u.userName like :account";
             Query query = this.entityService.createQuery(sql);
             query.setParameter("account", "%" + account + "%");
             List<User> ulist = query.getResultList();
@@ -199,7 +195,7 @@ public class UserService implements Serializable {
    */
     public User getUserByEmail(String account, String emial) {
         try {
-            String sql = "select u from User u where u.defunctInd=false and u.userName = :uname and u.email = :Email";
+            String sql = "from User u where u.defunctInd=false and u.userName = :uname and u.email = :Email";
             Query query = this.entityService.createQuery(sql);
             query.setParameter("uname", account);
             query.setParameter("Email", emial);

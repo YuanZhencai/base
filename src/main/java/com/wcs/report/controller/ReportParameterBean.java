@@ -18,6 +18,7 @@ import org.primefaces.event.SelectEvent;
 import com.wcs.base.controller.ViewBaseBean;
 import com.wcs.common.constant.IReportDictConst;
 import com.wcs.common.constant.IReportDictDetailConst;
+import com.wcs.common.model.Dict;
 import com.wcs.common.service.DictService;
 import com.wcs.report.model.ReportMstr;
 import com.wcs.report.model.ReportParameter;
