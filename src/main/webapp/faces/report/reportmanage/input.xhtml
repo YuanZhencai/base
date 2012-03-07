@@ -20,16 +20,11 @@
                 </f:facet>
                 
                 <p:messages/>    
-                 
-                <h:panelGrid columns="2" cellpadding="5" cellspacing="1" styleClass="style1" rowClasses="row1,row2" columnClasses="column1,column2" footerClass="footer1">
-
-                    <ui:include src="input-item.xhtml"/>
-
-                    <f:facet name="footer">
-                        <p:commandButton id="btn_product_Save" action="#{reportManageBean.saveReportInfo}" value="保存" image="ui-icon ui-icon-disk" ajax="false" title="保存"/>
-                    </f:facet>
-
-                </h:panelGrid>
+                <ui:include src="input-item.xhtml"/>
+                <div style="margin-top:20px; padding-left: 300px;">
+                	<p:commandButton id="btn_product_Save" action="#{reportManageBean.saveReportInfo}" value="保存" image="ui-icon ui-icon-disk" ajax="false" title="保存"/>
+                </div>
+                    
             </p:panel>
         </h:form>
         

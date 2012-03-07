@@ -7,35 +7,124 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="/template/template.xhtml">
 
-	<ui:define name="title">报表列表</ui:define>
 	<ui:define name="content">
-		<h:form id="reportTreeForm" prependId="false" style="float:left; margin-right: 10px;">
-			<p:tree value="#{reportQueryBean.root}" var="node" dynamic="true" cache="false" selectionMode="single" selection="#{reportQueryBean.selectedNode}" style="width:200px;" >
-				<p:ajax update="reportQueryPanel" event="select" listener="#{reportQueryBean.onNodeSelect}" />
-				<p:treeNode>
-					<h:outputText value="#{node}" />
-				</p:treeNode>
-			</p:tree>
-		</h:form>
+		<p:layout fullPage="true">
+			<p:layoutUnit position="west">
+				<h:panelGroup>
+					<h:form id="reportTreeForm" prependId="false">
+						<p:tree value="#{reportQueryBean.root}" var="node" dynamic="true"
+							cache="false" selectionMode="single"
+							selection="#{reportQueryBean.selectedNode}" style="width:200px;">
+							<p:ajax update="reportQueryPanel, btn_report_preview, reportContent" event="select"
+								listener="#{reportQueryBean.onNodeSelect}" />
+							<p:treeNode>
+								<h:outputText value="#{node}" />
+							</p:treeNode>
+						</p:tree>
+					</h:form>
+				</h:panelGroup>
+			</p:layoutUnit>
 
-		<h:form id="reportQueryForm" prependId="false">
-			<p:fieldset>
-				<h:panelGrid id="reportQueryPanel" columns="4">
-					<f:facet name="header">报表参数</f:facet>
-					<ui:repeat var="reportParameter" value="#{reportQueryBean.reportParameterList}">
-						<f:param name="aa" value="true"></f:param>
-						#{reportParameter.uiLabel}:
-						<ui:fragment rendered="#{reportQueryBean.uiTypeWenbk(reportParameter.uiType)}">
-							<p:inputText value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}"/>
-						</ui:fragment>
-						<ui:fragment rendered="#{reportQueryBean.uiTypeCalendar(reportParameter.uiType)}">
-							<p:calendar value="#{reportQueryBean.reportMap[reportParameter.uiLabelLang]}"/>
-						</ui:fragment>
-					</ui:repeat>
-					<p:commandButton id="btn_report_preview" action="#{reportQueryBean.preview}" value="预览" image="ui-icon ui-icon-search" />
-				</h:panelGrid>
-			</p:fieldset>
-		</h:form>
+			<p:layoutUnit position="center">
+
+				<p:panel>
+					<h:form id="reportQueryForm" prependId="false">
+						<f:facet name="header">报表参数</f:facet>
+						<p:messages id="parameterMessage" />
+						<h:panelGrid id="reportQueryPanel" columns="8">
+							<ui:repeat var="reportParameter"
+								value="#{reportQueryBean.reportParameterList}">
+
+								<ui:fragment rendered="#{reportParameter.displayInd}">
+									#{reportParameter.uiLabel}:
+								</ui:fragment>
+								<ui:fragment
+									rendered="#{reportQueryBean.uiTypeText(reportParameter.uiType)}">
+									<h:panelGroup>
+										<p:inputText rendered="#{reportParameter.displayInd}"
+											disabled="#{!reportParameter.editInd}"
+											required="#{reportParameter.mandatoryInd}"
+											requiredMessage="#{reportParameter.uiLabel}不能为空！"
+											value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}" />
+										<h:outputText style="color:red;" value="  *"
+											rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									</h:panelGroup>
+								</ui:fragment>
+								<ui:fragment
+									rendered="#{reportQueryBean.uiTypeCalendar(reportParameter.uiType)}">
+									<h:panelGroup>
+										<p:calendar rendered="#{reportParameter.displayInd}"
+											disabled="#{!reportParameter.editInd}"
+											required="#{reportParameter.mandatoryInd}"
+											requiredMessage="#{reportParameter.uiLabel}不能为空！"
+											value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}"
+											pattern="yyyy-MM-dd">
+											<f:convertDateTime pattern="yyyy-MM-dd" />
+										</p:calendar>
+										<h:outputText style="color:red;" value="  *"
+											rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									</h:panelGroup>
+								</ui:fragment>
+								<ui:fragment
+									rendered="#{reportQueryBean.uiTypeSelect(reportParameter.uiType)}">
+									<h:panelGroup>
+										<h:selectOneMenu rendered="#{reportParameter.displayInd}"
+											disabled="#{!reportParameter.editInd}"
+											required="#{reportParameter.mandatoryInd}"
+											requiredMessage="#{reportParameter.uiLabel}不能为空！"
+											value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}">
+											<f:selectItem itemLabel="--请选择--" />
+											<f:selectItems
+												value="#{reportQueryBean.getSelectItem(reportParameter.sqlStatement)}" />
+										</h:selectOneMenu>
+										<h:outputText style="color:red;" value="  *"
+											rendered="#{reportParameter.displayInd and reportParameter.mandatoryInd}" />
+									</h:panelGroup>
+								</ui:fragment>
+								<ui:fragment
+									rendered="#{reportQueryBean.uiTypeCheckBox(reportParameter.uiType)}">
+									<h:selectBooleanCheckbox rendered="#{reportParameter.displayInd}" disabled="#{!reportParameter.editInd}" 
+		 								value="#{reportQueryBean.reportMap[reportParameter.reportParameterCode]}" styleClass="selectBooleanCheckbox" />
+								</ui:fragment>
+							</ui:repeat>
+						</h:panelGrid>
+						<div style="text-align: right;">
+							<p:commandButton id="btn_report_preview"
+								actionListener="#{reportQueryBean.preview}" value="预览" disabled="#{!reportQueryBean.previewIsDisable}"
+								update="reportContent,export, :reportQueryForm:parameterMessage"
+								image="ui-icon ui-icon-search" />
+						</div>
+					</h:form>
+				</p:panel>
+
+
+				<h:form id="reportContentForm" prependId="false">
+					<p:panel style="position:relative;">
+						<f:facet name="header">
+							<h:outputLabel value="报表预览     " />
+							<div style="position: absolute; top: 3px; right: 2px;">
+								<p:menuButton value="导出" style="height:30px;" disabled="#{requestScope.exportFlag != 1}" id="export">
+								   <c:forEach var="itemselect" items="#{reportQueryBean.exportTypeList}">
+										<p:menuitem value="#{itemselect.label}"
+											update="parameterMessage"
+											action="#{reportQueryBean.exportReport}" ajax="false">
+											<f:param name="#{itemselect.value}"
+												value="#{itemselect.label}" />
+										</p:menuitem>
+									</c:forEach>		
+								</p:menuButton>
+							</div>
+
+						</f:facet>
+						<h:panelGroup style="width:100%;text-align:center;"
+							id="reportContent">
+							<p:commandButton style="display:none" />
+				    		#{reportQueryBean.reportContent}
+						</h:panelGroup>
+					</p:panel>
+				</h:form>
+			</p:layoutUnit>
+		</p:layout>
 	</ui:define>
 </ui:composition>
 

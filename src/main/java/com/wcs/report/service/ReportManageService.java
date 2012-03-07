@@ -14,8 +14,6 @@ import javax.persistence.Query;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.StatelessEntityService;
-
-import com.wcs.common.constant.IReportDictConst;
 import com.wcs.common.model.Dict;
 import com.wcs.common.model.Role;
 import com.wcs.report.model.ReportMstr;
