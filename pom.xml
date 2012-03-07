@@ -17,6 +17,19 @@
 		<arquillian.version>1.0.0.Alpha5</arquillian.version>
 		<glassfish.version>3.1</glassfish.version>
 		<jersey.version>1.5</jersey.version>
+		<was8.wasHome>F:\Program Files\IBM\WebSphere\AppServer</was8.wasHome>
+		<!-- <was8.targetServer></was8.targetServer> -->
+		<!-- <was8.server></was8.server> -->
+		<was8.profileName>AppSrv01</was8.profileName>
+		<was8.host>localhost</was8.host>
+		<was8.conntype>SOAP</was8.conntype>
+		<was8.port>8880</was8.port>
+		<was8.username></was8.username>
+		<was8.password></was8.password>
+		<was8.verbose>true</was8.verbose>
+		<!-- need to be false first time it's deployed to a server -->
+		<was8.updateExisting>false</was8.updateExisting>
+		<was8.failOnError>false</was8.failOnError>
 	</properties>
 
 	<repositories>
@@ -375,6 +388,91 @@
 				<version>2.1</version>
 				<configuration>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-ejb-plugin</artifactId> 
+				<configuration> <ejbVersion>3.1</ejbVersion> <archive> <manifest> <addClasspath>true</addClasspath> 
+				</manifest> </archive> </configuration> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version><!--$NO-MVN-MAN-VER$ -->
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${endorsed.dir}</outputDirectory>
+							<silent>true</silent>
+							<artifactItems>
+								<artifactItem>
+									<groupId>javax</groupId>
+									<artifactId>javaee-endorsed-api</artifactId>
+									<version>6.0</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/main/assemble/ear.xml</descriptor>
+					</descriptors>
+					<archiverConfig>
+						<appxml>src/main/assemble/application.xml</appxml>
+					</archiverConfig>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>was6-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>wsUninstallApp</goal>
+							<goal>installApp</goal>
+							<goal>wsStartApp</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<earFile>target/btcbase.ear</earFile>
+					<applicationName>btcbase</applicationName>
+					<wasHome>${was8.wasHome}</wasHome>
+					<host>${was8.host}</host>
+					<username>${was8.username}</username>
+					<password>${was8.password}</password>
+					<profileName>${was8.profileName}</profileName>
+					<conntype>${was8.conntype}</conntype>
+					<port>${was8.port}</port>
+					<verbose>${was8.verbose}</verbose>
+					<updateExisting>${was8.updateExisting}</updateExisting>
+					<failOnError>${was8.failOnError}</failOnError>
 				</configuration>
 			</plugin>
 		</plugins>
