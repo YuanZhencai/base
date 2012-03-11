@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld"
+	  xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <title>Hello  World</title>
+        <meta  http-equiv="keywords"  content="enter,your,keywords,here"  />
+        <meta  http-equiv="description"  content="A  short  description  of  this  page."  />
+        <meta  http-equiv="content-type"  content="text/html;  charset=UTF-8"  />
+    </h:head>
+    <h:body>
+    
+        <h:form  id="form">
+            <!-- <jr:source id="bookSource" type="jndi" value="db2test" />
+    		
+	    	<jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource" 
+	    		value="/jasperreports/report2.jrxml">
+	    		<h:outputText value="View Report" />
+	    	</jr:reportLink> -->
+            <div>
+
+			   	<p:panel id="panel">   
+			   		<p:commandButton value="testReportExport"  actionListener="#{testReport.testReportExport}"  ajax="false"/>/
+			        <p:inputText value="#{testReport.exportType}" />
+			        
+			  		<br/>  
+			        <p:commandButton value="pre"  actionListener="#{testReport.testReportPagePre}"  update="panel"/>
+			        <p:inputText value="#{testReport.pageValue}" />
+			        <p:commandButton value="go"  actionListener="#{testReport.testReportPage}"  update="panel"/>/
+			        <h:outputText value="#{testReport.pageAll}" id="pageAll"  escape="false"/>
+			        <p:commandButton value="next"  actionListener="#{testReport.testReportPageNext}"  update="panel"/>  
+			        <br/>
+			        
+			        <h:panelGroup style="width:100%;text-align:center;" id="reportContent">
+					    <h:outputText value="#{testReport.reportContent}" escape="false"  />   
+					</h:panelGroup>
+				
+
+			    </p:panel>  
+                    
+            </div>
+	       <!--  <jr:reportFrame id="reportFrame" source="bookSource"
+	        	value="/jasperreports/report2.jrxml"
+	        	format="pdf" height="400px" width="80%" 
+	        />-->
+        </h:form>
+    </h:body>
+</html> 

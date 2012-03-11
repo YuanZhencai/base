@@ -2,6 +2,9 @@ package com.wcs.common.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.wcs.report.model.RptRole;
+
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +48,10 @@ public class Rolemstr extends com.wcs.base.model.IdEntity implements Serializabl
 	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
 	private List<Userrole> userroles;
 
+	//bi-directional many-to-one association to RptRole
+//	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
+//	private List<RptRole> rptRoles;
+	
     public Rolemstr() {
     }
 
@@ -127,5 +134,12 @@ public class Rolemstr extends com.wcs.base.model.IdEntity implements Serializabl
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
+//	public List<RptRole> getRptRoles() {
+//		return this.rptRoles;
+//	}
+//
+//	public void setRptRoles(List<RptRole> rptRoles) {
+//		this.rptRoles = rptRoles;
+//	}
 }

@@ -201,6 +201,29 @@
 			<version>2.1.3</version>
 			<type>jar</type>
 		</dependency>
+		
+		<!-- jasperreports -->
+	    <dependency>
+	        <groupId>net.sf.jasperreports</groupId>
+	        <artifactId>jasperreports</artifactId>
+	        <version>4.5.0</version>
+	        <scope>compile</scope>
+	        <exclusions>
+	          <exclusion>
+	            <artifactId>jfreechart</artifactId>
+	            <groupId>jfree</groupId>
+	          </exclusion>
+	          <exclusion>
+	            <artifactId>jcommon</artifactId>
+	            <groupId>jfree</groupId>
+	          </exclusion>
+	          <exclusion>
+	            <artifactId>jdtcore</artifactId>
+	            <groupId>eclipse</groupId>
+	          </exclusion>
+	        </exclusions>
+	    </dependency>
+    
 	</dependencies>
 	<build>
 		<plugins>
