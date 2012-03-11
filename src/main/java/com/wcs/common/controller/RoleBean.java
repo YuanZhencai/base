@@ -1,0 +1,318 @@
+package com.wcs.common.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.TreeNode;
+
+import com.wcs.base.service.LoginService;
+import com.wcs.common.controller.helper.PageModel;
+import com.wcs.common.model.Resourcemstr;
+import com.wcs.common.model.Rolemstr;
+import com.wcs.common.model.Roleresource;
+import com.wcs.common.service.RoleServcie;
+
+/**
+ * Project: tih
+ * Description: Role Managed Bean 
+ * Copyright (c) 2012 Wilmar Consultancy Services
+ * All Rights Reserved.
+ * @author <a href="mailto:guanluyong@wcs-global.com">Mr.Guan</a>
+ */
+@SuppressWarnings("serial")
+@ManagedBean
+@ViewScoped
+public class RoleBean implements Serializable {
+    // role service
+    @EJB RoleServcie roleServcie;
+    @EJB LoginService loginService;
+    
+    // index.xhtml; search conditions.
+    private HashMap<String, String> query;
+    // DataLazyModel for show results of the search
+    private LazyDataModel<Rolemstr> roles;
+    // current object of the Rolemstr
+    private Rolemstr role;
+    
+    // Resources Tree Node root
+    private TreeNode root;
+    // Resources list
+    private List<Resourcemstr> resources;
+    // Selected Resources
+    private TreeNode[] selectedNodes;
+    
+    // total nodes
+    private List<TreeNode> totalNodes = new ArrayList<TreeNode>();
+    
+    // has been communicate resources
+    private List<Roleresource> resourced;
+    
+    public RoleBean() {
+        query = new HashMap<String, String>(2);
+    }
+
+    // reset search conditions
+    public void reset() {
+        query.clear();
+    }
+    // empty method for no action button
+    public void editRole() {}
+    
+    /**
+     * <p>Description: search roles by query conditions</p>
+     */
+    public void search() {
+        roles = new PageModel(roleServcie.search(query), false);
+    }
+    
+    public void validRole(FacesContext context, UIComponent component, java.lang.Object value) 
+        throws ValidatorException {
+        String componentId = component.getId();
+        String componentValue = value.toString().trim();
+        if("newName".equals(componentId) || "updateName".equals(componentId)) {
+            if(componentValue == null || "".equals(componentValue)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色名称：", "不允许为空或空格"));
+            } else if(componentValue.length() > 20) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色名称：", "不允许超过20个字符"));
+            }
+        } else if("newCode".equals(componentId) || "updateCode".equals(componentId)) {
+            if(componentValue == null || "".equals(componentValue)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "不允许为空或空格"));
+            } else if(!componentValue.matches("^[a-zA-Z]+$")) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "只允许填写英文字符"));
+            } else if(componentValue.length() > 50) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "不允许超过50个字符"));
+            }
+        } else if("newDesc".equals(componentId) || "updateDesc".equals(componentId)) {
+            if(componentValue != null && componentValue.length() > 50) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色描述：", "不允许超过50个字符"));
+            }
+        } else if("newDefunctInd".equals(componentId) || "updateDefunctInd".equals(componentId)) {
+            if(componentValue == null || "".equals(componentValue)) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "状态：", "不允许为空"));
+            }
+        }
+    }
+    
+    /**
+     * <p>Description: add role</p>
+     */
+    public void addRole() {
+        role.setId(null);
+        role.setCreatedBy(loginService.getCurrentUserName());
+        role.setCreatedDatetime(new Date());
+        role.setUpdatedBy(loginService.getCurrentUserName());
+        role.setUpdatedDatetime(new Date());
+        
+        try {
+            roleServcie.insert(role);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "新增错误:", e.getMessage()));
+            return;
+        }
+        search();   //re search
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: edit role</p>
+     */
+    public void updateRole() {
+        role.setUpdatedBy(loginService.getCurrentUserName());
+        role.setUpdatedDatetime(new Date());
+        
+        try {
+            roleServcie.update(role);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "编辑错误:", e.getMessage()));
+            return;
+        }
+        
+        search();   //re search
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: communicate the role and resources</p>
+     */
+    public void roleResourceCommunicate() {
+        if(role.getDefunctInd().equals("Y")) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "当前角色为失效状态，不可分配资源"));
+            return;
+        }
+        if(selectedNodes == null || selectedNodes.length == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "没有选择任何资源，无法分配资源"));
+            return;
+        }
+        
+        List<Resourcemstr> newRes = new ArrayList<Resourcemstr>();
+        List<Roleresource> repeat = new ArrayList<Roleresource>();
+        List<Roleresource> source = new ArrayList<Roleresource>();
+        for(Roleresource r : resourced) {
+            source.add(r);
+        }
+        
+        for(int i = 0; i < selectedNodes.length; i ++) {
+            boolean f = false;
+            for(Roleresource r : resourced) {
+                if((long) r.getResourcemstr().getId() == ((Resourcemstr) selectedNodes[i].getData()).getId()) {
+                    repeat.add(r);
+                    f = true;
+                    break;
+                }
+            }
+            if(!f) {
+                newRes.add((Resourcemstr) selectedNodes[i].getData());
+            }
+        }
+        source.removeAll(repeat);
+        try {
+            roleServcie.dispatchRoleToResources(source, repeat, newRes, role, loginService.getCurrentUserName());
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色权限分配：", "请刷新重试。如果还没有解决问题，请联系系统管理员"));
+            return;
+        }
+        
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: find all useful resources</p>
+     */
+    public void searchResources() {
+        // initial
+        root = new DefaultTreeNode("root", null);
+        totalNodes.clear();
+        
+        // build tree nodes
+        resources = roleServcie.searchResources();
+        for(Resourcemstr r : resources) {
+            if(r.getParentId() == 0) {
+                TreeNode tn = new DefaultTreeNode(r, root);
+                totalNodes.add(tn);
+                findSonResource(r, tn, resources);
+            }
+        }
+
+        // old communicates
+        resourced = roleServcie.searchOldResources(role);
+        
+        // find those last son nodes
+        for(int i = 0; i < resourced.size(); i ++) {
+            Resourcemstr r = resourced.get(i).getResourcemstr();
+            boolean f = false;
+            for(Resourcemstr ri : resources) {
+                if((long) r.getId() == ri.getParentId()) {
+                    f = true;
+                    break;
+                }
+            }
+            if(!f) {    // is the last son nodes, then selected
+                for(TreeNode n : totalNodes) {
+                    if((long) ((Resourcemstr)n.getData()).getId() == (long) r.getId()) {
+                        n.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    // 递归
+    public void findSonResource(Resourcemstr r, TreeNode tn, List<Resourcemstr> rs) {
+        for(Resourcemstr rm : rs) {
+            if(rm.getParentId() == r.getId()) {
+                TreeNode n = new DefaultTreeNode(rm, tn);
+                totalNodes.add(n);
+                findSonResource(rm, n, rs);
+            }
+        }
+    }
+    
+    // Getter & Setter
+    public HashMap<String, String> getQuery() {
+        return query;
+    }
+
+    public void setQuery(HashMap<String, String> query) {
+        this.query = query;
+    }
+
+    public LazyDataModel<Rolemstr> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(LazyDataModel<Rolemstr> roles) {
+        this.roles = roles;
+    }
+
+    public Rolemstr getRole() {
+        if(this.role == null) {
+            this.role = new Rolemstr();
+            this.role.setDefunctInd("N");
+        }
+        return role;
+    }
+
+    public void setRole(Rolemstr role) {
+        this.role = role;
+    }
+
+    public TreeNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(TreeNode root) {
+        this.root = root;
+    }
+
+    public List<Resourcemstr> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resourcemstr> resources) {
+        this.resources = resources;
+    }
+
+    public TreeNode[] getSelectedNodes() {
+        return selectedNodes;
+    }
+
+    public void setSelectedNodes(TreeNode[] selectedNodes) {
+        this.selectedNodes = selectedNodes;
+    }
+
+    public List<Roleresource> getResourced() {
+        return resourced;
+    }
+
+    public void setResourced(List<Roleresource> resourced) {
+        this.resourced = resourced;
+    }
+
+    public List<TreeNode> getTotalNodes() {
+        return totalNodes;
+    }
+
+    public void setTotalNodes(List<TreeNode> totalNodes) {
+        this.totalNodes = totalNodes;
+    }
+}

@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+	
+	<ui:define name="title">服务公司管理</ui:define>
+
+	<ui:define name="content">
+		<style type="text/css">
+.changeColor {
+	background: #DEEDF7;
+}
+input[type='checkbox'] {
+	width: 10px;
+}
+
+input[type='radio'] {
+	width: 10px;
+}
+</style>
+	<p:breadCrumb id="dataTable_breadCrumb" preview="true"
+		expandEffectDuration="200" previewWidth="24">
+		<p:menuitem value="系统管理" url="#" />
+		<p:menuitem value="系统管理" url="#" />
+		
+		<p:menuitem value="组织用户管理 " url="#" />
+		<p:menuitem value="所属公司管理" url="#" />
+	</p:breadCrumb>
+	<br />
+		<h:form id="companySearchForm" >
+	<p:fieldset>
+			<h:panelGrid id="formItems" columns="4">
+				<h:outputText value="公司名称:" />
+				<p:inputText value="#{companyBean.companyManagerModel.stext}" />
+				<h:outputText value="地址：" />
+				<p:inputText value="#{companyBean.companyManagerModel.address}" />
+
+				<h:outputText value="所属税务机关:" />
+				<p:inputText value="#{companyBean.companyManagerModel.jgName}" />
+
+				<h:outputText value="状态 ：" />
+				<h:selectOneMenu value="#{companyBean.companyManagerModel.defuctInt}">
+					<f:selectItem itemLabel="请选择" itemValue="" />
+					<f:selectItem itemLabel="生效" itemValue="Y" />
+					<f:selectItem itemLabel="失效" itemValue="N" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<div align="right">
+				<p:commandButton  value="查询"
+					image="ui-icon ui-icon-search" actionListener="#{companyBean.search}" update="companyDataTable" />
+					&#160;&#160;&#160;
+				<p:commandButton  value="重置" actionListener="#{companyBean.resetForm}" update="companySearchForm"/>
+			</div>
+</p:fieldset>
+	
+	<br />
+
+		<p:dataTable id="companyDataTable" var="company"
+			value="#{companyBean.lazyModel}" lazy="true"
+			paginator="true" rows="8" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			 rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 0 ? 'changeColor' : null}" emptyMessage="没有记录">
+
+			<f:facet name="header">
+				<h:outputText value="所属公司列表" />
+				<div
+					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+					<p:commandButton value="增加" 	oncomplete="companyInsertDiaLog.show()" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog"  />
+				</div>
+			</f:facet>
+
+			<p:column headerText="公司名称">
+				<h:outputText value="#{company.stext}" />
+			</p:column>
+
+			<p:column headerText="地址">
+				<h:outputText value="#{company.address}" />
+			</p:column>
+
+			<p:column headerText="邮编">
+				<h:outputText value="#{company.zipcode}" />
+			</p:column>
+
+			<p:column headerText="联系电话">
+				<h:outputText value="#{company.telphone}" />
+			</p:column>
+
+			<p:column headerText="所属税务机关">
+				<h:outputText value="#{company.jgName}" />
+			</p:column>
+			
+			<p:column headerText="状态">
+				<h:outputText value="#{company.defuctInt==y?'有效':'失效'}" />
+			</p:column>
+
+			<p:column headerText="操作">
+				<p:commandButton oncomplete="companyInsertConfirmDiaLog.show()"
+					update="insertConfirmDiaLog"  actionListener="#{companyBean.update}" value="编辑">
+					<f:setPropertyActionListener target="#{companyBean.companySaveModel}" value="#{company}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<ui:include src="CompanyManagerInsertDialog.xhtml" />
+<ui:include src="insertConfirmDiaLog.xhtml" />
+<ui:include src="CompanyManagerSearchDialog.xhtml" />
+</ui:define>
+</ui:composition>

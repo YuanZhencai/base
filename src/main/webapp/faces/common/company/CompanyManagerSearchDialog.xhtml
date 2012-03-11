@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+		<p:dialog modal="true" resizable="false"  header="新增公司" widgetVar="searchFormDialog" id="searchFormDialog">
+	<h:form id="inertForm2">
+			<h:panelGrid id="zzz" columns="2">
+				<h:outputText value="税务机关名称:" />
+				<p:inputText value="#{companyBean.taxauthority.contacterName}" />
+			</h:panelGrid>
+			<div align="right">
+				<p:commandButton  value="查询"
+					image="ui-icon ui-icon-search" actionListener="#{companyBean.searchTaxauthority}" update="companyInsertDataTablez" />
+				<p:commandButton  value="重置" actionListener="#{companyBean.resetdataform1}" update="inertForm2"/>
+			</div>
+			<br />
+					<p:dataTable id="companyInsertDataTablez" var="companyInsert"
+			value="#{companyBean.taxauthorityLazyModel}" lazy="true"
+			paginator="true" rows="8" paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			 rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 0 ? 'changeColor' : null}" >
+				<p:ajax listener="#{companyBean.tRowSelect}" event="rowSelect"/>
+				<f:facet name="header">
+				<h:outputText value="集团公司列表" />
+				<div
+					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
+					<p:commandButton value="数据同步"  />
+				</div>
+			</f:facet>
+			
+			 <p:column selectionMode="single" />  
+			  <p:column headerText="机关名称">  
+			  	<h:outputText value="#{companyInsert.name}" />
+       		 </p:column>  
+			
+			 
+       		 
+       		   <p:column headerText="机关地址">  
+			  	<h:outputText value="#{companyInsert.address}" />
+       		 </p:column>  
+       		 
+       		  <p:column headerText="联系电话">  
+			  	<h:outputText value="#{companyInsert.contacterTelphone}"  />
+       		 </p:column>  
+		
+			</p:dataTable>
+			
+		<div>
+				<p:commandButton  value="确认"
+					image="ui-icon ui-icon-search"   actionListener="#{companyBean.findJgName}" oncomplete="searchFormDialog.hide();" update="insertConfirmForm" />
+				<p:commandButton  value="关闭"  oncomplete="searchFormDialog.hide();"/>
+			</div>
+</h:form>
+	
+	</p:dialog>
+	</ui:composition>
