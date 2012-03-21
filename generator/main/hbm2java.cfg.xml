@@ -5,7 +5,7 @@ EN"	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.connection.driver_class">com.ibm.db2.jcc.DB2Driver</property>
-		<property name="hibernate.connection.url">jdbc:db2://192.168.88.253:50000/NEW_TEST</property>
+		<property name="hibernate.connection.url">jdbc:db2://10.227.254.251:50000/DEV</property>
         <property name="hibernate.default_schema">ROOT</property>
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.connection.password">123</property>
