@@ -15,13 +15,6 @@
 			selectionMode="single">
 			<f:facet name="header">
 				<h:outputText value="用户列表" />
-				<div
-					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="#{msgs.btn_add}"
-						actionListener="#{userBean.addUser}"
-						oncomplete="addUserDialog.show()" update="addUserDlg"
-						image="ui-icon ui-icon-plus" />
-				</div>
 			</f:facet>
 			<p:column headerText="用户帐号">
 				<h:outputText value="#{user.usermstr.adAccount}" />

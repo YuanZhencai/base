@@ -58,6 +58,10 @@
 				<p:commandButton actionListener="#{userBean.reset}"
 					update="formItems" value="#{msgs.btn_reset}"
 					image="ui-icon ui-icon-cancel" />
+				<p:commandButton value="#{msgs.btn_add}"
+						actionListener="#{userBean.addUser}"
+						oncomplete="addUserDialog.show()" update="addUserDlg"
+						image="ui-icon ui-icon-plus" />
 			</div>
 		</div>
 	</h:form>
