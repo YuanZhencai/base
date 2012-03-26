@@ -52,6 +52,9 @@
 							/>
 						<p:commandButton type="reset" value="重置"
 							image="ui-icon ui-icon-cancel" />
+						<p:commandButton value="添加" image="ui-icon ui-icon-plus"
+								oncomplete="thxAddDlgVar.show();document.forms['thxAddDlgFormId'].reset();"
+								update="insertMessagesId" />
 					</DIV>
 				</div>
 				
@@ -64,12 +67,6 @@
 					
 					<f:facet name="header">
 					税务机关列表
-					<div
-							style="position: relative; text-align: right; margin: -13px -5px 0px 0px; vertical-align: middle">
-							<p:commandButton value="添加" image="ui-icon ui-icon-plus"
-								oncomplete="thxAddDlgVar.show();document.forms['thxAddDlgFormId'].reset();"
-								update="insertMessagesId" />
-						</div>
 					</f:facet>
 
 					<p:column>

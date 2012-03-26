@@ -94,6 +94,10 @@
 						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
 					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e"
 						action="#{positionBean.reset}" update="userSerachGrid"/>
+					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="insert_dialog_id"
+						image="ui-icon ui-icon-disk" action="#{positionBean.editBelong}">
+						<f:setPropertyActionListener target="#{positionBean.position}" value=""/>
+					</p:commandButton>
 				</div>
 			</div>
 			
@@ -105,12 +109,6 @@
 			
 				<f:facet name="header">
 					岗位列表
-					<div style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="insert_dialog_id"
-						image="ui-icon ui-icon-disk" action="#{positionBean.editBelong}">
-						<f:setPropertyActionListener target="#{positionBean.position}" value=""/>
-					</p:commandButton>
-					</div>
 				</f:facet>
 				<p:column headerText="岗位名称" style="width: 90%;">
 					<h:outputText value="#{p.name}" title="#{p.name}"/>

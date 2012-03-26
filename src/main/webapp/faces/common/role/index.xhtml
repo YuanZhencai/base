@@ -75,6 +75,10 @@
 						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
 					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e" 
 						action="#{roleBean.reset}" update="userSerachGrid"/>
+					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="new_form"
+						image="ui-icon ui-icon-disk" action="#{roleBean.editRole}">
+						<f:setPropertyActionListener target="#{roleBean.role}" value=""/>
+					</p:commandButton>
 				</div>
 			</div>
 			
@@ -86,12 +90,6 @@
 			
 				<f:facet name="header">
 					角色列表
-					<div style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="new_form"
-						image="ui-icon ui-icon-disk" action="#{roleBean.editRole}">
-						<f:setPropertyActionListener target="#{roleBean.role}" value=""/>
-					</p:commandButton>
-					</div>
 				</f:facet>
 				<p:column headerText="角色名称" style="width: 90%;">
 					<h:outputText value="#{role.name}" title="#{role.name}"/>

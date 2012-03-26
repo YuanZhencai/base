@@ -57,6 +57,11 @@
 							style="margin-right:5px" />
 						<p:commandButton type="reset" value="#{msgs.btn_reset }" 
 							image="ui-icon ui-icon-cancel" />
+						<p:commandButton value="#{msgs.btn_add}" image="ui-icon ui-icon-plus" 
+							oncomplete="addDlgVar.show();document.forms['addDlgFormId'].reset();"   
+							actionListener="#{dictBean.initAddDict() }" 
+							update="addMessagesId"  
+								 />
 					</DIV>
 				</div>
 				
@@ -69,14 +74,6 @@
 
 					<f:facet name="header">
 					字典列表
-					<div
-							style="position: relative; text-align: right; margin: -13px -5px 0px 0px; vertical-align: middle">
-							<p:commandButton value="#{msgs.btn_add}" image="ui-icon ui-icon-plus" 
-							oncomplete="addDlgVar.show();document.forms['addDlgFormId'].reset();"   
-							actionListener="#{dictBean.initAddDict() }" 
-							update="addMessagesId"  
-								 />
-						</div>
 					</f:facet>
 
 					<p:column>

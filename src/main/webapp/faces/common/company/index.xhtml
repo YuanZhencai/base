@@ -51,8 +51,8 @@ input[type='radio'] {
 			<div align="right">
 				<p:commandButton  value="查询"
 					image="ui-icon ui-icon-search" actionListener="#{companyBean.search}" update="companyDataTable" />
-					&#160;&#160;&#160;
 				<p:commandButton  value="重置" actionListener="#{companyBean.resetForm}" update="companySearchForm"/>
+				<p:commandButton value="增加" 	oncomplete="companyInsertDiaLog.show()" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog"  />
 			</div>
 </p:fieldset>
 	
@@ -67,10 +67,6 @@ input[type='radio'] {
 
 			<f:facet name="header">
 				<h:outputText value="所属公司列表" />
-				<div
-					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="增加" 	oncomplete="companyInsertDiaLog.show()" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog"  />
-				</div>
 			</f:facet>
 
 			<p:column headerText="公司名称">
