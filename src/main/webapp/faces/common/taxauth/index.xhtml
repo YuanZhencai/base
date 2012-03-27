@@ -9,7 +9,7 @@
 
 	<ui:define name="styleAndScript">
 		<style type="text/css">
-.lazy_datatable_row {
+.changeColor {
 	background: #DEEDF7;
 }
 </style>
@@ -58,12 +58,16 @@
 					</DIV>
 				</div>
 				
-				<p:dataTable var="ss" value="#{taxAuthorityBean.lazyModelIndex}"
-					paginatorPosition="bottom" rowIndexVar="index" paginator="true"
-					rows="7" lazy="true"
-					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}{CurrentPageReport}"
-					rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
-					style="margin-top: 5px;" emptyMessage="没有记录" selectionMode="single">
+				<p:dataTable emptyMessage="#{msgs.dataTable_empty}"
+					var="ss" value="#{taxAuthorityBean.lazyModelIndex}" lazy="true"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					rowIndexVar="index"
+					rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+					style="margin-top: 5px;"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+					currentPageReportTemplate="{currentPage}/{totalPage}"
+					rowKey="#{ss.id}"
+					selectionMode="single">
 					
 					<f:facet name="header">
 					税务机关列表

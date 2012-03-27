@@ -8,7 +8,7 @@
 	
 	<ui:define name="styleAndScript">
 		<style type="text/css">
-			.lazy_datatable_row {
+			.changeColor {
 				background: #DEEDF7;
 			}
 			td div span {
@@ -82,11 +82,16 @@
 				</div>
 			</div>
 			
-			<p:dataTable id="resultTable" var="role" value="#{roleBean.roles}" 
-			paginatorPosition="bottom" rowIndexVar="index" paginator="true" rows="10" lazy="true"
-			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-			rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
-			style="margin-top: 5px;" emptyMessage="没有记录">
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="resultTable"
+				var="role" value="#{roleBean.roles}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				style="margin-top: 5px;"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{role.id}"
+				selectionMode="single">
 			
 				<f:facet name="header">
 					角色列表

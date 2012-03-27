@@ -30,13 +30,19 @@
 						image="ui-icon ui-icon-cancel" />
 				</div>
 			</div>
-			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="addUserDataTable" var="pVo"
-				value="#{userBean.lazyPVoModel}" lazy="true" paginator="true"
-				rows="5" paginatorPosition="bottom"
-				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-				rowIndexVar="index" style="margin-top: 5px;"
+				
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="addUserDataTable"
+				var="pVo" value="#{userBean.lazyPVoModel}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
 				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
-				selection="#{userBean.selectedPVo}">
+				style="margin-top: 5px;"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{pVo.id}"
+				selection="#{userBean.selectedPVo}"
+				selectionMode="single">
+				
 				<p:ajax event="rowSelect" listener="#{userBean.onRowSelectShowBtn1}"
 					update="showBtn1" />
 				<f:facet name="header">

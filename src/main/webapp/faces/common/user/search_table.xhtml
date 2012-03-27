@@ -8,10 +8,12 @@
 	<h:form id="userDataTableForm" prependId="false">
 		<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="userDataTable"
 			var="user" value="#{userBean.lazyUsermstrVoModel}" lazy="true"
-			paginator="true" rows="8" paginatorPosition="bottom"
-			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+			paginator="true" rows="10" paginatorPosition="bottom"
 			rowIndexVar="index"
 			rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			rowKey="#{user.id}"
 			selectionMode="single">
 			<f:facet name="header">
 				<h:outputText value="用户列表" />

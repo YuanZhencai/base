@@ -6,33 +6,44 @@
 	<p:dialog id="position_company_id" widgetVar="position_company_dialog"
 		resizable="false" width="500" height="400" header="分配所属公司"
 		modal="true">
-		<h:panelGrid columns="1">
-			<h:column>
-				<h:outputText value="岗位名称： " />
-				<h:outputText value="#{positionBean.position.name}" />
-			</h:column>
 
-			<h:column>
-				<h:outputText value="岗位描述： " />
-				<h:outputText value="#{positionBean.position.desc}"
-					style="width: 200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" />
-			</h:column>
-		</h:panelGrid>
 		<h:form prependId="false" id="position_company_form">
-			<p:dataTable id="position_company_datatable" var="c"
-				value="#{positionBean.companyLazyModel}" paginatorPosition="bottom"
-				rowIndexVar="index" paginator="true" rows="6" lazy="true"
-				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
-				selection="#{positionBean.positionCompany}" emptyMessage="没有记录">
+		
+			<div class="style1">
+				<h:panelGrid columns="1">
+					<h:column>
+						<h:outputText value="岗位名称： " />
+						<h:outputText value="#{positionBean.position.name}" />
+					</h:column>
+
+					<h:column>
+						<h:outputText value="岗位描述： " />
+						<h:outputText value="#{positionBean.position.desc}"
+							style="width: 200px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis" />
+					</h:column>
+				</h:panelGrid>
+		
+				<div>
+					<p:commandButton value="添加" oncomplete="company_dialog.show()"
+						style="margin-right: 5px;"
+						image="ui-icon ui-icon-disk" update="company_form"
+						action="#{positionBean.beforeAddPositionorg}" />
+				</div>
+			</div>
+				
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="position_company_datatable"
+				var="c" value="#{positionBean.companyLazyModel}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{c.id}"
+				selection="#{positionBean.positionCompany}"
+				selectionMode="single">
+				
 				<f:facet name="header">
 				所属公司列表
-				<div
-						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-						<p:commandButton value="添加" oncomplete="company_dialog.show()"
-							image="ui-icon ui-icon-disk" update="company_form"
-							action="#{positionBean.beforeAddPositionorg}" />
-					</div>
 				</f:facet>
 				<p:column selectionMode="multiple" style="width: 50%;"/>
 				<p:column headerText="公司名称" style="width: 90%;">

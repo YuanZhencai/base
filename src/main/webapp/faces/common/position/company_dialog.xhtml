@@ -25,12 +25,19 @@
 					<p:commandButton value="重置" oncomplete="company_form.reset();" />
 				</div>
 			</div>
-			<p:dataTable id="company_datatable" var="c" rows="6" lazy="true"
-				value="#{positionBean.notBelongedCompany}" style="margin-top: 5px;"
-				paginatorPosition="bottom" rowIndexVar="index" paginator="true"
-				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowStyleClass="#{index mod 2 == 1 ? 'lazy_datatable_row' : null}"
-				selection="#{positionBean.notPositionCompany}" emptyMessage="没有记录">
+			
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="company_datatable"
+				var="c" value="#{positionBean.notBelongedCompany}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				style="margin-top: 5px;"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{c.id}"
+				selection="#{positionBean.notPositionCompany}"
+				selectionMode="single">
+				
 				<f:facet name="header">
 				集团公司列表
 				<div

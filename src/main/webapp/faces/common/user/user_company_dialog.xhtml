@@ -18,24 +18,28 @@
 					<p:inputText value="#{userBean.p.nachn}"
 						styleClass="input_disabled" disabled="true" />
 				</h:panelGrid>
+				<div>
+					<p:commandButton value="#{msgs.btn_add}"
+						style="margin-right: 5px;"
+						image="ui-icon ui-icon-disk"
+						actionListener="#{userBean.addUserCompany}"
+						oncomplete="companyDialog.show()" update="companyDlg" />
+				</div>
 			</div>
+				
 			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="userCompanyDataTable"
-				var="userCompanyVo" value="#{userBean.lazyUserCompanymstrVoModel}"
-				lazy="true" paginator="true" rows="5" paginatorPosition="bottom"
-				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				var="userCompanyVo" value="#{userBean.lazyUserCompanymstrVoModel}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
 				rowIndexVar="index"
 				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
 				style="margin-top: 5px;"
-				selection="#{userBean.selectedUserCompanymstrVos}">
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{userCompanyVo.id}"
+				selection="#{userBean.selectedUserCompanymstrVos}"
+				selectionMode="single">
 				<f:facet name="header">
 					<h:outputText value="服务公司列表" />
-					<div
-						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-						<p:commandButton value="#{msgs.btn_add}"
-							image="ui-icon ui-icon-disk"
-							actionListener="#{userBean.addUserCompany}"
-							oncomplete="companyDialog.show()" update="companyDlg" />
-					</div>
 				</f:facet>
 				<p:column selectionMode="multiple" />
 				<p:column headerText="公司名称">

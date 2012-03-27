@@ -27,13 +27,19 @@
 						image="ui-icon ui-icon-cancel" />
 				</div>
 			</div>
+				
 			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="companyDataTable"
-				var="companyVo" value="#{userBean.lazyCompanymstrVoModel}"
-				lazy="true" paginator="true" rows="5" paginatorPosition="bottom"
-				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-				rowIndexVar="index" style="margin-top: 5px;"
+				var="companyVo" value="#{userBean.lazyCompanymstrVoModel}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
 				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
-				selection="#{userBean.selectedCompanymstrVos}">
+				style="margin-top: 5px;"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{companyVo.id}"
+				selection="#{userBean.selectedCompanymstrVos}"
+				selectionMode="single">
+				
 				<f:facet name="header">
 					<h:outputText value="服务公司列表" />
 				</f:facet>
