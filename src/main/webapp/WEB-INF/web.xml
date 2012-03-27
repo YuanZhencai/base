@@ -16,6 +16,15 @@
 		<param-value>false</param-value>
 	</context-param>
 
+
+	<filter>
+		<filter-name>Set Character Encoding</filter-name>
+		<filter-class>com.wcs.common.filter.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
 	<!-- FileUpload -->
 	<filter>
 		<filter-name>PrimeFaces FileUpload Filter</filter-name>
@@ -119,7 +128,12 @@
 	<listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
 	</listener>
- 
+
+	<filter-mapping>
+		<filter-name>Set Character Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<!-- Shiro -->
 	<filter>
 		<filter-name>ShiroFilter</filter-name>

@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-		<p:dialog modal="true" resizable="false"  header="新增公司" widgetVar="searchFormDialog" id="searchFormDialog">
+		<p:dialog modal="true" resizable="false"  header="选择睡种" widgetVar="searchFormDialog" id="searchFormDialog" width="500" height="300">
 	<h:form id="inertForm2">
 			<h:panelGrid id="zzz" columns="2">
 				<h:outputText value="税务机关名称:" />
@@ -12,24 +12,20 @@
 			</h:panelGrid>
 			<div align="right">
 				<p:commandButton  value="查询"
-					image="ui-icon ui-icon-search" actionListener="#{companyBean.searchTaxauthority}" update="companyInsertDataTablez" />
-				<p:commandButton  value="重置" actionListener="#{companyBean.resetdataform1}" update="inertForm2"/>
-				<p:commandButton value="数据同步"  />
+					image="ui-icon ui-icon-search" actionListener="#{companyBean.searchTaxauthority}" update="companyInsertDataTablez" style="margin-right: 5px;" />
+				<p:commandButton  value="重置" actionListener="#{companyBean.resetdataform1}" update="inertForm2" image="ui-icon ui-icon-cancel" />
 			</div>
 			<br />
-			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="companyInsertDataTablez"
-				var="companyInsert" value="#{companyBean.taxauthorityLazyModel}" lazy="true"
-				paginator="true" rows="10" paginatorPosition="bottom"
-				rowIndexVar="index"
-				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
-				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-				currentPageReportTemplate="{currentPage}/{totalPage}"
-				rowKey="#{companyInsert.id}"
-				selectionMode="single">
-			
-				<p:ajax listener="#{companyBean.tRowSelect}" event="rowSelect"/>
+					<p:dataTable id="companyInsertDataTablez" var="companyInsert"
+			value="#{companyBean.taxauthorityLazyModel}" lazy="true"
+			paginator="true" rows="6" paginatorPosition="bottom"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+			 rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 0 ? 'changeColor' : null}" selection="#{companyBean.selectt}"  >
+				<p:ajax listener="#{companyBean.updateLast}" event="rowSelect" update="inertForm2" />
 				<f:facet name="header">
-				<h:outputText value="集团公司列表" />
+				<h:outputText value="税种列表" />
+			
 			</f:facet>
 			
 			 <p:column selectionMode="single" />  
@@ -49,10 +45,10 @@
 		
 			</p:dataTable>
 			
-		<div>
+		<div align="center" style="margin-top: 5px;">
 				<p:commandButton  value="确认"
-					image="ui-icon ui-icon-search"   actionListener="#{companyBean.findJgName}" oncomplete="searchFormDialog.hide();" update="insertConfirmForm" />
-				<p:commandButton  value="关闭"  oncomplete="searchFormDialog.hide();"/>
+					image="ui-icon ui-icon-search" style="margin-right: 5px;" disabled="#{companyBean.lastBtn}"  actionListener="#{companyBean.findJgName}" oncomplete="searchFormDialog.hide();" update="insertConfirmForm" />
+				<p:commandButton  value="关闭"  oncomplete="searchFormDialog.hide();" image="ui-icon ui-icon-cancel" />
 			</div>
 </h:form>
 	

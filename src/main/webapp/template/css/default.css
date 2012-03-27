@@ -823,8 +823,10 @@ input {
 	vertical-align:middle;
 	width:180px;
 	height:40px;
+	/*
 	border:2px solid #74b2e2;
 	background-color:#FFFFFF;
+	*/
 }
 
 .ajaxStatus span img{

@@ -19,7 +19,7 @@
 			
 			<h:panelGrid  columns="2">
 					<h:outputText value="公司地址:" />
-					<p:inputText value="#{companyBean.companySaveModel.address}" rendered="true"  />
+					<p:inputText value="#{companyBean.companySaveModel.address}" rendered="true"  style="width:338px;"  />
 			</h:panelGrid>
 			
 				<h:panelGrid  columns="4">
@@ -31,14 +31,14 @@
 			<h:inputHidden value="#{companyBean.companySaveModel.id}"/>
 				<h:panelGrid  columns="5">
 					<h:outputText value="公司类型:" />
-			<h:selectOneMenu value="#{companyBean.companySaveModel.type}">
+			<h:selectOneMenu value="#{companyBean.companySaveModel.type}"  styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 					<f:selectItem itemLabel="贸易公司" itemValue="贸易公司" />
 					<f:selectItem itemLabel="制造工厂" itemValue="制造工厂" />
 					<f:selectItem itemLabel="其它" itemValue="其它" />
 				</h:selectOneMenu>
 				<h:outputText value="所属税务机关:" />
-				<p:inputText value="#{companyBean.companySaveModel.jgName}" disabled="true" id="jgName"/>
-				<p:commandButton  value="查询" image="ui-icon ui-icon-search" oncomplete="searchFormDialog.show();" />
+				<p:inputText value="#{companyBean.companySaveModel.jgName}" disabled="true" id="jgName" style="width:111px;" />
+				<p:commandButton  value="查询" image="ui-icon ui-icon-search" oncomplete="searchFormDialog.show();" actionListener="#{companyBean.searchTax}" update="inertForm2" />
 			</h:panelGrid>
 			<h:panelGrid  columns="2">
 				<h:outputText value="公司描述:" />
@@ -55,12 +55,16 @@
 			</h:selectOneRadio>
 		</h:panelGrid>
 		
-			<div>
+			<div align="center" style="margin-top: 5px;">
 				<p:commandButton  value="确认"
-				disabled="#{companyBean.secondBtn}" update="companySearchForm"   actionListener="#{companyBean.saveOrUpdateCompany}" oncomplete="companyInsertConfirmDiaLog.hide();companyInsertDiaLog.hide();"  />
-				<p:commandButton  value="关闭"  oncomplete="insertConfirmDiaLog.hide();"/>
+				disabled="#{companyBean.secondBtn}" style="margin-right: 5px;" update="companySearchForm"   actionListener="#{companyBean.saveOrUpdateCompany}" oncomplete="companyInsertConfirmDiaLog.hide();companyInsertDiaLog.hide();" image="ui-icon ui-icon-disk"/>
+				<p:commandButton  value="关闭"  oncomplete="companyInsertConfirmDiaLog.hide();" image="ui-icon ui-icon-cancel" />
 			</div>
 		
 		</h:form>
 	</p:dialog>
+	<script>
+	
+	
+	</script>
 	</ui:composition>

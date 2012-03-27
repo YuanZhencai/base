@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -17,10 +19,10 @@ import javax.faces.validator.ValidatorException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 
 import com.wcs.base.service.LoginService;
-import com.wcs.common.controller.helper.PageModel;
 import com.wcs.common.model.Resourcemstr;
 import com.wcs.common.model.Rolemstr;
 import com.wcs.common.model.Roleresource;
@@ -61,8 +63,11 @@ public class RoleBean implements Serializable {
     // has been communicate resources
     private List<Roleresource> resourced;
     
-    public RoleBean() {
+    public RoleBean() { }
+    
+    @PostConstruct public void initRoleBean() {
         query = new HashMap<String, String>(2);
+        search();
     }
 
     // reset search conditions
@@ -76,7 +81,21 @@ public class RoleBean implements Serializable {
      * <p>Description: search roles by query conditions</p>
      */
     public void search() {
-        roles = new PageModel(roleServcie.search(query), false);
+        roles = new LazyDataModel<Rolemstr>() {
+            public List<Rolemstr> load(int arg0, int arg1, String arg2, SortOrder arg3, Map<String, String> arg4) {
+                List<Rolemstr> list = roleServcie.search(query);
+                setRowCount(list.size());
+                if(getRowCount() > arg1) {
+                    try {
+                        return list.subList(arg0, arg0 + arg1);
+                    } catch (IndexOutOfBoundsException e) {
+                        return list.subList(arg0, arg0 + (getRowCount() % arg1));
+                    }
+                } else {
+                    return list;
+                }
+            }
+        };
     }
     
     public void validRole(FacesContext context, UIComponent component, java.lang.Object value) 
@@ -157,11 +176,11 @@ public class RoleBean implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "当前角色为失效状态，不可分配资源"));
             return;
         }
-        if(selectedNodes == null || selectedNodes.length == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, 
-                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "没有选择任何资源，无法分配资源"));
-            return;
-        }
+//        if(selectedNodes == null || selectedNodes.length == 0) {
+//            FacesContext.getCurrentInstance().addMessage(null, 
+//                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "没有选择任何资源，无法分配资源"));
+//            return;
+//        }
         
         List<Resourcemstr> newRes = new ArrayList<Resourcemstr>();
         List<Roleresource> repeat = new ArrayList<Roleresource>();
