@@ -17,6 +17,7 @@
 				<p:commandButton  value="查询"
 					image="ui-icon ui-icon-search" actionListener="#{companyBean.searchInsert}" update="positionDataTable" />
 				<p:commandButton  value="重置" actionListener="#{companyBean.resetInsertForm}" update="insertDataForminsertDataForm"/>
+				<p:commandButton value="数据同步"  />
 			</div>
 			<br />
 				
@@ -33,10 +34,6 @@
 				<p:ajax listener="#{companyBean.oRowSelect}" event="rowSelect" update="insertDataForminsertDataForm" />
 				<f:facet name="header">
 				<h:outputText value="集团公司列表" />
-				<div
-					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="数据同步"  />
-				</div>
 			</f:facet>
 			
 			 <p:column selectionMode="single" />  

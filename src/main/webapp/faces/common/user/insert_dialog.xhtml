@@ -28,6 +28,7 @@
 					<p:commandButton action="#{userBean.resetP}"
 						update="addUserFormItems" value="#{msgs.btn_reset}"
 						image="ui-icon ui-icon-cancel" />
+					<p:commandButton value="数据同步" action="#{userBean.reset}" />
 				</div>
 			</div>
 				
@@ -47,10 +48,6 @@
 					update="showBtn1" />
 				<f:facet name="header">
 					<h:outputText value="集团用户列表" />
-					<div
-						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-						<p:commandButton value="数据同步" action="#{userBean.reset}" />
-					</div>
 				</f:facet>
 				<p:column selectionMode="single" />
 				<p:column headerText="姓名">

@@ -23,6 +23,9 @@
 						actionListener="#{positionBean.searchOtherCompany}"
 						update="company_form" />
 					<p:commandButton value="重置" oncomplete="company_form.reset();" />
+					<p:commandButton value="数据同步" update="company_id"
+							actionListener="#{positionBean.synchData}"
+							image="ui-icon ui-icon-search" />
 				</div>
 			</div>
 			
@@ -40,12 +43,6 @@
 				
 				<f:facet name="header">
 				集团公司列表
-				<div
-						style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-						<p:commandButton value="数据同步" update="company_id"
-							actionListener="#{positionBean.synchData}"
-							image="ui-icon ui-icon-search" />
-					</div>
 				</f:facet>
 				<p:column selectionMode="multiple" style="width: 50%;"/>
 				<p:column headerText="公司名称" style="width: 80%;">
