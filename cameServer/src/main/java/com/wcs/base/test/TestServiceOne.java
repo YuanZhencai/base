@@ -16,12 +16,15 @@
  */
 package com.wcs.base.test;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
 
+import com.wcs.base.camel.FileUtil;
 import com.wcs.base.camel.TestBean;
 
 /**
@@ -32,8 +35,18 @@ public class TestServiceOne  implements Serializable{
 
     public List hello(TestBean testBean) {
     	List lisResult= new ArrayList();
-    	lisResult.add("TestServiceOne:" + testBean.getName());
-    	System.out.println("***********************Invoking HelloBean with 2:" + testBean.getName());
+    	File directory = new File("..");
+    	boolean bol = false;
+    	try {
+    		bol = FileUtil.saveFile(testBean.getFile(), directory.getCanonicalPath()+"/" + testBean.getName());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	if(bol){
+    		lisResult.add("TestServiceOne:SAVE " + testBean.getName()+ " OK!");
+    	}else{
+    		lisResult.add("TestServiceOne:SAVE " + testBean.getName()+ " NG!");
+    	}
     	return lisResult;
     }
 

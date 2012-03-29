@@ -1,10 +1,15 @@
 package com.wcs.base.camel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.apache.camel.ExchangePattern;
@@ -40,7 +45,7 @@ public class TestSendMessage   implements Serializable
 	    String password = CamelComponentFactory.DEFAULT_PASSWORD;
 	    String url = CamelComponentFactory.DEFAULT_BROKER_URL;
 	    
-		CamelComponentFactory camelComponentFactory = new CamelComponentFactory(user, password, "failover://tcp://10.229.15.125:61616");
+		CamelComponentFactory camelComponentFactory = new CamelComponentFactory(user, password, url);
 		CamelComponent camelComponent;
 		try {
 			camelComponent = camelComponentFactory.createCamelComponent();
@@ -48,8 +53,9 @@ public class TestSendMessage   implements Serializable
 		
 			//test
 			TestBean testBean = new TestBean();
-			testBean.setName(name + "********************1");
-			System.out.println("********************sendMessageBean:"+name+"********************");
+			testBean.setName(name);
+			
+            testBean.setFile(FileUtil.getFile(FacesContext.getCurrentInstance().getExternalContext().getRealPath( "/" )+"FILE/" + name));
 	
 			//TODO Asynchronous
 //			camelComponent.sendAsyncRequestBodyAndHeader("jms:test?requestTimeout=2000000", testBean, "service", "bean:testServiceOne?method=hello");
@@ -72,7 +78,7 @@ public class TestSendMessage   implements Serializable
 	    String password = CamelComponentFactory.DEFAULT_PASSWORD;
 	    String url = CamelComponentFactory.DEFAULT_BROKER_URL;
 	    
-		CamelComponentFactory camelComponentFactory = new CamelComponentFactory(user, password, "failover://tcp://10.229.15.125:61616");
+		CamelComponentFactory camelComponentFactory = new CamelComponentFactory(user, password, url);
 		CamelComponent camelComponent;
 		try {
 			camelComponent = camelComponentFactory.createCamelComponent();

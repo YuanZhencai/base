@@ -19,21 +19,25 @@ package com.wcs.base.camel;
 
 /**
  * @version $Revision: 211 $
- * $Rev$
- * $Author$ 
- * $Date$
  */
 public class TestBean  implements java.io.Serializable {
 	TestBean(){
 		System.out.println("init HelloBean");
 	}
 	private String name;
+	private byte[]  file;
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public byte[] getFile() {
+		return file;
+	}
+	public void setFile(byte[] file) {
+		this.file = file;
 	}
 
 }
