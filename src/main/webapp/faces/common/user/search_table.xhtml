@@ -31,7 +31,7 @@
 				<h:outputText
 					value="#{user.usermstr.defunctInd eq 'N' ? (msgs.txt_effective):(msgs.txt_effectiveLost)}" />
 			</p:column>
-			<p:column headerText="操作" style="text-align: center;">
+			<p:column headerText="操作" styleClass="operating_120">
 				<p:commandButton action="#{userBean.updateUser}"
 					oncomplete="updateUserDialog.show()" update="updateUserDlg"
 					title="编辑" image="ui-icon ui-icon-pencil"

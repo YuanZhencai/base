@@ -52,6 +52,7 @@ input[type='radio'] {
 				<p:commandButton  value="查询"
 					image="ui-icon ui-icon-search" actionListener="#{companyBean.search}" update="companyDataTable"  style="margin-right: 5px;"/>
 				<p:commandButton  value="重置" actionListener="#{companyBean.resetForm}" update="companySearchForm"  style="margin-right: 5px;" image="ui-icon ui-icon-cancel"/>
+				<p:commandButton value="增加" 	oncomplete="handleSaveRequest(xhr, status, args);" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog" 	image="ui-icon ui-icon-disk"  />
 			</div>
 </p:fieldset>
 	
@@ -65,10 +66,6 @@ input[type='radio'] {
 
 			<f:facet name="header">
 				<h:outputText value="所属公司列表" />
-				<div
-					style="text-align: right; position: relative; margin: -13px -5px 0px 0px; vertical-align: middle">
-					<p:commandButton value="增加" 	oncomplete="handleSaveRequest(xhr, status, args);" actionListener="#{companyBean.insert}" update="insertConfirmDiaLog,insertDiaLog,searchFormDialog" 	image="ui-icon ui-icon-disk"  />
-				</div>
 			</f:facet>
 
 			<p:column headerText="公司名称">
@@ -95,7 +92,7 @@ input[type='radio'] {
 				<h:outputText value="#{company.defuctInt=='Y' ?'失效':'有效'}" />
 			</p:column>
 
-			<p:column headerText="操作">
+			<p:column headerText="操作" styleClass="operating_30">
 				<p:commandButton oncomplete="companyInsertConfirmDiaLog.show()"
 					update="insertConfirmDiaLog"  actionListener="#{companyBean.update}" title="编辑" image="ui-icon ui-icon-wrench">
 					<f:setPropertyActionListener target="#{companyBean.companySaveModel}" value="#{company}" />

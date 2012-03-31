@@ -26,6 +26,7 @@
 				height: 20px;
 			}
 		</style>
+		<!-- 
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				ensureTable();
@@ -63,6 +64,7 @@
 				});
 			}
 		</script>
+		 -->
 	</ui:define>
 
 	<ui:define name="content">
@@ -114,7 +116,7 @@
 				<f:facet name="header">
 					岗位列表
 				</f:facet>
-				<p:column headerText="岗位名称" style="width: 90%;">
+				<p:column headerText="岗位名称">
 					<h:outputText value="#{p.name}" title="#{p.name}"/>
 				</p:column>
 				<!-- p:column headerText="创建人员" style="width: 90%;">
@@ -133,15 +135,15 @@
 						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd"/>
 					</h:outputText>
 				</p:column -->
-				<p:column headerText="状态" style="width: 90%;">
+				<p:column headerText="状态">
 					<h:outputText value="#{p.defunctInd == 'Y' ? '失效' : '生效'}" title="#{p.defunctInd == 'Y' ? '生效' : '失效'}"/>
 				</p:column>
-				<p:column headerText="岗位描述" style="width: 90%;">
+				<p:column headerText="岗位描述">
 					<h:outputText value="#{p.desc}" title="#{p.desc}"/>
 				</p:column>
-				<p:column headerText="操作" style="width: 90%; text-align: center;">
+				<p:column headerText="操作" styleClass="operating_60">
 					<p:commandButton title="编辑" image="ui-icon ui-icon-wrench" update="update_dialog_id"
-						oncomplete="update_dialog_dialog.show();" styleClass="op_button"
+						oncomplete="update_dialog_dialog.show();"
 						action="#{positionBean.editBelong}">
 						<f:setPropertyActionListener target="#{positionBean.position}" value="#{p}"/>
 					</p:commandButton>

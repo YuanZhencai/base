@@ -128,10 +128,7 @@
 						</f:facet>
 						<h:outputText value="#{ss.remarks}" />
 					</p:column>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="操作" />
-						</f:facet>
+					<p:column headerText="操作" styleClass="operating_30">
 						<p:commandButton 
 							image="ui-icon ui-icon-pencil" title="#{msgs.btn_edit }"  
 							 disabled="#{ss.sysInd == 'Y'?true:false }" 
