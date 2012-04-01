@@ -34,8 +34,7 @@
 			<p:column headerText="操作" styleClass="operating_120">
 				<p:commandButton action="#{userBean.updateUser}"
 					oncomplete="updateUserDialog.show()" update="updateUserDlg"
-					title="编辑" image="ui-icon ui-icon-pencil"
-					styleClass="operation_button">
+					title="编辑" image="ui-icon ui-icon-pencil">
 					<f:setPropertyActionListener target="#{userBean.method}"
 						value="update" />
 					<f:setPropertyActionListener
@@ -43,22 +42,20 @@
 				</p:commandButton>
 				<p:commandButton action="#{userBean.userRole}"
 					oncomplete="userRoleDialog.show()" update="userRoleDlg"
-					title="角色分配" image="ui-icon ui-icon-person"
-					styleClass="operation_button">
+					title="角色分配" image="ui-icon ui-icon-person">
 					<f:setPropertyActionListener
 						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
 				</p:commandButton>
 				<p:commandButton action="#{userBean.userPositionorg}"
 					oncomplete="userPositionorgDialog.show()"
 					update="userPositionorgDlg" title="岗位分配"
-					image="ui-icon ui-icon-org" styleClass="operation_button">
+					image="ui-icon ui-icon-org">
 					<f:setPropertyActionListener
 						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
 				</p:commandButton>
 				<p:commandButton action="#{userBean.userCompany}"
 					oncomplete="userCompanyDialog.show()" update="userCompanyDlg"
-					title="服务公司" image="ui-icon ui-icon-assign"
-					styleClass="operation_button">
+					title="服务公司" image="ui-icon ui-icon-assign">
 					<f:setPropertyActionListener
 						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
 				</p:commandButton>
