@@ -803,14 +803,14 @@ input {
     height:100%;
     line-height:100%;
     vertical-align:middle;
-    background-color:Gray;
+    /*background-color:Gray;*/
     position:absolute;
 	text-align:center;
    	left:0px;
     top:0px;
-    opacity: 0.2;                /* Firefox, Safari(WebKit), Opera)*/
-    filter: "alpha(opacity=20)"; /* IE 8 */
-    filter: alpha(opacity=20);   /* IE 4-7 */
+   /* opacity: 0.2; */               /* Firefox, Safari(WebKit), Opera)*/
+    /* filter: "alpha(opacity=20)";*/ /* IE 8 */
+    /* filter: alpha(opacity=20);*/   /* IE 4-7 */
     display:table;
 }
 
@@ -823,28 +823,25 @@ input {
 	vertical-align:middle;
 	width:180px;
 	height:40px;
-	/*
 	border:2px solid #74b2e2;
 	background-color:#FFFFFF;
-	*/
 }
 
 .ajaxStatus span img{
 	top:10px;
 	z-index:99994; 
 	position:relative;
-	left:-48%;
-	top:-48%;
+
 }
 
 .ajaxStatus span label{
 	top:10px;
 	z-index:99993; 
 	position:relative;
-	background-color:#FFFFFF;
+	
 	color:black;
 	font-weight:bold;
-	left:-48%;
+
 }
 /*加载图片样式结束*/
 
