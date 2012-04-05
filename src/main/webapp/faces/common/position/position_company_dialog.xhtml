@@ -54,12 +54,12 @@
 				</p:column>
 			</p:dataTable>
 
-			<div style="text-align: right; position: relative; margin-top: 5px;">
+			<div style="text-align: center; position: relative; margin-top: 5px;">
 				<p:commandButton image="ui-icon ui-icon-disk" value="确定"
 					oncomplete="position_company_dialog.hide();"
 					action="#{positionBean.addPositionorg}" style="margin-right: 5px;" />
-				<p:commandButton image="ui-icon ui-icon-cancel" value="关闭"
-					oncomplete="position_company_dialog.hide();" />
+				<p:commandButton type="button" image="ui-icon ui-icon-cancel" value="关闭"
+					onclick="position_company_dialog.hide();" />
 			</div>
 		</h:form>
 	</p:dialog>

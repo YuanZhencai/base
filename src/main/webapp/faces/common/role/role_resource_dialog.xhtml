@@ -17,12 +17,12 @@
 			</p:tree>
 
 
-			<div style="text-align: right; margin-top: 5px;">
+			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton value="确定" image="ui-icon ui-icon-disk" update="role_resource_form"
 					style="margin-right: 5px;" oncomplete="handleTreeRequest(xhr, status, args);"
 					action="#{roleBean.roleResourceCommunicate}" />
-				<p:commandButton value="关闭" image="ui-icon ui-icon-cancel"
-					oncomplete="role_resource_dialog.hide();" />
+				<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"
+					onclick="role_resource_dialog.hide();" />
 			</div>
 		</h:form>
 	</p:dialog>

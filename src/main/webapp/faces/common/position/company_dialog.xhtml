@@ -55,13 +55,13 @@
 					<h:outputText value="#{c.telphone}" title="#{c.telphone}" />
 				</p:column>
 			</p:dataTable>
-			<div style="text-align: right; position: relative; margin-top: 5px;">
+			<div style="text-align: center; position: relative; margin-top: 5px;">
 				<p:commandButton image="ui-icon ui-icon-disk" value="确定"
 					oncomplete="company_dialog.hide();"
 					actionListener="#{positionBean.mergeVO}"
 					update="position_company_form" style="margin-right: 5px;" />
-				<p:commandButton image="ui-icon ui-icon-cancel" value="关闭"
-					oncomplete="company_dialog.hide();" />
+				<p:commandButton type="button" image="ui-icon ui-icon-cancel" value="关闭"
+					onclick="company_dialog.hide();" />
 			</div>
 		</h:form>
 	</p:dialog>

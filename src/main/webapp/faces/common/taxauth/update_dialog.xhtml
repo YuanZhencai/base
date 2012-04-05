@@ -80,7 +80,7 @@
 					actionListener="#{taxAuthorityBean.modifyData}"
 					update="updateMessagesId,taxFormId"   style="margin-right:5px" 
 					oncomplete="handleUpdateRequest(xhr, status, args);" />
-				<p:commandButton value="取消" oncomplete="thxUpDlgVar.hide()"  image="ui-icon ui-icon-cancel" />
+				<p:commandButton type="button" value="取消" onclick="thxUpDlgVar.hide()"  image="ui-icon ui-icon-cancel" />
 			</div>
 
 		</h:form>

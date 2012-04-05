@@ -40,7 +40,7 @@
 		    <div style="margin-top: 5px;" align="center">
 				<p:commandButton  value="确认"
 					disabled="#{companyBean.firstBtnFlag}" id="firstBtn" oncomplete="companyInsertConfirmDiaLog.show();" actionListener="#{companyBean.setNameAndCode}" update="insertConfirmDiaLog" style="margin-right: 5px;" image="ui-icon ui-icon-disk"/>
-				<p:commandButton  value="关闭"  oncomplete="companyInsertDiaLog.hide();" style="margin-right: 5px;" image="ui-icon ui-icon-cancel" />
+				<p:commandButton type="button"  value="关闭"  onclick="companyInsertDiaLog.hide();" style="margin-right: 5px;" image="ui-icon ui-icon-cancel" />
 			</div>
 </h:form>
 		

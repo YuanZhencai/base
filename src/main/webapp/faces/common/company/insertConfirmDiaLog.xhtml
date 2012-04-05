@@ -58,7 +58,7 @@
 			<div align="center" style="margin-top: 5px;">
 				<p:commandButton  value="确认"
 				disabled="#{companyBean.secondBtn}" style="margin-right: 5px;" update="companySearchForm"   actionListener="#{companyBean.saveOrUpdateCompany}" oncomplete="companyInsertConfirmDiaLog.hide();companyInsertDiaLog.hide();" image="ui-icon ui-icon-disk"/>
-				<p:commandButton  value="关闭"  oncomplete="companyInsertConfirmDiaLog.hide();" image="ui-icon ui-icon-cancel" />
+				<p:commandButton type="button" value="关闭"  onclick="companyInsertConfirmDiaLog.hide();" image="ui-icon ui-icon-cancel" />
 			</div>
 		
 		</h:form>

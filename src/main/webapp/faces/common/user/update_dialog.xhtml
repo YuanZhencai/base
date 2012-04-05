@@ -79,7 +79,7 @@
 					update="errorMsg,updateUserDialogForm,userDataTable,userGrowl"
 					value="#{msgs.btn_ok}" image="ui-icon ui-icon-check"
 					style="margin-right: 5px;" />
-				<p:commandButton oncomplete="updateUserDialog.hide()"
+				<p:commandButton type="button" onclick="updateUserDialog.hide()"
 					value="#{msgs.btn_cancel}" image="ui-icon ui-icon-cancel" />
 			</div>
 		</h:form>

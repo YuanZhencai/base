@@ -53,7 +53,7 @@
 		<div align="center" style="margin-top: 5px;">
 				<p:commandButton  value="确认"
 					image="ui-icon ui-icon-search" style="margin-right: 5px;"  actionListener="#{companyBean.findJgName}" oncomplete="searchFormDialog.hide();" update="insertConfirmForm" />
-				<p:commandButton  value="关闭"  oncomplete="searchFormDialog.hide();" image="ui-icon ui-icon-cancel" />
+				<p:commandButton type="button" value="关闭"  onclick="searchFormDialog.hide();" image="ui-icon ui-icon-cancel" />
 			</div>
 </h:form>
 	

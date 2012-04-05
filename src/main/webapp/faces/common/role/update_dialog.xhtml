@@ -39,14 +39,14 @@
 				</h:panelGrid>
 			</h:panelGrid>
 			
-			<div style="text-align: right; margin-top: 5px;">
+			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
 						style="margin-right: 5px;"
 						oncomplete="handleUpdateRequest(xhr, status, args);ensureTable();"
 						actionListener="#{roleBean.updateRole}"
 						update="roleQueryForm, update_form" />
-					<p:commandButton value="关闭" image="ui-icon ui-icon-cancel"
-						oncomplete="update_dialog_dialog.hide();" />
+					<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"
+						onclick="update_dialog_dialog.hide();" />
 			</div>
 		</h:form>
 	</p:dialog>
