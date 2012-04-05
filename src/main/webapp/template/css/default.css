@@ -299,9 +299,8 @@ html {
 }
 
 #top_up_left {
-	width: 370px;
+	width: 400px;
 	height: 32px;
-	background: url(images/main_01.gif);
 	float: left;
 }
 
@@ -656,6 +655,11 @@ a:hover{
 	
 }
 
+.argitem-edit {
+	text-align: right;
+	width: 79px;
+}
+
 .textarea_420 {
 	width: 420px;
 	font-size: 12px;
@@ -722,10 +726,13 @@ a:hover{
 	border-radius: 3px 3px 3px 3px;
 }
 
+
+
 select {
 	height: 26px;
 	width: 144px;
 }
+
 
 input {
 	border-radius: 3px 3px 3px 3px;
@@ -733,9 +740,8 @@ input {
 	width: 134px;
 }
 
-.selectOneRadio input, input.selectBooleanCheckbox {
-	height: 0px;
-	width: 0px;
+input:hover {
+	border: 1px solid #74b2e2;
 }
 
 .button_r {
@@ -889,6 +895,16 @@ input {
 	background-position: -65px -147px;
 }
 
-.ui-tree span.ui-icon-minus{
-	background-position: -49px -132px;
+.ui-tree .ui-icon-minus{
+	background-position: -49px -131px;
+}
+
+.number{
+	text-align: right;
+}
+
+.tr-red {
+    background-color: Red !important;
+    background-image: none !important;
+    color: #000000 !important;
 }

@@ -131,10 +131,14 @@
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled,.ui-widget-header .ui-state-disabled
 	{
-	opacity: .35;
-	filter: Alpha(Opacity =   35);
+	
 	background-image: none;
-} /* Icons----------------------------------*/ /* states and images */
+} 
+.ui-state-disabled {
+	color: #CCCCCC;
+	background-color: #FFFFFF;
+}
+/* Icons----------------------------------*/ /* states and images */
 .ui-icon {
 	width: 16px;
 	height: 16px;
@@ -917,4 +921,26 @@
 
 .wijmo-wijmenu .ui-state-default a.ui-state-active {
 	color: #ffffff;
+}
+
+#uploadID .fileinput-button{
+	overflow: visible;
+}
+
+.ui-spinner70 input {
+	width: 70px;
+}
+
+.ui-spinner-input {
+	padding-right: 20px;
+    text-align: right;
+    vertical-align: middle;
+    width: 116px;
+}
+
+.ui-corner-all {
+    border-radius: 3px 3px 3px 3px;
+}
+.ui-datatable-odd {
+    background: none repeat scroll 0 0 #F2F5F9;
 }

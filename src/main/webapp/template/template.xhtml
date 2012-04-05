@@ -79,22 +79,28 @@
 				&nbsp;&nbsp;&nbsp;
 			</div>
 		</div>
-		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();">
+		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();" >
 			<f:facet name="start">
 				<div class="ajaxStatus">
-					<span> <h:graphicImage value="/template/img/loading.gif" /> <br /> <h:outputLabel value="数据加载中,请稍后..." />
+				<span>
+					<h:graphicImage value="/template/img/loading.gif" />
+					<br/>
+					<h:outputLabel value="数据加载中,请稍候..."/>
 					</span>
 				</div>
 			</f:facet>
-			<f:facet name="complete">
+			<f:facet name="complete" >
 				<h:outputText value="" />
 			</f:facet>
 		</p:ajaxStatus>
-		<div id="submitDiv" style="display: none;">
-			<div class="ajaxStatus">
-				<span> <h:graphicImage value="/template/img/loading.gif" /> <br /> <h:outputLabel value="数据加载中,请稍后..." />
-				</span>
-			</div>
+		<div id="submitDiv" style="display:none;">
+		<div class="ajaxStatus" >
+			<span>
+				<h:graphicImage value="/template/img/loading.gif" />
+				<br/>
+				<h:outputLabel value="数据加载中,请稍候..."/>
+			</span>
+		</div>
 		</div>
 	</h:body>
 </f:view>
