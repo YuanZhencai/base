@@ -19,12 +19,15 @@
 				<p:commandButton  value="重置" actionListener="#{companyBean.resetInsertForm}" update="insertDataForminsertDataForm" style="margin-right: 5px;" image="ui-icon ui-icon-cancel" />
 				<p:commandButton action="#{dataSynchronousBean.oDataSynchronous}" value="数据同步"  />
 			</div>
-				<p:dataTable id="positionDataTable" var="companyInsert"
-				value="#{companyBean.insertLazyModel}" lazy="true" paginator="true"
-				rows="5" paginatorPosition="bottom"
-				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport} "
-
-				rowKey="#{companyInsert.id}" emptyMessage="没有记录"  style="margin-top: 5px;">
+			<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="positionDataTable"
+				var="companyInsert" value="#{companyBean.insertLazyModel}" lazy="true"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				rowIndexVar="index"
+				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+				currentPageReportTemplate="{currentPage}/{totalPage}"
+				rowKey="#{companyInsert.id}"
+				selectionMode="single">
 				<p:ajax listener="#{companyBean.oRowSelect}" event="rowSelect" update="insertDataForminsertDataForm" />
 				<f:facet name="header">
 				<h:outputText value="集团公司列表" />

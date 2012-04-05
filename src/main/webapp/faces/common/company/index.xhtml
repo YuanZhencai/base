@@ -57,12 +57,15 @@ input[type='radio'] {
 </p:fieldset>
 	
 
-		<p:dataTable id="companyDataTable" var="company"
-			value="#{companyBean.lazyModel}" lazy="true"
+	<p:dataTable emptyMessage="#{msgs.dataTable_empty}" id="companyDataTable"
+			var="company" value="#{companyBean.lazyModel}" lazy="true"
 			paginator="true" rows="10" paginatorPosition="bottom"
-			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
-			 rowIndexVar="index"
-			rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}" emptyMessage="没有记录" style="margin-top: 5px;">
+			rowIndexVar="index"
+			rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+			currentPageReportTemplate="{currentPage}/{totalPage}"
+			rowKey="#{company.id}"
+			selectionMode="single">
 
 			<f:facet name="header">
 				<h:outputText value="所属公司列表" />
