@@ -68,16 +68,17 @@
 	</ui:define>
 
 	<ui:define name="content">
-	<p:panel id="positionMain">
-		
-		<h:form id="positionQueryForm" prependId="false">
-			<p:breadCrumb preview="true" expandEffectDuration="200"
-				previewWidth="24" style="width: 99.1%">
-				<p:menuitem value="系统管理" url="#" />
-				<p:menuitem value="组织用户管理" url="#" />
-				<p:menuitem value="岗位管理" url="#" />
-			</p:breadCrumb>
-			<div class="style1">
+	<h:form id="positionQueryForm" prependId="false">
+		<p:panel id="positionMain" styleClass="panel1">
+
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="岗位管理 " />
+
+				</f:facet>
+				<div class="style1">
 				<h:panelGrid columns="6" id="userSerachGrid"
 					columnClasses="column1,column2,column1,column2,column1,column2">
 					<h:outputText value="岗位："/>
@@ -154,8 +155,8 @@
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>
-		</h:form>
 		</p:panel>
+		</h:form>
 		
 		<ui:include src="insert_dialog.xhtml"/>
 		<ui:include src="update_dialog.xhtml"/>

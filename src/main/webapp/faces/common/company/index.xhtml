@@ -21,17 +21,16 @@ input[type='radio'] {
 	width: 10px;
 }
 </style>
-<p:panel styleClass="panel1">
-	<p:breadCrumb id="dataTable_breadCrumb" preview="true"
-		expandEffectDuration="200" previewWidth="24" style="margin-bottom: 5px;">
-		<p:menuitem value="系统管理" url="#" />
-		<p:menuitem value="系统管理" url="#" />
-		
-		<p:menuitem value="组织用户管理 " url="#" />
-		<p:menuitem value="所属公司管理" url="#" />
-	</p:breadCrumb>
-		<h:form id="companySearchForm" >
-	<p:fieldset>
+<h:form id="companySearchForm" >
+	<p:panel styleClass="panel1">
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="服务公司管理 " />
+				</f:facet>
+
+				<p:fieldset>
 					<h:panelGrid columns="8" columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
 				<h:outputText value="公司名称:" />
 				<p:inputText value="#{companyBean.companyManagerModel.stext}" />
@@ -102,7 +101,7 @@ input[type='radio'] {
 				</p:commandButton>
 			</p:column>
 		</p:dataTable>
-	</h:form>
+	
 	<script>
 		 function handleSaveRequest(xhr, status, args) {
 			 var i,myObj;
@@ -119,6 +118,7 @@ input[type='radio'] {
 		
 	</script>
 	</p:panel>
+	</h:form>
 	<ui:include src="CompanyManagerInsertDialog.xhtml" />
 <ui:include src="insertConfirmDiaLog.xhtml" />
 <ui:include src="CompanyManagerSearchDialog.xhtml" />

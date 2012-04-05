@@ -15,17 +15,16 @@
 </style>
 	</ui:define>
 	<ui:define name="content">
-		<p:panel styleClass="panel1">
-			<h:form prependId="false" id="taxFormId">
+		<h:form prependId="false" id="taxFormId">
+			<p:panel styleClass="panel1">
 
-				<div>
-					<p:breadCrumb>
-						<p:menuitem value="" url="#" />
-						<p:menuitem value="系统管理" url="#" />
-						<p:menuitem value="组织用户管理" url="#" />
-						<p:menuitem value="税务机关管理" url="/faces/system/taxauth/index.xhtml" />
-					</p:breadCrumb>
-				</div>
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="机关管理  " />
+
+				</f:facet>
 				<div class="style1" style="margin-top: 5px;margin-bottom: 5px;">
 					<h:panelGrid columns="8" 
 						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
@@ -112,8 +111,8 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-			</h:form>
-		</p:panel>
+			</p:panel>
+		</h:form>
 
 		<ui:include src="update_dialog.xhtml" />
 		<ui:include src="insert_dialog.xhtml" />

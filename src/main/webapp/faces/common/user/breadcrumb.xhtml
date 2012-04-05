@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<p:breadCrumb id="dataTable_breadCrumb" preview="true"
-		expandEffectDuration="200" previewWidth="24">
-		<p:menuitem value="税务平台" url="#" />
-		<p:menuitem value="系统管理" url="#" />
-		<p:menuitem value="组织用户管理" url="#" />
-		<p:menuitem value="用户管理" url="#" />
-	</p:breadCrumb>
+	<f:facet name="header">
+		<img class="header_title_img"
+			src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+			alt="" />
+		<h:outputLabel value="用户管理 " />
+	</f:facet>
 </ui:composition>

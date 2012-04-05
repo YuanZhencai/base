@@ -15,17 +15,15 @@
 </style>
 	</ui:define>
 	<ui:define name="content">
-		<p:panel styleClass="panel1">
-			<h:form prependId="false" id="dictFormId">
+		<h:form prependId="false" id="dictFormId">
+			<p:panel styleClass="panel1">
 
-				<div>
-					<p:breadCrumb>
-						<p:menuitem value="" url="#" />
-						<p:menuitem value="系统管理" url="#" />
-						<p:menuitem value="基础数据管理" url="#" />
-						<p:menuitem value="字典表管理" url="#" />
-					</p:breadCrumb>
-				</div>
+				<f:facet name="header">
+					<img class="header_title_img"
+						src="#{facesContext.externalContext.requestContextPath}/images/icons/tabTitle.gif"
+						alt="" />
+					<h:outputLabel value="字典表管理 " />
+				</f:facet>
 				<div class="style1"  style="margin-top: 5px;margin-bottom: 5px;">
 					<h:panelGrid columns="8"
 						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
@@ -139,8 +137,8 @@
 					</p:column>
 				</p:dataTable>
 
-			</h:form>
-		</p:panel>
+			</p:panel>
+		</h:form>
 		
 		
 		<ui:include src="/faces/common/dict/insert_dialog.xhtml" />
