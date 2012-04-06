@@ -42,7 +42,7 @@
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
 						style="margin-right: 5px;"
-						oncomplete="handleUpdateRequest(xhr, status, args);ensureTable();"
+						oncomplete="handleUpdateRequest(xhr, status, args);"
 						actionListener="#{roleBean.updateRole}"
 						update="roleQueryForm, update_form" />
 					<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"

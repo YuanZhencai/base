@@ -30,7 +30,7 @@
 			</h:panelGrid>
 			<div style="margin-top: 3px; text-align: center;">
 				<p:commandButton value="保存" image="ui-icon ui-icon-disk"
-					oncomplete="handleUpdateRequest(xhr, status, args);ensureTable();"
+					oncomplete="handleUpdateRequest(xhr, status, args);"
 					actionListener="#{positionBean.updatePosition}"
 					update="positionQueryForm, update_form, updateErrMsg" />
 				<p:commandButton type="button" value="关闭" image="ui-icon ui-icon-cancel"
