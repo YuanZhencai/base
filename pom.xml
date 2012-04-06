@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wcs</groupId>
+	<artifactId>btcbase-lite</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Repository</name>
+			<url>http://repository.primefaces.org</url>
+		</repository>
+
+		<repository>
+			<id>wcs-central</id>
+			<name>WCS Central Repository</name>
+			<url>http://10.229.14.10:8080/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- JAVAEE API -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>btcbase-lite</finalName>
+	</build>
+
+	<modules>
+		<module>btcbase-core</module>
+		<module>btcbase-security</module>
+		<module>btcbase-generator</module>
+		<module>btcbase-showcase</module>
+	</modules>
+</project>
