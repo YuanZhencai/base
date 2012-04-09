@@ -24,8 +24,7 @@
 				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
 				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
 				currentPageReportTemplate="{currentPage}/{totalPage}"
-				rowKey="#{companyInsert.id}"
-				selectionMode="single">
+				rowKey="#{companyInsert.id}">
 				
 				<p:ajax listener="#{companyBean.updateLast}" event="rowSelect" update="inertForm2" />
 				<f:facet name="header">

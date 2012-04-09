@@ -37,8 +37,7 @@
 				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
 				currentPageReportTemplate="{currentPage}/{totalPage}"
 				rowKey="#{companyVo.id}"
-				selection="#{userBean.selectedCompanymstrVos}"
-				selectionMode="single">
+				selection="#{userBean.selectedCompanymstrVos}">
 				
 				<f:facet name="header">
 					<h:outputText value="服务公司列表" />

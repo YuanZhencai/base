@@ -41,8 +41,7 @@
 				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
 				currentPageReportTemplate="{currentPage}/{totalPage}"
 				rowKey="#{pVo.id}"
-				selection="#{userBean.selectedPVo}"
-				selectionMode="single">
+				selection="#{userBean.selectedPVo}">
 				
 				<p:ajax event="rowSelect" listener="#{userBean.onRowSelectShowBtn1}"
 					update="showBtn1" />

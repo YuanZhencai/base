@@ -26,8 +26,7 @@
 				rowStyleClass="#{index mod 2 == 1 ? 'changeColor' : null}"
 				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
 				currentPageReportTemplate="{currentPage}/{totalPage}"
-				rowKey="#{companyInsert.id}"
-				selectionMode="single">
+				rowKey="#{companyInsert.id}">
 				<p:ajax listener="#{companyBean.oRowSelect}" event="rowSelect" update="insertDataForminsertDataForm" />
 				<f:facet name="header">
 				<h:outputText value="集团公司列表" />
