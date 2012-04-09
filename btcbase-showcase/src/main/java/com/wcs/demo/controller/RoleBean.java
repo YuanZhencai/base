@@ -1,7 +1,7 @@
 /**
  * RoleBean.java Created: 2011-7-8 上午11:04:11
  */
-package com.wcs.common.controller.permissions;
+package com.wcs.demo.controller;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.NodeSelectEvent;
@@ -25,6 +25,7 @@ import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.base.util.ResourcesNode;
+import com.wcs.common.controller.permissions.PerimissionsConversationManager;
 import com.wcs.common.controller.permissions.vo.RoleVO;
 import com.wcs.common.model.Permission;
 import com.wcs.common.model.Resource;
@@ -45,15 +46,12 @@ import com.wcs.common.service.permissions.RoleService;
 @Named
 @ConversationScoped
 public class RoleBean extends PerimissionsConversationManager implements Serializable {
-    @Inject
+    @EJB
     private StatelessEntityService entityService;
-    @Inject
+    @EJB
     private RoleService roleService;
-    @Inject
+    @EJB
     private ResourceService resourceService;
-    @Inject
-    private LoginBean loginBean;
-
     /** 资源树 */
     private TreeNode root;
     /** 节点数组 */

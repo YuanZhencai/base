@@ -1,4 +1,4 @@
-package com.wcs.common.controller.permissions;
+package com.wcs.demo.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -39,8 +39,8 @@ import com.wcs.common.service.permissions.ResourceService;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@Named
-@SessionScoped
+@ManagedBean
+@ViewScoped
 @SuppressWarnings("serial")
 public class LoginBean implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(LoginBean.class);

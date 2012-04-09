@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -37,7 +38,7 @@ import com.wcs.demo.service.ProductService;
 public class ProductBean extends ConversationBaseBean<Product> {
 	@Inject
 	ProductService productService;
-	@Inject
+	@EJB
 	private DictService dictService;
 	
 	private Map<String,Object> filterMap = Maps.newHashMapWithExpectedSize(5);

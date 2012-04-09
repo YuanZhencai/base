@@ -10,10 +10,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
-import com.wcs.base.service.StatelessEntityService;
 import org.primefaces.model.TreeNode;
 
 import com.google.common.collect.Lists;
+import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.ResourcesNode;
 import com.wcs.common.model.Resource;
 import com.wcs.common.model.Role;

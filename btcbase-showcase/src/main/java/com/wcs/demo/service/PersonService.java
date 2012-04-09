@@ -3,12 +3,12 @@ package com.wcs.demo.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
-import com.wcs.base.service.StatelessEntityService;
 import org.primefaces.model.LazyDataModel;
 
+import com.wcs.base.service.StatelessEntityService;
 import com.wcs.demo.model.Person;
 
 /** 
@@ -22,7 +22,7 @@ import com.wcs.demo.model.Person;
 
 @Stateless
 public class PersonService {
-	@Inject
+	@EJB
 	public StatelessEntityService entityService;
 
     /**

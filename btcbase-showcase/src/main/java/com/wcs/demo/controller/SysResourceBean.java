@@ -1,4 +1,4 @@
-package com.wcs.common.controller.permissions;
+package com.wcs.demo.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;

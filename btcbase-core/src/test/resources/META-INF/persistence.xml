@@ -13,7 +13,7 @@
 	</persistence-unit>
  -->
 	<persistence-unit name="pu" transaction-type="JTA">
-		<jta-data-source>jdbc/cmdpms</jta-data-source>
+		<jta-data-source>jdbc/btcbase</jta-data-source>
 		<!-- <non-jta-data-source>jdbc/btcbaseNONJTA</non-jta-data-source> -->
 		<properties>
 			<property name="openjpa.Log" value="DefaultLevel=DEBUG,SQL=TRACE" />

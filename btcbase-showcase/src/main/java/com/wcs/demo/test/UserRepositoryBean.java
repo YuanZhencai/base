@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
 @Local(UserRepository.class)
 @Stateless
 public class UserRepositoryBean implements UserRepository {
-    @PersistenceContext
+    @PersistenceContext(unitName="pu")
     private EntityManager em;
 
     @Override

@@ -7,8 +7,8 @@ package com.wcs.demo.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -26,7 +26,7 @@ import com.wcs.demo.model.Product;
 
 @Stateless
 public class ProductService {
-	@Inject
+	@EJB
 	public StatelessEntityService es;
 	
     /**
