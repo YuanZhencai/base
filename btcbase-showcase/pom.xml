@@ -108,6 +108,7 @@
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
 					<wtpversion>2.0</wtpversion>
+                    <jeeversion>6.0</jeeversion>
 				</configuration>
 			</plugin>
 
@@ -124,6 +125,7 @@
 					</execution>
 				</executions>
 			</plugin>
+            
 		</plugins>
 	</build>
         
