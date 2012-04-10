@@ -29,23 +29,9 @@
 	</repositories>
     
 	<properties>
-		<spring.version>3.0.5.RELEASE</spring.version>
-		<struts2.version>2.1.8.1</struts2.version>
-		<hibernate.version>3.3.2.GA</hibernate.version>
-		<ibatis.version>2.3.4.726</ibatis.version>
-        
-		<btcbase.version>0.0.1-SNAPSHOT</btcbase.version>
-        
-		<jetty.version>6.1.24</jetty.version>
-		<h2.version>1.2.135</h2.version>
-		<jackson.version>1.5.2</jackson.version>
-		<slf4j.version>1.6.0</slf4j.version>
-		<hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<targetJdk>1.6</targetJdk>
-		<project.version>4.0.3</project.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<sourceEncoding>UTF-8</sourceEncoding>
+		<project.sourceEncoding>UTF-8</project.sourceEncoding>
 	</properties>
     
 	<dependencyManagement>
@@ -54,12 +40,12 @@
     		<dependency>
     			<groupId>com.wcs</groupId>
     			<artifactId>btcbase-core</artifactId>
-                <version>${btcbase.version}</version>
+                <version>${project.version}</version>
     		</dependency>
     		<dependency>
     			<groupId>com.wcs</groupId>
     			<artifactId>btcbase-security</artifactId>
-    			<version>${btcbase.version}</version>
+    			<version>${project.version}</version>
     		</dependency>
             
     		<!-- Java EE -->
@@ -183,17 +169,17 @@
     		<dependency>
     			<groupId>org.slf4j</groupId>
     			<artifactId>slf4j-api</artifactId>
-    			<version>1.6.1</version>
+    			<version>${slf4j.version}</version>
     		</dependency>
     		<dependency>
     			<groupId>org.slf4j</groupId>
     			<artifactId>slf4j-ext</artifactId>
-    			<version>1.6.1</version>
+    			<version>${slf4j.version}</version>
     		</dependency>
     		<dependency>
     			<groupId>org.slf4j</groupId>
     			<artifactId>slf4j-log4j12</artifactId>
-    			<version>1.6.1</version>
+    			<version>${slf4j.version}</version>
     		</dependency>
             
     	</dependencies>
@@ -208,8 +194,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${targetJdk}</source>
+					<target>${targetJdk}</target>
 				</configuration>
 			</plugin>
 			<!-- test plugin -->
@@ -230,7 +216,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
                 <version>2.4.3</version>
 				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
+					<encoding>${project.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<!-- eclipse plugin -->
@@ -248,14 +234,13 @@
 							<name>.settings/org.eclipse.core.resources.prefs</name>
 							<content>
 						  <![CDATA[
-						  encoding/<project>=${project.build.sourceEncoding}
+						  encoding/<project>=${project.sourceEncoding}
 						  ]]>
 							</content>
 						</file>
 					</additionalConfig>
 				</configuration>
 			</plugin>
-            
 			<!-- war plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -274,7 +259,6 @@
 					</archive>
 				</configuration>
 			</plugin>
-            
             
 		</plugins>
 		
