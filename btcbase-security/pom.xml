@@ -5,8 +5,9 @@
         <groupId>com.wcs</groupId>
 		<artifactId>btcbase-lite</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
+    <groupId>com.wcs</groupId>
 	<artifactId>btcbase-security</artifactId>
 	<packaging>jar</packaging>
 
@@ -117,7 +118,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
-					<wtpversion>none</wtpversion>
+					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
 
