@@ -17,14 +17,26 @@
 			<artifactId>javaee-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-    
+        
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+        
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<optional>true</optional>
 		</dependency>        
 
-		<!-- commons -->
+		<!-- utils -->
+		<dependency>
+			<groupId>rapid</groupId>
+			<artifactId>xsqlbuilder</artifactId>
+			<optional>true</optional>
+		</dependency>
+                
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -50,22 +62,20 @@
 			<artifactId>commons-configuration</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-		<!-- util -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- google -->
+        
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<optional>true</optional>
 		</dependency>
 
-		<!-- slf4j -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -82,17 +92,33 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- primefaces -->
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>rapid</groupId>
-			<artifactId>xsqlbuilder</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
+    
+	<build>
+		<plugins>
+			<!-- eclipse plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpversion>none</wtpversion>
+				</configuration>
+			</plugin>
+
+			<!-- source attach plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+        
 </project>
