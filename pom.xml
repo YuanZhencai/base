@@ -31,7 +31,8 @@
 	<properties>
 		<slf4j.version>1.6.1</slf4j.version>
 		<targetJdk>1.6</targetJdk>
-		<project.sourceEncoding>UTF-8</project.sourceEncoding>
+        <sourceEncoding>UTF-8</sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
     
 	<dependencyManagement>
@@ -216,7 +217,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
                 <version>2.4.3</version>
 				<configuration>
-					<encoding>${project.sourceEncoding}</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<!-- eclipse plugin -->
@@ -229,18 +230,10 @@
 						<sourceExclude>**/.svn/</sourceExclude>
 					</sourceExcludes>
 					<downloadSources>true</downloadSources>
-					<additionalConfig>
-						<file>
-							<name>.settings/org.eclipse.core.resources.prefs</name>
-							<content>
-						  <![CDATA[
-						  encoding/<project>=${project.sourceEncoding}
-						  ]]>
-							</content>
-						</file>
-					</additionalConfig>
+                    <downloadJavadocs>false</downloadJavadocs>
 				</configuration>
 			</plugin>
+            
 			<!-- war plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -255,10 +248,14 @@
 				<version>2.3.1</version>
 				<configuration>
 					<archive>
-						<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> -->
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
+            
             
 		</plugins>
 		
