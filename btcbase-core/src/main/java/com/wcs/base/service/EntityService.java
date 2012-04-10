@@ -86,7 +86,8 @@ public abstract class EntityService extends CrudEntityService {
         String countHql = prepareCountHql(jpql);
 
         try {
-            return findUnique(countHql, values);
+            Long count = findUnique(countHql, values);
+            return count;
         } catch (Exception e) {
         	e.printStackTrace();
             throw new RuntimeException("jpql can't be auto count, jpql is:" + countHql, e);
@@ -98,11 +99,12 @@ public abstract class EntityService extends CrudEntityService {
      * <p/>
      * 本函数只能自动处理简单的jpql语句,复杂的jpql查询请另行编写count语句查询.
      */
-    protected long countHqlResult(final String jpql, final Map<String, ?> values) {
+    protected Long countHqlResult(final String jpql, final Map<String, ?> values) {
         String countHql = prepareCountHql(jpql);
 
         try {
-            return findUnique(countHql.trim(), values);
+            Long count = findUnique(countHql.trim(), values);
+            return count;
         } catch (Exception e) {
             throw new RuntimeException("jpql can't be auto count, jpql is:" + countHql, e);
         }
