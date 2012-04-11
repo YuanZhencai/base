@@ -10,9 +10,6 @@
 	<persistence-unit name="pu" transaction-type="JTA">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<jta-data-source>jdbc/btcbase</jta-data-source>
-		<class>com.wcs.demo.model.City</class>
-		<class>com.wcs.demo.model.Animal</class>
-		<class>com.wcs.demo.model.Weather</class>
 		<properties>
 			<property name="openjpa.Log" value="DefaultLevel=TRACE,SQL=TRACE" />
 			<property name="openjpa.DynamicEnhancementAgent" value="false" />
@@ -23,7 +20,7 @@
 		</properties>
 	</persistence-unit>
 
-    <persistence-unit name="pu4hb" transaction-type="RESOURCE_LOCAL">
+<!--     <persistence-unit name="pu4hb" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
@@ -33,7 +30,7 @@
             <property name="hibernate.connection.password" value="123"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
-   </persistence-unit>
+   </persistence-unit> -->
 
 	<!-- <persistence-unit name="pu" transaction-type="JTA"> <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
 		<jta-data-source>jdbc/cmdpms</jta-data-source> <properties> <property name="eclipselink.ddl-generation" 
