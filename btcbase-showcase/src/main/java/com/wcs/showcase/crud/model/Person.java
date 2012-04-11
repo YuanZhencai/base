@@ -1,4 +1,4 @@
-package com.wcs.demo.model;
+package com.wcs.showcase.crud.model;
 
 import java.util.Date;
 

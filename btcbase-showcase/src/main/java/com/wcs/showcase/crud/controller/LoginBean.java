@@ -1,4 +1,4 @@
-package com.wcs.demo.controller;
+package com.wcs.showcase.crud.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;

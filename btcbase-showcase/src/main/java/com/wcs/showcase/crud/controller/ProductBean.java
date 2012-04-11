@@ -2,7 +2,7 @@
 * Created on 2011-11-10 下午3:53:35 
 */
 
-package com.wcs.demo.controller;
+package com.wcs.showcase.crud.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import org.primefaces.model.LazyDataModel;
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.dict.service.DictService;
-import com.wcs.demo.model.Product;
-import com.wcs.demo.service.ProductService;
+import com.wcs.showcase.crud.model.Product;
+import com.wcs.showcase.crud.service.ProductService;
 
 /** 
 * <p>Project: btcbase</p> 

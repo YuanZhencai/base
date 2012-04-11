@@ -1,4 +1,4 @@
-package com.wcs.demo.test;
+package com.wcs.showcase.test;
 
 import java.io.Serializable;
 import java.util.UUID;

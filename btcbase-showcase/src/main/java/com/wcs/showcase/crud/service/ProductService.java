@@ -2,7 +2,7 @@
 * Created on 2011-11-10 下午3:29:27 
 */
 
-package com.wcs.demo.service;
+package com.wcs.showcase.crud.service;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import javax.ejb.Stateless;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.StatelessEntityService;
-import com.wcs.demo.model.Product;
+import com.wcs.showcase.crud.model.Product;
 
 /** 
 * <p>Project: btcbase</p> 

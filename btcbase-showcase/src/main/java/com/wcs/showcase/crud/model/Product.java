@@ -2,7 +2,7 @@
 * Created on 2011-11-10 下午2:31:41 
 */
 
-package com.wcs.demo.model;
+package com.wcs.showcase.crud.model;
 
 import java.util.Date;
 

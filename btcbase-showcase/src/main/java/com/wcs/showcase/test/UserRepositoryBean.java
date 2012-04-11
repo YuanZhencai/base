@@ -1,4 +1,4 @@
-package com.wcs.demo.test;
+package com.wcs.showcase.test;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;

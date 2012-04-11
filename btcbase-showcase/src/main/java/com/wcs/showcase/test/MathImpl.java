@@ -2,7 +2,7 @@
 * Created on 2011-11-9 下午1:47:24 
 */
 
-package com.wcs.demo.test;
+package com.wcs.showcase.test;
 
 /** 
 * <p>Project: btcbase</p> 

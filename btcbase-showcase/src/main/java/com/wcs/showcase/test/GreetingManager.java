@@ -1,4 +1,4 @@
-package com.wcs.demo.test;
+package com.wcs.showcase.test;
 
 /**
 * <p>Project: btcbase</p> 

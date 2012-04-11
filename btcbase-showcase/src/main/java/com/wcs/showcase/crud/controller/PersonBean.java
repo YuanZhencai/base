@@ -1,4 +1,4 @@
-package com.wcs.demo.controller;
+package com.wcs.showcase.crud.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ViewBaseBean;
-import com.wcs.demo.model.Person;
-import com.wcs.demo.service.PersonService;
+import com.wcs.showcase.crud.model.Person;
+import com.wcs.showcase.crud.service.PersonService;
 
 /** 
 * <p>Project: btcbase</p> 
