@@ -2,7 +2,7 @@
 * Created on 2011-11-28 上午9:44:12 
 */
 
-package com.wcs.common.test;
+package com.wcs.security.realms;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,10 +23,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
-import com.wcs.common.model.Permission;
-import com.wcs.common.model.Role;
-import com.wcs.common.model.User;
-import com.wcs.common.service.permissions.LoginService;
+import com.wcs.security.model.Permission;
+import com.wcs.security.model.Role;
+import com.wcs.security.model.User;
+import com.wcs.security.service.LoginService;
 
 /** 
 * <p>Project: btcbase</p> 

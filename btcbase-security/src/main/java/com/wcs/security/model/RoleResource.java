@@ -1,4 +1,4 @@
-package com.wcs.common.model;
+package com.wcs.security.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

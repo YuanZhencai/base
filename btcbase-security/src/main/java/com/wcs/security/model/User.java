@@ -1,4 +1,4 @@
-package com.wcs.common.model;
+package com.wcs.security.model;
 
 
 import java.io.Serializable;

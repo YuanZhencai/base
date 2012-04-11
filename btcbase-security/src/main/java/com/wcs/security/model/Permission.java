@@ -2,7 +2,7 @@
 * Created on 2011-11-28 下午1:41:47 
 */
 
-package com.wcs.common.model;
+package com.wcs.security.model;
 
 import java.io.Serializable;
 
