@@ -85,6 +85,8 @@ public class LoginBean implements Serializable {
 	 * @return
 	 */
 	public String userLogin() {
+		
+		System.out.println("===========");
         String loginName = JSFUtils.getRequestParam("loginName");
         
         Subject currentUser = SecurityUtils.getSubject();
@@ -100,7 +102,7 @@ public class LoginBean implements Serializable {
 			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return Constants.FAILURED;
 		}        
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getUserPass());
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), "password");
         token.setRememberMe(true);        
         try {
             currentUser.login(token);
@@ -120,7 +122,7 @@ public class LoginBean implements Serializable {
 
         this.isManager=  loginService.isAdmin(user.getId());
         JSFUtils.getSession().put("loginName",user.getLoginName());
-        JSFUtils.getSession().put("userName",user.getUserName());
+        //JSFUtils.getSession().put("userName",user.getUserName());
         JSFUtils.getSession().put("user", user);
         JSFUtils.getSession().put("selectId",2);  //选中的菜单
 
