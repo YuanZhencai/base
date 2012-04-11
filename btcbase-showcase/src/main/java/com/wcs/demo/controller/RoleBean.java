@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.wcs.base.conf.SystemConfiguration;
+import com.wcs.base.security.service.ResourceService;
+import com.wcs.base.security.service.RoleService;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
@@ -31,8 +33,6 @@ import com.wcs.common.model.Permission;
 import com.wcs.common.model.Resource;
 import com.wcs.common.model.Role;
 import com.wcs.common.model.RoleResource;
-import com.wcs.common.service.permissions.ResourceService;
-import com.wcs.common.service.permissions.RoleService;
 
 /**
  * <p>Project: btcbase</p> 

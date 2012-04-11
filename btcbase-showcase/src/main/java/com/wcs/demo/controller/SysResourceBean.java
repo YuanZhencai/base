@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wcs.base.security.service.ResourceService;
 import com.wcs.common.model.Resource;
-import com.wcs.common.service.permissions.ResourceService;
 
 /**
  * 

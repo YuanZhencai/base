@@ -24,12 +24,12 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wcs.base.conf.Constants;
+import com.wcs.base.security.model.Resource;
+import com.wcs.base.security.model.User;
+import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
-import com.wcs.common.model.Resource;
-import com.wcs.common.model.User;
-import com.wcs.common.service.permissions.LoginService;
-import com.wcs.common.service.permissions.ResourceService;
 
 /**
  * <p>Project: btcbase</p> 
