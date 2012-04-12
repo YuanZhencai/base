@@ -2,12 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.wcs</groupId>
 		<artifactId>btcbase-lite</artifactId>
+		<groupId>com.wcs</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-    <groupId>com.wcs</groupId>
 	<artifactId>btcbase-core</artifactId>
 	<packaging>jar</packaging>
 
@@ -18,18 +17,18 @@
 			<artifactId>javaee-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-        
+
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-        
+
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<optional>true</optional>
-		</dependency>        
+		</dependency>
 
 		<!-- utils -->
 		<dependency>
@@ -37,7 +36,7 @@
 			<artifactId>xsqlbuilder</artifactId>
 			<optional>true</optional>
 		</dependency>
-                
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -63,7 +62,7 @@
 			<artifactId>commons-configuration</artifactId>
 			<optional>true</optional>
 		</dependency>
-        
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -94,8 +93,9 @@
 		</dependency>
 
 	</dependencies>
-    
+
 	<build>
+		<finalName>btcbase-core</finalName>
 		<plugins>
 			<!-- eclipse plugin -->
 			<plugin>
@@ -105,21 +105,7 @@
 					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
-
-			<!-- source attach plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-        
+
 </project>
