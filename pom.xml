@@ -192,7 +192,6 @@
 	</dependencyManagement>
     
 	<build>
-        <finalName>btcbase-lite</finalName>
 		<plugins>
             <!-- compiler plugin -->
 			<plugin>
