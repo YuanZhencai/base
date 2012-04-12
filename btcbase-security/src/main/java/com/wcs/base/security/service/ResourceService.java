@@ -345,6 +345,8 @@ public class ResourceService implements Serializable{
         List<Resource> resourceList = new ArrayList<Resource>();
         for (int i = 0; i < queryList.size(); i++) {
             Resource resource = (Resource) queryList.get(i);
+            
+/*            
             // 是否有子菜单
             if (resource.getIsLeaf()) {
                 resource.setIsLeafLang("无");
@@ -353,7 +355,7 @@ public class ResourceService implements Serializable{
             }
             
             // 是否为菜单
-            if (resource.getIsmenu()) {
+            if (resource.getMenu()) {
                 resource.setIsMenuLang("是");
             } else {
                 resource.setIsMenuLang("否");
@@ -364,7 +366,7 @@ public class ResourceService implements Serializable{
             if (parentName != null) {
                 resource.setParentName(parentName);
             } 
-            
+            */
             resourceList.add(resource);
         }
         

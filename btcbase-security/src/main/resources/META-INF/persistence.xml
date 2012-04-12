@@ -20,7 +20,7 @@
 		</properties>
 	</persistence-unit>
 
-<!--     <persistence-unit name="pu4hb" transaction-type="RESOURCE_LOCAL">
+     <persistence-unit name="pu4hb" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
@@ -28,9 +28,9 @@
             <property name="hibernate.connection.url" value="jdbc:postgresql://10.227.254.220:5432/btcbase"/>
             <property name="hibernate.connection.username" value="postgres"/>
             <property name="hibernate.connection.password" value="123"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
-   </persistence-unit> -->
+   </persistence-unit>
 
 	<!-- <persistence-unit name="pu" transaction-type="JTA"> <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
 		<jta-data-source>jdbc/cmdpms</jta-data-source> <properties> <property name="eclipselink.ddl-generation" 

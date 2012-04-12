@@ -91,7 +91,7 @@ public class LoginService implements Serializable{
                 if (!leftMenuResouce.containsKey(r) && leftMenuResouce.get(r) == null) {
                     // leftMenuResouce.put(r, new ArrayList<Resource>());
                 }
-            } else if (r.getIsmenu() && "2".equals(r.getLevel())) {
+            } else if (r.getIsMenu() && "2".equals(r.getLevel())) {
                 Resource father = getFactherResouce(sysResouceList, r);
                 if (leftMenuResouce.get(father) == null) {
                     if (!leftMenuResouce.containsKey(father)) {
@@ -198,7 +198,7 @@ public class LoginService implements Serializable{
                 if ("1".equals(r.getLevel()) && selectID.equals(getFactherResouce(sysResouce, r).getId())) {
                     selectList.add(r);
                 }
-                if ("2".equals(r.getLevel()) && r.getIsmenu()) {
+                if ("2".equals(r.getLevel()) && r.getIsMenu()) {
                     Resource second = getFactherResouce(sysResouce, r);
                     Resource facther = getFactherResouce(sysResouce, second);
                     if(facther == null){

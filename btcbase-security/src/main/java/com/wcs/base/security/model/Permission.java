@@ -1,34 +1,40 @@
 package com.wcs.base.security.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.wcs.base.entity.IdEntity;
 
 /**
- * 资源
+ * The persistent class for the permission database table.
  * 
- * 注释见{@link Role}.
- * 
- * @author chris.guan
  */
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "permission")
 public class Permission extends IdEntity {
-	private Long roleId;
-    private String url; // 资源名称
-    
-	public Long getRoleId() {
-		return roleId;
+	private static final long serialVersionUID = 1L;
+	private Long roleid;
+	private String url;
+
+	public Permission() {
 	}
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+
+	public Long getRoleid() {
+		return this.roleid;
 	}
+
+	public void setRoleid(Long roleid) {
+		this.roleid = roleid;
+	}
+
+	@Column(length = 255)
 	public String getUrl() {
-		return url;
+		return this.url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 }

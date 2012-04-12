@@ -3,136 +3,97 @@ package com.wcs.base.security.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.wcs.base.entity.IdEntity;
 
 /**
- * 资源
+ * The persistent class for the resource database table.
  * 
- * 注释见{@link Role}.
- * 
- * @author chris.guan
  */
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "resource")
 public class Resource extends IdEntity {
-    private Long parentId; // 父菜单Id
-    private String name; // 资源名称
-    private String url; // 资源URL
-    private Boolean ismenu; // 是否是菜单
-    private String number; // 资源编号
-    private Boolean isLeaf;
-    private Integer level;
-    private String keyName; // 权限关键值
+	private static final long serialVersionUID = 1L;
 
-    private String parentName; // 父菜单名称
-    private String isMenuLang;
-    private String isLeafLang;
+	private Boolean isLeaf;
+    private Boolean isMenu;
+	private String keyName;
+	private Integer level;
+	private String name;
+	private String number;
+	private Long parentId;
+	private String url;
 
-    public Resource(String level, String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
+	public Resource() {
+	}
 
-    @Column(name = "NAME", length = 40)
-    public String getName() {
-        return this.name;
-    }
+    @Column(name = "is_leaf")
+	public Boolean getIsLeaf() {
+		return isLeaf;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setIsLeaf(Boolean isLeaf) {
+		this.isLeaf = isLeaf;
+	}
 
-    @Column(name = "URL", length = 100)
-    public String getUrl() {
-        return this.url;
-    }
+    @Column(name = "key_name", nullable = false, length = 255)
+	public String getKeyName() {
+		return this.keyName;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setKeyName(String keyName) {
+		this.keyName = keyName;
+	}
 
-    @Column(name = "ISMENU", columnDefinition = "smallint")
-    public Boolean getIsmenu() {
-        return ismenu;
-    }
+	public Integer getLevel() {
+		return this.level;
+	}
 
-    public void setIsmenu(Boolean ismenu) {
-        this.ismenu = ismenu;
-    }
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+    @Column(length = 40)
+	public String getName() {
+		return this.name;
+	}
 
-    @Column(name = "PARENT_ID")
+	public void setName(String name) {
+		this.name = name;
+	}
+    @Column(length = 255)
+	public String getNumber() {
+		return this.number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+    @Column(name = "parent_id")
     public Long getParentId() {
-        return parentId;
-    }
+		return this.parentId;
+	}
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+    @Column(length = 100)
+	public String getUrl() {
+		return this.url;
+	}
 
-    @Column(name = "Number")
-    public String getNumber() {
-        return number;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
+    @Column(name = "is_menu")
+	public Boolean getIsMenu() {
+		return isMenu;
+	}
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    @Column(name = "IS_LEAF", columnDefinition = "smallint")
-    public Boolean getIsLeaf() {
-        return isLeaf;
-    }
-
-    public void setIsLeaf(Boolean isLeaf) {
-        this.isLeaf = isLeaf;
-    }
-    
-    @Column(name = "LEVEL", nullable = false)
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    @Column(name = "KEY_NAME", nullable = false)
-    public String getKeyName() {
-        return keyName;
-    }
-
-    public void setKeyName(String keyName) {
-        this.keyName = keyName;
-    }
-
-    @Transient
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-    
-    @Transient
-    public String getIsMenuLang() {
-        return isMenuLang;
-    }
-
-    public void setIsMenuLang(String isMenuLang) {
-        this.isMenuLang = isMenuLang;
-    }
-
-    @Transient
-    public String getIsLeafLang() {
-        return isLeafLang;
-    }
-
-    public void setIsLeafLang(String isLeafLang) {
-        this.isLeafLang = isLeafLang;
-    }
+	public void setIsMenu(Boolean menu) {
+		this.isMenu = menu;
+	}
+	
+	
 
 }

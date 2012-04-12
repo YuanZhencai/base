@@ -14,49 +14,44 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.google.common.collect.Sets;
 import com.wcs.base.entity.IdEntity;
 
+
 /**
- * 权限组.
+ * The persistent class for the role database table.
  * 
- * 注释见{@link User}.
- * 
- * @author chris.guan
  */
-@SuppressWarnings("serial")
 @Entity
-@Table(name = "role")
+@Table(name="role")
 public class Role extends IdEntity {
+	private static final long serialVersionUID = 1L;
 
 	private String name;
+	//private Set<String> permissionSet = Sets.newHashSet();
 
-	private Set<String> permissionSet = Sets.newHashSet();
-	
-	public Role(Long id, String name) {
-		this.setId(id);
-		this.name = name;
-	}
+    public Role() {
+    }
 
-	@Column(nullable = false, unique = true)
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@ElementCollection
-	@CollectionTable(name = "permission", joinColumns = { @JoinColumn(name = "role_id") })
-	@Column(name = "url")
-	public Set<String> getPermissionSet() {
-		return permissionSet;
-	}
-
-	public void setPermissionSet(Set<String> permissionSet) {
-		this.permissionSet = permissionSet;
-	}
+	
+//	@ElementCollection
+//	@CollectionTable(name = "permission", joinColumns = { @JoinColumn(name = "role_id") })
+//	@Column(name = "url")
+//	public Set<String> getPermissionSet() {
+//		return permissionSet;
+//	}
+//
+//	public void setPermissionSet(Set<String> permissionSet) {
+//		this.permissionSet = permissionSet;
+//	}
 
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
 }

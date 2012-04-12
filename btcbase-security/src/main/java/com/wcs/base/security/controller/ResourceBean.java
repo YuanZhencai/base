@@ -251,7 +251,7 @@ public class ResourceBean implements Serializable {
     public void selectedNodeResource() {
         if(selectedNode != null) { 
             this.selectedResource = (Resource) this.selectedNode.getData();
-            if (this.selectedResource.getIsmenu()) {
+            if (this.selectedResource.getIsMenu()) {
                 addBtnDisplay = false;
             } else {
                 addBtnDisplay = true;
