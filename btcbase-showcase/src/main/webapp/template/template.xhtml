@@ -90,7 +90,7 @@
 										<ul>
 											<c:forEach var="child" items="${loginBean.allResList[3]}">
 												<shiro:hasPermission name="view:${child.keyName}">
-													<c:if test="#{(keyResouce.id==child.parentId) and child.ismenu}">
+													<c:if test="#{(keyResouce.id==child.parentId) and child.menu}">
 														<li id="#{child.number}">
 															<a id="#{child.number}" href="#{request.contextPath}#{child.url}">#{child.name}</a>
 														</li>
