@@ -34,7 +34,7 @@ public class User extends IdEntity {
 	private String password;//为简化演示使用明文保存的密码
 	private String name;
 	private String email;
-	private List<Role> groupList = Lists.newArrayList();//有序的关联对象集合
+	private List<Role> roleList = Lists.newArrayList();//有序的关联对象集合
 
 	//字段非空且唯一, 用于提醒Entity使用者及生成DDL.
 	@Column(nullable = false, unique = true)
@@ -76,12 +76,12 @@ public class User extends IdEntity {
 	@JoinTable(name = "user_group", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "group_id") })
 	//集合按id排序.
 	@OrderBy("id")
-	public List<Role> getGroupList() {
-		return groupList;
+	public List<Role> getRoleList() {
+		return roleList;
 	}
 
-	public void setGroupList(List<Role> groupList) {
-		this.groupList = groupList;
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class User extends IdEntity {
 	@Transient
 	public String getGroupNames() {
 		StringBuilder str = new StringBuilder();
-		for (Role g : groupList){
+		for (Role g : roleList){
 			str.append(g.getName()).append(", ");
 		}
 		

@@ -22,83 +22,122 @@
 			<artifactId>btcbase-security</artifactId>
 		</dependency>
         
-        <!-- Java EE -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-		<dependency>
-			<groupId>javax.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<optional>true</optional>
-		</dependency>
+    		<!-- Java EE -->
+    		<dependency>
+    			<groupId>javax</groupId>
+    			<artifactId>javaee-api</artifactId>
+    			<optional>true</optional>
+    		</dependency>
+            
+    		<dependency>
+    			<groupId>javax.faces</groupId>
+    			<artifactId>jsf-api</artifactId>
+    			<optional>true</optional>
+    		</dependency>
 
-		<!-- utils -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<artifactId>commons-collections</artifactId>
-			<groupId>commons-collections</groupId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-		<!-- shiro -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-		<!-- logger -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-ext</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<optional>true</optional>
-		</dependency>
-        
-	</dependencies>
+    		<dependency>
+    			<groupId>org.primefaces</groupId>
+    			<artifactId>primefaces</artifactId>
+    		</dependency>
+            
+    		<!-- OpenJPA -->
+    		<dependency>
+    			<groupId>org.apache.openjpa</groupId>
+    			<artifactId>openjpa-all</artifactId>
+    		</dependency>
+            
+    		<!-- utils -->
+    		<dependency>
+    			<groupId>rapid</groupId>
+    			<artifactId>xsqlbuilder</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-lang3</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<artifactId>commons-collections</artifactId>
+    			<groupId>commons-collections</groupId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>commons-codec</groupId>
+    			<artifactId>commons-codec</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>commons-io</groupId>
+    			<artifactId>commons-io</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>commons-beanutils</groupId>
+    			<artifactId>commons-beanutils</artifactId>
+    		</dependency>
+            
+    		<dependency>
+    			<groupId>commons-configuration</groupId>
+    			<artifactId>commons-configuration</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>com.google.guava</groupId>
+    			<artifactId>guava</artifactId>
+    		</dependency>
+		
+    		<dependency>
+    			<groupId>ch.qos.cal10n</groupId>
+    			<artifactId>cal10n-api</artifactId>
+    		</dependency>
+
+    		<dependency>
+    			<groupId>commons-fileupload</groupId>
+    			<artifactId>commons-fileupload</artifactId>
+    		</dependency>
+    		
+    		<dependency>
+    			<groupId>org.apache.poi</groupId>
+    			<artifactId>poi</artifactId>
+    		</dependency>
+            
+    		<!-- shiro -->
+    		<dependency>
+    			<groupId>org.apache.shiro</groupId>
+    			<artifactId>shiro-core</artifactId>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.apache.shiro</groupId>
+    			<artifactId>shiro-web</artifactId>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.apache.shiro</groupId>
+    			<artifactId>shiro-ehcache</artifactId>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.apache.shiro</groupId>
+    			<artifactId>shiro-faces</artifactId>
+    		</dependency>
+            
+    		<!-- logger -->
+    		<dependency>
+    			<groupId>org.slf4j</groupId>
+    			<artifactId>slf4j-api</artifactId>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.slf4j</groupId>
+    			<artifactId>slf4j-ext</artifactId>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.slf4j</groupId>
+    			<artifactId>slf4j-log4j12</artifactId>
+    		</dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+            </dependency>
+    </dependencies>
     
 	<build>
 		<plugins>
