@@ -17,16 +17,16 @@ import javax.persistence.TemporalType;
  * Time: 上午10:17
  * To change this template use File | Settings | File Templates.
  */
-@Entity
-@Table(name = "StoredLog")
+//@Entity
+//@Table(name = "StoredLog")
 public class StoredLog {
 
     private Long id;
 
    /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)*/
-    @Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+    //@Id
+	//@GeneratedValue(strategy=GenerationType.SEQUENCE)
     public Long getId() {
         return id;
     }
