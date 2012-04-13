@@ -43,6 +43,7 @@
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa-all</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<!-- utils -->

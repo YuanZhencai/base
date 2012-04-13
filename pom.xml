@@ -281,9 +281,12 @@
                         </component>
                     </components>
                     <componentProperties>
-                        <propertyfile>/src/main/resources/jdbc.properties</propertyfile>
                         <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <outputfilename>schema.sql</outputfilename>
+                        
+                        <jdk5>true</jdk5>
+                        <ejb3>true</ejb3>
+                        
                         <drop>true</drop>
                         <create>true</create>
                         <export>false</export>
@@ -293,7 +296,7 @@
                
 		       <executions>
 		         <execution>
-                    <phase>install</phase>
+                    <!--<phase>install</phase> -->
 		           <goals>
 		              <goal>hbm2ddl</goal>
 		           </goals>
