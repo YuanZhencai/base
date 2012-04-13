@@ -10,9 +10,10 @@
 	<persistence-unit name="pu" transaction-type="JTA">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<jta-data-source>jdbc/btcbase</jta-data-source>
-		<class>com.wcs.demo.model.City</class>
-		<class>com.wcs.demo.model.Animal</class>
-		<class>com.wcs.demo.model.Weather</class>
+		
+		<class>com.wcs.base.entity.IdEntity</class>
+		<class>com.wcs.base.entity.BaseEntity</class>
+
 		<properties>
 			<property name="openjpa.Log" value="DefaultLevel=TRACE,SQL=TRACE" />
 			<property name="openjpa.DynamicEnhancementAgent" value="false" />
