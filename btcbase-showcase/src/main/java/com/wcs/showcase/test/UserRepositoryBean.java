@@ -5,6 +5,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.wcs.base.security.model.User;
+
 /**
  * <p>Project: btcbase</p> 
  * <p>Title: UserRepositoryBean.java</p> 
@@ -21,7 +23,7 @@ public class UserRepositoryBean implements UserRepository {
 
     @Override
     public String searchUser() {
-        TestUser user = new TestUser("Jo Yu", "lastName Test");
+        User user = new User();
         em.persist(user);
        
         return "yes";
