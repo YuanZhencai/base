@@ -277,13 +277,14 @@
                     <components>
                         <component>
                             <name>hbm2ddl</name>
-                            <implementation>jpaconfiguration</implementation>
+                            <implementation>annotationconfiguration</implementation>
                         </component>
                     </components>
                     <componentProperties>
-                        <persistenceunit>pu4hb</persistenceunit>
+                        <propertyfile>/src/main/resources/jdbc.properties</propertyfile>
+                        <configurationfile>/src/main/resources/hibernate.cfg.xml</configurationfile>
                         <outputfilename>schema.sql</outputfilename>
-                        <drop>false</drop>
+                        <drop>true</drop>
                         <create>true</create>
                         <export>false</export>
                         <format>true</format>
@@ -292,6 +293,7 @@
                
 		       <executions>
 		         <execution>
+                    <phase>install</phase>
 		           <goals>
 		              <goal>hbm2ddl</goal>
 		           </goals>
