@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -27,16 +27,13 @@ import com.wcs.base.util.CollectionUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@SuppressWarnings("serial")
+
 @Stateless
 public class UserService implements Serializable {
-    @Inject
-    StatelessEntityService entityService;
+	private static final long serialVersionUID = 1L;
 
-    @Inject
-    ResourceService resourceService;
-    
-    public int ttt=1987;
+	@EJB private StatelessEntityService entityService;
+    @EJB ResourceService resourceService;
 
     public UserService() {}
 
@@ -46,7 +43,7 @@ public class UserService implements Serializable {
     * @return
     */
     public User findUniqueUser(String loginName) {
-        String sql = "select u from User u where u.loginName ='" + loginName + "'";
+        String sql = "SELECT u FROM User u WHERE u.loginName ='" + loginName + "'";
         List<?> list = entityService.createQuery(sql).getResultList();
         User u = null;
         if (!list.isEmpty()) {
@@ -55,23 +52,6 @@ public class UserService implements Serializable {
         return u == null ? null : u;
     }
 
-    /**
-     * 查询用户角色
-     * @param user
-     * @return
-     * @throws Exception
-     */
-   /* public List<UserRole> getRoleByUser(User user) throws Exception {
-        try {
-            if (user != null) {
-                String sql1 = "from UserRole urole where   urole.user.id='" + user.getId() + "')";
-                return this.entityService.findList(sql1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
    /**
     * 查询所有资源根据角色
@@ -108,7 +88,7 @@ public class UserService implements Serializable {
     * @throws Exception
     */
     public List<Role> findAllRoleOfUser(User user) throws Exception {
-        String jpql = "select r from UserRole ur join ur.user u join ur.role r where r.state=1 and u.id=" + user.getId();
+        String jpql = "SELECT r FROM UserRole ur JOIN ur.user u JOIN ur.role r WHERE r.state=1 AND u.id=" + user.getId();
         return entityService.findList(jpql);
     }
 
@@ -121,7 +101,6 @@ public class UserService implements Serializable {
         try {
             Long[] idArray = null;
             if (!CollectionUtils.isEmpty(resouceList)) {
-
                 int size = resouceList.size();
                 idArray = new Long[size];
                 for (int i = 0; i < size; i++) {
@@ -168,7 +147,7 @@ public class UserService implements Serializable {
     @SuppressWarnings({ "unchecked", "unused" })
     public List<String> getUserAccountByInput(String account) {
         try {
-            String sql = "from User u where  u.defunctInd=false and u.userName like :account";
+            String sql = "SELECT u FROM User u WHERE u.defunctInd = false AND u.userName LIKE :account";
             Query query = this.entityService.createQuery(sql);
             query.setParameter("account", "%" + account + "%");
             List<User> ulist = query.getResultList();
@@ -193,7 +172,7 @@ public class UserService implements Serializable {
    */
     public User getUserByEmail(String account, String emial) {
         try {
-            String sql = "from User u where u.defunctInd=false and u.userName = :uname and u.email = :Email";
+            String sql = "SELECT u FROM User u WHERE u.defunctInd = false ADN u.userName = :uname AND u.email = :Email";
             Query query = this.entityService.createQuery(sql);
             query.setParameter("uname", account);
             query.setParameter("Email", emial);
@@ -204,14 +183,13 @@ public class UserService implements Serializable {
         return null;
     }
 
-    /**
-     * 得到所有菜单
-     * @return
-     */
+   /**
+    * 得到所有菜单
+    * @return
+    */
     public List<Resource> findAllResources() {
         String sql = "SELECT r FROM Resource r WHERE r.ismenu = 1";
         Query query = entityService.createQuery(sql);
-
         @SuppressWarnings("unchecked")
         List<Resource> resourceList = query.getResultList();
 

@@ -28,10 +28,9 @@ import com.wcs.base.util.CollectionUtils;
 @Stateless
 public class LoginService implements Serializable{
     private static final long serialVersionUID = 1L;
+    
     final Logger logger = LoggerFactory.getLogger(LoginService.class);
-
-    @EJB
-    private StatelessEntityService entityService;
+    @EJB private StatelessEntityService entityService;
 
     /**
      * 根据用户查询所拥有的角色
@@ -43,8 +42,8 @@ public class LoginService implements Serializable{
          String jpql = "select r from UserRole ur join ur.user u join ur.role r where r.state=1 and u.id=" + user.getId();
          return entityService.findList(jpql);
      }
+     
     /**
-     *
      * <p>Description: 通过用户名查询唯一用户</p>
      * @param userName
      * @return
@@ -74,13 +73,13 @@ public class LoginService implements Serializable{
         return this.entityService.findList(jpql,userId);
     }
    
-    /**
-     * 
-     * <p>
-     * Description: 初始化Left导航菜单
-     * </p>
-     * 
-     */
+   /**
+    * 初始化Left导航菜单
+    * @param selectId
+    * @param leftMenuResouce
+    * @param allUserResouce
+    * @param sysResouceList
+    */
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void intitLeftMenu(Long selectId,ConcurrentHashMap<Resource, List<Resource>> leftMenuResouce,CopyOnWriteArrayList<Resource> allUserResouce,List<Resource> sysResouceList) {
       
@@ -120,14 +119,13 @@ public class LoginService implements Serializable{
         
     }
     
-    /**
-     * 
-     * <p>Description: 找到用户的top资源</p>
-     * @param userResource
-     * @param sysResouce
-     * @return
-     * @throws Exception
-     */
+   /**
+    * 找到用户的top资源
+    * @param userResource
+    * @param sysResouce
+    * @return
+    * @throws ServiceException
+    */
     public List<Resource> findTopResourceByUser(List<Resource> userResource,List<Resource> sysResouce) throws ServiceException{
         List<Resource> distinctTopResource = new ArrayList<Resource>();
         try{
@@ -178,14 +176,10 @@ public class LoginService implements Serializable{
     }
     
     /**
-     * 
-     * <p>
-     * Description: 根据top定位该top的所有下级资源
-     * </p>
-     * 
+     * 根据top定位该top的所有下级资源
      * @param selectID
-     * @param allUserResouce
      * @param sysResouce
+     * @param allUserResouce
      * @return
      */
     private List<Resource> loadSecondResourceByTopResouce(Long selectID, List<Resource> sysResouce, CopyOnWriteArrayList<Resource> allUserResouce) {
@@ -217,16 +211,12 @@ public class LoginService implements Serializable{
         return selectList;
     }
     
-    /**
-     * 
-     * <p>
-     * Description: 得到资源的父级资源 建议封装成Map
-     * </p>
-     * 
-     * @param sysResouce
-     * @param child
-     * @return
-     */
+   /**
+    * 得到资源的父级资源 建议封装成Map
+    * @param sysResouce
+    * @param child
+    * @return
+    */
     private Resource getFactherResouce(List<Resource> sysResouce, Resource child) {
         try {
             for (Resource sys : sysResouce) {
