@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public class DictService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
+	@EJB
     StatelessEntityService entityService;
 
 	/**

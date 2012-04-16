@@ -1,8 +1,5 @@
 package com.wcs.base.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,10 +16,13 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class StatelessEntityService extends EntityService {
-    @PersistenceContext(unitName = "pu")
+	private static final long serialVersionUID = 1L;
+	
+	@PersistenceContext(unitName = "pu")
     public EntityManager entityManager;
 
-    @PostConstruct
+    @SuppressWarnings("unused")
+	@PostConstruct
     private void initEntityManager(){
         logger.info("初始化 EntityManager");
         this.setEntityManager(entityManager);

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -31,7 +31,7 @@ public class ResourceService implements Serializable{
 		
 	public ResourceService(){}
 
-	@Inject
+	@EJB
     StatelessEntityService entityService;
 	
 	public List<Resource> findAllSysResource(){

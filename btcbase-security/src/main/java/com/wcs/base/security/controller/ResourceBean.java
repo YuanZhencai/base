@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wcs.base.security.model.Resource;
-import com.wcs.base.security.realms.CustomAuthorizer;
 import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
@@ -38,7 +37,7 @@ import com.wcs.base.util.MessageUtils;
 @ManagedBean
 @ViewScoped
 public class ResourceBean implements Serializable {  
-    private static final Logger log = LoggerFactory.getLogger(CustomAuthorizer.class);
+    private final Logger log = LoggerFactory.getLogger(ResourceBean.class);
     
     @EJB
     private ResourceService resourceService;

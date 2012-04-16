@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
@@ -30,9 +31,9 @@ import com.wcs.base.util.ResourcesNode;
 public class RoleService implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Inject
+    @EJB
     StatelessEntityService entityService;
-    @Inject
+    @EJB
     ResourceService resourceService;
   
     public RoleService() {

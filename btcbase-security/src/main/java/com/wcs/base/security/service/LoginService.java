@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class LoginService implements Serializable{
     private static final long serialVersionUID = 1L;
     final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    @Inject
+    @EJB
     private StatelessEntityService entityService;
 
     /**

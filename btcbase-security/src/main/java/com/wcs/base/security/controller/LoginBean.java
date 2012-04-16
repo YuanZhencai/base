@@ -7,8 +7,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.ConversationScoped;
+import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -39,8 +39,8 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@ManagedBean
-@ViewScoped
+@Named
+@ConversationScoped
 @SuppressWarnings("serial")
 public class LoginBean implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(LoginBean.class);

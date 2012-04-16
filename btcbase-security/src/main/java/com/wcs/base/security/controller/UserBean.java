@@ -43,7 +43,7 @@ public class UserBean implements Serializable {
     private UserService userService;
     @Inject
     private User user;
-    @Inject
+    @EJB
     private StatelessEntityService entityService;
     @Inject
     private RoleService roleService;

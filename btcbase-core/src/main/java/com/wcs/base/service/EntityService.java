@@ -32,10 +32,9 @@ import com.wcs.base.util.Validate;
  * @author chris
  */
 public abstract class EntityService extends CrudEntityService {
-
+	private static final long serialVersionUID = 1L;
     // -----------------------------------  List 查询  --------------------------------------//
-
-    /**
+	/**
      * <p>按 XSQL 查询，参数以 Filter(Map) 形式提供.
      * xsql的写法参考：http://code.google.com/p/rapid-xsqlbuilder/，例如：
      * String xsql = "select b from Book b where 1=1"  + " /~ and name = {name}~/ " ;

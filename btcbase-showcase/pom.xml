@@ -20,7 +20,6 @@
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-security</artifactId>
 		</dependency>
-
 		<!-- Java EE -->
 		<dependency>
 			<groupId>javax</groupId>
@@ -43,7 +42,7 @@
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa-all</artifactId>
-			<optional>true</optional>
+			<version>2.1.1</version>
 		</dependency>
 
 		<!-- utils -->
