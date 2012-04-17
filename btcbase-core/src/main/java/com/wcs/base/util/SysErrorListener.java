@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  */
 public class SysErrorListener implements PhaseListener{
 
-    private static final Logger logger = Logger.getLogger(SysErrorListener.class);
+    private final Logger logger = Logger.getLogger(SysErrorListener.class);
     /**
      * 
      */
