@@ -11,9 +11,11 @@ public abstract class IdEntity implements java.io.Serializable {
 	private Long id;
     
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE, generator="myGen")
-	@TableGenerator(name="myGen", table="ID_GEN",initialValue=5000)
-	
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+//    @GeneratedValue(strategy=GenerationType.TABLE, generator="myGen")
+//    @TableGenerator(name="myGen", table="ID_GEN", pkColumnName="ID_NAME", valueColumnName="ID_VAL", initialValue=5000)
+
 	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SRC") 
     //@SequenceGenerator(name="SRC", sequenceName="SRC", allocationSize=20)   
 	// for db2 : CREATE SEQUENCE ROOT.SRC START WITH 500 INCREMENT BY 1 MAXVALUE 999999999 CYCLE NOCACHE
