@@ -122,7 +122,7 @@ public class Person extends BaseEntity {
 		this.nationality = nationality;
 	}
 
-	@Column(name = "VIP", columnDefinition="smallint")
+	@Column(name = "VIP")
 	public Boolean getVip() {
 		return vip;
 	}

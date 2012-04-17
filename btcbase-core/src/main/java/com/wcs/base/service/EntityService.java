@@ -116,25 +116,26 @@ public abstract class EntityService extends CrudEntityService {
      * @return 与 jpql对应的 count 语句
      */
     private String prepareCountHql(String jpql) {
-        StringBuilder countJpql = new StringBuilder("SELECT COUNT(");
+    	boolean distinct= false;
+		if(jpql.toUpperCase().contains("DISTINCT")){
+			distinct = true;
+		}
+        String fromQl = jpql.substring(jpql.toUpperCase().indexOf("FROM"));
 
-        String fromClause = jpql.substring(jpql.toUpperCase().indexOf("FROM"));
-
-        int beginPos = fromClause.toUpperCase().indexOf("FROM");
-        int endPos = fromClause.toUpperCase().indexOf("WHERE");
-        String countObj = StringUtils.substring(fromClause,beginPos,endPos).trim();
-
-        countObj =  countObj.substring(countObj.lastIndexOf(" ") + 1) ;
-
-        countJpql.append(countObj).append(") ");
-
-        int pos = fromClause.toUpperCase().indexOf("ORDER BY");
+        int pos = fromQl.toUpperCase().indexOf("ORDER BY");
         if (pos != -1) {
-            fromClause = fromClause.substring(0, pos);
+            fromQl = fromQl.substring(0, pos);
         }
-
-        countJpql.append(fromClause);
-        return countJpql.toString();
+        String[] fromQls =fromQl.split("\\s+");//多个空格
+        String fromQl1 ="";
+		if("AS".equals(fromQls[2].toUpperCase())){
+			fromQl1= fromQls[3];
+		}else{
+			fromQl1= fromQls[2];
+		}
+		StringBuilder countOfQuery = new StringBuilder("SELECT COUNT("+ (distinct ? "DISTINCT "+fromQl1+".id" : fromQl1+".id")+") ");
+        countOfQuery.append(fromQl);
+        return countOfQuery.toString();
     }
 
 
@@ -242,10 +243,13 @@ public abstract class EntityService extends CrudEntityService {
     @SuppressWarnings("unchecked")
     public <T extends IdEntity> LazyDataModel<T> findXsqlPage(final String xsql, final Map<String, Object> xsqlFilterMap) {
         //Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
-        Map<String, Object> paramMap = new HashMap<String,Object>();
+        Map<String, Object> paramMap = new HashMap<String,Object>();      
+        paramMap = this.buildParamMap(xsql, xsqlFilterMap);
         
-        String jpql = this.buildJpqlAndParams(xsql, xsqlFilterMap, paramMap);
-
+        // 构建 JPQL 语句
+        XsqlBuilder builder = new XsqlBuilder();
+        String jpql = builder.generateHql(xsql, paramMap).getXsql().toString();
+        
         return this.findPage(jpql, paramMap);
     }
 
@@ -275,7 +279,11 @@ public abstract class EntityService extends CrudEntityService {
      */
     public Query createXsqlQuery(String xsql, Map<String, Object> filterMap) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
-        String jpql = this.buildJpqlAndParams(xsql, filterMap, paramMap);
+        paramMap = this.buildParamMap(xsql, filterMap);
+        
+        // 构建 JPQL 语句
+        XsqlBuilder builder = new XsqlBuilder();
+        String jpql = builder.generateHql(xsql, paramMap).getXsql().toString();
 
         return createQuery(jpql, paramMap);
     }
@@ -285,11 +293,10 @@ public abstract class EntityService extends CrudEntityService {
      *
      * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
      * @param filterMap 参数集合，从页面上以Map形式传过来的属性集合.
-     * @param paramMap  回调的参数列表，Map的key剔除了前缀
-     * @return JPQL的查询语句
+     * @return paramMap  回调的参数列表，Map的key剔除了前缀
      * @see StatelessEntityService#findXsqlPage
      */
-    public String buildJpqlAndParams(String xsql, Map<String, Object> filterMap, Map<String, Object> paramMap) {
+    public Map<String, Object> buildParamMap(String xsql, Map<String, Object> filterMap) {
         // 得到需要动态构建的字段
         List<String> avialableKeys = Lists.newArrayList();
 
@@ -315,11 +322,10 @@ public abstract class EntityService extends CrudEntityService {
         	if (hasIt) tmpMap.put(kv.getKey(),kv.getValue());
         }
         //Assert.isTrue(avialableKeys.size()== filterMap.size());
+        Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap = this.convertMap(tmpMap);
-
-        // 构建 JPQL 语句
-        XsqlBuilder builder = new XsqlBuilder();
-        return builder.generateHql(xsql, paramMap).getXsql().toString();
+        
+        return paramMap;
     }
     
     private Map<String,Object> convertMap(Map<String, Object> xsqlFilterMap){

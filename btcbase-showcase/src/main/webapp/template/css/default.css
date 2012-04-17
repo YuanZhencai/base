@@ -836,3 +836,6 @@ input {
 }
 #tooltip h3, #tooltip div { margin: 0; }
 /*提示框样式结束*/
+
+/*去掉页面警告*/
+.ui-messages-warn {display: none;}
