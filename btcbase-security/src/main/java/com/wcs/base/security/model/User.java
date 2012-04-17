@@ -1,9 +1,7 @@
 package com.wcs.base.security.model;
 
 import java.util.List;
-import java.util.ArrayList;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -11,6 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.google.common.collect.Lists;
 import com.wcs.base.entity.IdEntity;
 
 /**
@@ -26,7 +25,7 @@ public class User extends IdEntity {
 	private String loginName;
 	private String name;
 	private String password;
-	private List<Role> roleList = new ArrayList<Role>();// 有序的关联对象集合
+	private List<Role> roleList = Lists.newArrayList();// 有序的关联对象集合
 
 	public User() {
 	}
@@ -63,11 +62,8 @@ public class User extends IdEntity {
 		this.password = password;
 	}
 
-	// 多对多定义
 	@ManyToMany
-	// 中间表定义,表名采用默认命名规则
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
-	// 集合按id排序.
 	@OrderBy("id")
 	public List<Role> getRoleList() {
 		return roleList;

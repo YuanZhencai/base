@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -26,19 +26,20 @@ import com.wcs.base.util.ResourcesNode;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 
-@Stateless
+@Named(value = "resourceService")
 public class ResourceService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EJB
-	StatelessEntityService entityService;
+	@Inject
+	private StatelessEntityService entityService;
 
 	public ResourceService() {
 	}
 
 	public List<Resource> findAllSysResource() {
 		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.number";
-		return this.entityService.findList(sql);
+		List<Resource> resList = this.entityService.findList(sql);
+		return resList;
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class ResourceService implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<Resource> getChildListById(Long parentid) {
 		try {
-			Query query = entityService.createQuery("SELECT r FROM Resource r WHERE r.parentId = ?");
+			Query query = entityService.createQuery("SELECT r FROM Resource r WHERE r.parentId = ?1");
 			query.setParameter(1, parentid);
 			return (List<Resource>) query.getResultList();
 		} catch (Exception e) {

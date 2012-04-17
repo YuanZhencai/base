@@ -4,11 +4,12 @@
 
 package com.wcs.showcase.crud.service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -24,9 +25,11 @@ import com.wcs.showcase.crud.model.Product;
 * @author <a href="mailto:yangshiyun@wcs-global.com">Yang Shiyun</a> 
 */
 
-@Stateless
-public class ProductService {
-	@EJB
+@Named(value = "productService")
+public class ProductService implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
 	public StatelessEntityService es;
 	
     /**

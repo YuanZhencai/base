@@ -1,10 +1,11 @@
 package com.wcs.showcase.crud.service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
 
@@ -20,10 +21,12 @@ import com.wcs.showcase.crud.model.Person;
 * @author <a href="mailto:yangshiyun@wcs-global.com">Yang Shiyun</a> 
 */
 
-@Stateless
-public class PersonService {
-	@EJB
-	public StatelessEntityService entityService;
+@Named(value = "personService")
+public class PersonService implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private StatelessEntityService entityService;
 
     /**
      * 查询所有的人员信息

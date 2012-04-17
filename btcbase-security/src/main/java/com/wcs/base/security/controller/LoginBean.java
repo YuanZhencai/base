@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.enterprise.context.ConversationScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -39,16 +39,16 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@Named
-@ConversationScoped
-@SuppressWarnings("serial")
+@ManagedBean
+@ViewScoped
 public class LoginBean implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(LoginBean.class);
+	private static final long serialVersionUID = 1L;
+	private static final Logger log = LoggerFactory.getLogger(LoginBean.class);
     private static final String LOGIN_SUCCESS = "/template/template.xhtml";
 
-    @EJB
+    @Inject
     private LoginService loginService;
-    @EJB
+    @Inject
     private ResourceService resourceService;
     
     private List<List<Resource>> allResList = Lists.newArrayList();     // 系统的全部资源
@@ -62,7 +62,6 @@ public class LoginBean implements Serializable {
         log.info("ResourceBean => initAllResources()");
         List<Resource> resList = resourceService.findAllSysResource();        
         Map<String,List<Resource>> allResMap = Maps.newHashMap();
-        
         for (Resource r : resList){
             String level = "level"+r.getLevel();
             
@@ -111,13 +110,13 @@ public class LoginBean implements Serializable {
             return Constants.FAILURED;
         }
 
-        this.isManager=  loginService.isAdmin(user.getId());
+        // this.isManager=  loginService.isAdmin(user.getId());
         JSFUtils.getSession().put("loginName",user.getLoginName());
         JSFUtils.getSession().put("userName",user.getPassword());
         JSFUtils.getSession().put("user", user);
         JSFUtils.getSession().put("selectId",2);  //选中的菜单
 
-		return Constants.SUCCESS;
+		return LOGIN_SUCCESS;
 	}    
 	
 	/**

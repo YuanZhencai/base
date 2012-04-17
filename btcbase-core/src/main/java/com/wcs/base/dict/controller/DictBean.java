@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.common.base.Function;
@@ -27,7 +28,7 @@ import com.wcs.base.service.StatelessEntityService;
 @ApplicationScoped
 public class DictBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EJB
+    @Inject
     private StatelessEntityService entityService;
     /** 代码缓存Map*/
     private  ConcurrentMap<String, String> codeCaseMap;

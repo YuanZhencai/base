@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -28,13 +28,13 @@ import com.wcs.base.util.CollectionUtils;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 
-@Stateless
+@Named(value = "userService")
 public class UserService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EJB private StatelessEntityService entityService;
-    @EJB ResourceService resourceService;
-
+	@Inject
+	private StatelessEntityService entityService;
+	
     public UserService() {}
 
    /**

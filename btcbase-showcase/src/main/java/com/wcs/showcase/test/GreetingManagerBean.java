@@ -1,7 +1,7 @@
 package com.wcs.showcase.test;
 
 import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.inject.Named;
 
 /**
 * <p>Project: btcbase</p> 
@@ -12,7 +12,7 @@ import javax.ejb.Stateless;
 * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 @Local(GreetingManager.class)
-@Stateless
+@Named(value = "greetingManagerBean")
 public class GreetingManagerBean implements GreetingManager {  
     public String greet(String userName) {
         return "Hello " + userName;

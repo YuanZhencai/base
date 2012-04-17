@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -39,7 +39,7 @@ import com.wcs.base.util.MessageUtils;
 public class ResourceBean implements Serializable {  
     private final Logger log = LoggerFactory.getLogger(ResourceBean.class);
     
-    @EJB
+    @Inject
     private ResourceService resourceService;
     
     private LazyDataModel<Resource> lazyModel;

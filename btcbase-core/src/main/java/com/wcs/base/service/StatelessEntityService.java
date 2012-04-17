@@ -1,10 +1,9 @@
 package com.wcs.base.service;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 
 /**
  * 无状态的实体操作类.
@@ -14,17 +13,17 @@ import javax.persistence.PersistenceContext;
  *
  * @author chris
  */
-@Stateless
+@Named(value = "statelessEntityService")
 public class StatelessEntityService extends EntityService {
 	private static final long serialVersionUID = 1L;
-	
-	@PersistenceContext(unitName = "pu")
-    public EntityManager entityManager;
 
-    @SuppressWarnings("unused")
+	@PersistenceContext(unitName = "pu")
+	public EntityManager entityManager;
+
+	@SuppressWarnings("unused")
 	@PostConstruct
-    private void initEntityManager(){
-        logger.info("初始化 EntityManager");
-        this.setEntityManager(entityManager);
-    }
+	private void initEntityManager() {
+		logger.info("初始化 EntityManager");
+		this.setEntityManager(entityManager);
+	}
 }

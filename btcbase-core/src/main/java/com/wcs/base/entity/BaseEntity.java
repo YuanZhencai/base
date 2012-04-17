@@ -1,13 +1,9 @@
 package com.wcs.base.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
@@ -25,80 +21,58 @@ import javax.persistence.Transient;
 public abstract class BaseEntity extends IdEntity {
 	private static final long serialVersionUID = 1L;
 
-	private Date createdDatetime;
+	private String createdBy;
+	private Timestamp createdDatetime;
+	private Boolean defunctInd;
+	private String updatedBy;
+	private Timestamp updatedDatetime;
 
-    private String createdBy;
+	@Column(name = "created_by", length = 30)
+	public String getCreatedBy() {
+		return this.createdBy;
+	}
 
-	private Date updatedDatetime;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
-    private String updatedBy;
+	@Column(name = "created_datetime")
+	public Timestamp getCreatedDatetime() {
+		return this.createdDatetime;
+	}
 
-    private Boolean defunctInd;
+	public void setCreatedDatetime(Timestamp createdDatetime) {
+		this.createdDatetime = createdDatetime;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME")
-    public Date getCreatedDatetime() {
-        return createdDatetime;
-    }
+	@Column(name = "defunct_ind")
+	public Boolean getDefunctInd() {
+		return this.defunctInd;
+	}
 
-    @Column(name="CREATED_BY", length=30)
-    public String getCreatedBy() {
-        return createdBy;
-    }
+	public void setDefunctInd(Boolean defunctInd) {
+		this.defunctInd = defunctInd;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="UPDATED_DATETIME")
-    public Date getUpdatedDatetime() {
-        return updatedDatetime;
-    }
+	@Column(name = "updated_by", length = 30)
+	public String getUpdatedBy() {
+		return this.updatedBy;
+	}
 
-    @Column(name="UPDATED_BY", length=30)
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
-    @Column(name="DEFUNCT_IND",columnDefinition="smallint")
-    public Boolean isDefunctInd() {
-        return defunctInd;
-    }
+	@Column(name = "updated_datetime")
+	public Timestamp getUpdatedDatetime() {
+		return this.updatedDatetime;
+	}
 
-    public void setDefunctInd(Boolean defunctInd) {
-        this.defunctInd = defunctInd;
-    }
+	public void setUpdatedDatetime(Timestamp updatedDatetime) {
+		this.updatedDatetime = updatedDatetime;
+	}
 
-    public void setUpdatedDatetime(Date updatedDatetime) {
-        this.updatedDatetime = updatedDatetime;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public void setCreatedDatetime(Date createdDatetime) {
-        this.createdDatetime = createdDatetime;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    @Transient
+	@Transient
 	public abstract String getDisplayText();
-
-	@PrePersist
-	public void initTimeStamps() {
-		// we do this for the purpose of the demo, this lets us create our own
-		// creation dates. Typically we would just set the createdOn field.
-		if (createdDatetime == null) {
-			createdDatetime = new Date();
-		}
-		updatedDatetime = createdDatetime;
-        defunctInd = false;
-	}
-
-	@PreUpdate
-	public void updateTimeStamp() {
-		updatedDatetime = new Date();
-	}
 
 }

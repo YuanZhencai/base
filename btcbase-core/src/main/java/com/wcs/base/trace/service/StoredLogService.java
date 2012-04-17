@@ -2,8 +2,8 @@ package com.wcs.base.trace.service;
 
 import java.io.Serializable;
 
-import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.wcs.base.service.StatelessEntityService;
@@ -21,7 +21,7 @@ public class StoredLogService implements Serializable {
 //    @Inject
 //	private EntityService entityService;
 	private static final long serialVersionUID = 1L;
-	@EJB
+	@Inject
     StatelessEntityService entityService;
 
     public enum LogLevel {

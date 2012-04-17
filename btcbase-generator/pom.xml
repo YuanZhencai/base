@@ -5,7 +5,7 @@
 		<artifactId>btcbase-lite</artifactId>
 		<groupId>com.wcs</groupId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>btcbase-generator</artifactId>
 	<packaging>jar</packaging>

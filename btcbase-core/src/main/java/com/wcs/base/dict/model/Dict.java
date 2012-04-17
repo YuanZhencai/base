@@ -19,9 +19,6 @@ import com.wcs.base.entity.IdEntity;
 @Entity
 @Table(name = "dict")
 public class Dict extends IdEntity {
-    /**
-    * 
-    */
     private static final long serialVersionUID = 1L;
     /** 代码编号*/
     private String code;
@@ -89,7 +86,7 @@ public class Dict extends IdEntity {
         this.parentCode = parentCode;
     }
 
-    @Column(name = "DEFUNCT_IND", columnDefinition = "smallint")
+    @Column(name = "DEFUNCT_IND")
     public Boolean isDefunctInd() {
         return defunctInd;
     }

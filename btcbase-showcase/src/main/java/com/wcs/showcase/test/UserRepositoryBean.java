@@ -1,7 +1,7 @@
 package com.wcs.showcase.test;
 
 import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -16,17 +16,17 @@ import com.wcs.base.security.model.User;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 @Local(UserRepository.class)
-@Stateless
+@Named(value = "userRepositoryBean")
 public class UserRepositoryBean implements UserRepository {
-    @PersistenceContext(unitName="pu")
-    private EntityManager em;
+	@PersistenceContext(unitName = "pu")
+	private EntityManager em;
 
-    @Override
-    public String searchUser() {
-        User user = new User();
-        em.persist(user);
-       
-        return "yes";
-    }
-    
+	@Override
+	public String searchUser() {
+		User user = new User();
+		em.persist(user);
+
+		return "yes";
+	}
+
 }

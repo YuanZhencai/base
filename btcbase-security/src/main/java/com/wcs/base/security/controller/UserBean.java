@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
@@ -35,15 +34,16 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
 public class UserBean implements Serializable {
-    @EJB
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
     private UserService userService;
     @Inject
     private User user;
-    @EJB
+    @Inject
     private StatelessEntityService entityService;
     @Inject
     private RoleService roleService;

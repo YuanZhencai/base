@@ -2,7 +2,7 @@ package com.wcs.base.controller;
 
 import java.io.Serializable;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import com.wcs.base.entity.IdEntity;
 import com.wcs.base.service.StatelessEntityService;
@@ -16,14 +16,10 @@ import com.wcs.base.util.ReflectionUtils;
  * @author <a href="mailto:chenlong@wcs-global.com">Chen Long</a>
  */
 public abstract class AbstractBaseBean<T extends IdEntity> implements Serializable {
-    /**
-     * 
-     */
-
     private static final long serialVersionUID = 1L;
     protected Long id;
     protected T instance; // currentEntity
-    @EJB
+    @Inject
     protected StatelessEntityService entityService;
 
     protected void initInstance() {

@@ -1,22 +1,20 @@
 package com.wcs.base.security.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.io.Serializable;
+import javax.persistence.*;
 
-import com.wcs.base.entity.IdEntity;
 
 /**
  * The persistent class for the resource database table.
  * 
  */
 @Entity
-@Table(name = "resource")
-public class Resource extends IdEntity {
+@Table(name="resource")
+public class Resource implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	private Long id;
 	private Boolean isLeaf;
-    private Boolean isMenu;
+	private Boolean isMenu;
 	private String keyName;
 	private Integer level;
 	private String name;
@@ -24,19 +22,43 @@ public class Resource extends IdEntity {
 	private Long parentId;
 	private String url;
 
-	public Resource() {
+    public Resource() {
+    }
+
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
+	public Long getId() {
+		return this.id;
 	}
 
-    @Column(name = "is_leaf")
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	@Column(name="is_leaf")
 	public Boolean getIsLeaf() {
-		return isLeaf;
+		return this.isLeaf;
 	}
 
 	public void setIsLeaf(Boolean isLeaf) {
 		this.isLeaf = isLeaf;
 	}
 
-    @Column(name = "key_name", nullable = false, length = 255)
+
+	@Column(name="is_menu")
+	public Boolean getIsMenu() {
+		return this.isMenu;
+	}
+
+	public void setIsMenu(Boolean isMenu) {
+		this.isMenu = isMenu;
+	}
+
+
+	@Column(name="key_name", nullable=false, length=255)
 	public String getKeyName() {
 		return this.keyName;
 	}
@@ -45,6 +67,7 @@ public class Resource extends IdEntity {
 		this.keyName = keyName;
 	}
 
+
 	public Integer getLevel() {
 		return this.level;
 	}
@@ -52,7 +75,9 @@ public class Resource extends IdEntity {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
-    @Column(length = 40)
+
+
+	@Column(length=40)
 	public String getName() {
 		return this.name;
 	}
@@ -60,7 +85,9 @@ public class Resource extends IdEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-    @Column(length = 255)
+
+
+	@Column(length=255)
 	public String getNumber() {
 		return this.number;
 	}
@@ -69,15 +96,18 @@ public class Resource extends IdEntity {
 		this.number = number;
 	}
 
-    @Column(name = "parent_id")
-    public Long getParentId() {
+
+	@Column(name="parent_id")
+	public Long getParentId() {
 		return this.parentId;
 	}
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-    @Column(length = 100)
+
+
+	@Column(length=100)
 	public String getUrl() {
 		return this.url;
 	}
@@ -85,15 +115,5 @@ public class Resource extends IdEntity {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-    @Column(name = "is_menu")
-	public Boolean getIsMenu() {
-		return isMenu;
-	}
-
-	public void setIsMenu(Boolean menu) {
-		this.isMenu = menu;
-	}
-	
-	
 
 }

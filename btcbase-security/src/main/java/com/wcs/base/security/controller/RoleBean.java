@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.NodeSelectEvent;
@@ -38,16 +38,17 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@SuppressWarnings("serial")
 @Named
 @ConversationScoped
 public class RoleBean implements Serializable {
-    @EJB
+	private static final long serialVersionUID = 1L;
+	@Inject
     private StatelessEntityService entityService;
-    @EJB
+    @Inject
     private RoleService roleService;
-    @EJB
+    @Inject
     private ResourceService resourceService;
+    
     /** 资源树 */
     private TreeNode root;
     /** 节点数组 */

@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +25,13 @@ import com.wcs.base.security.model.User;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 
-@Stateless
+@Named(value = "loginService")
 public class LoginService implements Serializable{
     private static final long serialVersionUID = 1L;
-    
     final Logger logger = LoggerFactory.getLogger(LoginService.class);
-    @EJB private StatelessEntityService entityService;
+    
+    @Inject
+    private StatelessEntityService entityService;
 
     /**
      * 根据用户查询所拥有的角色
@@ -58,15 +59,16 @@ public class LoginService implements Serializable{
         return  null;
     }
 
-    @SuppressWarnings("rawtypes")
+    // 现在不村子UserRole实体类
+/*    @SuppressWarnings("rawtypes")
 	public Boolean isAdmin(Long userId){
-        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?";
-        List list = this.entityService.findList(jpql,userId);
+        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?1";
+        List list = this.entityService.findList(jpql, userId);
         if (CollectionUtils.isEmpty(list)){
             return false;
         }
         return true;
-    }
+    }*/
 
     public List<Resource> loadResourceByUser(Long userId){
         String jpql = "select rr.resource from RoleResource rr, UserRole ur where ur.role=rr.role AND ur.user.id=?1";

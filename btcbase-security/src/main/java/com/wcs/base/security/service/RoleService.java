@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.Query;
 
 import org.primefaces.model.TreeNode;
@@ -27,13 +27,13 @@ import com.wcs.base.util.ResourcesNode;
  * @author <a href="mailto:yourname@wcs-global.com">Your Name</a>
  */
 
-@Stateless
+@Named(value = "roleService")
 public class RoleService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EJB
+	@Inject
 	private StatelessEntityService entityService;
-	@EJB
+	@Inject
 	private ResourceService resourceService;
 
 	public RoleService() {

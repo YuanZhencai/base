@@ -17,7 +17,6 @@
 			<artifactId>javaee-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
