@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hibernate tools" default="generate.code">
+
+	<property name="project.runtime.lib" value="../../target/btcbase/WEB-INF/lib" />
+	<property name="project.lib" value="../lib" />
+	<property name="hibernatetools-templates.path" value="template/pojo" />
+
+	<path id="toolslib">
+		<path location="${project.lib}/hibernate-tools-3.2.4.GA.jar" />
+		<path location="${project.lib}/jtidy-r8-20060801.jar" />
+
+        <path location="${project.lib}/freemarker-2.3.16.jar" />
+		<path location="${project.lib}/hibernate-core-3.3.2.GA.jar" />
+		<path location="${project.lib}/hibernate-annotations-3.4.0.GA.jar" />
+		<path location="${project.lib}/hibernate-commons-annotations-3.1.0.GA.jar" />
+		<path location="${project.lib}/ejb3-persistence-1.0.2.GA.jar" />
+		<path location="${project.lib}/dom4j-1.6.1.jar" />
+        <path location="${project.lib}/cglib-nodep-2.2.2.jar" />
+		<path location="${project.lib}/commons-collections-3.2.1.jar" />
+		<path location="${project.lib}/commons-logging-1.1.1.jar" />
+		<path location="${project.lib}/slf4j-api-1.5.11.jar" />
+		<path location="${project.lib}/slf4j-log4j12-1.5.11.jar" />
+		<path location="${project.lib}/log4j-1.2.14.jar" />
+
+		<!--jdbc driver-->
+		<!--
+		<path location="${project.runtime.lib}/h2-1.1.119.jar" />
+		<path location="${project.runtime.lib}/ojdbc14-10.2.3.0.jar" />
+		<path location="${project.runtime.lib}/jtds-1.2.5.jar" />
+		-->
+
+        <path location="${project.lib}/db2jcc.jar" />
+        <path location="${project.lib}/mysql-connector-java-5.1.6.jar" />
+        <path location="${project.lib}/log4j-1.2.14.jar" />
+	</path>
+
+	<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib" />
+
+	<target name="generate.entity">
+		<hibernatetool destdir="../output/entity">
+			<jdbcconfiguration configurationfile="hibernate.cfg.xml" namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" revengfile="hibernate.reveng.xml" detectmanytomany="true"/>
+
+			<hbm2java jdk5="true" ejb3="true" />
+		</hibernatetool>
+	</target>
+
+	<target name="generate.code">
+		<hibernatetool destdir="../output/pojo" templatepath="${hibernatetools-templates.path}/">
+			<classpath>
+				<path location="../build/classes/main" />
+			</classpath>
+
+			<annotationconfiguration configurationfile="hibernate.cfg.xml" />
+
+			<hbmtemplate destdir="../output/controller" templateprefix="pojo" template="bean.ftl" filepattern="{class-name}Bean.java" />
+            <hbmtemplate destdir="../output/service" templateprefix="pojo" template="service.ftl" filepattern="{class-name}Service.java" />
+		</hibernatetool>
+	</target>
+
+	<target name="generate.ddl">
+		<hibernatetool destdir="../output/sql">
+			<classpath>
+				<path location="../../target/classes" />
+                <fileset dir="${project.runtime.lib}">
+                    <include name="**/*.jar"/>
+                </fileset>
+			</classpath>
+
+			<annotationconfiguration configurationfile="hbm2ddl.cfg.xml" namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" />
+
+			<hbm2ddl export="false" update="false" drop="false" create="false" outputfilename="schema.sql" delimiter=";" format="true" haltonerror="false" />
+		</hibernatetool>
+	</target>
+	
+	<target name="generate.db">
+		<hibernatetool destdir="../output/sql">
+			<classpath>
+				<path location="../../target/classes" />
+		                <fileset dir="${project.runtime.lib}">
+		                    <include name="**/*.jar"/>
+		                </fileset>
+			</classpath>
+
+			<annotationconfiguration configurationfile="hibernate.cfg.xml" namingstrategy="org.hibernate.cfg.ImprovedNamingStrategy" />
+			<hbm2ddl export="true" update="false" drop="true" create="true" delimiter=";" format="true" haltonerror="false" />
+		</hibernatetool>
+	</target>	
+</project>
