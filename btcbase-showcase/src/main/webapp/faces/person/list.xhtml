@@ -28,6 +28,8 @@
         						<f:selectItem itemLabel="女" itemValue="女" />
         				    </h:selectOneMenu>
 				       	 出生日期：<p:calendar value="#{personBean.filterMap['EQD_startBirthday']}"/> ~ <p:calendar value="#{personBean.filterMap['EQD_endBirthday']}"/>	                      
+                     </h:panelGrid>
+                     <h:panelGrid style="width:100%; text-align: right;">
                      	<p:commandButton id="btn_person_Search" value="查询" actionListener="#{personBean.search}" update="personDataPanel" icon="ui-icon ui-icon-search"/>
                      </h:panelGrid>
                 </p:fieldset>

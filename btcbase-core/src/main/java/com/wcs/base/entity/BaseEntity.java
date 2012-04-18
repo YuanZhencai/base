@@ -1,9 +1,12 @@
 package com.wcs.base.entity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
 /**
@@ -74,5 +77,21 @@ public abstract class BaseEntity extends IdEntity {
 
 	@Transient
 	public abstract String getDisplayText();
+	
+	@PrePersist
+	public void initTimeStamps() {
+		if (createdDatetime == null) {
+			Timestamp ts = new Timestamp(new Date().getTime()); 
+			createdDatetime = ts;
+		}
+		updatedDatetime = createdDatetime;
+        defunctInd = false;
+	}
+	
+	@PreUpdate
+	public void updateTimeStamp() {
+		updatedDatetime = new Timestamp(new Date().getTime());
+	}
+
 
 }

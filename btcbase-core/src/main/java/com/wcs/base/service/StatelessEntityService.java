@@ -1,6 +1,7 @@
 package com.wcs.base.service;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +14,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author chris
  */
-@Named(value = "statelessEntityService")
+@Stateless
 public class StatelessEntityService extends EntityService {
 	private static final long serialVersionUID = 1L;
 
