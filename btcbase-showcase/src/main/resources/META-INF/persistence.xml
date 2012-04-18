@@ -32,14 +32,15 @@
         <class>com.wcs.base.security.model.Resource</class>
         <class>com.wcs.base.security.model.Role</class>
         <class>com.wcs.base.security.model.User</class>
+        <class>com.wcs.base.dict.model.Dict</class>
         <class>com.wcs.showcase.crud.model.Person</class>
         <class>com.wcs.showcase.crud.model.Product</class>
 
 		<properties>
-            <!--
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-            <property name="eclipselink.ddl-generation.output-mode" value="database" />
-            -->
+      		<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <!--  <property name="eclipselink.ddl-generation" value="update" />  -->
+            <property name="eclipselink.ddl-generation.output-mode" value="database" /> 
+             
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
 		</properties>
