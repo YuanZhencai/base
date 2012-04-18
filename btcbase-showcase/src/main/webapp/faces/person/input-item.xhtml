@@ -17,8 +17,7 @@
         <h:outputText value="性别："/>
         <h:selectOneMenu id="person_sex" value="#{personBean.instance.sex}" >
         	<f:selectItem itemLabel="--请选择--" itemValue="" />
-        	<f:selectItem itemLabel="男" itemValue="男" />
-        	<f:selectItem itemLabel="女" itemValue="女" />
+        	<f:selectItems value="#{personBean.sexList}" />
         </h:selectOneMenu>
         
         <h:outputText value="国籍：" />  

@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -68,8 +67,8 @@ public class DictBean implements Serializable {
     
     public String queryCode(String code){
         String str = codeCaseMap.get(code);
-        System.out.println(str);
-        return codeCaseMap.get(code);
+        //System.out.println(str);
+        return str;
     }
     
     /**
@@ -79,12 +78,12 @@ public class DictBean implements Serializable {
      * @return
      */
     public Dict findByCode(String number) {
-        String sql = "select dict from Dict dict where dict.code=? ";
+        String sql = "select dict from Dict dict where dict.code = ?1 ";
         List list = this.entityService.findList(sql, number);
         if (!list.isEmpty() && list.size() == 1) { 
             return (Dict) list.get(0); 
         }else{
-            String sql1 = "select dict from Dict dict where  dict.parentCode = ?";
+            String sql1 = "select dict from Dict dict where  dict.parentCode = ?1";
             List list1 = this.entityService.findList(sql, number);
             if(!list1.isEmpty() && list1.size() == 1){
                 return (Dict) list1.get(0); 

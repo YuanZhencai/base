@@ -87,7 +87,7 @@ public class Product extends BaseEntity {
 		this.price = price;
 	}
 
-	@Column(name = "AVAILABLE",columnDefinition="smallint")
+	@Column(name = "AVAILABLE")
 	public Boolean getAvailable() {
 		return available;
 	}

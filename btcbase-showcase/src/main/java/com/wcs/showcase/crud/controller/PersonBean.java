@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ViewBaseBean;
+import com.wcs.base.dict.service.DictService;
 import com.wcs.showcase.crud.model.Person;
 import com.wcs.showcase.crud.service.PersonService;
 
@@ -34,12 +36,15 @@ import com.wcs.showcase.crud.service.PersonService;
 public class PersonBean extends ViewBaseBean<Person> {
 
 	@Inject
-	PersonService personService;
+	private PersonService personService;
+	@Inject
+	private DictService dictService;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);
 	private LazyDataModel<Person> lazyModel;           // 动态分页使用
 	private List<Person> personList = new ArrayList<Person>();
 	private boolean editMode;        					// 是否修改
+	private List<SelectItem> sexList = new ArrayList<SelectItem>();        // 性别下拉框
 	
 	final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -57,6 +62,7 @@ public class PersonBean extends ViewBaseBean<Person> {
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
+		this.setSexList(dictService.findWithSelectItem("SEX"));
     	this.search();	
 	}
 	
@@ -106,6 +112,22 @@ public class PersonBean extends ViewBaseBean<Person> {
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
+	}
+
+	public List<SelectItem> getSexList() {
+		return sexList;
+	}
+
+	public void setSexList(List<SelectItem> sexList) {
+		this.sexList = sexList;
+	}
+
+	public DictService getDictService() {
+		return dictService;
+	}
+
+	public void setDictService(DictService dictService) {
+		this.dictService = dictService;
 	}
 
 }

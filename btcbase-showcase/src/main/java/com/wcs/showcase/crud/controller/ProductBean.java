@@ -38,7 +38,7 @@ import com.wcs.showcase.crud.service.ProductService;
 public class ProductBean extends ConversationBaseBean<Product> {
 	@Inject
 	ProductService productService;
-	@EJB
+	@Inject
 	private DictService dictService;
 	
 	private Map<String,Object> filterMap = Maps.newHashMapWithExpectedSize(5);
