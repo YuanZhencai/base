@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -39,8 +39,8 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
-@ManagedBean
-@ViewScoped
+@Named
+@ApplicationScoped
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(LoginBean.class);
@@ -84,6 +84,7 @@ public class LoginBean implements Serializable {
 	 * @return
 	 */
 	public String userLogin() {
+		System.out.println("+=================");
         String loginName = JSFUtils.getRequestParam("loginName");
         Subject currentUser = SecurityUtils.getSubject();
         // 用户认证
