@@ -51,8 +51,6 @@ public class LoginBean implements Serializable {
 	private ResourceService resourceService;
 
 	private List<List<Resource>> allResList = Lists.newArrayList(); // 系统的全部资源
-	private boolean isManager = false; // 是否是管理员
-
 	private final String LOGIN_SUCCESS = "/template/template.xhtml";
 	private final String LOGIN_PAGE = "/login.xhtml";
 
@@ -104,10 +102,6 @@ public class LoginBean implements Serializable {
 			ae.printStackTrace();
 			return LOGIN_PAGE;
 		}
-
-		// this.isManager= loginService.isAdmin(user.getId());
-		JSFUtils.getSession().put("loginName", user.getLoginName());
-		JSFUtils.getSession().put("userName", user.getPassword());
 		JSFUtils.getSession().put("user", user);
 		JSFUtils.getSession().put("selectId", 2); // 选中的菜单
 
@@ -121,8 +115,7 @@ public class LoginBean implements Serializable {
 		// 关闭Session
 		Subject currentUser = SecurityUtils.getSubject();
 		currentUser.logout();
-
-		return LOGIN_SUCCESS;
+		return LOGIN_PAGE;
 	}
 
 	/**
@@ -132,30 +125,10 @@ public class LoginBean implements Serializable {
 	 */
 	public String changeMenu(Long selectId) {
 		JSFUtils.getSession().put("selectId", selectId);
-		// leftMenuResouce.clear();
-		// intitLeftMenu(selectId);
-		// 系统全部资源
-		// List<Resource> sysResouceList = null; // resouceBean.getSysResouce();
-		// loginService.intitLeftMenu(selectId, leftMenuResouce, allUserResouce,
-		// sysResouceList);
-		
 		return LOGIN_SUCCESS;
 	}
 
 	// ----------------------------- set & get -------------------------------//
-
-	public boolean isManager() {
-		return isManager;
-	}
-
-	public boolean isQueryDeleted() {
-		return false;
-	}
-
-	public void setManager(boolean isManager) {
-		this.isManager = isManager;
-	}
-
 	public List<List<Resource>> getAllResList() {
 		return allResList;
 	}

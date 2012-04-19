@@ -36,18 +36,30 @@
 			<artifactId>btcbase-security</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
 		<!-- Java EE -->
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- JSF 2.1 -->
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>velocity</groupId>
+			<artifactId>velocity-dep</artifactId>
+		</dependency>
 
+		<!-- Primefaces 3.1.1 -->
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
