@@ -25,7 +25,6 @@
 	<persistence-unit name="pu" transaction-type="JTA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<jta-data-source>jdbc/btcbase</jta-data-source>
-
         <class>com.wcs.base.entity.IdEntity</class>
         <class>com.wcs.base.entity.BaseEntity</class>
         <class>com.wcs.base.security.model.Permission</class>
@@ -35,12 +34,10 @@
         <class>com.wcs.base.dict.model.Dict</class>
         <class>com.wcs.showcase.crud.model.Person</class>
         <class>com.wcs.showcase.crud.model.Product</class>
-
 		<properties>
-      		<!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />  -->
-            <property name="eclipselink.ddl-generation" value="update" />  
+      		<!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> -->
+            <property name="eclipselink.ddl-generation" value="update" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" /> 
-             
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
 		</properties>

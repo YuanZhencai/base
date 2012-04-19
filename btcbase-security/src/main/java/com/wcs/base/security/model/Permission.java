@@ -7,21 +7,25 @@ import javax.persistence.Table;
 import com.wcs.base.entity.IdEntity;
 
 /**
- * The persistent class for the permission database table.
- * 
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: Permission.java</p> 
+ * <p>Description: </p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
+ * <p>Company: wcs.com</p> 
+ * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 @Entity
 @Table(name = "permission")
 public class Permission extends IdEntity {
 	private static final long serialVersionUID = 1L;
 	private Long roleid;
-	private String url;
+	private String permission;
 
 	public Permission() {
 	}
 
 	public Long getRoleid() {
-		return this.roleid;
+		return roleid;
 	}
 
 	public void setRoleid(Long roleid) {
@@ -29,12 +33,11 @@ public class Permission extends IdEntity {
 	}
 
 	@Column(length = 255)
-	public String getUrl() {
-		return this.url;
+	public String getPermission() {
+		return permission;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPermission(String permission) {
+		this.permission = permission;
 	}
-
 }

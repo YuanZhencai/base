@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,56 +25,28 @@ import com.wcs.base.security.model.User;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 
-@Named(value = "loginService")
+@Stateless
 public class LoginService implements Serializable{
     private static final long serialVersionUID = 1L;
     final Logger logger = LoggerFactory.getLogger(LoginService.class);
     
     @Inject
     private StatelessEntityService entityService;
-
+    
     /**
-     * 根据用户查询所拥有的角色
-     * @param user
-     * @return
-     * @throws Exception
-     */
-     public List<Role> findAllRoleOfUser(User user) {
-         String jpql = "select r from UserRole ur join ur.user u join ur.role r where r.state=1 and u.id=" + user.getId();
-         return entityService.findList(jpql);
-     }
-     
-    /**
-     * <p>Description: 通过用户名查询唯一用户</p>
-     * @param userName
+     * 通过用户名查询唯一用户
+     * @param loginName
      * @return
      */
-    public User findUniqueUser(String loginName) {
-        String sql = "SELECT u FROM User u WHERE u.loginName=?1";
-        List<User> list  = this.entityService.findList(sql,loginName);
-        if (!CollectionUtils.isEmpty(list)) {
-            return list.iterator().next();
+    public User findUser(String loginName) {
+        String jpql = "SELECT u FROM User u WHERE u.loginName=?1";
+        List<User> userList  = this.entityService.findList(jpql, loginName);
+        if (CollectionUtils.isEmpty(userList)) {
+           return null;
         }
-        
-        return  null;
+        return userList.iterator().next();
     }
 
-    // 现在不村子UserRole实体类
-/*    @SuppressWarnings("rawtypes")
-	public Boolean isAdmin(Long userId){
-        String jpql = "select ur.role FROM UserRole ur where ur.role.roleName='admin' and ur.user.id=?1";
-        List list = this.entityService.findList(jpql, userId);
-        if (CollectionUtils.isEmpty(list)){
-            return false;
-        }
-        return true;
-    }*/
-
-    public List<Resource> loadResourceByUser(Long userId){
-        String jpql = "select rr.resource from RoleResource rr, UserRole ur where ur.role=rr.role AND ur.user.id=?1";
-        return this.entityService.findList(jpql,userId);
-    }
-   
    /**
     * 初始化Left导航菜单
     * @param selectId
@@ -235,12 +207,13 @@ public class LoginService implements Serializable{
     }
     
     /**
-     * 找到角色对应
+     * Find permission list by role
      * @param role
      * @return
      */
-    public List<Permission> findAllPermissionByRole(Role role) {
-        String jpql = "select p from Permission p where p.role.id=?1";
-        return this.entityService.findList(jpql, role.getId());
-    }
+	public List<Permission> findPermissions(Role role) {
+		String jpql = "SELECT p FROM Permission p WHERE p.roleid = ?1";
+		List<Permission> permissions = entityService.findList(jpql, role.getId());
+		return permissions;
+	}
 }

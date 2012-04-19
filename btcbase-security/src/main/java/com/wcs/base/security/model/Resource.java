@@ -3,6 +3,8 @@ package com.wcs.base.security.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.wcs.base.entity.IdEntity;
+
 
 /**
  * The persistent class for the resource database table.
@@ -10,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="resource")
-public class Resource implements Serializable {
+public class Resource extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Boolean isLeaf;

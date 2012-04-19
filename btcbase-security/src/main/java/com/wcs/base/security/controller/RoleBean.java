@@ -38,359 +38,274 @@ import com.wcs.base.util.MessageUtils;
  * <p>Company: wcs.com</p> 
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
+
 @Named
 @ConversationScoped
 public class RoleBean implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private final Logger logger = LoggerFactory.getLogger(RoleBean.class);
+
 	@Inject
-    private StatelessEntityService entityService;
-    @Inject
-    private RoleService roleService;
-    @Inject
-    private ResourceService resourceService;
-    
-    /** 资源树 */
-    private TreeNode root;
-    /** 节点数组 */
-    private TreeNode[] selectedNodes;
-    /** 数据模型 */
-    private LazyDataModel<Role> lazyModel;
-    /** 角色名字 */
-    private String roName;
-    /** 查询条件Map封装 */
-    private Map<String, Object> queryMap = new HashMap<String, Object>();
-    /** FormVo */
-   // private RoleVO roleVo = new RoleVO();
-    /** 当前角色对象 */
-    private Role currentRole = null; // new Role();
+	private StatelessEntityService entityService;
+	@Inject
+	private RoleService roleService;
+	@Inject
+	private ResourceService resourceService;
 
-    private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
-    private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
-    final Logger logger = LoggerFactory.getLogger(RoleBean.class);
+	private TreeNode root;// 资源树
+	private TreeNode[] selectedNodes;// 节点数组
+	private LazyDataModel<Role> lazyModel;// 数据模型
+	private String roName;// 角色名字
+	private Map<String, Object> queryMap = new HashMap<String, Object>();// 查询条件Map封装
+	private Role currentRole = new Role(); // 当前角色对象
 
-    /**
-     * 构造函数
-     */
-    public RoleBean() {
-    }
+	private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
+	private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
 
-    @SuppressWarnings("unused")
-    @PostConstruct
-    private void initLazyModel() {
-        String sql = "from Role role  ";
-        this.lazyModel = this.entityService.findPage(sql);
-    }
+	@SuppressWarnings("unused")
+	@PostConstruct
+	private void initLazyModel() {
+		String sql = "from Role role  ";
+		this.lazyModel = this.entityService.findPage(sql);
+	}
 
-    /**
-     * 
-     * <p>
-     * Description: 保存角色
-     * </p>
-     * 
-     * @return
-     */
-    public void saveRole() {
-        try {
-            //this.currentRole.setAdmin(false);
-            this.entityService.create(this.currentRole);
-            MessageUtils.addSuccessMessage("rolemessgeId", "角色添加成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.addErrorMessage("rolemessgeId", "角色添加失败");
-        }
+	/**
+	 * 保存角色
+	 */
+	public void saveRole() {
+		try {
+			// this.currentRole.setAdmin(false);
+			this.entityService.create(this.currentRole);
+			MessageUtils.addSuccessMessage("rolemessgeId", "角色添加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtils.addErrorMessage("rolemessgeId", "角色添加失败");
+		}
 
-    }
+	}
 
-   /**
-    * 保存角色资源
-    * @return
-    */
-    @SuppressWarnings("unused")
+	/**
+	 * 保存角色资源
+	 * @return
+	 */
+	@SuppressWarnings("unused")
 	public String saveRoleResource() {
-        if (this.currentRole == null) {
-            MessageUtils.addErrorMessage("rolemessgeId", "当前角色为空!");
-            return JSFUtils.getViewId();
-        }
-        
-        // 删除当前角色旧资源
-        try{
-            this.resourceService.deleteRoleResource(this.currentRole);
-            this.resourceService.deleteRolePermission(this.currentRole);
-        } catch (Exception e) {
-            MessageUtils.addErrorMessage("rolemessgeId", "删除角色旧资源失败.");
-            return JSFUtils.getViewId();
-        }
-        
-        // 保存角色资源
-        try {
-            List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
-           // for (Resource resource : listresouce) {
-                // 保存角色资源对应关系
-              /*  RoleResource roleResource = new RoleResource();
-                roleResource.setRole(this.currentRole);
-                roleResource.setResource(resource);
-                this.entityService.create(roleResource); 
-                
-                // 创建权限对象
-                Permission permission = new Permission();
-                permission.setRole(this.currentRole);
-                if (resource.getKeyName() != null) {
-                    String permissionString = "view:" + resource.getKeyName();
-                    permission.setPermission(permissionString);
-                }      
-                permission.setPermissionName(resource.getName());
-                this.entityService.create(permission);*/
-            // }
-        } catch (Exception e) {
-            MessageUtils.addErrorMessage("rolemessgeId", "保存角色资源失败.");
-            return JSFUtils.getViewId();
-        }
-        
-        
-      
-        MessageUtils.addSuccessMessage("rolemessgeId", "角色资源分配成功");
-        return LIST_PAGE;
-    }
+		if (this.currentRole == null) {
+			MessageUtils.addErrorMessage("rolemessgeId", "当前角色为空!");
+			return JSFUtils.getViewId();
+		}
 
-    /**
-     * 
-     * <p>
-     * Description: 角色编辑初始化
-     * </p>
-     */
-    public void editInit() {
+		// 删除当前角色旧资源
+		try {
+			this.resourceService.deleteRoleResource(this.currentRole);
+			this.resourceService.deleteRolePermission(this.currentRole);
+		} catch (Exception e) {
+			MessageUtils.addErrorMessage("rolemessgeId", "删除角色旧资源失败.");
+			return JSFUtils.getViewId();
+		}
 
-       /* roleVo.setRoleName(this.currentRole.getRoleName());
-        roleVo.setState(this.currentRole.getState());
-        roleVo.setDescription(this.currentRole.getDescription());*/
-    }
+		// 保存角色资源
+		try {
+			List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
+			// for (Resource resource : listresouce) {
+			// 保存角色资源对应关系
+			/*
+			 * RoleResource roleResource = new RoleResource();
+			 * roleResource.setRole(this.currentRole);
+			 * roleResource.setResource(resource);
+			 * this.entityService.create(roleResource);
+			 * 
+			 * // 创建权限对象 Permission permission = new Permission();
+			 * permission.setRole(this.currentRole); if (resource.getKeyName()
+			 * != null) { String permissionString = "view:" +
+			 * resource.getKeyName();
+			 * permission.setPermission(permissionString); }
+			 * permission.setPermissionName(resource.getName());
+			 * this.entityService.create(permission);
+			 */
+			// }
+		} catch (Exception e) {
+			MessageUtils.addErrorMessage("rolemessgeId", "保存角色资源失败.");
+			return JSFUtils.getViewId();
+		}
 
-    /**
-     * 
-     * <p>
-     * Description:角色编辑
-     * </p>
-     * 
-     * @return
-     */
-    public void update() {
-        try {
-            /*this.currentRole.setRoleName(this.roleVo.getRoleName());
-            this.currentRole.setDescription(this.roleVo.getDescription());
-            this.currentRole.setState(this.roleVo.getState());*/
-            this.entityService.update(currentRole);
-            MessageUtils.addSuccessMessage("rolemessgeId", "角色更新成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.addErrorMessage("rolemessgeId", "角色更新失败");
-        }
+		MessageUtils.addSuccessMessage("rolemessgeId", "角色资源分配成功");
+		return LIST_PAGE;
+	}
 
-    }
+	/**
+	 * 角色编辑初始化
+	 */
+	public void editInit() {
 
-    /**
-     * 
-     * <p>
-     * Description: 角色查询方法
-     * </p>
-     */
-    public String search() {
-        StringBuilder sql = new StringBuilder("from Role role where 1=1 ");
-        sql.append(" /~ and role.roleName like {roleName}~/ ");
-        this.lazyModel = this.entityService.findXsqlPage(sql.toString(), this.queryMap);
-        return LIST_PAGE;
+		/*
+		 * roleVo.setRoleName(this.currentRole.getRoleName());
+		 * roleVo.setState(this.currentRole.getState());
+		 * roleVo.setDescription(this.currentRole.getDescription());
+		 */
+	}
 
-    }
+	/**
+	 * 角色编辑
+	 */
+	public void update() {
+		try {
+			/*
+			 * this.currentRole.setRoleName(this.roleVo.getRoleName());
+			 * this.currentRole.setDescription(this.roleVo.getDescription());
+			 * this.currentRole.setState(this.roleVo.getState());
+			 */
+			this.entityService.update(currentRole);
+			MessageUtils.addSuccessMessage("rolemessgeId", "角色更新成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtils.addErrorMessage("rolemessgeId", "角色更新失败");
+		}
 
-    /**
-     * 
-     * <p>
-     * Description: 节点选中监听
-     * </p>
-     * 
-     * @param eve
-     */
-    public void onTreeNodeClicked(NodeSelectEvent eve) {
-        System.out.println("onTreeNodeClicked >>>>> into");
-    }
+	}
 
-    /**
-     * 
-     * <p>
-     * Description: 角色名输入匹配
-     * </p>
-     * 
-     * @param queryStr
-     * @return
-     */
-    public List<String> complete(String queryStr) {
-        if (queryStr != null && !"".equals(queryStr)) {
-            return this.roleService.searchRole(roName);
-        } else {
-            return Lists.newArrayList("无配置项");
-        }
+	/**
+	 * 角色查询方法
+	 * @return
+	 */
+	public String search() {
+		StringBuilder sql = new StringBuilder("from Role role where 1=1 ");
+		sql.append(" /~ and role.roleName like {roleName}~/ ");
+		this.lazyModel = this.entityService.findXsqlPage(sql.toString(), this.queryMap);
+		return LIST_PAGE;
 
-    }
+	}
 
-    /**
-     * 
-     * <p>
-     * Description: 角色删除
-     * </p>
-     */
-    public void deleteRole() {
-        try {
-            
-            logger.debug("当前角色  --->> " + this.currentRole.getId());
-            this.roleService.deleteRole(currentRole);
-            MessageUtils.addSuccessMessage("rolemessgeId", "角色删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.addErrorMessage("rolemessgeId", "删除失败");
-        }
-    }
+	/**
+	 * 节点选中监听
+	 * @param eve
+	 */
+	public void onTreeNodeClicked(NodeSelectEvent eve) {
+		System.out.println("onTreeNodeClicked >>>>> into");
+	}
 
-    public void clear() {
-        /*this.roleVo = new RoleVO();
-        this.currentRole = new Role();*/
-    }
+	/**
+	 * 角色名输入匹配
+	 * @param queryStr
+	 * @return
+	 */
+	public List<String> complete(String queryStr) {
+		if (queryStr != null && !"".equals(queryStr)) {
+			return this.roleService.searchRole(roName);
+		} else {
+			return Lists.newArrayList("无配置项");
+		}
 
-    /**
-     * 
-     * <p>
-     * Description: 角色管理页面跳转
-     * </p>
-     * 
-     * @return
-     */
-    public String roleList() {
-        return LIST_PAGE;
-    }
+	}
 
-    /**
-     * 
-     * <p>
-     * Description: 资源分配页面跳转
-     * </p>
-     * 
-     * @return
-     */
-    public String resourceJump() {
-        //this.roleVo.setRoleName(this.currentRole.getRoleName());
-        root = new ResourcesNode("系统资源", null);
-        // 若该角色已经分配过资源则查询已有的资源 并设置选中
-        List<Resource> allResource = roleService.getAllResource();
-        try {
-            this.roleService.isSelectedResourceByRole(root, allResource, this.currentRole);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	/**
+	 * 角色删除
+	 */
+	public void deleteRole() {
+		try {
+			logger.debug("当前角色  --->> " + this.currentRole.getId());
+			this.roleService.deleteRole(currentRole);
+			MessageUtils.addSuccessMessage("rolemessgeId", "角色删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			MessageUtils.addErrorMessage("rolemessgeId", "删除失败");
+		}
+	}
 
-        return ROLE_RESOURCE_PAGE;
-    }
+	public void clear() {
+		/*
+		 * this.roleVo = new RoleVO(); this.currentRole = new Role();
+		 */
+	}
 
-    public String goBack() {
+	/**
+	 * 角色管理页面跳转
+	 * @return
+	 */
+	public String roleList() {
+		return LIST_PAGE;
+	}
 
-        return LIST_PAGE;
-    }
+	/**
+	 * 资源分配页面跳转
+	 * @return
+	 */
+	public String resourceJump() {
+		// this.roleVo.setRoleName(this.currentRole.getRoleName());
+		root = new ResourcesNode("系统资源", null);
+		// 若该角色已经分配过资源则查询已有的资源 并设置选中
+		List<Resource> allResource = roleService.getAllResource();
+		try {
+			this.roleService.isSelectedResourceByRole(root, allResource, this.currentRole);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    /**
-     * 
-     * <p>
-     * Description: 资源分配页面跳转 直接通过角色名查询角色对象之后
-     * </p>
-     * 
-     * @return
-     */
-    public String rescourceJump() {
+		return ROLE_RESOURCE_PAGE;
+	}
 
-        return "/faces/permissions/role/resourceRoleInput.xhtml";
-    }
+	public String goBack() {
 
-    /**
-     * @return the root
-     */
-    public TreeNode getRoot() {
+		return LIST_PAGE;
+	}
 
-        return root;
-    }
+	/**
+	 * 资源分配页面跳转 直接通过角色名查询角色对象之后
+	 * @return
+	 */
+	public String rescourceJump() {
+		return "/faces/permissions/role/resourceRoleInput.xhtml";
+	}
 
-    /**
-     * @param root
-     *            the root to set
-     */
-    public void setRoot(TreeNode root) {
-        this.root = root;
-    }
+	public TreeNode getRoot() {
+		return root;
+	}
 
-    /**
-     * @return the selectedNodes
-     */
-    public TreeNode[] getSelectedNodes() {
-        return selectedNodes;
-    }
+	public void setRoot(TreeNode root) {
+		this.root = root;
+	}
 
-    /**
-     * @param selectedNodes
-     *            the selectedNodes to set
-     */
-    public void setSelectedNodes(TreeNode[] selectedNodes) {
-        this.selectedNodes = selectedNodes;
-    }
+	public TreeNode[] getSelectedNodes() {
+		return selectedNodes;
+	}
 
-    /**
-     * @return the lazyModel
-     */
-    public LazyDataModel<Role> getLazyModel() {
-        return lazyModel;
-    }
+	public void setSelectedNodes(TreeNode[] selectedNodes) {
+		this.selectedNodes = selectedNodes;
+	}
 
-    /**
-     * @param lazyModel
-     *            the lazyModel to set
-     */
-    public void setLazyModel(LazyDataModel<Role> lazyModel) {
-        this.lazyModel = lazyModel;
-    }
+	public LazyDataModel<Role> getLazyModel() {
+		return lazyModel;
+	}
 
-    /**
-     * @return the roName
-     */
-    public String getRoName() {
-        return roName;
-    }
+	public void setLazyModel(LazyDataModel<Role> lazyModel) {
+		this.lazyModel = lazyModel;
+	}
 
-    /**
-     * @param roName
-     *            the roName to set
-     */
-    public void setRoName(String roName) {
-        this.roName = roName;
-    }
+	public String getRoName() {
+		return roName;
+	}
 
-    /**
-     * @return the queryMap
-     */
-    public Map<String, Object> getQueryMap() {
-        return queryMap;
-    }
+	public void setRoName(String roName) {
+		this.roName = roName;
+	}
 
-    /**
-     * @param queryMap
-     *            the queryMap to set
-     */
-    public void setQueryMap(Map<String, Object> queryMap) {
-        this.queryMap = queryMap;
-    }
+	public Map<String, Object> getQueryMap() {
+		return queryMap;
+	}
 
-    public Role getCurrentRole() {
-        return currentRole;
-    }
+	public void setQueryMap(Map<String, Object> queryMap) {
+		this.queryMap = queryMap;
+	}
 
-    public void setCurrentRole(Role currentRole) {
-        this.currentRole = currentRole;
-    }
+	public Role getCurrentRole() {
+		return currentRole;
+	}
 
-    public String getRowsPerPageTemplate() {
-        return SystemConfiguration.ROWS_PER_PAGE_TEMPLATE;
-    }
+	public void setCurrentRole(Role currentRole) {
+		this.currentRole = currentRole;
+	}
+
+	public String getRowsPerPageTemplate() {
+		return SystemConfiguration.ROWS_PER_PAGE_TEMPLATE;
+	}
 }

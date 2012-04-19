@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -26,7 +26,7 @@ import com.wcs.base.util.ResourcesNode;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 
-@Named(value = "resourceService")
+@Stateless
 public class ResourceService implements Serializable {
 	private static final long serialVersionUID = 1L;
 

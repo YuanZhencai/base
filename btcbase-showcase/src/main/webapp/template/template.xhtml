@@ -38,19 +38,17 @@
 				<div id="top_up_menu">
 					<h:form prependId="false" id="up_menu">
 						<ul>
-							<c:forEach var="topMenu" items="${loginBean.allResList[1]}" varStatus="topMenuStatus">
-								<c:set var="keyName" value="view:#{topMenu.keyName}"/>
+							<c:forEach var="topMenu" items="#{loginBean.allResList[1]}" varStatus="topMenuStatus">
+								<c:set var="keyName" value="#{topMenu.keyName}"/>
 								<shiro:hasPermission name="${keyName}">
 									<c:if test="${sessionScope.selectId == topMenu.id}">
 										<li class="top_up_menu_ul_li_B">
-				                            	<p:commandLink value="#{topMenu.name}"
-													action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
+				                            	<p:commandLink value="#{topMenu.name}" action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 										</li>
 									</c:if> 
 									<c:if test="${sessionScope.selectId != topMenu.id}">
 										<li class="top_up_menu_ul_li_A">
-				                            <p:commandLink value="#{topMenu.name}"
-												action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
+				                            <p:commandLink value="#{topMenu.name}" action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
 										</li>
 									</c:if>
 								</shiro:hasPermission>									
