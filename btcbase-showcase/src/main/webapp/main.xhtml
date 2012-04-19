@@ -16,7 +16,13 @@
 	}
 	</style>
 
-	<div id="welcome">
+	<div id="showcase" style="float: left; padding:10px 0 0 30px; ">
+		<ul style="list-style-type: decimal; line-height: 20px;">
+			<li><a href="#{request.contextPath}/faces/person/list.xhtml">ViewScoped CRUD</a></li>
+			<li><a href="#{request.contextPath}/faces/product/list.xhtml">ConversationScoped CRUD</a></li>
+		</ul>
+	</div>
+	<div id="welcome" style="width: 90%;">
     	<img src="#{facesContext.externalContext.requestContextPath}/images/bj.jpg"/>
     </div>
 </ui:composition>
