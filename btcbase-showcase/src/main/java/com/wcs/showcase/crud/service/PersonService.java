@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,7 +22,7 @@ import com.wcs.showcase.crud.model.Person;
 * @author <a href="mailto:yangshiyun@wcs-global.com">Yang Shiyun</a> 
 */
 
-@Named(value = "personService")
+@Stateless
 public class PersonService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

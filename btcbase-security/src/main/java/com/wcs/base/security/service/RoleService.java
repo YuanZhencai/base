@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.google.common.collect.Lists;
@@ -38,6 +39,18 @@ public class RoleService implements Serializable {
 
 	public RoleService() {
 		System.out.println("start roleservice....");
+	}
+	
+	/**
+     * 动态分页， XSQL 查询 （推荐使用）
+     * @param queryMap
+     * @return LazyDataModel<Person>
+     */
+	public LazyDataModel<Role> findModelByMap(Map<String, Object> queryMap) {
+		String hql = "select r from Role r where 1=1 ";
+		StringBuilder xsql =  new StringBuilder(hql);
+	    xsql.append(" /~ and r.name like {name} ~/ ");
+	    return entityService.findXsqlPage(xsql.toString(), queryMap);
 	}
 
 	/**
@@ -156,11 +169,12 @@ public class RoleService implements Serializable {
 	 * @throws Exception
 	 */
 	public void deleteRole(Role role) throws Exception {
-		resourceService.deleteRoleResource(role);
-		String sql1 = "DELETE FROM UserRole ur WHERE ur.role.id=?";
-		String sql2 = "DELETE FROM Role r WHERE r.id=?";
+		String sql1 = "DELETE FROM UserRole ur WHERE ur.roleid = ?1";
+		String sql2 = "DELETE FROM Permission p WHERE p.roleid = ?1";
+		String sql3 = "DELETE FROM Role r WHERE r.id=?1 ";
 		this.entityService.batchExecute(sql1, role.getId());
 		this.entityService.batchExecute(sql2, role.getId());
+		this.entityService.batchExecute(sql3, role.getId());
 	}
 	
 	/**

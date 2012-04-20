@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.wcs.base.conf.SystemConfiguration;
+import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.service.ResourceService;
@@ -39,9 +43,10 @@ import com.wcs.base.util.MessageUtils;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 
+@SuppressWarnings("rawtypes")
 @Named
 @ConversationScoped
-public class RoleBean implements Serializable {
+public class RoleBean extends ConversationBaseBean {
 	private static final long serialVersionUID = 1L;
 	private final Logger logger = LoggerFactory.getLogger(RoleBean.class);
 
@@ -61,14 +66,25 @@ public class RoleBean implements Serializable {
 
 	private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
 	private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
+	
+	public RoleBean() {
+		
+	}
 
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void initLazyModel() {
-		String sql = "from Role role  ";
-		this.lazyModel = this.entityService.findPage(sql);
+		this.search();
 	}
-
+	
+	/**
+	 * 角色查询方法
+	 * @return
+	 */
+	public void search() {
+		this.lazyModel = roleService.findModelByMap(queryMap);
+	}
+	
 	/**
 	 * 保存角色
 	 */
@@ -165,18 +181,6 @@ public class RoleBean implements Serializable {
 	}
 
 	/**
-	 * 角色查询方法
-	 * @return
-	 */
-	public String search() {
-		StringBuilder sql = new StringBuilder("from Role role where 1=1 ");
-		sql.append(" /~ and role.roleName like {roleName}~/ ");
-		this.lazyModel = this.entityService.findXsqlPage(sql.toString(), this.queryMap);
-		return LIST_PAGE;
-
-	}
-
-	/**
 	 * 节点选中监听
 	 * @param eve
 	 */
@@ -210,12 +214,6 @@ public class RoleBean implements Serializable {
 			e.printStackTrace();
 			MessageUtils.addErrorMessage("rolemessgeId", "删除失败");
 		}
-	}
-
-	public void clear() {
-		/*
-		 * this.roleVo = new RoleVO(); this.currentRole = new Role();
-		 */
 	}
 
 	/**
