@@ -50,14 +50,6 @@
 			<artifactId>jsf-api</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>velocity</groupId>
-			<artifactId>velocity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>velocity</groupId>
-			<artifactId>velocity-dep</artifactId>
-		</dependency>
 
 		<!-- Primefaces 3.1.1 -->
 		<dependency>
@@ -127,19 +119,7 @@
 			<artifactId>poi</artifactId>
 		</dependency>
 
-		<!-- shiro -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-		</dependency>
+		<!-- shiro web -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-faces</artifactId>

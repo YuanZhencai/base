@@ -10,7 +10,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.google.common.collect.Lists;
-import com.wcs.base.entity.IdEntity;
+import com.wcs.base.entity.BaseEntity;
 
 /**
  * The persistent class for the users database table.
@@ -18,11 +18,11 @@ import com.wcs.base.entity.IdEntity;
  */
 @Entity
 @Table(name = "users")
-public class User extends IdEntity {
+public class User extends BaseEntity {
 	private static final long serialVersionUID = 1L;
-	private String email;
-	private String loginName;
 	private String name;
+	private String loginName;
+	private String email;
 	private String password;
 	private List<Role> roleList = Lists.newArrayList();// 有序的关联对象集合
 
@@ -70,5 +70,10 @@ public class User extends IdEntity {
 
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
+	}
+
+	@Override
+	public String getDisplayText() {
+		return null;
 	}
 }

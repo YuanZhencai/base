@@ -1,29 +1,21 @@
 package com.wcs.base.security.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-import com.wcs.base.conf.SystemConfiguration;
-import com.wcs.base.security.model.Role;
+import com.google.common.collect.Maps;
+import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.User;
-import com.wcs.base.security.service.RoleService;
 import com.wcs.base.security.service.UserService;
-import com.wcs.base.service.StatelessEntityService;
-import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
 /**
@@ -37,38 +29,18 @@ import com.wcs.base.util.MessageUtils;
 
 @Named
 @ConversationScoped
-public class UserBean implements Serializable {
+public class UserBean extends ConversationBaseBean<User> implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger logger = LoggerFactory.getLogger(UserBean.class);
+	private Map<String, Object> queryMap =  Maps.newHashMapWithExpectedSize(4);; // 查询条件Map封装
+	private LazyDataModel<User> lazyModel;
+	
 	@Inject
 	private UserService userService;
-	@Inject
-	private User user;
-	@Inject
-	private StatelessEntityService entityService;
-	@Inject
-	private RoleService roleService;
-
-	private LazyDataModel<User> lazyModel;
-	private User currentUser;
-	private List<SelectItem> roleList; // 角色下拉列表
-	private Long[] selectedUserRole;
-	private Boolean isDisplay;
-
-	private Long roleId;// 角色Id
-	private String account;// 账户
-	private String email; // 电子邮件地址
-	private Long[] urole; // 角色选中数组
-	private String userAccount; // 用于查询账号字段
-	private Map<String, Object> queryMap = new HashMap<String, Object>(); // 查询条件Map封装
-	private DualListModel<Role> roles;
-	private final String LIST_PAGE = "/faces/permissions/user/list.xhtml"; // 页面路径
-	// private final String USER_ROLE_PAGE = "/faces/permissions/user/user-role.xhtml";
-
+	
 	@PostConstruct
-	public void initUser() {
-		this.lazyModel = userService.findAllUser();
-		assignUserRole();
+	public void initLazyModel() {
+		searchUser();
 	}
 
 	/**
@@ -76,253 +48,22 @@ public class UserBean implements Serializable {
 	 * @return
 	 */
 	public void searchUser() {
-		String loginName = JSFUtils.getRequestParam("loginName");
-		this.lazyModel = userService.searchUserByName(loginName);
+		lazyModel = userService.findUsers(queryMap);
 	}
 
 	/**
 	 * 添加或者修改用户
 	 */
-	@SuppressWarnings("unused")
 	public void saveUser() {
-		User user = null; // getInstance();
-
-		// 判断用户是添加还是修改
-		Long userId = null;
-		if (user != null) {
-			userId = user.getId();
-		}
 		try {
-			if (userId == null) {
-				// this.save();
-				MessageUtils.addSuccessMessage("resMsg", "添加用户成功！");
-			} else {
-				this.userService.modUser(user);
-				MessageUtils.addSuccessMessage("resMsg", "修改用户成功！");
-			}
+			this.save();
+			MessageUtils.addErrorMessage("resMsg", "操作成功！");
 		} catch (Exception e) {
-			e.printStackTrace();
-			MessageUtils.addErrorMessage("resMsg", "保存用户失败，请检查！");
-		}
-
-		// 刷新页面数据
-		refresh();
-	}
-
-	/**
-	 * 删除用户
-	 */
-	public void delUser() {
-		User user = null; // getInstance();
-		try {
-			Boolean isSucceed = this.userService.delUser(user);
-			if (isSucceed) {
-				MessageUtils.addSuccessMessage("resMsg", "删除用户成功！");
-			} else {
-				MessageUtils.addErrorMessage("resMsg", "删除用户失败，请检查！");
-			}
-		} catch (Exception e) {
+			MessageUtils.addErrorMessage("resMsg", "操作失败，请检查！");
+			logger.info("添加或者修改用户操作失败，原因:");
 			e.printStackTrace();
 		}
-
-		// 刷新
-		refresh();
-	}
-
-	/**
-	 * 清除
-	 */
-	public void refresh() {
-		// setInstance(null);
-		this.isDisplay = false;
-		this.lazyModel = userService.findAllUser();
-	}
-
-	/**
-	 * 选中用户记录
-	 * @param event
-	 */
-	@SuppressWarnings("unused")
-	public void onRowSelect(SelectEvent event) {
-		User user = (User) event.getObject();
-		// this.setInstance(user);
-		this.isDisplay = true;
-	}
-
-	/**
-	 * 初始化角色列表
-	 */
-	public void initRoleList() {
-		if (this.roleList == null || this.roleList.size() > 0) {
-			this.roleList = new ArrayList<SelectItem>();
-		}
-
-		this.roleList = this.userService.initRoleList();
-	}
-
-	/**
-	 * 当前用户角色
-	 * @param user
-	 */
-	@SuppressWarnings("unused")
-	public void assignUserRole() {
-		List<Role> allRoles = roleService.getRoleList();
-		List<Role> userRoles = new ArrayList<Role>();
-		User user = null; // getInstance();
-		/*
-		 * if (user != null) { userRoles = null; //
-		 * userService.findRolesByUser(getInstance()); for (Role role :
-		 * userRoles) { allRoles.remove(role); } }
-		 */
-		roles = new DualListModel<Role>(allRoles, userRoles);
-	}
-
-	/**
-	 * 保存或者更新当前用户角色
-	 * @return
-	 */
-	@SuppressWarnings({ "rawtypes", "unused" })
-	public String saveUserRole() {
-		User user = null; // getInstance();
-		try {
-			// roleService.deleteUserRole(user.getId());
-			List roleIdList = roles.getTarget();
-			/*
-			 * for (int i = 0; i < roleIdList.size(); i++) { UserRole userrole =
-			 * new UserRole(); Long roleId =
-			 * Long.valueOf(roleIdList.get(i).toString()); Role role =
-			 * userService.findRoleById(roleId); if (role != null) {
-			 * userrole.setRole(role); } userrole.setUser(user);
-			 * this.entityService.create(userrole); }
-			 */
-			MessageUtils.addSuccessMessage("usermessgeId", "用户角色分配成功");
-		} catch (Exception e) {
-			MessageUtils.addErrorMessage("usermessgeId", "用户角色分配失败");
-			e.printStackTrace();
-			return JSFUtils.getViewId();
-		}
-
-		return LIST_PAGE;
-	}
-
-	/**
-	 * 账户查询
-	 * @return
-	 */
-	public String search() {
-		StringBuilder sql = new StringBuilder("from User u where 1=1");
-		sql.append(" /~ and u.name like  {name}~/ ");
-		this.lazyModel = this.entityService.findXsqlPage(sql.toString(), this.queryMap);
-
-		return LIST_PAGE;
-	}
-
-	/**
-	 * 管理界面跳转
-	 * @return
-	 */
-	public String goBack() {
-		return LIST_PAGE;
-	}
-
-	/**
-	 *  输入匹配账号
-	 * @param queryStr
-	 * @return
-	 */
-	public List<String> complete(String queryStr) {
-		if (queryStr != null && !"".equals(queryStr)) {
-			return this.userService.getUserAccountByInput(account);
-		} else {
-			return Lists.newArrayList();
-		}
-
-	}
-
-	// -------------------------------------Set &
-	// Get---------------------------------------------------//
-	public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Long[] getUrole() {
-		return urole;
-	}
-
-	public void setUrole(Long[] urole) {
-		this.urole = urole;
-	}
-
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
-
-	public Map<String, Object> getQueryMap() {
-		return queryMap;
-	}
-
-	public void setQueryMap(Map<String, Object> queryMap) {
-		this.queryMap = queryMap;
-	}
-
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	public void setCurrentUser(User currentUser) {
-		this.currentUser = currentUser;
-	}
-
-	public String getRowsPerPageTemplate() {
-		return SystemConfiguration.ROWS_PER_PAGE_TEMPLATE;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<SelectItem> getRoleList() {
-		return roleList;
-	}
-
-	public void setRoleList(List<SelectItem> roleList) {
-		this.roleList = roleList;
-	}
-
-	public Long[] getSelectedUserRole() {
-		return selectedUserRole;
-	}
-
-	public void setSelectedUserRole(Long[] selectedUserRole) {
-		this.selectedUserRole = selectedUserRole;
+		searchUser();
 	}
 
 	public LazyDataModel<User> getLazyModel() {
@@ -333,19 +74,95 @@ public class UserBean implements Serializable {
 		this.lazyModel = lazyModel;
 	}
 
-	public Boolean getIsDisplay() {
-		return isDisplay;
+	public Map<String, Object> getQueryMap() {
+		return queryMap;
 	}
 
-	public void setIsDisplay(Boolean isDisplay) {
-		this.isDisplay = isDisplay;
+	public void setQueryMap(Map<String, Object> queryMap) {
+		this.queryMap = queryMap;
 	}
 
-	public DualListModel<Role> getRoles() {
-		return roles;
-	}
+	/**
+	 * 选中用户记录
+	 * @param event
+	 */
+	/*
+	 * @SuppressWarnings("unused") public void onRowSelect(SelectEvent event) {
+	 * User user = (User) event.getObject(); // this.setInstance(user); }
+	 *//**
+		* 初始化角色列表
+		*/
+	/*
+	 * public void initRoleList() { if (this.roleList == null ||
+	 * this.roleList.size() > 0) { this.roleList = new ArrayList<SelectItem>();
+	 * }
+	 * 
+	 * this.roleList = this.userService.initRoleList(); }
+	 *//**
+		* 当前用户角色
+		* @param user
+		*/
+	/*
+	 * public void assignUserRole() { List<Role> allRoles =
+	 * roleService.getRoleList(); List<Role> userRoles = new ArrayList<Role>();
+	 * User user = null; // getInstance();
+	 * 
+	 * if (user != null) { userRoles = null; //
+	 * userService.findRolesByUser(getInstance()); for (Role role : userRoles) {
+	 * allRoles.remove(role); } }
+	 * 
+	 * roles = new DualListModel<Role>(allRoles, userRoles); }
+	 *//**
+		* 保存或者更新当前用户角色
+		* @return
+		*/
+	/*
+	 * @SuppressWarnings({ "rawtypes", "unused" }) public String saveUserRole()
+	 * { User user = null; // getInstance(); try { //
+	 * roleService.deleteUserRole(user.getId()); List roleIdList =
+	 * roles.getTarget();
+	 * 
+	 * for (int i = 0; i < roleIdList.size(); i++) { UserRole userrole = new
+	 * UserRole(); Long roleId = Long.valueOf(roleIdList.get(i).toString());
+	 * Role role = userService.findRoleById(roleId); if (role != null) {
+	 * userrole.setRole(role); } userrole.setUser(user);
+	 * this.entityService.create(userrole); }
+	 * 
+	 * MessageUtils.addSuccessMessage("usermessgeId", "用户角色分配成功"); } catch
+	 * (Exception e) { MessageUtils.addErrorMessage("usermessgeId", "用户角色分配失败");
+	 * e.printStackTrace(); return JSFUtils.getViewId(); }
+	 * 
+	 * return LIST_PAGE; }
+	 *//**
+		* 账户查询
+		* @return
+		*/
+	/*
+	 * public String search() { StringBuilder sql = new
+	 * StringBuilder("from User u where 1=1");
+	 * sql.append(" /~ and u.name like  {name}~/ "); this.lazyModel =
+	 * this.entityService.findXsqlPage(sql.toString(), this.queryMap);
+	 * 
+	 * return LIST_PAGE; }
+	 *//**
+		* 管理界面跳转
+		* @return
+		*/
+	/*
+	 * public String goBack() { return LIST_PAGE; }
+	 *//**
+		*  输入匹配账号
+		* @param queryStr
+		* @return
+		*/
+	/*
+	 * public List<String> complete(String queryStr) { if (queryStr != null &&
+	 * !"".equals(queryStr)) { return
+	 * this.userService.getUserAccountByInput(account); } else { return
+	 * Lists.newArrayList(); }
+	 * 
+	 * }
+	 */
 
-	public void setRoles(DualListModel<Role> roles) {
-		this.roles = roles;
-	}
+	
 }

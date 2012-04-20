@@ -4,23 +4,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd">
 	<display-name>btcbase-security</display-name>
 	<name>btcbase_security</name>
-	<!-- Shiro configuration -->
-	<listener>
-		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-	</listener>
-	<filter>
-		<filter-name>ShiroFilter</filter-name>
-		<filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-		<init-param>
-			<param-name>shiroConfig</param-name>
-			<param-value>classpath:shiro.ini</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>ShiroFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
 	<!-- welcome page -->
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>

@@ -3,6 +3,7 @@ package com.wcs.base.security.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -312,4 +313,16 @@ public class UserService implements Serializable {
         
         return role;
     }
+
+    /**
+     * Find users by loginName from queryMap
+     * @param queryMap
+     * @return
+     */
+	public LazyDataModel<User> findUsers(Map<String, Object> queryMap) {
+		String sql = "SELECT u FROM User u WHERE 1=1";
+		StringBuilder xsql =  new StringBuilder(sql);
+	    xsql.append(" /~ and u.loginName like {loginName} ~/ ");
+	    return entityService.findXsqlPage(xsql.toString(), queryMap);
+	}
 }

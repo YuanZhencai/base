@@ -17,7 +17,10 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.Factory;
+import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +46,7 @@ import com.wcs.base.util.MessageUtils;
 @ConversationScoped
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = LoggerFactory.getLogger(LoginBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
 	@Inject
 	private LoginService loginService;
@@ -57,7 +60,7 @@ public class LoginBean implements Serializable {
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void initAllResources() {
-		log.info("ResourceBean => initAllResources()");
+		logger.info("ResourceBean => initAllResources()");
 		List<Resource> resList = resourceService.findAllSysResource();
 		Map<String, List<Resource>> allResMap = Maps.newHashMap();
 		for (Resource r : resList) {
@@ -77,26 +80,32 @@ public class LoginBean implements Serializable {
 	 * user login
 	 */
 	public String userLogin() {
-		String loginName = JSFUtils.getRequestParam("loginName");
-		Subject currentUser = SecurityUtils.getSubject();
 		// 用户认证
+		String loginName = JSFUtils.getRequestParam("loginName");
 		User user = loginService.findUser(loginName);
 		if (user == null) {
 			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return LOGIN_PAGE;
 		}
+		
+		// 装入INI配置, 设置为VM静态Singleton
+		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
+		SecurityManager securityManager = factory.getInstance();
+		SecurityUtils.setSecurityManager(securityManager);
+		
+		Subject currentUser = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getPassword());
 		token.setRememberMe(true);
 		try {
 			currentUser.login(token);
 		} catch (UnknownAccountException uae) {
-			log.info("There is no user with username of " + token.getPrincipal());
+			logger.info("There is no user with username of " + token.getPrincipal());
 			return LOGIN_PAGE;
 		} catch (IncorrectCredentialsException ice) {
-			log.info("Password for account " + token.getPrincipal() + " was incorrect!");
+			logger.info("Password for account " + token.getPrincipal() + " was incorrect!");
 			return LOGIN_PAGE;
 		} catch (LockedAccountException lae) {
-			log.info("The account for username " + token.getPrincipal() + " is locked.  " + "Please contact your administrator to unlock it.");
+			logger.info("The account for username " + token.getPrincipal() + " is locked.  " + "Please contact your administrator to unlock it.");
 			return LOGIN_PAGE;
 		} catch (AuthenticationException ae) {
 			ae.printStackTrace();
