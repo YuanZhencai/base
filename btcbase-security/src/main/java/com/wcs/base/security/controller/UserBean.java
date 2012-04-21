@@ -1,6 +1,8 @@
 package com.wcs.base.security.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -8,13 +10,16 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ConversationBaseBean;
+import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.User;
+import com.wcs.base.security.service.RoleService;
 import com.wcs.base.security.service.UserService;
 import com.wcs.base.util.MessageUtils;
 
@@ -32,12 +37,16 @@ import com.wcs.base.util.MessageUtils;
 public class UserBean extends ConversationBaseBean<User> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(UserBean.class);
-	private Map<String, Object> queryMap =  Maps.newHashMapWithExpectedSize(4);; // 查询条件Map封装
+
+	private Map<String, Object> queryMap = Maps.newHashMapWithExpectedSize(4);; // 查询条件Map封装
 	private LazyDataModel<User> lazyModel;
-	
+	private DualListModel<Role> roles;
+
 	@Inject
 	private UserService userService;
-	
+	@Inject
+	private RoleService roleService;
+
 	@PostConstruct
 	public void initLazyModel() {
 		searchUser();
@@ -63,7 +72,16 @@ public class UserBean extends ConversationBaseBean<User> implements Serializable
 			logger.info("添加或者修改用户操作失败，原因:");
 			e.printStackTrace();
 		}
-		searchUser();
+	}
+
+	public void assignUserRole() {
+		List<Role> allRoles = roleService.getRoles();
+		List<Role> userRoles = new ArrayList<Role>();
+		for (Role role : getInstance().getRoleList()) {
+			allRoles.remove(role);
+		}
+
+		roles = new DualListModel<Role>(allRoles, userRoles);
 	}
 
 	public LazyDataModel<User> getLazyModel() {
@@ -80,6 +98,14 @@ public class UserBean extends ConversationBaseBean<User> implements Serializable
 
 	public void setQueryMap(Map<String, Object> queryMap) {
 		this.queryMap = queryMap;
+	}
+
+	public DualListModel<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(DualListModel<Role> roles) {
+		this.roles = roles;
 	}
 
 	/**
@@ -164,5 +190,4 @@ public class UserBean extends ConversationBaseBean<User> implements Serializable
 	 * }
 	 */
 
-	
 }

@@ -75,7 +75,7 @@
 				<div id="top_down_center" style="z-index: 1">
 
 					<ul id="nav">
-						<c:forEach var="keyResouce" items="${loginBean.allResList[2]}" varStatus="topMenuStatus">
+						<c:forEach  var="keyResouce" items="${loginBean.allResList[2]}" varStatus="topMenuStatus">
 							<c:if test="${sessionScope.selectId==keyResouce.parentId}">
 								<li>
 									<shiro:hasPermission name="#{keyResouce.keyName}">

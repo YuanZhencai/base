@@ -320,7 +320,7 @@ public class UserService implements Serializable {
      * @return
      */
 	public LazyDataModel<User> findUsers(Map<String, Object> queryMap) {
-		String sql = "SELECT u FROM User u WHERE 1=1";
+		String sql = "SELECT u FROM User u WHERE u.defunctInd = false";
 		StringBuilder xsql =  new StringBuilder(sql);
 	    xsql.append(" /~ and u.loginName like {loginName} ~/ ");
 	    return entityService.findXsqlPage(xsql.toString(), queryMap);

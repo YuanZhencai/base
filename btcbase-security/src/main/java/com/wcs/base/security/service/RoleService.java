@@ -54,13 +54,13 @@ public class RoleService implements Serializable {
 	}
 
 	/**
-	 * 返回角色列表
+	 * Find all role
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Role> getRoleList() {
-		Query query = entityService.createQuery("SELECT r FROM Role r ORDER BY roleName ASC");
-		return (List<Role>) query.getResultList();
+	public List<Role> getRoles() {
+		String jpql = "SELECT r FROM Role r ORDER BY r.name ASC";
+		List<Role> allRoles = entityService.findList(jpql);
+		return allRoles;
 	}
 
 	/**
