@@ -26,7 +26,7 @@
 				<p:outputPanel id="userOutputPanel">
 					<p:dataTable id="userTable" var="user" value="#{userBean.lazyModel}" paginator="true" rows="10" paginatorPosition="bottom" 
 						rowKey="#{user.id}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-						currentPageReportTemplate="{currentPage}/{totalPage}" selectionMode="single" selection="#{userBean.instance}">
+						currentPageReportTemplate="{currentPage}/{totalPage}" selectionMode="single">
 						<f:facet name="header">用户列表</f:facet>
 						<p:column headerText="姓名">
 							<h:outputText value="#{user.name}" />
@@ -41,15 +41,15 @@
 							<p:commandButton update=":dialogForm:userRolesPanel" actionListener="#{userBean.findRoles}" oncomplete="userRoleDialog.show()"  icon="ui-icon ui-icon-wrench" title="分配角色">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton update=":dialogForm:viewUserDetail" actionListener="#{userBean.cleanInstance}" oncomplete="viewUserDialog.show()" icon="ui-icon ui-icon-search" title="查看">
+							<p:commandButton update=":dialogForm:viewUserDetail" oncomplete="viewUserDialog.show()" icon="ui-icon ui-icon-search" title="查看">
 								<f:param name="readOnly" value="true" />
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton update=":dialogForm:userDetail" actionListener="#{userBean.cleanInstance}" oncomplete="userDialog.show()" icon="ui-icon ui-icon-pencil" title="修改">
+							<p:commandButton update=":dialogForm:userDetail" oncomplete="userDialog.show()" icon="ui-icon ui-icon-pencil" title="修改">
 								<f:param name="readOnly" value="false" />
-								<f:setPropertyActionListener value="#{user}" actionListener="#{userBean.cleanInstance}" target="#{userBean.instance}" />
+								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton oncomplete="confirmation.show()" actionListener="#{userBean.cleanInstance}" icon="ui-icon ui-icon-close" title="删除">
+							<p:commandButton oncomplete="confirmation.show()" icon="ui-icon ui-icon-close" title="删除">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
 						</p:column>
