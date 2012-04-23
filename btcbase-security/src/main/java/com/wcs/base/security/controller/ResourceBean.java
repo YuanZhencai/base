@@ -20,6 +20,7 @@ import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.util.JSFUtils;
@@ -34,6 +35,7 @@ import com.wcs.base.util.MessageUtils;
  * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
  */
 
+@SuppressWarnings("rawtypes")
 @Named
 @ConversationScoped
 public class ResourceBean implements Serializable {

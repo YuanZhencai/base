@@ -45,7 +45,7 @@
 						value="#{personBean.lazyModel}" paginator="true" rows="10"
 						paginatorPosition="bottom" rowKey="#{personBean.instance.id}"
 						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-						currentPageReportTemplate="{currentPage}/{totalPages}"
+						currentPageReportTemplate="{currentPage}/{totalPage}"
 						selectionMode="single" onRowSelectUpdate="display">
 						<f:facet name="header">人员列表</f:facet>
 						<p:column headerText="姓名">

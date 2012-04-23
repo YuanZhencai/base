@@ -136,10 +136,10 @@ public class ResourceService implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<Permission> getResourceListByRole(Role role) {
 		try {
-			String sql = "SELECT rs FROM RoleResource rs WHERE rs.role= ?1 ";
-			Query query = entityService.createQuery(sql);
-			query.setParameter(1, role);
-			return (List<Permission>) query.getResultList();
+			String sql = "SELECT p FROM Permission p WHERE p.roleid = ?1 ";
+			Query query = entityService.createQuery(sql, role.getId());
+			List<Permission> permissionList = query.getResultList();
+			return permissionList;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,21 +149,10 @@ public class ResourceService implements Serializable {
 	/**
 	 * Description: 查询角色的资源
 	 */
-	@SuppressWarnings("unused")
-	public List<Resource> findResouceByRole(Role role) throws Exception {
-		List<Permission> roleResourceList = this.getResourceListByRole(role);
-		List<Resource> resourceList = new ArrayList<Resource>();
-		if (!roleResourceList.isEmpty()) {
-			try {
-				for (Permission roleResource : roleResourceList) {
-					// resourceList.add(roleResource.getResource());
-				}
-			} catch (Exception e) {
-				throw e;
-			}
-
-		}
-		return resourceList;
+	public List<Permission> findResouceByRole(Role role) throws Exception {
+		List<Permission> permissionList = this.getResourceListByRole(role);
+		
+		return permissionList;
 	}
 
 	/**

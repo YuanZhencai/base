@@ -14,6 +14,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.google.common.collect.Lists;
+import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.service.StatelessEntityService;
@@ -201,11 +202,11 @@ public class RoleService implements Serializable {
 	 * @param sysResource
 	 * @param map
 	 */
-	public void initFatherNode(TreeNode root, List<Resource> sysResource, Map<Long, Resource> map) {
+	public void initFatherNode(TreeNode root, List<Resource> sysResource, Map<String, Permission> map) {
 		List<Resource> flist = this.findTopResource(sysResource);
 		for (Resource father : flist) {
 			ResourcesNode fnode = new ResourcesNode(father.getName(), root);
-			if (map.get(father.getId()) != null) {
+			if (map.get(father.getKeyName()) != null) {
 				fnode.setSelected(true);
 			}
 			fnode.setId(father.getId());
@@ -222,14 +223,14 @@ public class RoleService implements Serializable {
 	 * @param map
 	 */
 	@SuppressWarnings("unused")
-	public void initChildNode(Long id, TreeNode father, List<Resource> sysResource, Map<Long, Resource> map) {
+	public void initChildNode(Long id, TreeNode father, List<Resource> sysResource, Map<String, Permission> map) {
 		List<Resource> chillist = this.findChildResource(id, sysResource);
 		boolean flag = false;
 		for (Resource child : chillist) {
 			List<Resource> sercondlist = this.findChildResource(child.getId(), sysResource);
 			if (!sercondlist.isEmpty()) {
 				ResourcesNode childnode = new ResourcesNode(child.getName(), father);
-				if (map.get(child.getId()) != null) {
+				if (map.get(child.getKeyName()) != null) {
 					childnode.setSelected(true);
 				}
 				childnode.setId(child.getId());
@@ -238,7 +239,7 @@ public class RoleService implements Serializable {
 			} else {
 
 				ResourcesNode fnode = new ResourcesNode(child.getName(), father);
-				if (map.get(child.getId()) != null) {
+				if (map.get(child.getKeyName()) != null) {
 					fnode.setSelected(true);
 				}
 				// fnode.setSelected(flag);
@@ -273,7 +274,7 @@ public class RoleService implements Serializable {
 	public List<Resource> findTopResource(List<Resource> sysResource) {
 		List<Resource> topResource = new ArrayList<Resource>();
 		for (Resource rs : sysResource) {
-			if (rs.getParentId() == null || rs.getParentId() == 0L) {
+			if (rs.getParentId() == null || rs.getParentId() == 0) {
 				topResource.add(rs);
 			}
 		}
@@ -287,28 +288,15 @@ public class RoleService implements Serializable {
 	 * @throws Exception
 	 */
 	public void isSelectedResourceByRole(TreeNode root, List<Resource> sysResource, Role role) throws Exception {
-		List<Resource> roleResource = this.resourceService.findResouceByRole(role);
-		Map<Long, Resource> map = new HashMap<Long, Resource>();
+		List<Permission> roleResource = this.resourceService.findResouceByRole(role);
+		Map<String, Permission> map = new HashMap<String, Permission>();
 		if (!roleResource.isEmpty()) {
-			for (Resource r : roleResource) {
-				map.put(r.getId(), r);
+			for (Permission p : roleResource) {
+				map.put(p.getPermission(), p);
 			}
 
 		}
 		this.initFatherNode(root, sysResource, map);
 	}
 
-	/**
-	 * 查找所有资源
-	 * @return
-	 */
-	public List<Resource> getAllResource() {
-		String sql = "SELECT r FROM Resource r";
-		Query query = entityService.createQuery(sql);
-
-		@SuppressWarnings("unchecked")
-		List<Resource> resourceList = query.getResultList();
-
-		return resourceList;
-	}
 }

@@ -232,7 +232,7 @@ public class RoleBean extends ConversationBaseBean {
 		// this.roleVo.setRoleName(this.currentRole.getRoleName());
 		root = new ResourcesNode("系统资源", null);
 		// 若该角色已经分配过资源则查询已有的资源 并设置选中
-		List<Resource> allResource = roleService.getAllResource();
+		List<Resource> allResource = resourceService.findAllResource();
 		try {
 			this.roleService.isSelectedResourceByRole(root, allResource, this.currentRole);
 		} catch (Exception e) {

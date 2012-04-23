@@ -43,7 +43,7 @@
 				<p:outputPanel id="productDataPanel">
                 	<p:dataTable id="productTable" var="product" value="#{productBean.lazyModel}" paginator="true" rows="10"  paginatorPosition="bottom"
                                  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-								 currentPageReportTemplate="{currentPage}/{totalPages}"
+								 currentPageReportTemplate="{currentPage}/{totalPage}"
                               	 selectionMode="single" onRowSelectUpdate="display">
 						<f:facet name="header">商品列表</f:facet>
 

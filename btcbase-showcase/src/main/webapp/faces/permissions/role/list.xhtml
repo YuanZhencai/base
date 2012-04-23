@@ -42,8 +42,7 @@
 					</h:panelGrid>
 					<div>
 						<p:commandButton id="roleSearch" action="#{roleBean.search}"
-								value="查询" update="roleTabelOut" icon="ui-icon ui-icon-search" />
-						
+								value="查询" update="roleTabelOut" icon="ui-icon ui-icon-search" />		
 					</div>
 				</div>
 				<br />
@@ -57,7 +56,7 @@
 						<p:column headerText="角色名"><h:outputText value="#{role.name}" /></p:column>
 
 						<p:column headerText="操作" styleClass="operating_90">
-							<p:commandButton rendered="true" update="carDetail,roleName_msg,state_msg" action="#{roleBean.editInit}" oncomplete="singleCarDialog.show()" icon="ui-icon ui-icon-pencil" title="编辑">
+							<p:commandButton rendered="true" update=":roleEditForm:carDetail,:roleEditForm:roleName_msg" action="#{roleBean.editInit}" oncomplete="singleCarDialog.show()" icon="ui-icon ui-icon-pencil" title="编辑">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
 							</p:commandButton>
 
@@ -101,7 +100,7 @@
 					<f:facet name="footer">
 						<p:commandButton action="#{roleBean.update}" value="保存"
 							id="roleEditID2" icon="ui-icon ui-icon-disk"
-							update="roleTabelOut,rolemessgeId,roleName_msg"
+							update=":roleTableForm:roleTabelOut,rolemessgeId,roleName_msg"
 							oncomplete="handleComplete(singleCarDialog,args);" async="true" />
 						<p:commandButton value="取消" onclick="singleCarDialog.hide()"
 							id="roleBACKID" icon="ui-icon ui-icon-cancel" title="取消" />
@@ -129,7 +128,7 @@
 					<f:facet name="footer">
 						<p:commandButton id="roleSave" action="#{roleBean.saveRole}"
 							oncomplete="handleComplete(roleAddDialog,args);"
-							update="roleTabelOut,roleNameId,rolemessgeId, :roleTableForm:roleTabelOut"
+							update="roleNameId,rolemessgeId, :roleTableForm:roleTabelOut"
 							value="保存" icon="ui-icon ui-icon-disk" title="保存" />
 						<p:commandButton value="取消" id="roleAddCanel"
 							onclick="roleAddDialog.hide()" type="button" />
