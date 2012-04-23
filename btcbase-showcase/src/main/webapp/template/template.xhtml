@@ -35,7 +35,7 @@
 
 				<div id="top_up_menu">
 					<h:form prependId="false" id="up_menu">
-						<ul>
+						<ul> 
 							<c:forEach var="topMenu" items="#{sessionScope.allResList[1]}" varStatus="topMenuStatus">
 								<shiro:hasPermission name="#{topMenu.keyName}">
 									<c:if test="${sessionScope.selectId == topMenu.id}">
@@ -99,8 +99,9 @@
 				<div id="top_down_right">
 					<span class="img"> <img
 						src="#{request.contextPath}/images/user.gif" alt="" />
-					</span> <span class="fon">当前用户：<h:outputText
-							value="#{sessionScope.user.name}" />
+					</span> 
+					<span class="fon">
+						当前用户：<h:outputText value="${sessionScope.user.name}" />
 					</span>
 				</div>
 			</div>

@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wcs</groupId>
@@ -65,11 +64,11 @@
 				<scope>provided</scope>
 			</dependency>
 
-			<!-- Primefaces 3.1.1 -->
+			<!-- Primefaces 3.0.1 -->
 			<dependency>
 				<groupId>org.primefaces</groupId>
 				<artifactId>primefaces</artifactId>
-				<version>3.1.1</version>
+				<version>3.0.1</version>
 			</dependency>
 
 			<!-- OpenJPA -->
@@ -151,11 +150,6 @@
 				<groupId>org.apache.shiro</groupId>
 				<artifactId>shiro-all</artifactId>
 				<version>1.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-simple</artifactId>
-				<version>1.6.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.shiro</groupId>
