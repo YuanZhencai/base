@@ -18,12 +18,15 @@
 					</div>
 					<div align="right">
 						<p:commandButton id="searchBtn" value="查询" action="#{userBean.searchUser}" update="userOutputPanel" icon="ui-icon ui-icon-search" />
-						<p:commandButton id="addUserBtn" value="添加用户" oncomplete="userDialog.show()" update="userOutputPanel" icon="ui-icon ui-icon-search" />
+						<p:commandButton id="addUserBtn" value="添加用户" actionListener="#{userBean.cleanInstance}" oncomplete="userDialog.show()" update=":dialogForm:userDetail" icon="ui-icon ui-icon-search" >
+							<f:param name="readOnly" value="false" />
+						</p:commandButton>
 					</div>
 				</p:panel>
 				<p:outputPanel id="userOutputPanel">
-					<p:dataTable id="userTable" var="user" value="#{userBean.lazyModel}" paginator="true" rows="10" paginatorPosition="bottom" rowKey="#{userBean.instance.id}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
-						currentPageReportTemplate="{currentPage}/{totalPage}" selectionMode="single" onRowSelectUpdate="display">
+					<p:dataTable id="userTable" var="user" value="#{userBean.lazyModel}" paginator="true" rows="10" paginatorPosition="bottom" 
+						rowKey="#{user.id}" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport} "
+						currentPageReportTemplate="{currentPage}/{totalPage}" selectionMode="single" selection="#{userBean.instance}">
 						<f:facet name="header">用户列表</f:facet>
 						<p:column headerText="姓名">
 							<h:outputText value="#{user.name}" />
@@ -35,18 +38,18 @@
 							<h:outputText value="#{user.email}" />
 						</p:column>
 						<p:column headerText="操作" style="width:120px; text-align:center;">
-							<p:commandButton oncomplete="userRoleDialog.show()" update=":dialogForm:userRolesPanel" icon="ui-icon ui-icon-wrench" title="分配角色">
+							<p:commandButton update=":dialogForm:userRolesPanel" actionListener="#{userBean.findRoles}" oncomplete="userRoleDialog.show()"  icon="ui-icon ui-icon-wrench" title="分配角色">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton update=":dialogForm:userDetail, :dialogForm:msg" oncomplete="viewUserDialog.show()" icon="ui-icon ui-icon-search" title="查看">
+							<p:commandButton update=":dialogForm:viewUserDetail" actionListener="#{userBean.cleanInstance}" oncomplete="viewUserDialog.show()" icon="ui-icon ui-icon-search" title="查看">
 								<f:param name="readOnly" value="true" />
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton update=":dialogForm:userDetail, :dialogForm:msg" oncomplete="userDialog.show()" icon="ui-icon ui-icon-pencil" title="修改">
+							<p:commandButton update=":dialogForm:userDetail" actionListener="#{userBean.cleanInstance}" oncomplete="userDialog.show()" icon="ui-icon ui-icon-pencil" title="修改">
 								<f:param name="readOnly" value="false" />
-								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
+								<f:setPropertyActionListener value="#{user}" actionListener="#{userBean.cleanInstance}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton update=":dialogForm:userDetail, :dialogForm:msg" oncomplete="userDialog.show()" icon="ui-icon ui-icon-close" title="删除">
+							<p:commandButton oncomplete="confirmation.show()" actionListener="#{userBean.cleanInstance}" icon="ui-icon ui-icon-close" title="删除">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
 						</p:column>
@@ -60,13 +63,8 @@
 					</h:panelGrid>
 				</p:dialog>
 				<p:dialog id="userDlg" header="添加/修改用户" widgetVar="userDialog" modal="true" resizable="false" width="600">
-					<p:messages id="msg" />
 					<h:panelGrid id="userDetail" columns="4" columnClasses="column41,column42,column41,column42" footerClass="footer1">
 						<ui:include src="input-item.xhtml" />
-						<f:facet name="footer">
-							<p:commandButton id="saveUser" action="#{userBean.saveUser}" value="保存" oncomplete="handleComplete(userDialog, args);" update=":userForm:userOutputPanel" icon="ui-icon ui-icon-disk" ajax="false" />
-							<p:commandButton id="userBack" value="关闭" onclick="userInfoDialog.hide()" icon="ui-icon ui-icon-cancel" />
-						</f:facet>
 					</h:panelGrid>
 				</p:dialog>
 				<p:dialog id="userRoleDlg" header="角色分配" widgetVar="userRoleDialog" modal="true" resizable="false">
@@ -74,13 +72,14 @@
 						<h:outputLabel value="账号：" />
 						<p:inputText disabled="true" id="AccountId" value="#{userBean.instance.loginName}" />
 						<h:outputLabel value="角色列表：" />
+						<p:pickList id="pickRoles" value="#{userBean.roles}" var="role" itemLabel="#{role.name}" itemValue="#{role.id}" addLabel="添加" addAllLabel="全选" removeLabel="删除" removeAllLabel="全删" />
 						<f:facet name="footer">
-							<p:commandButton action="#{userBean.saveUserRole}" value="保存" icon="ui-icon ui-icon-disk" ajax="false" id="saveUserRoleID" oncomplete="userRoleDialog.hide()" />
-							<p:commandButton id="userRoleDialogBack" value="关闭" onclick="userRoleDialog.hide()" icon="ui-icon ui-icon-cancel" />
+							<p:commandButton id="saveUserRoleID" action="#{userBean.saveCurrentUserRoles}" ajax="false" value="保存" update=":userForm:userOutputPanel" oncomplete="userRoleDialog.hide()"  icon="ui-icon ui-icon-disk"/>
+							<p:commandButton id="userRoleDialogBack" value="取消" onclick="userRoleDialog.hide()" icon="ui-icon ui-icon-cancel" />
 						</f:facet>
 					</h:panelGrid>
 				</p:dialog>
-				<p:confirmDialog header="信息确认" message="是否删除此商品" severity="alert" widgetVar="confirmation">
+				<p:confirmDialog id="userDelDlg" header="信息确认" message="是否删除此商品" severity="alert" widgetVar="confirmation">
 					<p:commandButton update=":userForm:userOutputPanel" value="确定" oncomplete="confirmation.hide()" actionListener="#{userBean.delete}" />
 					<p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 				</p:confirmDialog>

@@ -6,10 +6,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.wcs.base.entity.IdEntity;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user_role")
-public class UserRole implements Serializable{
+public class UserRole extends IdEntity implements Serializable{
 	
 	private Long userid;
 	private Long roleid;

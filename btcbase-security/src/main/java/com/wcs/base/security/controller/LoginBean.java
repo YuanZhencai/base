@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,9 +17,9 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
-import org.apache.shiro.mgt.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,6 @@ import com.google.common.collect.Maps;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.User;
 import com.wcs.base.security.service.LoginService;
-import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
@@ -50,31 +48,9 @@ public class LoginBean implements Serializable {
 
 	@Inject
 	private LoginService loginService;
-	@Inject
-	private ResourceService resourceService;
 
-	private List<List<Resource>> allResList = Lists.newArrayList(); // 系统的全部资源
 	private final String LOGIN_SUCCESS = "/template/template.xhtml";
 	private final String LOGIN_PAGE = "/login.xhtml";
-
-	@SuppressWarnings("unused")
-	@PostConstruct
-	private void initAllResources() {
-		logger.info("ResourceBean => initAllResources()");
-		List<Resource> resList = resourceService.findAllSysResource();
-		Map<String, List<Resource>> allResMap = Maps.newHashMap();
-		for (Resource r : resList) {
-			String level = "level" + r.getLevel();
-			List<Resource> list = allResMap.get(level);
-			if (CollectionUtils.isEmpty(list)) {
-				allResMap.put(level, new ArrayList<Resource>());
-			}
-			allResMap.get(level).add(r);
-		}
-		for (int i = 0; i < allResMap.size(); i++) {
-			allResList.add(allResMap.get("level" + i));
-		}
-	}
 
 	/**
 	 * user login
@@ -111,13 +87,39 @@ public class LoginBean implements Serializable {
 			ae.printStackTrace();
 			return LOGIN_PAGE;
 		}
+		
+		// 初始化系统资源
+		List<List<Resource>> allResList = initAllResources();
 		JSFUtils.getSession().put("user", user);
+		JSFUtils.getSession().put("allResList", allResList);
 		JSFUtils.getSession().put("selectId", 2); // 选中的菜单
 
 		return LOGIN_SUCCESS;
 	}
 
 	/**
+	 * Init all sys resource
+     * @return
+     */
+    private List<List<Resource>> initAllResources() {
+        List<List<Resource>> allResList = Lists.newArrayList();
+        List<Resource> resList = loginService.findAllSysResource();
+        Map<String, List<Resource>> allResMap = Maps.newHashMap();
+        for (Resource r : resList) {
+            String level = "level" + r.getLevel();
+            List<Resource> list = allResMap.get(level);
+            if (CollectionUtils.isEmpty(list)) {
+                allResMap.put(level, new ArrayList<Resource>());
+            }
+            allResMap.get(level).add(r);
+        }
+        for (int i = 0; i < allResMap.size(); i++) {
+            allResList.add(allResMap.get("level" + i));
+        }
+        return allResList;
+    }
+
+    /**
 	 * 注销用户
 	 */
 	public String doLogout() {
@@ -135,14 +137,5 @@ public class LoginBean implements Serializable {
 	public String changeMenu(Long selectId) {
 		JSFUtils.getSession().put("selectId", selectId);
 		return LOGIN_SUCCESS;
-	}
-
-	// ----------------------------- set & get -------------------------------//
-	public List<List<Resource>> getAllResList() {
-		return allResList;
-	}
-
-	public void setAllResList(List<List<Resource>> allResList) {
-		this.allResList = allResList;
 	}
 }

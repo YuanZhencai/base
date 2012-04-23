@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -36,7 +36,7 @@
 				<div id="top_up_menu">
 					<h:form prependId="false" id="up_menu">
 						<ul>
-							<c:forEach var="topMenu" items="#{loginBean.allResList[1]}" varStatus="topMenuStatus">
+							<c:forEach var="topMenu" items="#{sessionScope.allResList[1]}" varStatus="topMenuStatus">
 								<shiro:hasPermission name="#{topMenu.keyName}">
 									<c:if test="${sessionScope.selectId == topMenu.id}">
 										<li class="top_up_menu_ul_li_B">
@@ -75,13 +75,13 @@
 				<div id="top_down_center" style="z-index: 1">
 
 					<ul id="nav">
-						<c:forEach  var="keyResouce" items="${loginBean.allResList[2]}" varStatus="topMenuStatus">
+						<c:forEach  var="keyResouce" items="#{sessionScope.allResList[2]}" varStatus="topMenuStatus">
 							<c:if test="${sessionScope.selectId==keyResouce.parentId}">
 								<li>
 									<shiro:hasPermission name="#{keyResouce.keyName}">
 										<a id="#{keyResouce.number}" href="#">#{keyResouce.name}</a>
 										<ul>
-											<c:forEach var="child" items="#{loginBean.allResList[3]}">
+											<c:forEach var="child" items="#{sessionScope.allResList[3]}">
 												<shiro:hasPermission name="#{child.keyName}">
 													<c:if test="#{(keyResouce.id==child.parentId) and child.isMenu}">
 														<li id="#{child.number}">

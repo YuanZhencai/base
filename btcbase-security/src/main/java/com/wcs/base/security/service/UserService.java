@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.User;
+import com.wcs.base.security.model.UserRole;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 
@@ -325,4 +326,37 @@ public class UserService implements Serializable {
 	    xsql.append(" /~ and u.loginName like {loginName} ~/ ");
 	    return entityService.findXsqlPage(xsql.toString(), queryMap);
 	}
+	
+	/**
+     * Find all role
+     * @return
+     */
+    public List<Role> getRoles() {
+        String jpql = "SELECT r FROM Role r ORDER BY r.name ASC";
+        List<Role> allRoles = entityService.findList(jpql);
+        return allRoles;
+    }
+    
+     /**
+     * Delete user roles by userId
+     * @param instance
+     */
+    public void delUserRole(User user) {
+        Query q = entityService.createQuery("DELETE FROM UserRole ur where  ur.userid = :userId");
+        q.setParameter("userId", user.getId());
+        q.executeUpdate();
+    }
+
+    /**
+     * Set current user roles
+     * @param roleList
+     */
+    public void createUserRoles(User user, List<Role> roleList) {
+        UserRole userRole = new UserRole();
+        for (Role role : roleList) {
+            userRole.setUserid(user.getId());
+            userRole.setRoleid(role.getId());
+            entityService.create(userRole);
+        }
+    }
 }
