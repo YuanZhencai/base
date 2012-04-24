@@ -7,14 +7,14 @@ insert into dict (id, code, defunct_ind, name, parent_code, value) values (6, 'P
 
 insert into sequence (seq_name, seq_count) values ('SEQ_GEN', 0);
 
-insert into users (id, email, loginname, name, password) values (1, 'Jo@test.com', 'admin', 'Jo yu', 'admin');
-insert into users (id, email, loginname, name, password) values (2, 'Jo@test.com', 'user', 'Jo Yu', 'user');
+insert into users (id, created_by, created_datetime, defunct_ind, email, loginname, name, password, updated_by, updated_datetime) values (1, null, null, false, 'Jo@test.com', 'admin', 'Jo yu', 'admin', null, null);
+insert into users (id, created_by, created_datetime, defunct_ind, email, loginname, name, password, updated_by, updated_datetime) values (2, null, null, false, 'Jo@test.com', 'user', 'Jo Yu', 'user', null, null);
 
 insert into role (id, name) values (1, 'admin');
 insert into role (id, name) values (2, 'user');
 
-insert into user_role (user_id, role_id) values (1, 1);
-insert into user_role (user_id, role_id) values (2, 2);
+insert into user_role (id, user_id, role_id) values (1, 1, 1);
+insert into user_role (id, user_id, role_id) values (2, 2, 2);
 
 insert into permission (id, roleid, permission) values (1, 1, 'user_userManage');
 insert into permission (id, roleid, permission) values (2, 1, 'user_roleManage');

@@ -3,7 +3,6 @@
  */
 package com.wcs.base.security.controller;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +10,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -138,27 +135,10 @@ public class RoleBean extends ConversationBaseBean {
 	}
 
 	/**
-	 * 角色编辑初始化
-	 */
-	public void editInit() {
-
-		/*
-		 * roleVo.setRoleName(this.currentRole.getRoleName());
-		 * roleVo.setState(this.currentRole.getState());
-		 * roleVo.setDescription(this.currentRole.getDescription());
-		 */
-	}
-
-	/**
 	 * 角色编辑
 	 */
 	public void update() {
 		try {
-			/*
-			 * this.currentRole.setRoleName(this.roleVo.getRoleName());
-			 * this.currentRole.setDescription(this.roleVo.getDescription());
-			 * this.currentRole.setState(this.roleVo.getState());
-			 */
 			this.entityService.update(currentRole);
 			MessageUtils.addSuccessMessage("rolemessgeId", "角色更新成功");
 		} catch (Exception e) {
