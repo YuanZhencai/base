@@ -17,8 +17,7 @@
 		<f:metadata>
 			<f:event type="preRenderView" listener="#{roleBean.initConversation}" />
 		</f:metadata>
-		<input type="hidden" id="menuOne" value="M101" />
-		<input type="hidden" id="menuTwo" value="M10103" />
+	
 		<h:form id="roleTableForm" prependId="false">
 			<p:panel styleClass="panel1">
 				<f:facet name="header">
@@ -56,11 +55,11 @@
 						<p:column headerText="角色名"><h:outputText value="#{role.name}" /></p:column>
 
 						<p:column headerText="操作" styleClass="operating_90">
-							<p:commandButton rendered="true" update=":roleEditForm:carDetail,:roleEditForm:roleName_msg" action="#{roleBean.editInit}" oncomplete="singleCarDialog.show()" icon="ui-icon ui-icon-pencil" title="编辑">
+							<p:commandButton rendered="true" update=":roleEditForm:carDetail,:roleEditForm:roleName_msg" action="#{roleBean.editInit}" oncomplete="roleInfoEditDialog.show()" icon="ui-icon ui-icon-pencil" title="编辑">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
 							</p:commandButton>
 
-							<p:commandButton oncomplete="confirmation.show()" update="roleTable" icon="ui-icon ui-icon-close" title="删除">
+							<p:commandButton oncomplete="confirmation.show()" icon="ui-icon ui-icon-close" title="删除">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.currentRole}" />
 							</p:commandButton>
 
@@ -73,7 +72,7 @@
 
 				<p:confirmDialog message="是否删除此角色" modal="true" header="信息确认"
 					severity="alert" widgetVar="confirmation">
-					<p:commandButton update="roleTable,roleTableForm" value="确定"
+					<p:commandButton update="roleTabelOut" value="确定"
 						icon="ui-icon ui-icon-check" oncomplete="confirmation.hide()"
 						action="#{roleBean.deleteRole}" />
 					<p:commandButton value="取消" onclick="confirmation.hide()"
@@ -82,7 +81,7 @@
 			</p:panel>
 		</h:form>
 		<h:form prependId="false" id="roleEditForm">
-			<p:dialog header="角色信息编辑" widgetVar="singleCarDialog"
+			<p:dialog header="角色信息编辑" widgetVar="roleInfoEditDialog"
 				resizable="false" modal="true" width="600">
 				<p:message id="roleName_msg" for="roleName"></p:message>
 				
@@ -101,8 +100,8 @@
 						<p:commandButton action="#{roleBean.update}" value="保存"
 							id="roleEditID2" icon="ui-icon ui-icon-disk"
 							update=":roleTableForm:roleTabelOut,rolemessgeId,roleName_msg"
-							oncomplete="handleComplete(singleCarDialog,args);" async="true" />
-						<p:commandButton value="取消" onclick="singleCarDialog.hide()"
+							oncomplete="handleComplete(roleInfoEditDialog,args);" async="true" />
+						<p:commandButton value="取消" onclick="roleInfoEditDialog.hide()"
 							id="roleBACKID" icon="ui-icon ui-icon-cancel" title="取消" />
 					</f:facet>
 

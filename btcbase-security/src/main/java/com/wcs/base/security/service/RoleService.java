@@ -172,7 +172,7 @@ public class RoleService implements Serializable {
 	public void deleteRole(Role role) throws Exception {
 		String sql1 = "DELETE FROM UserRole ur WHERE ur.roleid = ?1";
 		String sql2 = "DELETE FROM Permission p WHERE p.roleid = ?1";
-		String sql3 = "DELETE FROM Role r WHERE r.id=?1 ";
+		String sql3 = "DELETE FROM Role r WHERE r.id = ?1 ";
 		this.entityService.batchExecute(sql1, role.getId());
 		this.entityService.batchExecute(sql2, role.getId());
 		this.entityService.batchExecute(sql3, role.getId());

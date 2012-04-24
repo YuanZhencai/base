@@ -156,15 +156,6 @@ public class ResourceService implements Serializable {
 	}
 
 	/**
-	 * Description: 删除角色资源
-	 * @param role
-	 */
-	public void deleteRoleResource(Role role) {
-		String sql = "DELETE RoleResource rs WHERE rs.role.id=?1";
-		this.entityService.batchExecute(sql, role.getId());
-	}
-
-	/**
 	 * Description: 根据id查找资源
 	 * @param sysResouce
 	 * @param compoent
@@ -352,8 +343,12 @@ public class ResourceService implements Serializable {
 		return parentName;
 	}
 
+	/**
+	 * 删除角色授权
+	 * @param role
+	 */
 	public void deleteRolePermission(Role role) {
-		String sql = "delete Permission p where p.role.id=?1";
+		String sql = "DELETE FROM Permission p WHERE p.roleid = ?1";
 		this.entityService.batchExecute(sql, role.getId());
 	}
 

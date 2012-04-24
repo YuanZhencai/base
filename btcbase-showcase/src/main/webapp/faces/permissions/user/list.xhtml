@@ -38,7 +38,7 @@
 							<h:outputText value="#{user.email}" />
 						</p:column>
 						<p:column headerText="操作" style="width:120px; text-align:center;">
-							<p:commandButton update=":dialogForm:userRolesPanel" actionListener="#{userBean.findRoles}" oncomplete="userRoleDialog.show()"  icon="ui-icon ui-icon-wrench" title="分配角色">
+							<p:commandButton update=":dialogForm:userRolesPanel" action="#{userBean.findRoles}" oncomplete="userRoleDialog.show()"  icon="ui-icon ui-icon-wrench" title="分配角色">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
 							<p:commandButton update=":dialogForm:viewUserDetail" oncomplete="viewUserDialog.show()" icon="ui-icon ui-icon-search" title="查看">
@@ -79,7 +79,7 @@
 						</f:facet>
 					</h:panelGrid>
 				</p:dialog>
-				<p:confirmDialog id="userDelDlg" header="信息确认" message="是否删除此商品" severity="alert" widgetVar="confirmation">
+				<p:confirmDialog id="userDelDlg" header="信息确认" message="是否删除此用户" severity="alert" widgetVar="confirmation">
 					<p:commandButton update=":userForm:userOutputPanel" value="确定" oncomplete="confirmation.hide()" actionListener="#{userBean.delete}" />
 					<p:commandButton value="取消" onclick="confirmation.hide()" type="button" />
 				</p:confirmDialog>

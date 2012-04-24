@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.controller.ConversationBaseBean;
+import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.service.ResourceService;
@@ -104,42 +105,29 @@ public class RoleBean extends ConversationBaseBean {
 	 * 保存角色资源
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	public String saveRoleResource() {
 		if (this.currentRole == null) {
 			MessageUtils.addErrorMessage("rolemessgeId", "当前角色为空!");
 			return JSFUtils.getViewId();
 		}
 
-		// 删除当前角色旧资源
+		// 删除当前角色旧的授权
 		try {
-			this.resourceService.deleteRoleResource(this.currentRole);
 			this.resourceService.deleteRolePermission(this.currentRole);
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("rolemessgeId", "删除角色旧资源失败.");
 			return JSFUtils.getViewId();
 		}
 
-		// 保存角色资源
+		// 保存角色授权
 		try {
 			List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
-			// for (Resource resource : listresouce) {
-			// 保存角色资源对应关系
-			/*
-			 * RoleResource roleResource = new RoleResource();
-			 * roleResource.setRole(this.currentRole);
-			 * roleResource.setResource(resource);
-			 * this.entityService.create(roleResource);
-			 * 
-			 * // 创建权限对象 Permission permission = new Permission();
-			 * permission.setRole(this.currentRole); if (resource.getKeyName()
-			 * != null) { String permissionString = "view:" +
-			 * resource.getKeyName();
-			 * permission.setPermission(permissionString); }
-			 * permission.setPermissionName(resource.getName());
-			 * this.entityService.create(permission);
-			 */
-			// }
+			for (Resource resource : listresouce) {
+			     Permission permission = new Permission();
+			     permission.setRoleid(this.currentRole.getId());
+			     permission.setPermission(resource.getKeyName());
+			     this.entityService.create(permission);
+			 }
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("rolemessgeId", "保存角色资源失败.");
 			return JSFUtils.getViewId();
