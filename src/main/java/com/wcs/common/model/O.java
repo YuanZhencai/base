@@ -9,30 +9,50 @@ import javax.persistence.*;
  * 
  */
 @Entity
-public class O extends com.wcs.base.model.IdEntity implements Serializable {
+@Table(name="O")
+public class O implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(unique=true, nullable=false, length=20)
+	private String id;
+
+	@Column(length=20)
 	private String bukrs;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
+	@Column(length=20)
 	private String kostl;
 
 	private long parent;
 
+	@Column(length=20)
 	private String stext;
 
+	@Column(length=20)
 	private String zhrtxxlid;
 
+	@Column(length=50)
 	private String zhrtxxlms;
 
+	@Column(length=20)
 	private String zhrzzcjid;
 
+	@Column(length=20)
 	private String zhrzzdwid;
 
     public O() {
     }
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getBukrs() {
 		return this.bukrs;

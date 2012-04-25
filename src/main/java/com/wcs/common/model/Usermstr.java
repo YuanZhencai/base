@@ -1,10 +1,20 @@
 package com.wcs.common.model;
 
+
+
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.wcs.common.model.Userrole;
 
 
 /**
@@ -12,61 +22,41 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="USERMSTR")
 public class Usermstr extends com.wcs.base.model.IdEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -4138239153171601393L;
-
-	@Column(name="AD_ACCOUNT")
+	@Column(name="AD_ACCOUNT", length=50)
 	private String adAccount;
 
-	@Column(name="BACKGROUND_INFO")
+	@Column(name="BACKGROUND_INFO", length=200)
 	private String backgroundInfo;
 
-    @Temporal( TemporalType.TIMESTAMP)
-	private Date birthday;
-
-	@Column(name="CREATED_BY")
+	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
-
+	
     @Temporal( TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME")
+	@Column(name="CREATED_DATETIME", nullable=false)
 	private Date createdDatetime;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
-	@Column(name="IDENTITY_TYPE")
-	private String identityType;
-
-	@Column(name="IDTENTITY_ID")
-	private String idtentityId;
-
-	@Column(name="ONBOARD_DATE")
-	private Timestamp onboardDate;
-
+	@Column(length=20)
 	private String pernr;
 
-	private long pid;
-
-	@Column(name="UPDATED_BY")
+	@Column(name="UPDATED_BY", nullable=false, length=50)
 	private String updatedBy;
 
     @Temporal( TemporalType.TIMESTAMP)
-	@Column(name="UPDATED_DATETIME")
+	@Column(name="UPDATED_DATETIME", nullable=false)
 	private Date updatedDatetime;
-
-	//bi-directional many-to-one association to Usercompany
-	@OneToMany(mappedBy="usermstr", fetch=FetchType.EAGER)
-	private List<Usercompany> usercompanies;
-
-	//bi-directional many-to-one association to Userpositionorg
-	@OneToMany(mappedBy="usermstr", fetch=FetchType.EAGER)
-	private List<Userpositionorg> userpositionorgs;
 
 	//bi-directional many-to-one association to Userrole
 	@OneToMany(mappedBy="usermstr", fetch=FetchType.EAGER)
 	private List<Userrole> userroles;
 
+	
     public Usermstr() {
     }
 
@@ -84,14 +74,6 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 
 	public void setBackgroundInfo(String backgroundInfo) {
 		this.backgroundInfo = backgroundInfo;
-	}
-
-	public Date getBirthday() {
-		return this.birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
 	}
 
 	public String getCreatedBy() {
@@ -118,44 +100,12 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 		this.defunctInd = defunctInd;
 	}
 
-	public String getIdentityType() {
-		return this.identityType;
-	}
-
-	public void setIdentityType(String identityType) {
-		this.identityType = identityType;
-	}
-
-	public String getIdtentityId() {
-		return this.idtentityId;
-	}
-
-	public void setIdtentityId(String idtentityId) {
-		this.idtentityId = idtentityId;
-	}
-
-	public Timestamp getOnboardDate() {
-		return this.onboardDate;
-	}
-
-	public void setOnboardDate(Timestamp onboardDate) {
-		this.onboardDate = onboardDate;
-	}
-
 	public String getPernr() {
 		return this.pernr;
 	}
 
 	public void setPernr(String pernr) {
 		this.pernr = pernr;
-	}
-
-	public long getPid() {
-		return this.pid;
-	}
-
-	public void setPid(long pid) {
-		this.pid = pid;
 	}
 
 	public String getUpdatedBy() {
@@ -174,22 +124,6 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public List<Usercompany> getUsercompanies() {
-		return this.usercompanies;
-	}
-
-	public void setUsercompanies(List<Usercompany> usercompanies) {
-		this.usercompanies = usercompanies;
-	}
-	
-	public List<Userpositionorg> getUserpositionorgs() {
-		return this.userpositionorgs;
-	}
-
-	public void setUserpositionorgs(List<Userpositionorg> userpositionorgs) {
-		this.userpositionorgs = userpositionorgs;
-	}
-	
 	public List<Userrole> getUserroles() {
 		return this.userroles;
 	}
@@ -197,5 +131,4 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 	public void setUserroles(List<Userrole> userroles) {
 		this.userroles = userroles;
 	}
-	
 }

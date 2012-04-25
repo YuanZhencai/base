@@ -79,9 +79,7 @@
 					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e" 
 						action="#{roleBean.reset}" update="userSerachGrid"/>
 					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="new_form"
-						image="ui-icon ui-icon-disk" action="#{roleBean.editRole}">
-						<f:setPropertyActionListener target="#{roleBean.role}" value=""/>
-					</p:commandButton>
+						image="ui-icon ui-icon-disk"/>
 				</div>
 			</div>
 			

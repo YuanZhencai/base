@@ -46,19 +46,6 @@
 					<f:setPropertyActionListener
 						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
 				</p:commandButton>
-				<p:commandButton action="#{userBean.userPositionorg}"
-					oncomplete="userPositionorgDialog.show()"
-					update="userPositionorgDlg" title="岗位分配"
-					image="ui-icon ui-icon-org">
-					<f:setPropertyActionListener
-						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
-				</p:commandButton>
-				<p:commandButton action="#{userBean.userCompany}"
-					oncomplete="userCompanyDialog.show()" update="userCompanyDlg"
-					title="服务公司" image="ui-icon ui-icon-assign">
-					<f:setPropertyActionListener
-						target="#{userBean.selectedUsermstrVo}" value="#{user}" />
-				</p:commandButton>
 			</p:column>
 		</p:dataTable>
 	</h:form>

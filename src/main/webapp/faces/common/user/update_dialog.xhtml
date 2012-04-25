@@ -14,7 +14,7 @@
 				columnClasses="column1,column2,column1,column2">
 				<h:outputText value="用户帐号：" />
 				<p:inputText id="adAccount" value="#{userBean.usermstr.adAccount}"
-					maxlength="49" styleClass="input_disabled"
+					maxlength="49" disabled="true" styleClass="input_disabled"
 					validator="#{userBean.valid}" />
 				<h:outputText value="用户姓名：" />
 				<p:inputText value="#{userBean.p.nachn}" disabled="true"
@@ -41,47 +41,13 @@
 					<f:selectItem itemLabel="男" itemValue="男" />
 					<f:selectItem itemLabel="女" itemValue="女" />
 				</h:selectOneMenu>
-				<h:outputText value="证件类型：" />
-				<h:selectOneMenu value="#{userBean.usermstr.identityType}"
-					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-					style="width:189px;">
-					<f:selectItem itemLabel="身份证" itemValue="身份证" />
-					<f:selectItem itemLabel="护照" itemValue="护照" />
-					<f:selectItem itemLabel="驾驶证" itemValue="驾驶证" />
-					<f:selectItem itemLabel="社保卡" itemValue="社保卡" />
-				</h:selectOneMenu>
-				<h:outputText value="证件号：" />
-				<p:inputText id="idtentityId"
-					value="#{userBean.usermstr.idtentityId}"
-					styleClass="input_disabled" validator="#{userBean.valid}"
-					maxlength="49" />
-				<h:outputText value="入职时间：" />
-				<p:calendar value="#{userBean.onboardDate}" pattern="yyyy-MM-dd"
-					styleClass="input_disabled" />
-				<h:outputText value="出生日期：" />
-				<p:calendar value="#{userBean.usermstr.birthday}"
-					pattern="yyyy-MM-dd" styleClass="input_disabled" />
 			</h:panelGrid>
 			<h:panelGrid columns="2" columnClasses="column1,column2">
 				<h:outputText value="背景说明：" />
-				<p:inputTextarea value="#{userBean.usermstr.backgroundInfo}"
+				<p:inputTextarea value="#{userBean.usermstr.backgroundInfo}" disabled="true"
 					style="width:401px;height:60px;" effectDuration="400"
 					maxlength="198" />
-				<h:outputText value="是否生效：" />
-				<h:selectOneRadio value="#{userBean.usermstr.defunctInd}">
-					<f:selectItem itemLabel="#{msgs.txt_effective}" itemValue="N" />
-					<f:selectItem itemLabel="#{msgs.txt_effectiveLost}" itemValue="Y" />
-				</h:selectOneRadio>
 			</h:panelGrid>
-			<div style="text-align: center; position: relative; margin-top: 5px;">
-				<p:commandButton actionListener="#{userBean.saveUpdateUser}"
-					oncomplete="updateUserDialog.hide();handleRequest(xhr, status, args);"
-					update="errorMsg,updateUserDialogForm,userDataTable,userGrowl"
-					value="#{msgs.btn_ok}" image="ui-icon ui-icon-check"
-					style="margin-right: 5px;" />
-				<p:commandButton type="button" onclick="updateUserDialog.hide()"
-					value="#{msgs.btn_cancel}" image="ui-icon ui-icon-cancel" />
-			</div>
 		</h:form>
 	</p:dialog>
 

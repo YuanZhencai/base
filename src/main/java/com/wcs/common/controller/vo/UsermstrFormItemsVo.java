@@ -5,8 +5,6 @@ public class UsermstrFormItemsVo implements java.io.Serializable {
 	private static final long serialVersionUID = 6451182340297801005L;
 	private String adAccount;
 	private String userName;
-	private String companymstrId;
-	private String positionId;
 	private String rolemstrId;
 	private String status;
 
@@ -24,22 +22,6 @@ public class UsermstrFormItemsVo implements java.io.Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getCompanymstrId() {
-		return companymstrId;
-	}
-
-	public void setCompanymstrId(String companymstrId) {
-		this.companymstrId = companymstrId;
-	}
-
-	public String getPositionId() {
-		return positionId;
-	}
-
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
 	}
 
 	public String getRolemstrId() {

@@ -131,7 +131,7 @@ public class RoleBean implements Serializable {
      * <p>Description: add role</p>
      */
     public void addRole() {
-        role.setId(null);
+        
         role.setCreatedBy(loginService.getCurrentUserName());
         role.setCreatedDatetime(new Date());
         role.setUpdatedBy(loginService.getCurrentUserName());

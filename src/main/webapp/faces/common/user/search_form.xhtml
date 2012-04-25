@@ -16,24 +16,6 @@
 				<h:outputText value="用户姓名：" />
 				<p:inputText value="#{userBean.usermstrFormItemsVo.userName}"
 					maxlength="18" />
-				<h:outputText value="服务公司 ：" />
-				<h:selectOneMenu
-					value="#{userBean.usermstrFormItemsVo.companymstrId}"
-					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all"
-					style="width:140px">
-					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
-					<f:selectItems value="#{userBean.companymstrList}" var="companyVo"
-						itemLabel="#{companyVo.o.stext}"
-						itemValue="#{companyVo.companymstr.id}" />
-				</h:selectOneMenu>
-				<h:outputText value="岗位 ：" />
-				<h:selectOneMenu value="#{userBean.usermstrFormItemsVo.positionId}"
-					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
-					<f:selectItem itemLabel="#{msgs.txt_pleaseSelect}" itemValue="" />
-					<f:selectItems value="#{userBean.positionList}" var="positionVo"
-						itemLabel="#{positionVo.positionorg.position.name}"
-						itemValue="#{positionVo.positionorg.id}" />
-				</h:selectOneMenu>
 				<h:outputText value="角色 ：" />
 				<h:selectOneMenu value="#{userBean.usermstrFormItemsVo.rolemstrId}"
 					styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
@@ -58,10 +40,6 @@
 				<p:commandButton actionListener="#{userBean.reset}"
 					update="formItems" value="#{msgs.btn_reset}"
 					image="ui-icon ui-icon-cancel" />
-				<p:commandButton value="#{msgs.btn_add}"
-						actionListener="#{userBean.addUser}"
-						oncomplete="addUserDialog.show()" update="addUserDlg"
-						image="ui-icon ui-icon-plus" />
 			</div>
 		</div>
 	</h:form>
