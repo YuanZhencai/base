@@ -55,10 +55,20 @@ public class UserService implements Serializable {
 		List<UsermstrVo> listUsermstrVo = new ArrayList<UsermstrVo>();
 		UsermstrVo uv = null;
 		for (Usermstr u : list) {
+			PU pu = getPU(u.getAdAccount());
+			if (pu == null) continue; 
 			uv = new UsermstrVo();
 			uv.setId(u.getId());
 			uv.setUsermstr(u);
-			uv.setP(getP(getPU(u.getAdAccount()).getPernr()));
+			if ("Y".equals(pu.getDefunctInd())) {
+				continue;
+			} else {
+				uv.setP(getP(getPU(u.getAdAccount()).getPernr()));
+			}
+			if (uv.getP() == null) {
+				System.out.println("Something wrong happened, PU & P unsynchronized!!!");
+				continue;
+			}
 			uv.setO(getO(uv.getP().getBukrs()));
 			listUsermstrVo.add(uv);
 		}
@@ -89,10 +99,11 @@ public class UserService implements Serializable {
 	}
 	
 	public PU getPU(String id) {
-		String sql = "select pu from PU pu where pu.id = :id";
-		Query q = em.createQuery(sql);
-		q.setParameter("id", id);
-		return (PU) q.getSingleResult();
+//		String sql = "select pu from PU pu where pu.id = :id";
+//		Query q = em.createQuery(sql);
+//		q.setParameter("id", id);
+//		return (PU) q.getSingleResult();
+		return this.em.find(PU.class, id);
 	}
 
 	public O getO(String bukrs) {
