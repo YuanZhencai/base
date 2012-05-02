@@ -62,7 +62,7 @@
 				</f:facet>
 
 				<div class="style1">
-				<h:panelGrid columns="6" id="userSerachGrid"
+				<h:panelGrid columns="6" id="userSearchGrid"
 					columnClasses="column1,column2,column1,column2">
 					<h:outputText value="角色名称："/>
 					<p:inputText value="#{roleBean.query['name']}"/>
@@ -77,7 +77,7 @@
 					<p:commandButton id="roleSearch" value="查询" action="#{roleBean.search}"
 						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
 					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e" 
-						action="#{roleBean.reset}" update="userSerachGrid"/>
+						action="#{roleBean.reset}" update="userSearchGrid"/>
 					<p:commandButton value="添加" image="ui-icon ui-icon-disk"
 						oncomplete="insert_dialog_dialog.show();document.forms['new_form'].reset();"
 						actionListener="#{roleBean.initAddRole}"
