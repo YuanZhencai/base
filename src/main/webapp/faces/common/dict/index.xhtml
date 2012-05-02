@@ -25,7 +25,7 @@
 					<h:outputLabel value="字典表管理 " />
 				</f:facet>
 				<div class="style1"  style="margin-top: 5px;margin-bottom: 5px;">
-					<h:panelGrid columns="8"
+					<h:panelGrid columns="8" id="dictSearchGrid"
 						columnClasses="column1,column2,column1,column2,column1,column2,column1,column2">
 
 						<h:outputText value="类别 : " />
@@ -53,8 +53,8 @@
 						<p:commandButton value="#{msgs.btn_query}" image="ui-icon ui-icon-search"  
 							actionListener="#{dictBean.serachData}" update="dictFormId"  
 							style="margin-right:5px" />
-						<p:commandButton type="reset" value="#{msgs.btn_reset }" 
-							image="ui-icon ui-icon-cancel" />
+						<p:commandButton value="#{msgs.btn_reset }" image="ui-icon ui-icon-cancel"
+							action="#{dictBean.reset}" update="dictSearchGrid" />
 						<p:commandButton value="#{msgs.btn_add}" image="ui-icon ui-icon-plus" 
 							oncomplete="addDlgVar.show();document.forms['addDlgFormId'].reset();"   
 							actionListener="#{dictBean.initAddDict}" 

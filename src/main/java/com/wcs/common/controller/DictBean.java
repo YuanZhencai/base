@@ -41,6 +41,11 @@ public class DictBean implements Serializable{
 	public void initAddDict() {
         addDict=new Dict();
     }
+	
+    // reset search conditions
+    public void reset() {
+        query.clear();
+    }
  
 	//updatedialog页面参数
 	private DictVO selectData=new DictVO();
