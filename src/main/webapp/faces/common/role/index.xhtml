@@ -78,8 +78,11 @@
 						image="ui-icon ui-icon-search" style="margin-right: 5px;" ajax="false"/>
 					<p:commandButton value="重置" image="ui-icon ui-icon-arrowrefresh-1-e" 
 						action="#{roleBean.reset}" update="userSerachGrid"/>
-					<p:commandButton value="添加" oncomplete="insert_dialog_dialog.show()" update="new_form"
-						image="ui-icon ui-icon-disk"/>
+					<p:commandButton value="添加" image="ui-icon ui-icon-disk"
+						oncomplete="insert_dialog_dialog.show();document.forms['new_form'].reset();"
+						actionListener="#{roleBean.initAddRole}"
+						update="new_form"
+						/>
 				</div>
 			</div>
 			
