@@ -38,7 +38,7 @@ public class UserService implements Serializable {
 					+ "%'");
 		}
 		if (ufiv.getUserName() != null && !"".equals(ufiv.getUserName())) {
-			sb.append(" and EXISTS(select p.id from P p where u.pid=p.id and p.nachn like '%"
+			sb.append(" and EXISTS(select p.id from P p,PU pu where p.id=pu.pernr and u.adAccount=pu.id and p.nachn like '%"
 					+ ufiv.getUserName().trim() + "%' and p.defunctInd='N')");
 		}
 		if (ufiv.getRolemstrId() != null && !"".equals(ufiv.getRolemstrId())) {
