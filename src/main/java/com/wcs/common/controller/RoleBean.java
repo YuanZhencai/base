@@ -102,35 +102,6 @@ public class RoleBean implements Serializable {
         };
     }
     
-    public void validRole(FacesContext context, UIComponent component, java.lang.Object value) 
-        throws ValidatorException {
-        String componentId = component.getId();
-        String componentValue = value.toString().trim();
-        if("newName".equals(componentId) || "updateName".equals(componentId)) {
-            if(componentValue == null || "".equals(componentValue)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色名称：", "不允许为空或空格"));
-            } else if(componentValue.length() > 20) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色名称：", "不允许超过20个字符"));
-            }
-        } else if("newCode".equals(componentId) || "updateCode".equals(componentId)) {
-            if(componentValue == null || "".equals(componentValue)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "不允许为空或空格"));
-            } else if(!componentValue.matches("^[a-zA-Z]+$")) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "只允许填写英文字符"));
-            } else if(componentValue.length() > 50) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色编码：", "不允许超过50个字符"));
-            }
-        } else if("newDesc".equals(componentId) || "updateDesc".equals(componentId)) {
-            if(componentValue != null && componentValue.length() > 50) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色描述：", "不允许超过50个字符"));
-            }
-        } else if("newDefunctInd".equals(componentId) || "updateDefunctInd".equals(componentId)) {
-            if(componentValue == null || "".equals(componentValue)) {
-                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "状态：", "不允许为空"));
-            }
-        }
-    }
-    
     /**
      * <p>Description: add role</p>
      */
