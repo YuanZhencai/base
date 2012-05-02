@@ -36,6 +36,7 @@
 				<h:outputText value="角色描述： " />
 				<p:inputText id="newDesc" value="#{roleBean.role.desc}"
 					style="width: 350px;">
+					<f:validator validatorId="customValidator"/>
 					<w:validateMaxLength maxLength="50" maxLengthMark="角色描述,50" />
 				</p:inputText>
 
@@ -43,7 +44,6 @@
 				<h:panelGrid columns="2">
 				<h:selectOneRadio id="newDefunctInd"
 					value="#{roleBean.role.defunctInd}">
-					<w:validateRequired required="true" requiredMark="状态" />
 					<f:selectItem itemLabel="生效" itemValue="N" />
 					<f:selectItem itemLabel="失效" itemValue="Y" />
 				</h:selectOneRadio>

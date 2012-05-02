@@ -1,7 +1,9 @@
 <ui:composition xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:w="http://www.wcs-global.com/customtaglib"
+	>
 
 	<p:dialog id="update_dialog_id" widgetVar="update_dialog_dialog"
 		resizable="false" width="500" height="250" header="角色信息编辑"
@@ -11,27 +13,35 @@
 			<h:panelGrid columns="2">
 				<h:outputText value="角色名称： " />
 				<h:column>
-				<p:inputText id="updateName" value="#{roleBean.role.name}"
-					validator="#{roleBean.validRole}" />
+				<p:inputText id="updateName" value="#{roleBean.role.name}">
+					<f:validator validatorId="customValidator"/>
+					<w:validateRequired required="true" requiredMark="角色名称" />
+					<w:validateMaxLength maxLength="20" maxLengthMark="角色名称,20" />
+				</p:inputText>
 				<span style="color: red">*</span>
 				</h:column>
 					
 				<h:outputText value="角色编码： " />
 				<h:column>
-				<p:inputText id="updateCode" value="#{roleBean.role.code}"
-					validator="#{roleBean.validRole}" />
+				<p:inputText id="updateCode" value="#{roleBean.role.code}">
+					<f:validator validatorId="customValidator"/>
+					<w:validateRequired required="true" requiredMark="角色编码" />
+					<w:validateRegex regex="^[a-zA-Z]+$" regexMark="角色编码只允许填写英文字符" />
+					<w:validateMaxLength maxLength="50" maxLengthMark="角色编码,50" />
+				</p:inputText>
 				<span style="color: red">*</span>
 				</h:column>
 
 				<h:outputText value="角色描述： " />
 				<p:inputText id="updateDesc" value="#{roleBean.role.desc}"
-					style="width: 350px;" validator="#{roleBean.validRole}" />
-
+					style="width: 350px;">
+					<f:validator validatorId="customValidator"/>
+					<w:validateMaxLength maxLength="50" maxLengthMark="角色描述,50" />
+				</p:inputText>
 				<h:outputText value="是否有效： " />
 				<h:panelGrid columns="2">
 				<h:selectOneRadio id="updateDefunctInd"
-					value="#{roleBean.role.defunctInd}"
-					validator="#{roleBean.validRole}">
+					value="#{roleBean.role.defunctInd}">
 					<f:selectItem itemLabel="生效" itemValue="N" />
 					<f:selectItem itemLabel="失效" itemValue="Y" />
 				</h:selectOneRadio>
