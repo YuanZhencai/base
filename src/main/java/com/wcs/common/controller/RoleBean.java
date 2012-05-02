@@ -71,7 +71,7 @@ public class RoleBean implements Serializable {
     }
     
 	public void initAddRole() {
-		role = new Rolemstr();
+		role = null;
     }
 
     // reset search conditions
