@@ -69,6 +69,10 @@ public class RoleBean implements Serializable {
         query = new HashMap<String, String>(2);
         search();
     }
+    
+	public void initAddRole() {
+		role = new Rolemstr();
+    }
 
     // reset search conditions
     public void reset() {
