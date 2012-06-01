@@ -67,7 +67,8 @@
 					<h:outputText value="角色名称："/>
 					<p:inputText value="#{roleBean.query['name']}"/>
 					<h:outputText value="状态："/>
-					<h:selectOneMenu value="#{roleBean.query['del']}">
+					<h:selectOneMenu value="#{roleBean.query['del']}"
+					    styleClass="ui-inputfield ui-widget ui-state-default ui-corner-all">
 						<f:selectItem itemLabel="请选择" itemValue=""/>
 						<f:selectItem itemLabel="生效" itemValue="N"/>
 						<f:selectItem itemLabel="失效" itemValue="Y"/>
