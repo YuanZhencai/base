@@ -1,10 +1,9 @@
 package com.wcs.common.model;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * The persistent class for the SYNCLOG database table.
@@ -15,6 +14,7 @@ public class Synclog extends com.wcs.base.model.IdEntity implements
 		Serializable {
 	private static final long serialVersionUID = 1L;
 
+    @Column(name = "REMARKS")
 	private String remarks;
 
 	@Column(name = "SYNC_DATETIME")
@@ -23,6 +23,10 @@ public class Synclog extends com.wcs.base.model.IdEntity implements
 	@Column(name = "SYNC_TYPE")
 	private String syncType;
 
+    @Column(name = "SYNC_IND")
+    private String syncInd;
+
+    @Column(name = "VERSION")
 	private Timestamp version;
 
 	public Synclog() {
@@ -60,4 +64,11 @@ public class Synclog extends com.wcs.base.model.IdEntity implements
 		this.version = version;
 	}
 
+    public String getSyncInd() {
+        return syncInd;
+    }
+
+    public void setSyncInd(String syncInd) {
+        this.syncInd = syncInd;
+    }
 }
