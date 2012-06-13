@@ -17,31 +17,31 @@ public class O implements Serializable {
 	@Column(unique=true, nullable=false, length=20)
 	private String id;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String bukrs;
 
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String kostl;
 
 	@Column(length=20)
 	private String parent;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String stext;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String zhrtxxlid;
 
-	@Column(length=50)
+	@Column(length=200)
 	private String zhrtxxlms;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String zhrzzcjid;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String zhrzzdwid;
 
     public O() {

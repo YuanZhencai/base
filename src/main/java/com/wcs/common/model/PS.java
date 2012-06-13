@@ -1,6 +1,5 @@
 package com.wcs.common.model;
 
-
 import java.io.Serializable;
 import javax.persistence.*;
 

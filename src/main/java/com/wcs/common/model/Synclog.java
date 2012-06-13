@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class Synclog extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "REMARKS",length=50)
+	@Column(name = "REMARKS",length=200)
 	private String remarks;
 
 	@Column(name="SYNC_DATETIME")

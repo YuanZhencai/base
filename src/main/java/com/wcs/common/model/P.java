@@ -17,35 +17,44 @@ public class P implements Serializable {
 	@Column(unique=true, nullable=false, length=20)
 	private String id;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String bukrs;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String celno;
 
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
-	@Column(length=50)
+	@Column(length=200)
 	private String email;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String gesch;
 
-	@Column(length=30)
+	@Column(length=200)
 	private String icnum;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String kostl;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String nachn;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String name2;
 
-	@Column(length=20)
+	@Column(length=200)
+	private String orgeh;
+
+	@Column(length=200)
 	private String telno;
+
+	@Column(length=200)
+	private String zhrzjid;
+
+	@Column(length=200)
+	private String zhrzjms;
 
     public P() {
     }
@@ -130,12 +139,36 @@ public class P implements Serializable {
 		this.name2 = name2;
 	}
 
+	public String getOrgeh() {
+		return this.orgeh;
+	}
+
+	public void setOrgeh(String orgeh) {
+		this.orgeh = orgeh;
+	}
+
 	public String getTelno() {
 		return this.telno;
 	}
 
 	public void setTelno(String telno) {
 		this.telno = telno;
+	}
+
+	public String getZhrzjid() {
+		return this.zhrzjid;
+	}
+
+	public void setZhrzjid(String zhrzjid) {
+		this.zhrzjid = zhrzjid;
+	}
+
+	public String getZhrzjms() {
+		return this.zhrzjms;
+	}
+
+	public void setZhrzjms(String zhrzjms) {
+		this.zhrzjms = zhrzjms;
 	}
 
 }

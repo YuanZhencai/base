@@ -1,6 +1,5 @@
 package com.wcs.common.model;
 
-
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -21,19 +20,25 @@ public class S implements Serializable {
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String kostl;
 
 	@Column(nullable=false, length=20)
 	private String oid;
 
-	@Column(length=20)
+	@Column(length=200)
 	private String stext;
 
-	@Column(length=20)
+	@Column(length=200)
+	private String zhrcjid;
+
+	@Column(length=200)
+	private String zhrcjms;
+
+	@Column(length=200)
 	private String zhrtxxlid;
 
-	@Column(length=50)
+	@Column(length=200)
 	private String zhrtxxlms;
 
     public S() {
@@ -77,6 +82,22 @@ public class S implements Serializable {
 
 	public void setStext(String stext) {
 		this.stext = stext;
+	}
+
+	public String getZhrcjid() {
+		return this.zhrcjid;
+	}
+
+	public void setZhrcjid(String zhrcjid) {
+		this.zhrcjid = zhrcjid;
+	}
+
+	public String getZhrcjms() {
+		return this.zhrcjms;
+	}
+
+	public void setZhrcjms(String zhrcjms) {
+		this.zhrcjms = zhrcjms;
 	}
 
 	public String getZhrtxxlid() {
