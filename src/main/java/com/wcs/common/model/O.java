@@ -26,7 +26,8 @@ public class O implements Serializable {
 	@Column(length=20)
 	private String kostl;
 
-	private long parent;
+	@Column(length=20)
+	private String parent;
 
 	@Column(length=20)
 	private String stext;
@@ -78,11 +79,11 @@ public class O implements Serializable {
 		this.kostl = kostl;
 	}
 
-	public long getParent() {
+	public String getParent() {
 		return this.parent;
 	}
 
-	public void setParent(long parent) {
+	public void setParent(String parent) {
 		this.parent = parent;
 	}
 

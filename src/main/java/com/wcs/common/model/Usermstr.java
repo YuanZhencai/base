@@ -1,20 +1,10 @@
 package com.wcs.common.model;
 
-
-
 import java.io.Serializable;
-import java.sql.Date;
+import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.wcs.common.model.Userrole;
 
 
 /**
@@ -29,14 +19,11 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 	@Column(name="AD_ACCOUNT", length=50)
 	private String adAccount;
 
-	@Column(name="BACKGROUND_INFO", length=200)
-	private String backgroundInfo;
-
 	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
-	
-    @Temporal( TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME", nullable=false)
+
+	@Temporal( TemporalType.TIMESTAMP)
+	@Column(name="CREATED_DATETIME")
 	private Date createdDatetime;
 
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
@@ -48,32 +35,23 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 	@Column(name="UPDATED_BY", nullable=false, length=50)
 	private String updatedBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
-	@Column(name="UPDATED_DATETIME", nullable=false)
+	@Temporal( TemporalType.TIMESTAMP)
+	@Column(name="UPDATED_DATETIME")
 	private Date updatedDatetime;
 
 	//bi-directional many-to-one association to Userrole
-	@OneToMany(mappedBy="usermstr", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="usermstr",fetch=FetchType.EAGER)
 	private List<Userrole> userroles;
 
-	
     public Usermstr() {
     }
-
+    
 	public String getAdAccount() {
 		return this.adAccount;
 	}
 
 	public void setAdAccount(String adAccount) {
 		this.adAccount = adAccount;
-	}
-
-	public String getBackgroundInfo() {
-		return this.backgroundInfo;
-	}
-
-	public void setBackgroundInfo(String backgroundInfo) {
-		this.backgroundInfo = backgroundInfo;
 	}
 
 	public String getCreatedBy() {
@@ -131,4 +109,5 @@ public class Usermstr extends com.wcs.base.model.IdEntity implements Serializabl
 	public void setUserroles(List<Userrole> userroles) {
 		this.userroles = userroles;
 	}
+	
 }

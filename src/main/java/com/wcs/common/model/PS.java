@@ -1,5 +1,6 @@
 package com.wcs.common.model;
 
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -20,11 +21,11 @@ public class PS implements Serializable {
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
-	@Column(nullable=false)
-	private long pid;
+	@Column(nullable=false, length=20)
+	private String pid;
 
-	@Column(nullable=false)
-	private long sid;
+	@Column(nullable=false, length=20)
+	private String sid;
 
     public PS() {
     }
@@ -45,19 +46,19 @@ public class PS implements Serializable {
 		this.defunctInd = defunctInd;
 	}
 
-	public long getPid() {
+	public String getPid() {
 		return this.pid;
 	}
 
-	public void setPid(long pid) {
+	public void setPid(String pid) {
 		this.pid = pid;
 	}
 
-	public long getSid() {
+	public String getSid() {
 		return this.sid;
 	}
 
-	public void setSid(long sid) {
+	public void setSid(String sid) {
 		this.sid = sid;
 	}
 

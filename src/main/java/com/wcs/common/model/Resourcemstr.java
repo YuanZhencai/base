@@ -1,62 +1,69 @@
 package com.wcs.common.model;
 
 import java.io.Serializable;
+import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  * The persistent class for the RESOURCEMSTR database table.
  * 
  */
 @Entity
-public class Resourcemstr extends com.wcs.base.model.IdEntity implements
-		Serializable {
+@Table(name="RESOURCEMSTR")
+public class Resourcemstr extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "CREATED_BY")
-	private String createdBy;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CREATED_DATETIME")
-	private Date createdDatetime;
-
-	@Column(name = "DEFUNCT_IND")
-	private String defunctInd;
-
-	private String name;
-
-	@Column(name = "PARENT_ID")
-	private long parentId;
-
-	@Column(name = "SEQ_NO")
-	private String seqNo;
-
-	private String type;
-
-	@Column(name = "UPDATED_BY")
-	private String updatedBy;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "UPDATED_DATETIME")
-	private Date updatedDatetime;
-
-	private String uri;
-
+	@Column(nullable=false, length=50)
 	private String code;
 
-	// bi-directional many-to-one association to Roleresource
-	@OneToMany(mappedBy = "resourcemstr", fetch = FetchType.EAGER)
+	@Column(name="CREATED_BY", nullable=false, length=50)
+	private String createdBy;
+
+	@Temporal( TemporalType.TIMESTAMP)
+	@Column(name="CREATED_DATETIME")
+	private Date createdDatetime;
+
+	@Column(name="DEFUNCT_IND", nullable=false, length=1)
+	private String defunctInd;
+
+	@Column(nullable=false, length=20)
+	private String name;
+
+	@Column(name="PARENT_ID")
+	private long parentId;
+
+	@Column(name="SEQ_NO", length=255)
+	private String seqNo;
+
+	@Column(name="TYPE", nullable=false, length=50)
+	private String type;
+
+	@Column(name="UPDATED_BY", nullable=false, length=50)
+	private String updatedBy;
+
+	@Temporal( TemporalType.TIMESTAMP)
+	@Column(name="UPDATED_DATETIME")
+	private Date updatedDatetime;
+
+	@Column(length=200)
+	private String uri;
+
+	//bi-directional many-to-one association to Roleresource
+	@OneToMany(mappedBy="resourcemstr", fetch=FetchType.EAGER)
 	private List<Roleresource> roleresources;
 
-	public Resourcemstr() {
+    public Resourcemstr() {
+    }
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getCreatedBy() {
@@ -146,27 +153,5 @@ public class Resourcemstr extends com.wcs.base.model.IdEntity implements
 	public void setRoleresources(List<Roleresource> roleresources) {
 		this.roleresources = roleresources;
 	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	/**
-	 * 父亲
-	 */
-	@Transient
-	private Resourcemstr parent;
-
-	public Resourcemstr getParent() {
-		return parent;
-	}
-
-	public void setParent(Resourcemstr parent) {
-		this.parent = parent;
-	}
-
+	
 }

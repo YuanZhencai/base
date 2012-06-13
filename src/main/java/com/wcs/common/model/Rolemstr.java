@@ -3,8 +3,6 @@ package com.wcs.common.model;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import com.wcs.report.model.RptRole;
-
 import java.util.Date;
 import java.util.List;
 
@@ -14,29 +12,33 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="ROLEMSTR")
 public class Rolemstr extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="CREATED_BY")
+	@Column(nullable=false, length=50)
+	private String code;
+
+	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="CREATED_DATETIME")
 	private Date createdDatetime;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
+	@Column(name="DESC", length=50)
 	private String desc;
 
+	@Column(nullable=false, length=20)
 	private String name;
-	
-	private String code;
 
-	@Column(name="UPDATED_BY")
+	@Column(name="UPDATED_BY", nullable=false, length=50)
 	private String updatedBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_DATETIME")
 	private Date updatedDatetime;
 
@@ -48,12 +50,16 @@ public class Rolemstr extends com.wcs.base.model.IdEntity implements Serializabl
 	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
 	private List<Userrole> userroles;
 
-	//bi-directional many-to-one association to RptRole
-//	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
-//	private List<RptRole> rptRoles;
-	
     public Rolemstr() {
     }
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	public String getCreatedBy() {
 		return this.createdBy;
@@ -126,20 +132,5 @@ public class Rolemstr extends com.wcs.base.model.IdEntity implements Serializabl
 	public void setUserroles(List<Userrole> userroles) {
 		this.userroles = userroles;
 	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-//	public List<RptRole> getRptRoles() {
-//		return this.rptRoles;
-//	}
-//
-//	public void setRptRoles(List<RptRole> rptRoles) {
-//		this.rptRoles = rptRoles;
-//	}
+	
 }

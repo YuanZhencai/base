@@ -1,67 +1,56 @@
 package com.wcs.common.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Date;
 
 
 /**
  * The persistent class for the DICT database table.
  * 
  */
-/**
- * <p>Project: tih</p>
- * <p>Description: 字典表</p>
- * 例如：
- * 	CODE_CAT: 'TIH.CODE.ZZDW'
- * 	CODE_KEY: '1'
- * 	CODE_VAL:'集团'
- * 	LANG:'zh_CN'或'zh_SG'或'en_US'
- * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
- * <p>All Rights Reserved.</p>
- * @author <a href="mailto:chengchao@wcs-global.com">ChengChao</a>
- */
 @Entity
+@Table(name="DICT")
 public class Dict extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="CODE_CAT")
+
+	@Column(name="CODE_CAT", nullable=false, length=50)
 	private String codeCat;
 
-	@Column(name="CODE_KEY")
+	@Column(name="CODE_KEY", nullable=false, length=50)
 	private String codeKey;
 
-	@Column(name="CODE_VAL")
+	@Column(name="CODE_VAL", nullable=false, length=100)
 	private String codeVal;
 
-	@Column(name="CREATED_BY")
+	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="CREATED_DATETIME")
 	private Date createdDatetime;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
+	@Column(nullable=false, length=5)
 	private String lang;
 
+	@Column(length=200)
 	private String remarks;
 
 	@Column(name="SEQ_NO")
 	private long seqNo;
 
-	@Column(name="SYS_IND")
+	@Column(name="SYS_IND", nullable=false, length=1)
 	private String sysInd;
 
-	@Column(name="UPDATED_BY")
+	@Column(name="UPDATED_BY", nullable=false, length=50)
 	private String updatedBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_DATETIME")
 	private Date updatedDatetime;
 

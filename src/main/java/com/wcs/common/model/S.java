@@ -1,11 +1,12 @@
 package com.wcs.common.model;
 
+
 import java.io.Serializable;
 import javax.persistence.*;
 
 
 /**
- * The persistent class for the S database table.
+ * The persistent class for the "S" database table.
  * 
  */
 @Entity
@@ -23,8 +24,8 @@ public class S implements Serializable {
 	@Column(length=20)
 	private String kostl;
 
-	@Column(nullable=false)
-	private long oid;
+	@Column(nullable=false, length=20)
+	private String oid;
 
 	@Column(length=20)
 	private String stext;
@@ -62,11 +63,11 @@ public class S implements Serializable {
 		this.kostl = kostl;
 	}
 
-	public long getOid() {
+	public String getOid() {
 		return this.oid;
 	}
 
-	public void setOid(long oid) {
+	public void setOid(String oid) {
 		this.oid = oid;
 	}
 

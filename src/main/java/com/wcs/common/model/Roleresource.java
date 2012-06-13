@@ -2,6 +2,7 @@ package com.wcs.common.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.Date;
 
 
@@ -10,32 +11,35 @@ import java.util.Date;
  * 
  */
 @Entity
+@Table(name="ROLERESOURCE")
 public class Roleresource extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="CREATED_BY")
+	@Column(name="CREATED_BY", length=50)
 	private String createdBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="CREATED_DATETIME")
 	private Date createdDatetime;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name="DEFUNCT_IND", length=1)
 	private String defunctInd;
 
-	@Column(name="UPDATED_BY")
+	@Column(name="UPDATED_BY", length=50)
 	private String updatedBy;
 
-    @Temporal( TemporalType.TIMESTAMP)
+	@Temporal( TemporalType.TIMESTAMP)
 	@Column(name="UPDATED_DATETIME")
 	private Date updatedDatetime;
 
 	//bi-directional many-to-one association to Resourcemstr
-    @ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RESOURCEMSTR_ID")
 	private Resourcemstr resourcemstr;
 
 	//bi-directional many-to-one association to Rolemstr
-    @ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ROLEMSTR_ID")
 	private Rolemstr rolemstr;
 
     public Roleresource() {

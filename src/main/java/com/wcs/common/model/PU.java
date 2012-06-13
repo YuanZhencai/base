@@ -16,7 +16,6 @@ public class PU implements Serializable {
 	@Column(name="DEFUNCT_IND", length=1)
 	private String defunctInd;
 
-	@Id
 	@Column(nullable=false, length=50)
 	private String id;
 
