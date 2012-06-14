@@ -1,17 +1,16 @@
 package com.wcs.common.service;
 
-import com.wcs.common.controller.vo.RoleVo;
-import com.wcs.common.controller.vo.UsermstrFormItemsVo;
-import com.wcs.common.controller.vo.UsermstrVo;
-import com.wcs.common.model.*;
-
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Stateless
 public class ScheduService implements Serializable {
@@ -34,6 +33,9 @@ public class ScheduService implements Serializable {
 
     @PersistenceContext
     public EntityManager em;
+
+    @Inject
+    public SyncJsonService syncService;
 
     @Schedule(second = "", minute = "", hour = "")
     public void SyncTask() {
@@ -60,6 +62,10 @@ public class ScheduService implements Serializable {
             }
             paramMap.put(key,params);
         }
+
+        syncService.setUriMap(uriMap);
+        syncService.setParamMap(paramMap);
+
 
     }
 
