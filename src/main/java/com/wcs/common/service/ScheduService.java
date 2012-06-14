@@ -65,6 +65,7 @@ public class ScheduService implements Serializable {
 
         syncService.setUriMap(uriMap);
         syncService.setParamMap(paramMap);
+        syncService.process();
 
 
     }
