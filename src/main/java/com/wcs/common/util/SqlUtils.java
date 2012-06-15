@@ -16,10 +16,11 @@ import java.util.Set;
 public final class SqlUtils {
 
     /**
-     *  <p>Description: 构建sql插入语句</p>
-     * @param tableName  表名
-     * @param sqlMap   需要插入的字段名，字段值
-     * @return    完整的sql语句
+     * <p>Description: 构建sql插入语句</p>
+     *
+     * @param tableName 表名
+     * @param sqlMap    需要插入的字段名，字段值
+     * @return 完整的sql语句
      */
     public static String buildInsertSql(String tableName, Map<String, String> sqlMap) {
 
@@ -44,7 +45,7 @@ public final class SqlUtils {
             sqlBuff.append(field);
 
             //去掉字段名结尾的逗号
-            sqlBuff.append(length != ++i ? "," :"");
+            sqlBuff.append(length != ++i ? "," : "");
         }
 
         sqlBuff.append(") VALUES (");
@@ -56,7 +57,7 @@ public final class SqlUtils {
             sqlBuff.append("'");
 
             //去掉字段值结尾的逗号
-            sqlBuff.append(length != ++i ? "," :"");
+            sqlBuff.append(length != ++i ? "," : "");
         }
 
         sqlBuff.append(")");

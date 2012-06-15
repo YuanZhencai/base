@@ -44,12 +44,11 @@ public class SyncJsonService implements Serializable {
         SUCCESS, FAULT, VER_EQUAL, SERVER_EXCEPT
     }
 
-    private static final String SERVER_EXCEPT_INFO = "服务端异常，:tableName表同步失败";
 
+    private static final String SERVER_EXCEPT_INFO = "服务端异常，:tableName表同步失败";
     private static final String VER_EQUAL_INFO = "同步成功，:tableName表版本号相同";
     private static final String SUCCESS_INFO = "同步成功，:tableName表更新:count数据";
     private static final String FAULT_INFO = "同步失败，:tableName表插入失败";
-
 
     //key：表名，value：请求地址
     private Map<String, String> uriMap;
@@ -111,7 +110,7 @@ public class SyncJsonService implements Serializable {
      *
      * return
      */
-    public void init() {
+    private void init() {
     }
 
     /**
@@ -120,10 +119,10 @@ public class SyncJsonService implements Serializable {
      * @param uriMap 请求地址,Map<表名，请求地址>
      * @return  版本号,Map<表名,版本号>
      */
-    public Map<String, String> getVersion(Map<String, String> uriMap) {
+    private Map<String, String> getVersion(Map<String, String> uriMap) {
 
         if (null == uriMap || uriMap.isEmpty()) {
-            throw new IllegalArgumentException();
+            return null;
         }
 
         Map<String, String> indMap = new HashMap<String, String>();
@@ -157,7 +156,7 @@ public class SyncJsonService implements Serializable {
      */
     private void addQueryParam(Map<String, String> uriMap, Map<String, Map<String, String>> paramMap) {
 
-        if (null == paramMap || paramMap.isEmpty()) {
+        if (null == uriMap || null == paramMap ||uriMap.isEmpty() || paramMap.isEmpty()) {
             return;
         }
 
@@ -176,6 +175,7 @@ public class SyncJsonService implements Serializable {
                 queryStr.append(paramKey);
                 queryStr.append("=");
                 queryStr.append(paramSet.get(paramKey));
+                queryStr.append("&");
             }
             //将解析的参数追加到uri
             String uri = uriMap.get(uriKey);
@@ -192,6 +192,10 @@ public class SyncJsonService implements Serializable {
      * @return 远程数据。Map<表名,远程返回的结果>
      */
     private Map<String, String> getRemoteData(Map<String, String> uriMap) {
+
+        if(null == uriMap || uriMap.isEmpty()){
+            return null;
+        }
 
         Set<String> keySet = uriMap.keySet();
 
@@ -215,6 +219,10 @@ public class SyncJsonService implements Serializable {
      * @return 同步对象的定义bean
      */
     private List<SyncDefineBean> marshalData(Map<String, String> mdsData) {
+
+        if(null == mdsData || mdsData.isEmpty()){
+            return null;
+        }
 
         List<SyncDefineBean> syncDefineBeanList = new ArrayList<SyncDefineBean>();
         Set<String> keySet = mdsData.keySet();
@@ -253,6 +261,11 @@ public class SyncJsonService implements Serializable {
      * @param syncList  同步对象
      */
     private void updateInd(Map<String, String> indMap, List<SyncDefineBean> syncList) {
+
+        if(null == indMap || null == syncList || indMap.isEmpty() || syncList.isEmpty()){
+            return ;
+        }
+
         Set<String> keySet = indMap.keySet();
 
         for (SyncDefineBean defineBean : syncList) {
@@ -378,7 +391,7 @@ public class SyncJsonService implements Serializable {
      */
     private void log(List<SyncDefineBean> syncList) {
 
-        if (null == syncList) {
+        if (null == syncList || syncList.isEmpty()) {
             return;
         }
 
@@ -427,7 +440,7 @@ public class SyncJsonService implements Serializable {
     private void fillDefinebean(SyncDefineBean defineBean, String jsonStr) {
 
         //如果result存在值，不做处理，表示处理数据失败
-        if (null != defineBean.getResult()) {
+        if (null == defineBean || null != defineBean.getResult() || StringUtils.isEmpty(jsonStr)) {
             return;
         }
 
@@ -480,7 +493,7 @@ public class SyncJsonService implements Serializable {
 
     }
 
-    public void destroy() {
+    private void destroy() {
         uriMap = null;
         paramMap = null;
     }
