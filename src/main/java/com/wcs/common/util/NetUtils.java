@@ -10,34 +10,63 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created with IntelliJ IDEA.
- * User: hujianguang
- * Date: 12-6-8
- * Time: 下午2:46
- * To change this template use File | Settings | File Templates.
+ * <p>Project: BTC</p>
+ * <p>Description: 用于通过http获取数据的工具类</p>
+ * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ *
+ * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
 public class NetUtils {
 
-    //连接最长时间
+    //默认连接最长时间
     private static final int CONNECT_TIMEOUT = 60000;
 
-    //读取流最长时间
+    //默认读取流最长时间
     private static final int READ_TIMEOUT = 30000;
 
 
-    public static final String getURLData(String uriList) {
-        return getURLData(uriList, null, null);
+    /**
+     * <p>Description: 取得网络返回的数据</p>
+     *
+     * @param uri 请求地址
+     * @return 网络返回的数据
+     */
+    public static final String getURLData(String uri) {
+        return getURLData(uri, null, null);
     }
 
-    public static final String getURLDataLimitByConnectTime(String uriList, int connectTimeout) {
-        return getURLData(uriList, connectTimeout, null);
+    /**
+     * <p>Description: 取得网络返回的数据</p>
+     *
+     * @param uri        请求地址
+     * @param connectTimeout 连接超时时间
+     * @return 网络返回的数据
+     */
+    public static final String getURLDataLimitByConnectTime(String uri, int connectTimeout) {
+        return getURLData(uri, connectTimeout, null);
     }
 
-    public static final String getURLDataLimitByReadTime(String uriList, int readTimeout) {
-        return getURLData(uriList, null, readTimeout);
+    /**
+     * <p>Description: 取得网络返回的数据</p>
+     *
+     * @param uri     请求地址
+     * @param readTimeout 读取流超时时间
+     * @return 网络返回的数据
+     */
+    public static final String getURLDataLimitByReadTime(String uri, int readTimeout) {
+        return getURLData(uri, null, readTimeout);
     }
 
 
+    /**
+     * <p>Description: 取得网络返回的数据</p>
+     *
+     * @param uri            请求地址
+     * @param connectTimeout 连接超时时间
+     * @param readTimeout    读取流超时时间
+     * @return 网络返回的数据
+     */
     public static final String getURLData(String uri, Integer connectTimeout, Integer readTimeout) {
 
         if (StringUtils.isEmpty(uri)) {
@@ -54,7 +83,7 @@ public class NetUtils {
             conn.setRequestMethod("GET");
 
             //获取输入流
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+            BufferedReader buffReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             StringBuilder buffStr = new StringBuilder();
             String resultStr = null;
 

@@ -3,7 +3,6 @@ package com.wcs.common.service;
 import com.wcs.common.model.Synclog;
 import com.wcs.common.util.NetUtils;
 import com.wcs.common.util.SqlUtils;
-import org.apache.activemq.transport.stomp.Stomp;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -21,8 +20,16 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.*;
+
+/**
+ * <p>Project: BTC</p>
+ * <p>Description: 负责同步数据，包括获取网络数据，删除数据，插入数据</p>
+ * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ *
+ * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
+ */
 
 @Stateless
 public class SyncJsonService implements Serializable {
@@ -58,7 +65,9 @@ public class SyncJsonService implements Serializable {
     public EntityManager em;
 
     /**
-     * 同步数据的流程控制。
+     * <p>同步数据的流程控制。</p>
+     *
+     * return
      */
     public void process() {
 
@@ -98,16 +107,18 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 在同步流程前初始化环境
+     * <p>在同步流程前初始化环境</p>
+     *
+     * return
      */
     public void init() {
     }
 
     /**
-     * 1.从数据库取得需要同步的表的信息。返回值：key 表名；value 版本号
+     * <p>1.从数据库取得需要同步的表的信息</p>
      *
-     * @param uriMap 请求地址
-     * @return
+     * @param uriMap 请求地址,Map<表名，请求地址>
+     * @return  版本号,Map<表名,版本号>
      */
     public Map<String, String> getVersion(Map<String, String> uriMap) {
 
@@ -137,10 +148,12 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 2.添加请求参数
+     * <p>2.添加请求参数</p>
      *
-     * @param uriMap   请求地址，这里的key值为表名
-     * @param paramMap 需要添加的参数，这里的key值为表名
+     * @param uriMap   请求地址，Map<表名，请求地址>
+     * @param paramMap 需要添加的参数,Map<名，值>
+     *
+     *  return
      */
     private void addQueryParam(Map<String, String> uriMap, Map<String, Map<String, String>> paramMap) {
 
@@ -173,10 +186,10 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 3.从网络获取最新数据
+     * <p>3.从网络获取最新数据</p>
      *
-     * @param uriMap
-     * @return 远程数据。key 表名；value 远程返回的结果
+     * @param uriMap  请求地址，Map<表名，请求地址>
+     * @return 远程数据。Map<表名,远程返回的结果>
      */
     private Map<String, String> getRemoteData(Map<String, String> uriMap) {
 
@@ -196,10 +209,10 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 4.解析取得的数据，将其转成java对象。这里所接收的数据格式为json格式
+     * <p>4.解析取得的数据，将其转成java对象。这里所接收的数据格式为json格式</p>
      *
-     * @param mdsData
-     * @return 同步数据的对象列表,
+     * @param mdsData  json数据
+     * @return 同步对象的定义bean
      */
     private List<SyncDefineBean> marshalData(Map<String, String> mdsData) {
 
@@ -234,10 +247,10 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 5.根据版本判断是否更新表
+     * <p>5.根据版本判断是否更新表</p>
      *
-     * @param indMap
-     * @param syncList
+     * @param indMap   Map<表名，版本号>
+     * @param syncList  同步对象
      */
     private void updateInd(Map<String, String> indMap, List<SyncDefineBean> syncList) {
         Set<String> keySet = indMap.keySet();
@@ -269,9 +282,9 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 更新数据库，这里做事务的原子处理，如果抛出异常，则全部回滚
+     * <p>更新数据库，这里做事务的原子处理，如果抛出异常，则全部回滚</p>
      *
-     * @param syncList
+     * @param syncList   同步对象
      */
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
     private void updateData(List<SyncDefineBean> syncList) {
@@ -319,9 +332,9 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 6.删除数据库中待同步的表记录
+     * <p>6.删除数据库中待同步的表记录</p>
      *
-     * @param syncList
+     * @param syncList   同步对象
      */
     private void updateOldSyncData(Statement stmt, List<SyncDefineBean> syncList) throws Exception {
 
@@ -338,7 +351,7 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 7.更新最新的数据
+     * <p>7.更新最新的数据</p>
      *
      * @param syncList
      */
@@ -359,7 +372,7 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
-     * 8.记录日志
+     * <p>8.记录日志</p>
      *
      * @param syncList
      */
@@ -373,36 +386,30 @@ public class SyncJsonService implements Serializable {
             Synclog synclog = new Synclog();
 
             Long version = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : null;
-            Timestamp currentTime = new Timestamp(this.findCurrentTimestamp().getTime());
             if (defineBean.getResult() == ProcessResult.SUCCESS) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("Y");
                 synclog.setVersion(version);
-                synclog.setSyncDatetime(currentTime);
                 synclog.setRemarks(SUCCESS_INFO.replace(":tableName", defineBean.getTableName()).replace(":count", String.valueOf(defineBean.getSqlList().size())));
             } else if (defineBean.getResult() == ProcessResult.VER_EQUAL) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("Y");
                 synclog.setVersion(version);
-                synclog.setSyncDatetime(currentTime);
                 synclog.setRemarks(VER_EQUAL_INFO.replace(":tableName", defineBean.getTableName()));
             } else if (defineBean.getResult() == ProcessResult.FAULT) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("N");
                 synclog.setVersion(version);
-                synclog.setSyncDatetime(currentTime);
                 synclog.setRemarks(FAULT_INFO.replace(":tableName", defineBean.getTableName()));
             } else if (defineBean.getResult() == ProcessResult.SERVER_EXCEPT) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("N");
                 synclog.setVersion(version);
-                synclog.setSyncDatetime(currentTime);
                 synclog.setRemarks(SERVER_EXCEPT_INFO.replace(":tableName", defineBean.getTableName()));
             } else {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("N");
                 synclog.setVersion(version);
-                synclog.setSyncDatetime(currentTime);
                 synclog.setRemarks(FAULT_INFO.replace(":tableName", defineBean.getTableName()));
             }
 
@@ -411,13 +418,8 @@ public class SyncJsonService implements Serializable {
         }
     }
 
-    public Date findCurrentTimestamp() {
-        Query query = em.createNativeQuery("SELECT current timestamp FROM sysibm.sysdummy1", Timestamp.class);
-        return new Date(Timestamp.valueOf(query.getSingleResult().toString()).getTime());
-    }
-
     /**
-     * 设置插入语句，版本号
+     * <p>设置插入语句，版本号 </p>
      *
      * @param defineBean
      * @param jsonStr
@@ -473,7 +475,7 @@ public class SyncJsonService implements Serializable {
             }
         }
 
-        //设置需要保持的是对象
+        //添加需要保持的是对象
         defineBean.setSqlList(sqlList);
 
     }
@@ -493,6 +495,15 @@ public class SyncJsonService implements Serializable {
 
 }
 
+
+/**
+ * <p>Project: BTC</p>
+ * <p>Description: 存储需要插入数据的状态，如果插入结果，表名</p>
+ * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ *
+ * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
+ */
 class SyncDefineBean {
 
     //表名
