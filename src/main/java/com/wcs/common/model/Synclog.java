@@ -17,7 +17,7 @@ public class Synclog extends com.wcs.base.model.IdEntity implements Serializable
 	@Column(name = "REMARKS",length=200)
 	private String remarks;
 
-	@Column(name="SYNC_DATETIME")
+	@Column(name="SYNC_DATETIME",insertable = false)
 	private Timestamp syncDatetime;
 
 	@Column(name="SYNC_IND", length=1)
