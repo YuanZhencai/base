@@ -20,6 +20,9 @@ public class PS implements Serializable {
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
 
+	@Column(name="MAIN_IND", length=200)
+	private String mainInd;
+
 	@Column(nullable=false, length=20)
 	private String pid;
 
@@ -43,6 +46,14 @@ public class PS implements Serializable {
 
 	public void setDefunctInd(String defunctInd) {
 		this.defunctInd = defunctInd;
+	}
+
+	public String getMainInd() {
+		return this.mainInd;
+	}
+
+	public void setMainInd(String mainInd) {
+		this.mainInd = mainInd;
 	}
 
 	public String getPid() {
