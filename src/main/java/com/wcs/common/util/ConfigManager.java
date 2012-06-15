@@ -5,6 +5,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * <p>Project: BTC</p>
+ * <p>Description: 配置文件读取工具</p>
+ * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ *
+ * @author <a href="mailto:@wcs-global.com">颜松</a>
+ */
 public final class ConfigManager {
 
 	
@@ -47,7 +55,7 @@ public final class ConfigManager {
 		while (itr.hasNext()) {
 			Map.Entry e = (Map.Entry) itr.next();
 			attrId = String.valueOf(e.getValue()).trim();
-			if(String.valueOf(e.getKey()).indexOf(configKeyFilter) >= 0){
+			if(String.valueOf(e.getKey()).indexOf(configKeyFilter) == 0){
 				attrIds.put(String.valueOf(e.getKey()).replace(configKeyFilter, "").trim(), String.valueOf(e.getValue()).trim());
 			}
 		}
