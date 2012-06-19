@@ -2,6 +2,8 @@ package com.wcs.common.service;
 
 import com.wcs.common.util.ConfigManager;
 
+import javax.ejb.EJB;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -40,31 +42,31 @@ public class ScheduService implements Serializable {
     /**
      * <p>Description: 执行同步任务</p>
      */
-    //    @Schedule(second = "", minute = "", hour = "")
+    @Schedule(hour = "1",dayOfWeek="*")
     public void SyncTask() {
 
         //获取请求资源地址和表名
         Map<String, String> uriMap = ConfigManager.getConfigValueMapByFilter(URL_PRE);
 
         //设置请求参数，可选。可以直接在请求地址后缀加上。Map<表名，Map<key,value>>
-        Map<String, Map<String, String>> paramMap = new HashMap<String, Map<String, String>>();
-        Set<String> keySet = new HashSet<String>();
-        for (String key : keySet) {
-
-            Query query = em.createQuery(MAX_VERSION_SQL);
-            query.setParameter("tableName", key);
-            Object version = query.getSingleResult();
-
-            //将请求参数存入paramMap
-            Map<String, String> params = new HashMap<String, String>();
-            if (null != version) {
-                params.put(key, version.toString().trim());
-            }
-            paramMap.put(key, params);
-        }
+//        Map<String, Map<String, String>> paramMap = new HashMap<String, Map<String, String>>();
+//        Set<String> keySet = uriMap.keySet();
+//        for (String key : keySet) {
+//
+//            Query query = em.createQuery(MAX_VERSION_SQL);
+//            query.setParameter("tableName", key);
+//            Object version = query.getSingleResult();
+//
+//            //将请求参数存入paramMap
+//            Map<String, String> params = new HashMap<String, String>();
+//            if (null != version) {
+//                params.put(key, version.toString().trim());
+//            }
+//            paramMap.put(key, params);
+//        }
 
         syncService.setUriMap(uriMap);
-        syncService.setParamMap(paramMap);
+//        syncService.setParamMap(paramMap);
         syncService.process();
 
     }
