@@ -74,6 +74,7 @@ public class NetUtils {
         }
 
         HttpURLConnection conn = null;
+        BufferedReader buffReader = null;
         try {
 
             URL url = new URL(uri);
@@ -83,7 +84,7 @@ public class NetUtils {
             conn.setRequestMethod("GET");
 
             //获取输入流
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            buffReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             StringBuilder buffStr = new StringBuilder();
             String resultStr = null;
 
@@ -98,6 +99,15 @@ public class NetUtils {
         } catch (IOException ioEx) {
             ioEx.printStackTrace();
         } finally {
+
+            if(null != buffReader){
+                try {
+                    buffReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+
             if (null != conn) {
                 conn.disconnect();
             }
