@@ -2,18 +2,15 @@ package com.wcs.common.service;
 
 import com.wcs.common.util.ConfigManager;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
+import javax.ejb.Startup;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>Project: BTC</p>
@@ -24,25 +21,29 @@ import java.util.Set;
  * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
 
+@Startup
 @Stateless
 public class ScheduService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097125L;
-
-    private static final String MAX_VERSION_SQL = "SELECT MAX(s.version) FROM Synclog s WHERE s.syncType=:tableName AND UPPER(s.syncInd)= 'Y'";
 
     private static final String URL_PRE = "url_";
 
     @PersistenceContext
     public EntityManager em;
 
-    @Inject
+    @EJB
     public SyncJsonService syncService;
+
+    @PostConstruct
+    public void init() {
+        this.SyncTask();
+    }
 
     /**
      * <p>Description: 执行同步任务</p>
      */
-    @Schedule(hour = "1",dayOfWeek="*")
+    @Schedule(minute = "30", hour = "*")
     public void SyncTask() {
 
         //获取请求资源地址和表名
