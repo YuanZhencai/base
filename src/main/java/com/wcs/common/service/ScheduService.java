@@ -37,14 +37,14 @@ public class ScheduService implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.SyncTask();
+        this.syncTask();
     }
 
     /**
      * <p>Description: 执行同步任务</p>
      */
     @Schedule(minute = "30", hour = "*")
-    public void SyncTask() {
+    public void syncTask() {
 
         //获取请求资源地址和表名
         Map<String, String> uriMap = ConfigManager.getConfigValueMapByFilter(URL_PRE);
