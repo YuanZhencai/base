@@ -39,16 +39,22 @@ public class SyncJsonService implements Serializable {
     private static final String MAX_VERSION_SQL = "SELECT MAX(s.version) FROM Synclog s WHERE s.syncType=:tableName AND UPPER(s.syncInd)= 'Y'";
     private static final String DEL_SQL = "DELETE FROM ";
 
-    //SUCCESS:同步成功，FAULT:同步失败；VER_EQUAL:版本号相等；SERVER_EXCEPT:网络异常
+    //SUCCESS:同步成功，SUCCESS_EQUAL:版本号相同，DELETE_FAULT:删除失败，INSERT_FAULT:插入失败，DB_VER_NULL:数据库版本号为空，NET_VER_NULL:网络数据版本号为空，VER_NOT_MATCH:版本号不匹配，NET_DATA_NULL:网络数据库为空，FAULT:由于其它表的失败，导致本表失败
     public static enum ProcessResult {
-        SUCCESS, FAULT, VER_EQUAL, SERVER_EXCEPT
+        SUCCESS, SUCCESS_EQUAL, DELETE_FAULT, INSERT_FAULT, DB_VER_NULL, NET_VER_NULL, VER_NOT_MATCH, NET_DATA_NULL, FAULT, JSON_ERROR,
     }
 
+    private static final String SUCCESS_INFO = ":tableName同步成功，更新:count数据";
+    private static final String SUCCESS_EQUAL_INFO = ":tableName同步成功，版本号相同";
+    private static final String DELETE_FAULT_INFO = ":tableName同步失败，插入数据库失败";
+    private static final String INSERT_FAULT_INFO = ":tableName同步失败，插入数据库失败";
+    private static final String DB_VER_NULL_INFO = ":tableName同步失败，数据库版本为空";
+    private static final String NET_VER_NULL_INFO = ":tableName同步失败，网络返回的版本号为空";
+    private static final String VER_NOT_MATCH_INFO = ":tableName同步失败，数据库版本号大于网络返回的版本号";
+    private static final String NET_DATA_NULL_INFO = ":tableName同步失败，网络数据为空";
+    private static final String JSON_ERROR_INFO = ":tableName同步失败，网络数据格式异常";
+    private static final String FAULT_INFO = ":tableName同步失败";
 
-    private static final String SERVER_EXCEPT_INFO = "服务端异常，:tableName表同步失败";
-    private static final String VER_EQUAL_INFO = "同步成功，:tableName表版本号相同";
-    private static final String SUCCESS_INFO = "同步成功，:tableName表更新:count数据";
-    private static final String FAULT_INFO = "同步失败，:tableName表插入失败";
 
     //key：表名，value：请求地址
     private Map<String, String> uriMap;
@@ -65,15 +71,20 @@ public class SyncJsonService implements Serializable {
 
     /**
      * <p>同步数据的流程控制。</p>
-     *
+     * <p/>
      * return
      */
     public void process() {
 
-        //在同步流程前初始化环境
-        this.init();
+        //如果请求地址为空，则不作处理
+        if (null == uriMap || uriMap.isEmpty()) {
+            return;
+        }
 
-        List<SyncDefineBean> syncList = null;
+        //在同步流程前初始化环境
+//        this.init();
+
+        List<SyncDefineBean> syncList = new ArrayList<SyncDefineBean>();
 
         try {
 
@@ -83,19 +94,34 @@ public class SyncJsonService implements Serializable {
             //2.添加请求参数
             this.addQueryParam(uriMap, paramMap);
 
+            //2.建立同步对象及初始化同步的表名
+            this.buildSyncBean(indMap, syncList);
+
             //3.从网络获取最新数据
-            Map<String, String> mdsData = this.getRemoteData(uriMap);
+            Map<String, String> mdsData = this.getRemoteData(uriMap, syncList);
 
             //4.解析取得的数据，将其转成java对象。这里所接收的数据格式为json格式
-            syncList = this.marshalData(mdsData);
+            if (this.isCorrect(syncList)) {
+                this.marshalData(mdsData, syncList);
+            } else {
+                return;
+            }
 
             //5.根据版本判断是否更新表
-            this.updateInd(indMap, syncList);
+            if (this.isCorrect(syncList)) {
+                this.updateInd(indMap, syncList);
+            } else {
+                return;
+            }
 
             //将删除和插入控制在一个事务中
             this.updateData(syncList);
 
         } finally {
+
+            //改变同步对象状态
+            this.changeStatus(syncList);
+
             //8.记录日志
             this.log(syncList);
 
@@ -107,7 +133,7 @@ public class SyncJsonService implements Serializable {
 
     /**
      * <p>在同步流程前初始化环境</p>
-     *
+     * <p/>
      * return
      */
     private void init() {
@@ -117,13 +143,9 @@ public class SyncJsonService implements Serializable {
      * <p>1.从数据库取得需要同步的表的信息</p>
      *
      * @param uriMap 请求地址,Map<表名，请求地址>
-     * @return  版本号,Map<表名,版本号>
+     * @return 版本号, Map<表名,版本号>
      */
     private Map<String, String> getVersion(Map<String, String> uriMap) {
-
-        if (null == uriMap || uriMap.isEmpty()) {
-            return null;
-        }
 
         Map<String, String> indMap = new HashMap<String, String>();
 
@@ -135,11 +157,11 @@ public class SyncJsonService implements Serializable {
             query.setParameter("tableName", key);
             Object version = query.getSingleResult();
 
-            //如果版本号为空，则代表首次连接,直接返回空Map对象
+            //如果版本号为空，则代表首次连接,设置为-1
             if (null != version) {
                 indMap.put(key, version.toString().trim());
             } else {
-                return new HashMap<String, String>();
+                indMap.put(key,"-1");
             }
 
         }
@@ -151,12 +173,12 @@ public class SyncJsonService implements Serializable {
      *
      * @param uriMap   请求地址，Map<表名，请求地址>
      * @param paramMap 需要添加的参数,Map<名，值>
-     *
-     *  return
+     *                 <p/>
+     *                 return
      */
     private void addQueryParam(Map<String, String> uriMap, Map<String, Map<String, String>> paramMap) {
 
-        if (null == uriMap || null == paramMap ||uriMap.isEmpty() || paramMap.isEmpty()) {
+        if (null == uriMap || null == paramMap || uriMap.isEmpty() || paramMap.isEmpty()) {
             return;
         }
 
@@ -186,16 +208,33 @@ public class SyncJsonService implements Serializable {
     }
 
     /**
+     * <p>建立同步对象及初始化需要同步的表名</p>
+     *
+     * @param indMap
+     * @param syncList
+     */
+    private void buildSyncBean(Map<String, String> indMap, List<SyncDefineBean> syncList) {
+
+        if (null == indMap || 0 == indMap.size()) {
+            return;
+        }
+        Set<String> keySet = indMap.keySet();
+
+        for (String key : keySet) {
+            SyncDefineBean defineBean = new SyncDefineBean();
+            defineBean.setTableName(key);
+            syncList.add(defineBean);
+        }
+
+    }
+
+    /**
      * <p>3.从网络获取最新数据</p>
      *
-     * @param uriMap  请求地址，Map<表名，请求地址>
+     * @param uriMap 请求地址，Map<表名，请求地址>
      * @return 远程数据。Map<表名,远程返回的结果>
      */
-    private Map<String, String> getRemoteData(Map<String, String> uriMap) {
-
-        if(null == uriMap || uriMap.isEmpty()){
-            return null;
-        }
+    private Map<String, String> getRemoteData(Map<String, String> uriMap, List<SyncDefineBean> syncList) {
 
         Set<String> keySet = uriMap.keySet();
 
@@ -203,8 +242,14 @@ public class SyncJsonService implements Serializable {
 
         for (String key : keySet) {
             String returnStr = NetUtils.getURLData(uriMap.get(key));
+
+            //如果为空，则设置对应的bean状态为空
             if (StringUtils.isEmpty(returnStr)) {
-                returnStr = "[]";
+                for (SyncDefineBean defineBean : syncList) {
+                    if (defineBean.getTableName().equalsIgnoreCase(key)) {
+                        defineBean.setResult(ProcessResult.NET_DATA_NULL);
+                    }
+                }
             }
             returnMap.put(key, returnStr.trim());
         }
@@ -215,65 +260,99 @@ public class SyncJsonService implements Serializable {
     /**
      * <p>4.解析取得的数据，将其转成java对象。这里所接收的数据格式为json格式</p>
      *
-     * @param mdsData  json数据
+     * @param mdsData json数据
      * @return 同步对象的定义bean
      */
-    private List<SyncDefineBean> marshalData(Map<String, String> mdsData) {
+    private void marshalData(Map<String, String> mdsData, List<SyncDefineBean> syncList) {
 
-        if(null == mdsData || mdsData.isEmpty()){
-            return null;
+        if (null == mdsData || mdsData.isEmpty()) {
+            return;
         }
 
-        List<SyncDefineBean> syncDefineBeanList = new ArrayList<SyncDefineBean>();
-        Set<String> keySet = mdsData.keySet();
+        for (SyncDefineBean defineBean : syncList) {
+            //设置实体对象，版本号
 
+            String jsonStr = mdsData.get(defineBean.getTableName());
 
-        //检查mds数据是否存在[]，如果存在表示返回的数据有误，不做后续更新处理,及所有表都不同步
-        ProcessResult result = null;
-        for (String key : keySet) {
-            if (null == mdsData.get(key) || "[]".equals(mdsData.get(key))) {
-                result = ProcessResult.SERVER_EXCEPT;
+            //如果result存在值，不做处理，表示处理数据失败
+            if (StringUtils.isEmpty(jsonStr)) {
+                defineBean.setResult(ProcessResult.NET_DATA_NULL);
                 break;
             }
-        }
 
-        for (String key : keySet) {
-            SyncDefineBean defineBean = new SyncDefineBean();
-            defineBean.setTableName(key);
-
-            //如果服务器端获取数据为[]，或为空，则同步失败
-            if (result == ProcessResult.SERVER_EXCEPT) {
-                defineBean.setResult(result);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = null;
+            try {
+                jsonNode = mapper.readTree(jsonStr);
+            } catch (IOException e) {
+                defineBean.setResult(ProcessResult.JSON_ERROR);
+                e.printStackTrace();
+                return;
             }
 
-            //设置实体对象，版本号
-            this.fillDefinebean(defineBean, mdsData.get(key));
-            syncDefineBeanList.add(defineBean);
+            Iterator<JsonNode> jsonNodeIterator = jsonNode.iterator();
+
+            //判断是否存在ts值，如果不存在，则返回
+            if (!jsonNodeIterator.hasNext()) {
+                defineBean.setResult(ProcessResult.NET_VER_NULL);
+                continue;
+            } else {
+                //设置ts版本号
+                String ts = jsonNodeIterator.next().get("ts").getTextValue();
+
+                if (StringUtils.isNumeric(ts)) {
+                    defineBean.setInd(ts);
+                } else {
+                    defineBean.setResult(ProcessResult.NET_VER_NULL);
+                }
+            }
+
+            List<String> sqlList = new ArrayList<String>();
+            //如果不存在具体数据，则继续
+            if (!jsonNodeIterator.hasNext()) {
+                defineBean.setSqlList(sqlList);
+                continue;
+            }
+
+            while (jsonNodeIterator.hasNext()) {
+                JsonNode bodyNode = jsonNodeIterator.next();
+                Iterator<String> fieldNameIt = bodyNode.getFieldNames();
+
+                //存储数据库，字段名与字段值
+                Map<String, String> map = new HashMap<String, String>();
+
+                while (fieldNameIt.hasNext()) {
+                    String key = fieldNameIt.next();
+                    String value = bodyNode.get(key).getTextValue();
+                    map.put(key, value);
+                }
+                String sql = SqlUtils.buildInsertSql(defineBean.getTableName(), map);
+                if (!StringUtils.isEmpty(sql)) {
+                    sqlList.add(sql);
+                }
+            }
+
+            //添加需要保持的是对象
+            defineBean.setSqlList(sqlList);
         }
 
-        return syncDefineBeanList;
     }
 
     /**
      * <p>5.根据版本判断是否更新表</p>
      *
      * @param indMap   Map<表名，版本号>
-     * @param syncList  同步对象
+     * @param syncList 同步对象
      */
     private void updateInd(Map<String, String> indMap, List<SyncDefineBean> syncList) {
 
-        if(null == indMap || null == syncList || indMap.isEmpty() || syncList.isEmpty()){
-            return ;
+        if (null == indMap || indMap.isEmpty()) {
+            return;
         }
 
         Set<String> keySet = indMap.keySet();
 
         for (SyncDefineBean defineBean : syncList) {
-            //存在result值，表示流程处理失败，不做后续处理
-            if (null != defineBean.getResult()) {
-                break;
-            }
-
             long ind = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : -1;
 
             for (String key : keySet) {
@@ -281,11 +360,13 @@ public class SyncJsonService implements Serializable {
                 long ver = StringUtils.isNumeric(indMap.get(key)) ? Long.parseLong(indMap.get(key)) : -2;
 
                 if (key.equalsIgnoreCase(defineBean.getTableName())) {
-                    if (ind == ver) {
-                        defineBean.setResult(ProcessResult.VER_EQUAL);
-                        break;
-                    } else if (ind > ver) {
+                    if (ind > ver) {
                         defineBean.setUpdate(true);
+                        break;
+                    } else if (ind == ver) {
+                        break;
+                    } else {
+                        defineBean.setResult(ProcessResult.VER_NOT_MATCH);
                         break;
                     }
                 }
@@ -297,9 +378,9 @@ public class SyncJsonService implements Serializable {
     /**
      * <p>更新数据库，这里做事务的原子处理，如果抛出异常，则全部回滚</p>
      *
-     * @param syncList   同步对象
+     * @param syncList 同步对象
      */
-    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateData(List<SyncDefineBean> syncList) {
         //开启事务
         Connection conn = null;
@@ -313,33 +394,35 @@ public class SyncJsonService implements Serializable {
             stmt = conn.createStatement();
 
             //6.删除数据库中待同步的表记录
-            this.updateOldSyncData(stmt, syncList);
+            if (this.isCorrect(syncList)) {
+                this.updateOldSyncData(stmt, syncList);
+            } else {
+                return;
+            }
 
             //7.插入最新的数据
-            this.updateNewSyncData(stmt, syncList);
+            if (this.isCorrect(syncList)) {
+                this.updateNewSyncData(stmt, syncList);
+            } else {
+                return;
+            }
+
+            conn.commit();
 
         } catch (Exception ex) {
-            updateSuccess = false;
             try {
                 conn.rollback();
             } catch (SQLException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         } finally {
-
-            if (updateSuccess == false) {
-                for (SyncDefineBean defineBean : syncList) {
-                    defineBean.setResult(ProcessResult.FAULT);
-                }
-            }
-
             try {
-                if (null != conn || !conn.isClosed()) {
+                if (null != conn) {
                     stmt = null;
                     conn.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
     }
@@ -347,18 +430,22 @@ public class SyncJsonService implements Serializable {
     /**
      * <p>6.删除数据库中待同步的表记录</p>
      *
-     * @param syncList   同步对象
+     * @param syncList 同步对象
      */
+    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateOldSyncData(Statement stmt, List<SyncDefineBean> syncList) throws Exception {
 
         for (SyncDefineBean defineBean : syncList) {
+            try {
+                //如果result存在值，则表示之前流程处理失败，不做操作
+                if (defineBean.isUpdate() && null == defineBean.getResult()) {
+                    stmt.addBatch(DEL_SQL + defineBean.getTableName());
+                }
+            } catch (Exception ex) {
 
-            //如果result存在值，则表示之前流程处理失败，不做操作
-            if (defineBean.isUpdate() && null == defineBean.getResult()) {
-                stmt.addBatch(DEL_SQL + defineBean.getTableName());
+                defineBean.setResult(ProcessResult.DELETE_FAULT);
+                throw new RuntimeException();
             }
-
-            stmt.executeBatch();
 
         }
     }
@@ -368,20 +455,41 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList
      */
+    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateNewSyncData(Statement stmt, List<SyncDefineBean> syncList) throws Exception {
 
+        boolean hasErr = false;
         for (SyncDefineBean defineBean : syncList) {
 
-            //如果需要更新则，保存对象。result为空，代表之前的流程没有遇到异常情况，保存最终数据
-            if (defineBean.isUpdate() && null == defineBean.getResult()) {
-                defineBean.setResult(ProcessResult.SUCCESS);
+            try {
+                //如果需要更新则，保存对象。result为空，代表之前的流程没有遇到异常情况，保存最终数据
+                if (defineBean.isUpdate() && null == defineBean.getResult()) {
+                    defineBean.setResult(ProcessResult.SUCCESS);
 
-                for (String sql : defineBean.getSqlList()) {
-                    stmt.addBatch(sql);
+                    for (String sql : defineBean.getSqlList()) {
+                        stmt.addBatch(sql);
+                    }
+                } else if (!defineBean.isUpdate() && null == defineBean.getResult()) {      //版本号相同时，状态值为空，但也不会更新
+                    defineBean.setResult(ProcessResult.SUCCESS_EQUAL);
+                }
+                stmt.executeBatch();
+            } catch (Exception ex) {
+                defineBean.setResult(ProcessResult.INSERT_FAULT);
+                hasErr = true;
+                break;
+            }
+        }
+
+        //由于保存到数据库为最后一步，这里的特殊性，如果存在一个保存对象失败，则设置其它对象为空
+        if (hasErr == true) {
+            for (SyncDefineBean defineBean : syncList) {
+                if (ProcessResult.SUCCESS == defineBean.getResult() || ProcessResult.SUCCESS_EQUAL == defineBean.getResult()) {
+                    defineBean.setResult(null);
                 }
             }
-            defineBean.setCount(stmt.executeBatch().length);
+            throw new RuntimeException();
         }
+
     }
 
     /**
@@ -398,28 +506,58 @@ public class SyncJsonService implements Serializable {
         for (SyncDefineBean defineBean : syncList) {
             Synclog synclog = new Synclog();
 
-            Long version = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : null;
+            Long version = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : -1;
             if (defineBean.getResult() == ProcessResult.SUCCESS) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("Y");
                 synclog.setVersion(version);
                 synclog.setRemarks(SUCCESS_INFO.replace(":tableName", defineBean.getTableName()).replace(":count", String.valueOf(defineBean.getSqlList().size())));
-            } else if (defineBean.getResult() == ProcessResult.VER_EQUAL) {
+            } else if (defineBean.getResult() == ProcessResult.SUCCESS_EQUAL) {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("Y");
                 synclog.setVersion(version);
-                synclog.setRemarks(VER_EQUAL_INFO.replace(":tableName", defineBean.getTableName()));
+                synclog.setRemarks(SUCCESS_EQUAL_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.NET_DATA_NULL) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.DELETE_FAULT) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(DELETE_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.INSERT_FAULT) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(INSERT_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.VER_NOT_MATCH) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(VER_NOT_MATCH_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.DB_VER_NULL) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(DB_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.NET_VER_NULL) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.NET_DATA_NULL) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(NET_DATA_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+            } else if (defineBean.getResult() == ProcessResult.JSON_ERROR) {
+                synclog.setSyncType(defineBean.getTableName());
+                synclog.setSyncInd("N");
+                synclog.setVersion(version);
+                synclog.setRemarks(JSON_ERROR_INFO.replace(":tableName", defineBean.getTableName()));
             } else if (defineBean.getResult() == ProcessResult.FAULT) {
-                synclog.setSyncType(defineBean.getTableName());
-                synclog.setSyncInd("N");
-                synclog.setVersion(version);
-                synclog.setRemarks(FAULT_INFO.replace(":tableName", defineBean.getTableName()));
-            } else if (defineBean.getResult() == ProcessResult.SERVER_EXCEPT) {
-                synclog.setSyncType(defineBean.getTableName());
-                synclog.setSyncInd("N");
-                synclog.setVersion(version);
-                synclog.setRemarks(SERVER_EXCEPT_INFO.replace(":tableName", defineBean.getTableName()));
-            } else {
                 synclog.setSyncType(defineBean.getTableName());
                 synclog.setSyncInd("N");
                 synclog.setVersion(version);
@@ -431,72 +569,46 @@ public class SyncJsonService implements Serializable {
         }
     }
 
-    /**
-     * <p>设置插入语句，版本号 </p>
-     *
-     * @param defineBean
-     * @param jsonStr
-     */
-    private void fillDefinebean(SyncDefineBean defineBean, String jsonStr) {
-
-        //如果result存在值，不做处理，表示处理数据失败
-        if (null == defineBean || null != defineBean.getResult() || StringUtils.isEmpty(jsonStr)) {
-            return;
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = mapper.readTree(jsonStr);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        Iterator<JsonNode> jsonNodeIterator = jsonNode.iterator();
-
-        //判断是否存在ts值，如果不存在，则返回
-        if (!jsonNodeIterator.hasNext()) {
-            return;
-        } else {
-            //设置ts版本号
-            defineBean.setInd(jsonNodeIterator.next().get("ts").getTextValue());
-        }
-
-        List<String> sqlList = new ArrayList<String>();
-        //如果不存在具体数据则返回
-        if (!jsonNodeIterator.hasNext()) {
-            defineBean.setSqlList(sqlList);
-            return;
-        }
-
-        while (jsonNodeIterator.hasNext()) {
-            JsonNode bodyNode = jsonNodeIterator.next();
-            Iterator<String> fieldNameIt = bodyNode.getFieldNames();
-
-            //存储数据库，字段名与字段值
-            Map<String, String> map = new HashMap<String, String>();
-
-            while (fieldNameIt.hasNext()) {
-                String key = fieldNameIt.next();
-                String value = bodyNode.get(key).getTextValue();
-                map.put(key, value);
-            }
-            String sql = SqlUtils.buildInsertSql(defineBean.getTableName(), map);
-            if (!StringUtils.isEmpty(sql)) {
-                sqlList.add(sql);
-            }
-        }
-
-        //添加需要保持的是对象
-        defineBean.setSqlList(sqlList);
-
-    }
-
     private void destroy() {
         uriMap = null;
         paramMap = null;
+        this.uriMap = new HashMap<String, String>();
+        this.paramMap = new HashMap<String, Map<String, String>>();
     }
+
+    /**
+     * <p>验证同步对象状态是否正确</p>
+     *
+     * @param syncList
+     * @return
+     */
+    private boolean isCorrect(List<SyncDefineBean> syncList) {
+
+        for (SyncDefineBean defineBean : syncList) {
+            if (null != defineBean.getResult()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <p>如果存在一个对象状态不正确，则将其它对象的状态设置为失败</p>
+     *
+     * @param syncList
+     */
+    private void changeStatus(List<SyncDefineBean> syncList) {
+
+        if (!isCorrect(syncList)) {
+            for (SyncDefineBean defineBean : syncList) {
+                if (null == defineBean.getResult()) {
+                    defineBean.setResult(ProcessResult.FAULT);
+                }
+            }
+        }
+
+    }
+
 
     public void setUriMap(Map<String, String> uriMap) {
         this.uriMap = uriMap;
