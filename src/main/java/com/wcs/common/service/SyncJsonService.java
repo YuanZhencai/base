@@ -442,12 +442,14 @@ public class SyncJsonService implements Serializable {
                     stmt.addBatch(DEL_SQL + defineBean.getTableName());
                 }
             } catch (Exception ex) {
-
                 defineBean.setResult(ProcessResult.DELETE_FAULT);
+                conn.rollback();
                 throw new RuntimeException();
             }
 
         }
+
+        stmt.executeBatch();
     }
 
     /**
@@ -474,6 +476,7 @@ public class SyncJsonService implements Serializable {
                 }
                 stmt.executeBatch();
             } catch (Exception ex) {
+                conn.rollback();
                 defineBean.setResult(ProcessResult.INSERT_FAULT);
                 hasErr = true;
                 break;
