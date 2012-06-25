@@ -269,7 +269,7 @@ public class SyncJsonService implements Serializable {
                     }
                 }
             }
-            returnMap.put(key, returnStr.trim());
+            returnMap.put(key, returnStr);
         }
 
         return returnMap;
