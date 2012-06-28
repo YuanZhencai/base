@@ -26,9 +26,9 @@ public class ScheduService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097125L;
 
-    private static final String URL_PRE = "url_";
+//    private static final String URL_PRE = "url_";
 
-    @Inject
+    @EJB
     public SyncJsonService syncService;
 
     @PostConstruct
