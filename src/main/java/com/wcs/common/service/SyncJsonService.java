@@ -7,6 +7,8 @@ import com.wcs.common.util.SqlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -32,6 +34,8 @@ import java.util.*;
 public class SyncJsonService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097120L;
+
+    private static Logger logger;
 
     private static final String MAX_VERSION_SQL = "SELECT MAX(version) FROM SYNCLOG WHERE SYNC_TYPE=? AND UPPER(SYNC_IND)= 'Y'";
     private static final String DEL_SQL = "DELETE FROM ";
@@ -64,12 +68,18 @@ public class SyncJsonService implements Serializable {
     @EJB
     public JDBCUtils jdbcUtils;
 
+    static {
+        logger = LoggerFactory.getLogger(SyncJsonService.class);
+    }
+
     /**
      * <p>同步数据的流程控制。</p>
      * <p/>
      * return
      */
     public void process() {
+
+        logger.debug("Start:启动同步服务.");
 
         //如果请求地址为空，则不作处理
         if (null == uriMap || uriMap.isEmpty()) {
@@ -124,6 +134,8 @@ public class SyncJsonService implements Serializable {
             this.destroy();
         }
 
+        logger.debug("End:同步服务已停止.");
+
     }
 
     /**
@@ -132,6 +144,8 @@ public class SyncJsonService implements Serializable {
      * return
      */
     private void init() {
+        logger.debug("Start : init.");
+        logger.debug("End : init.");
 
     }
 
@@ -142,6 +156,7 @@ public class SyncJsonService implements Serializable {
      * @return 版本号, Map<表名,版本号>
      */
     private Map<String, String> getVersion(Map<String, String> uriMap) {
+        logger.debug("Start : getVersion.");
 
         Map<String, String> indMap = new HashMap<String, String>();
 
@@ -165,6 +180,7 @@ public class SyncJsonService implements Serializable {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         jdbcUtils.destroy();
+        logger.debug("End : getVersion.");
         return indMap;
     }
 
@@ -178,6 +194,7 @@ public class SyncJsonService implements Serializable {
      */
     private void addQueryParam(Map<String, String> uriMap, Map<String, Map<String, String>> paramMap) {
 
+        logger.debug("Start : addQueryParam.");
         if (null == uriMap || null == paramMap || uriMap.isEmpty() || paramMap.isEmpty()) {
             return;
         }
@@ -204,6 +221,7 @@ public class SyncJsonService implements Serializable {
             uriMap.put(uriKey, (uri.endsWith("?") ? uri : uri + "?") + queryStr.toString().trim());
 
         }
+        logger.debug("End : addQueryParam.");
 
     }
 
@@ -214,6 +232,8 @@ public class SyncJsonService implements Serializable {
      * @param syncList
      */
     private void buildSyncBean(Map<String, String> indMap, List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : buildSyncBean.");
 
         if (null == indMap || 0 == indMap.size()) {
             return;
@@ -226,6 +246,8 @@ public class SyncJsonService implements Serializable {
             syncList.add(defineBean);
         }
 
+        logger.debug("End : buildSyncBean.");
+
     }
 
     /**
@@ -235,6 +257,8 @@ public class SyncJsonService implements Serializable {
      * @return 远程数据。Map<表名,远程返回的结果>
      */
     private Map<String, String> getRemoteData(Map<String, String> uriMap, List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : getRemoteData.");
 
         Set<String> keySet = uriMap.keySet();
 
@@ -248,11 +272,14 @@ public class SyncJsonService implements Serializable {
                 for (SyncDefineBean defineBean : syncList) {
                     if (defineBean.getTableName().equalsIgnoreCase(key)) {
                         defineBean.setResult(ProcessResult.NET_DATA_NULL);
+                        logger.error("Err : " + NET_DATA_NULL_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                     }
                 }
             }
             returnMap.put(key, returnStr);
         }
+
+        logger.debug("End : getRemoteData.");
 
         return returnMap;
     }
@@ -264,6 +291,8 @@ public class SyncJsonService implements Serializable {
      * @return 同步对象的定义bean
      */
     private void marshalData(Map<String, String> mdsData, List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : marshalData.");
 
         if (null == mdsData || mdsData.isEmpty()) {
             return;
@@ -277,6 +306,7 @@ public class SyncJsonService implements Serializable {
             //如果result存在值，不做处理，表示处理数据失败
             if (StringUtils.isEmpty(jsonStr)) {
                 defineBean.setResult(ProcessResult.NET_DATA_NULL);
+                logger.error("Err : " + NET_DATA_NULL_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 break;
             }
 
@@ -286,6 +316,7 @@ public class SyncJsonService implements Serializable {
                 jsonNode = mapper.readTree(jsonStr);
             } catch (IOException e) {
                 defineBean.setResult(ProcessResult.JSON_ERROR);
+                logger.error("Err : " + JSON_ERROR_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 e.printStackTrace();
                 return;
             }
@@ -295,6 +326,7 @@ public class SyncJsonService implements Serializable {
             //判断是否存在ts值，如果不存在，则返回
             if (!jsonNodeIterator.hasNext()) {
                 defineBean.setResult(ProcessResult.NET_VER_NULL);
+                logger.error("Err : " + NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 continue;
             } else {
                 //设置ts版本号
@@ -304,6 +336,7 @@ public class SyncJsonService implements Serializable {
                     defineBean.setInd(ts);
                 } else {
                     defineBean.setResult(ProcessResult.NET_VER_NULL);
+                    logger.error("Err : " + NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 }
             }
 
@@ -336,6 +369,8 @@ public class SyncJsonService implements Serializable {
             defineBean.setSqlList(sqlList);
         }
 
+        logger.debug("End : marshalData.");
+
     }
 
     /**
@@ -345,6 +380,8 @@ public class SyncJsonService implements Serializable {
      * @param syncList 同步对象
      */
     private void updateInd(Map<String, String> indMap, List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : updateInd.");
 
         if (null == indMap || indMap.isEmpty()) {
             return;
@@ -367,11 +404,14 @@ public class SyncJsonService implements Serializable {
                         break;
                     } else {
                         defineBean.setResult(ProcessResult.VER_NOT_MATCH);
+                        logger.error("Err : " + VER_NOT_MATCH_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                         break;
                     }
                 }
             }
         }
+
+        logger.debug("End : updateInd.");
 
     }
 
@@ -383,6 +423,7 @@ public class SyncJsonService implements Serializable {
 //    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateData(List<SyncDefineBean> syncList) {
 
+        logger.debug("Start : updateData.");
         try {
             jdbcUtils.initConn();
 
@@ -406,6 +447,9 @@ public class SyncJsonService implements Serializable {
             ex.printStackTrace();
             jdbcUtils.rollData();
         }
+
+        logger.debug("End : updateData.");
+
     }
 
     /**
@@ -415,6 +459,8 @@ public class SyncJsonService implements Serializable {
      */
 //    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateOldSyncData(List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : updateOldSyncData.");
 
         Statement stmt = jdbcUtils.getStatement();
         for (SyncDefineBean defineBean : syncList) {
@@ -426,6 +472,7 @@ public class SyncJsonService implements Serializable {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 defineBean.setResult(ProcessResult.DELETE_FAULT);
+                logger.error("Err : " + DELETE_FAULT_INFO.replace(":tableName", defineBean.getTableName())  + ".");
             }
 
         }
@@ -436,6 +483,8 @@ public class SyncJsonService implements Serializable {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             throw new RuntimeException();
         }
+
+        logger.debug("End : updateOldSyncData.");
     }
 
     /**
@@ -445,6 +494,8 @@ public class SyncJsonService implements Serializable {
      */
     @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateNewSyncData(List<SyncDefineBean> syncList) {
+
+        logger.debug("Start : updateNewSyncData.");
 
         boolean hasErr = false;
         Statement stmt = jdbcUtils.getStatement();
@@ -461,11 +512,13 @@ public class SyncJsonService implements Serializable {
                     }
                 } else if (!defineBean.isUpdate() && null == defineBean.getResult()) {      //版本号相同时，状态值为空，但也不会更新
                     defineBean.setResult(ProcessResult.SUCCESS_EQUAL);
+                    logger.debug("Info : " + SUCCESS_EQUAL_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 }
                 stmt.executeBatch();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 defineBean.setResult(ProcessResult.INSERT_FAULT);
+                logger.error("Err : " + INSERT_FAULT_INFO.replace(":tableName", defineBean.getTableName())  + ".");
                 hasErr = true;
                 break;
             }
@@ -481,6 +534,8 @@ public class SyncJsonService implements Serializable {
             throw new RuntimeException();
         }
 
+        logger.debug("End : updateNewSyncData.");
+
     }
 
     /**
@@ -491,6 +546,7 @@ public class SyncJsonService implements Serializable {
     @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void log(List<SyncDefineBean> syncList) {
 
+        logger.debug("Start : log.");
         if (null == syncList || syncList.isEmpty()) {
             return;
         }
@@ -568,11 +624,17 @@ public class SyncJsonService implements Serializable {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             jdbcUtils.rollData();
         }
+
+        logger.debug("End : log.");
     }
 
     private void destroy() {
+        logger.debug("Start : destroy.");
+
         this.uriMap = new HashMap<String, String>();
         this.paramMap = new HashMap<String, Map<String, String>>();
+
+        logger.debug("End : destroy.");
 
     }
 
