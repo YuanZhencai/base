@@ -60,7 +60,7 @@ public class SyncJsonService implements Serializable {
 
 
     //key：表名，value：请求地址
-    private Map<String, String> uriMap =ConfigManager.getConfigValueMapByFilter("url_");
+    private Map<String, String> uriMap;
 
     //请求参数：Map<表名，Map<名，值>>
     private Map<String, Map<String, String>> paramMap;
@@ -81,9 +81,9 @@ public class SyncJsonService implements Serializable {
 
         logger.debug("Start:启动同步服务.");
 
-        //如果请求地址为空，则不作处理
+        //如果请求地址为空，则添加Map
         if (null == uriMap || uriMap.isEmpty()) {
-            return;
+            uriMap =ConfigManager.getConfigValueMapByFilter("url_");
         }
 
         //在同步流程前初始化环境
