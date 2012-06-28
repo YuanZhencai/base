@@ -7,10 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
@@ -63,7 +60,7 @@ public class SyncJsonService implements Serializable {
     //请求参数：Map<表名，Map<名，值>>
     private Map<String, Map<String, String>> paramMap;
 
-    @Inject
+    @EJB
     public JDBCUtils jdbcUtils;
 
     /**

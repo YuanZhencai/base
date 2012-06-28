@@ -3,10 +3,7 @@ package com.wcs.common.util;
 import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Resource;
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import javax.ejb.*;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +18,9 @@ import java.sql.Statement;
  *
  * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
-public final class JDBCUtils {
+@Singleton
+@TransactionAttribute(value = TransactionAttributeType.NEVER)
+public class JDBCUtils {
 
     @Resource(name = "BTCBASE")
     private DataSource dataSource;
