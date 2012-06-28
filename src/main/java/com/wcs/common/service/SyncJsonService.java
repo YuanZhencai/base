@@ -1,5 +1,6 @@
 package com.wcs.common.service;
 
+import com.wcs.common.util.ConfigManager;
 import com.wcs.common.util.JDBCUtils;
 import com.wcs.common.util.NetUtils;
 import com.wcs.common.util.SqlUtils;
@@ -55,7 +56,7 @@ public class SyncJsonService implements Serializable {
 
 
     //key：表名，value：请求地址
-    private Map<String, String> uriMap;
+    private Map<String, String> uriMap =ConfigManager.getConfigValueMapByFilter("url_");
 
     //请求参数：Map<表名，Map<名，值>>
     private Map<String, Map<String, String>> paramMap;

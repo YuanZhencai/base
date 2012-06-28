@@ -3,10 +3,8 @@ package com.wcs.common.service;
 import com.wcs.common.util.ConfigManager;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.Schedule;
-import javax.ejb.Startup;
-import javax.ejb.Stateless;
+import javax.ejb.*;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
@@ -22,17 +20,15 @@ import java.util.Map;
  */
 
 @Startup
-@Stateless
+@Singleton
+@TransactionAttribute(value = TransactionAttributeType.NEVER)
 public class ScheduService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097125L;
 
     private static final String URL_PRE = "url_";
 
-    @PersistenceContext
-    public EntityManager em;
-
-    @EJB
+    @Inject
     public SyncJsonService syncService;
 
     @PostConstruct
@@ -47,7 +43,7 @@ public class ScheduService implements Serializable {
     public void syncTask() {
 
         //获取请求资源地址和表名
-        Map<String, String> uriMap = ConfigManager.getConfigValueMapByFilter(URL_PRE);
+//        Map<String, String> uriMap = ConfigManager.getConfigValueMapByFilter(URL_PRE);
 
         //设置请求参数，可选。可以直接在请求地址后缀加上。Map<表名，Map<key,value>>
 //        Map<String, Map<String, String>> paramMap = new HashMap<String, Map<String, String>>();
@@ -66,7 +62,7 @@ public class ScheduService implements Serializable {
 //            paramMap.put(key, params);
 //        }
 
-        syncService.setUriMap(uriMap);
+//        syncService.setUriMap(uriMap);
 //        syncService.setParamMap(paramMap);
         syncService.process();
 
