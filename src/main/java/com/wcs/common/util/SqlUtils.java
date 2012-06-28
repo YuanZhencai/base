@@ -53,7 +53,7 @@ public final class SqlUtils {
         i = 0;
         for (String field : fieldSet) {
             sqlBuff.append("'");
-            sqlBuff.append(sqlMap.get(field));
+            sqlBuff.append(sqlMap.get(field).trim());
             sqlBuff.append("'");
 
             //去掉字段值结尾的逗号

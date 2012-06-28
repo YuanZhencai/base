@@ -1,23 +1,23 @@
 package com.wcs.common.service;
 
-import com.wcs.common.model.Synclog;
+import com.wcs.common.util.JDBCUtils;
 import com.wcs.common.util.NetUtils;
 import com.wcs.common.util.SqlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.annotation.Resource;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.sql.DataSource;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -30,11 +30,12 @@ import java.util.*;
  */
 
 @Stateless
+@TransactionAttribute(value = TransactionAttributeType.NEVER)
 public class SyncJsonService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097120L;
 
-    private static final String MAX_VERSION_SQL = "SELECT MAX(version) FROM SYNCLOG WHERE SYNC_TYPE=':tableName' AND UPPER(SYNC_IND)= 'Y'";
+    private static final String MAX_VERSION_SQL = "SELECT MAX(version) FROM SYNCLOG WHERE SYNC_TYPE=? AND UPPER(SYNC_IND)= 'Y'";
     private static final String DEL_SQL = "DELETE FROM ";
 
     private static final String INSERT_LOG_SQL = "INSERT INTO SYNCLOG(ID,VERSION,SYNC_IND,SYNC_TYPE,REMARKS) VALUES(nextval for SRC,?,?,?,?)";
@@ -62,15 +63,8 @@ public class SyncJsonService implements Serializable {
     //请求参数：Map<表名，Map<名，值>>
     private Map<String, Map<String, String>> paramMap;
 
-    //获取数据源
-    @Resource(name = "BTCBASE")
-    private DataSource dataSource;
-
-    private Connection conn;
-
-    private Statement stmt;
-
-    private PreparedStatement ps;
+    @Inject
+    public JDBCUtils jdbcUtils;
 
     /**
      * <p>同步数据的流程控制。</p>
@@ -140,18 +134,6 @@ public class SyncJsonService implements Serializable {
      * return
      */
     private void init() {
-        //开启事务
-        conn = null;
-        stmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
-            stmt = conn.createStatement();
-            ps = conn.prepareStatement(INSERT_LOG_SQL);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
 
     }
 
@@ -168,21 +150,23 @@ public class SyncJsonService implements Serializable {
         Set<String> keySet = uriMap.keySet();
 
         try {
+            PreparedStatement ps = jdbcUtils.getPreparedStatement(MAX_VERSION_SQL);
             for (String key : keySet) {
 
-                ResultSet rs = stmt.executeQuery(MAX_VERSION_SQL.replace(":tableName", key.trim()));
+                ps.setString(1, key.trim());
+
+                ResultSet rs = ps.executeQuery();
 
                 //如果版本号为空，则代表首次连接,设置为-1
                 if (rs.next()) {
                     indMap.put(key, String.valueOf(rs.getLong(1)));
-                } else {
-                    indMap.put(key, "-1");
                 }
-
             }
+
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        jdbcUtils.destroy();
         return indMap;
     }
 
@@ -398,10 +382,12 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList 同步对象
      */
-    @TransactionAttribute(value = TransactionAttributeType.NEVER)
+//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateData(List<SyncDefineBean> syncList) {
 
         try {
+            jdbcUtils.initConn();
+
             //6.删除数据库中待同步的表记录
             if (this.isCorrect(syncList)) {
                 this.updateOldSyncData(syncList);
@@ -416,14 +402,11 @@ public class SyncJsonService implements Serializable {
                 return;
             }
 
-            conn.commit();
+            jdbcUtils.destroy();
 
         } catch (Exception ex) {
-            try {
-                conn.rollback();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ex.printStackTrace();
+            jdbcUtils.rollData();
         }
     }
 
@@ -432,9 +415,10 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList 同步对象
      */
-    @TransactionAttribute(value = TransactionAttributeType.NEVER)
-    private void updateOldSyncData(List<SyncDefineBean> syncList) throws Exception {
+//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
+    private void updateOldSyncData(List<SyncDefineBean> syncList) {
 
+        Statement stmt = jdbcUtils.getStatement();
         for (SyncDefineBean defineBean : syncList) {
             try {
                 //如果result存在值，则表示之前流程处理失败，不做操作
@@ -442,14 +426,18 @@ public class SyncJsonService implements Serializable {
                     stmt.addBatch(DEL_SQL + defineBean.getTableName());
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
                 defineBean.setResult(ProcessResult.DELETE_FAULT);
-                conn.rollback();
-                throw new RuntimeException();
             }
 
         }
 
-        stmt.executeBatch();
+        try {
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -458,9 +446,11 @@ public class SyncJsonService implements Serializable {
      * @param syncList
      */
     @TransactionAttribute(value = TransactionAttributeType.NEVER)
-    private void updateNewSyncData(List<SyncDefineBean> syncList) throws Exception {
+    private void updateNewSyncData(List<SyncDefineBean> syncList) {
 
         boolean hasErr = false;
+        Statement stmt = jdbcUtils.getStatement();
+
         for (SyncDefineBean defineBean : syncList) {
 
             try {
@@ -476,7 +466,7 @@ public class SyncJsonService implements Serializable {
                 }
                 stmt.executeBatch();
             } catch (Exception ex) {
-                conn.rollback();
+                ex.printStackTrace();
                 defineBean.setResult(ProcessResult.INSERT_FAULT);
                 hasErr = true;
                 break;
@@ -508,92 +498,84 @@ public class SyncJsonService implements Serializable {
         }
 
         try {
+            PreparedStatement ps = jdbcUtils.getPreparedStatement(INSERT_LOG_SQL);
             for (SyncDefineBean defineBean : syncList) {
                 Long version = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : -1;
 
                 if (defineBean.getResult() == ProcessResult.SUCCESS) {
 
                     ps.setLong(1, version);
-                    ps.setString(2,"Y");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,SUCCESS_INFO.replace(":tableName", defineBean.getTableName()).replace(":count", String.valueOf(defineBean.getSqlList().size())));
+                    ps.setString(2, "Y");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, SUCCESS_INFO.replace(":tableName", defineBean.getTableName()).replace(":count", String.valueOf(defineBean.getSqlList().size())));
 
                 } else if (defineBean.getResult() == ProcessResult.SUCCESS_EQUAL) {
                     ps.setLong(1, version);
-                    ps.setString(2,"Y");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,SUCCESS_EQUAL_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "Y");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, SUCCESS_EQUAL_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.NET_DATA_NULL) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.DELETE_FAULT) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,DELETE_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, DELETE_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.INSERT_FAULT) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,INSERT_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, INSERT_FAULT_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.VER_NOT_MATCH) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,VER_NOT_MATCH_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, VER_NOT_MATCH_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.DB_VER_NULL) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,DB_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, DB_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.NET_VER_NULL) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, NET_VER_NULL_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.NET_DATA_NULL) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,NET_DATA_NULL_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, NET_DATA_NULL_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.JSON_ERROR) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,JSON_ERROR_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, JSON_ERROR_INFO.replace(":tableName", defineBean.getTableName()));
                 } else if (defineBean.getResult() == ProcessResult.FAULT) {
                     ps.setLong(1, version);
-                    ps.setString(2,"N");
-                    ps.setString(3,defineBean.getTableName());
-                    ps.setString(4,FAULT_INFO.replace(":tableName", defineBean.getTableName()));
+                    ps.setString(2, "N");
+                    ps.setString(3, defineBean.getTableName());
+                    ps.setString(4, FAULT_INFO.replace(":tableName", defineBean.getTableName()));
                 }
 
                 ps.addBatch();
 
             }
             ps.executeBatch();
-            conn.commit();
+            jdbcUtils.destroy();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            jdbcUtils.rollData();
         }
     }
 
     private void destroy() {
-        uriMap = null;
-        paramMap = null;
         this.uriMap = new HashMap<String, String>();
         this.paramMap = new HashMap<String, Map<String, String>>();
-        try {
-            if (null != conn) {
-                stmt = null;
-                ps = null;
-                conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
