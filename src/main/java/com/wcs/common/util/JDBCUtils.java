@@ -19,7 +19,7 @@ import java.sql.Statement;
  * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
 @Singleton
-@TransactionAttribute(value = TransactionAttributeType.NEVER)
+//@TransactionAttribute(value = TransactionAttributeType.NEVER)
 public class JDBCUtils {
 
     @Resource(name = "BTCBASE")
@@ -30,7 +30,6 @@ public class JDBCUtils {
     private Statement stmt;
 
     private PreparedStatement ps;
-
 
     public void initConn(){
         try {
