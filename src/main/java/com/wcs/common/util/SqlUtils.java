@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>Project: BTC</p>
@@ -53,7 +55,7 @@ public final class SqlUtils {
         i = 0;
         for (String field : fieldSet) {
             sqlBuff.append("'");
-            sqlBuff.append(sqlMap.get(field).trim());
+            sqlBuff.append(filterStr(sqlMap.get(field)));
             sqlBuff.append("'");
 
             //去掉字段值结尾的逗号
@@ -64,6 +66,21 @@ public final class SqlUtils {
 
         return sqlBuff.toString();
 
+    }
+
+    /**
+     * 过滤数据，将空字符，特殊字符转义
+     * @param srcStr
+     * @return
+     */
+    private static String filterStr(String srcStr){
+
+        if(StringUtils.isBlank(srcStr)){
+            return "";
+        }
+
+        //过滤空字符
+        return Pattern.compile("\\s").matcher(srcStr).replaceAll("");
     }
 
 }
