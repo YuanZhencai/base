@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Startup
 @Singleton
-@TransactionAttribute(value = TransactionAttributeType.NEVER)
+//@TransactionAttribute(value = TransactionAttributeType.NEVER)
 public class ScheduService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097125L;
