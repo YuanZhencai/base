@@ -492,7 +492,7 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList
      */
-    @TransactionAttribute(value = TransactionAttributeType.NEVER)
+//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateNewSyncData(List<SyncDefineBean> syncList) {
 
         logger.debug("Start : updateNewSyncData.");
