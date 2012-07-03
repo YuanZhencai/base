@@ -19,9 +19,11 @@ import java.util.Map;
  * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
 
-@Startup
-@Singleton
-//@TransactionAttribute(value = TransactionAttributeType.NEVER)
+//@Startup
+//@Singleton
+//@TransactionAttribute(value = TransactionAttributeType.)
+@Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
 public class ScheduService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097125L;
@@ -33,7 +35,7 @@ public class ScheduService implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.syncTask();
+//        this.syncTask();
     }
 
     /**

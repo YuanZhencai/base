@@ -20,6 +20,7 @@ import java.sql.Statement;
  */
 @Singleton
 //@TransactionAttribute(value = TransactionAttributeType.NEVER)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class JDBCUtils {
 
     @Resource(name = "BTCBASE")
@@ -37,14 +38,14 @@ public class JDBCUtils {
             conn.setAutoCommit(false);
             stmt = conn.createStatement();
         } catch (SQLException e) {
-            this.destroy();
+            this.destroyConn();
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
-    public void destroy(){
+    public void destroyConn(){
         try {
-            if (null != conn) {
+            if (null != conn || !this.conn.isClosed()) {
                 conn.commit();
                 stmt = null;
                 ps = null;
@@ -63,13 +64,19 @@ public class JDBCUtils {
      */
     public PreparedStatement getPreparedStatement(String sql) {
 
+        System.out.println(null == this.dataSource ? "aguang...........................true" : "aguang.....................false");
+
         //如果sql为空对象，则返回不做后续处理
         if(StringUtils.isBlank(sql)){
             return null;
         }
 
-        if(null == this.conn ){
-            this.initConn();
+        try {
+            if(null == this.conn || this.conn.isClosed() ){
+                this.initConn();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         try {
@@ -88,8 +95,15 @@ public class JDBCUtils {
     }
 
     public Statement getStatement() {
-        if(null == this.conn){
-            this.initConn();
+
+        System.out.println(null == this.dataSource ? "aguang...........................true" : "aguang.....................false");
+
+        try {
+            if(null == this.conn || this.conn.isClosed()){
+                this.initConn();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         return stmt;

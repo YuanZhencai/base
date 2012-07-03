@@ -1,7 +1,6 @@
 package com.wcs.common.service;
 
 import com.wcs.common.util.ConfigManager;
-import com.wcs.common.util.JDBCUtils;
 import com.wcs.common.util.NetUtils;
 import com.wcs.common.util.SqlUtils;
 import org.apache.commons.lang.StringUtils;
@@ -10,14 +9,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -30,7 +28,8 @@ import java.util.*;
  */
 
 @Stateless
-@TransactionAttribute(value = TransactionAttributeType.NEVER)
+//@TransactionAttribute(value = TransactionAttributeType.NEVER)
+@TransactionManagement(TransactionManagementType.BEAN)
 public class SyncJsonService implements Serializable {
 
     private static final long serialVersionUID = -4531023608569097120L;
@@ -64,9 +63,6 @@ public class SyncJsonService implements Serializable {
 
     //请求参数：Map<表名，Map<名，值>>
     private Map<String, Map<String, String>> paramMap;
-
-    @EJB
-    public JDBCUtils jdbcUtils;
 
     static {
         logger = LoggerFactory.getLogger(SyncJsonService.class);
@@ -163,7 +159,7 @@ public class SyncJsonService implements Serializable {
         Set<String> keySet = uriMap.keySet();
 
         try {
-            PreparedStatement ps = jdbcUtils.getPreparedStatement(MAX_VERSION_SQL);
+            PreparedStatement ps = this.getPreparedStatement(MAX_VERSION_SQL);
             for (String key : keySet) {
 
                 ps.setString(1, key.trim());
@@ -179,7 +175,7 @@ public class SyncJsonService implements Serializable {
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        jdbcUtils.destroy();
+        this.destroyConn();
         logger.debug("End : getVersion.");
         return indMap;
     }
@@ -425,7 +421,7 @@ public class SyncJsonService implements Serializable {
 
         logger.debug("Start : updateData.");
         try {
-            jdbcUtils.initConn();
+            this.initConn();
 
             //6.删除数据库中待同步的表记录
             if (this.isCorrect(syncList)) {
@@ -441,11 +437,11 @@ public class SyncJsonService implements Serializable {
                 return;
             }
 
-            jdbcUtils.destroy();
+            this.destroyConn();
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            jdbcUtils.rollData();
+            this.rollData();
         }
 
         logger.debug("End : updateData.");
@@ -462,7 +458,7 @@ public class SyncJsonService implements Serializable {
 
         logger.debug("Start : updateOldSyncData.");
 
-        Statement stmt = jdbcUtils.getStatement();
+        Statement stmt = this.getStatement();
         for (SyncDefineBean defineBean : syncList) {
             try {
                 //如果result存在值，则表示之前流程处理失败，不做操作
@@ -498,7 +494,7 @@ public class SyncJsonService implements Serializable {
         logger.debug("Start : updateNewSyncData.");
 
         boolean hasErr = false;
-        Statement stmt = jdbcUtils.getStatement();
+        Statement stmt = this.getStatement();
 
         for (SyncDefineBean defineBean : syncList) {
 
@@ -552,7 +548,7 @@ public class SyncJsonService implements Serializable {
         }
 
         try {
-            PreparedStatement ps = jdbcUtils.getPreparedStatement(INSERT_LOG_SQL);
+            PreparedStatement ps = this.getPreparedStatement(INSERT_LOG_SQL);
             for (SyncDefineBean defineBean : syncList) {
                 Long version = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : -1;
 
@@ -619,10 +615,10 @@ public class SyncJsonService implements Serializable {
 
             }
             ps.executeBatch();
-            jdbcUtils.destroy();
+            this.destroyConn();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            jdbcUtils.rollData();
+            this.rollData();
         }
 
         logger.debug("End : log.");
@@ -679,6 +675,106 @@ public class SyncJsonService implements Serializable {
     public void setParamMap(Map<String, Map<String, String>> paramMap) {
         this.paramMap = paramMap;
     }
+
+    @Resource(name = "BTCBASE")
+    private DataSource dataSource;
+
+    private Connection conn;
+
+    private Statement stmt;
+
+    private PreparedStatement ps;
+
+    public void initConn(){
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+        } catch (SQLException e) {
+            this.destroyConn();
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    public void destroyConn(){
+        try {
+            if (null != conn || !this.conn.isClosed()) {
+                conn.commit();
+                stmt = null;
+                ps = null;
+                conn.close();
+                conn = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * <p></p>
+     * @param sql
+     * @return
+     */
+    public PreparedStatement getPreparedStatement(String sql) {
+
+        System.out.println(null == this.dataSource ? "aguang...........................true" : "aguang.....................false");
+
+        //如果sql为空对象，则返回不做后续处理
+        if(StringUtils.isBlank(sql)){
+            return null;
+        }
+
+        try {
+            if(null == this.conn || this.conn.isClosed() ){
+                this.initConn();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        try {
+
+            if(null != ps){
+                ps.clearParameters();
+                ps.clearBatch();
+            }
+
+            ps = conn.prepareStatement(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return ps;
+    }
+
+    public Statement getStatement() {
+
+        System.out.println(null == this.dataSource ? "aguang...........................true" : "aguang.....................false");
+
+        try {
+            if(null == this.conn || this.conn.isClosed()){
+                this.initConn();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return stmt;
+    }
+
+    /**
+     * <p>回滚当前数据</p>
+     */
+    public void rollData(){
+        if(null != this.conn){
+            try {
+                this.conn.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+    }
+
 
 }
 
