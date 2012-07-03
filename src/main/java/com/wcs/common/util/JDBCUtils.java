@@ -18,12 +18,12 @@ import java.sql.Statement;
  *
  * @author <a href="mailto:hujianguang@wcs-global.com">胡建光</a>
  */
-@Singleton
+//@Singleton
 //@TransactionAttribute(value = TransactionAttributeType.NEVER)
-@TransactionManagement(TransactionManagementType.BEAN)
+//@TransactionManagement(TransactionManagementType.BEAN)
 public class JDBCUtils {
 
-    @Resource(name = "BTCBASE")
+//    @Resource(name = "BTCBASE")
     private DataSource dataSource;
 
     private Connection conn;

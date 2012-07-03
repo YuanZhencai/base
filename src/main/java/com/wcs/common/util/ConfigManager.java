@@ -43,16 +43,15 @@ public final class ConfigManager {
         try {
             configProps.load(ConfigManager.class.getClassLoader().getResourceAsStream(CONFIG_FILE));
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public static Map<String, String> getConfigValueMapByFilter(String configKeyFilter) {
         Map<String, String> attrIds = new HashMap<String, String>();
-        String attrId = "";
         Iterator itr = configProps.entrySet().iterator();
         while (itr.hasNext()) {
             Map.Entry e = (Map.Entry) itr.next();
-            attrId = String.valueOf(e.getValue()).trim();
             if (String.valueOf(e.getKey()).indexOf(configKeyFilter) == 0) {
                 attrIds.put(String.valueOf(e.getKey()).replace(configKeyFilter, "").trim(), replaceRealValue(String.valueOf(e.getValue()).trim()));
             }
