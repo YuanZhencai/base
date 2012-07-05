@@ -332,9 +332,10 @@ public class SyncJsonService implements Serializable {
                 continue;
             } else {
                 //设置ts版本号
-                String ts = jsonNodeIterator.next().get("ts").getTextValue();
+                JsonNode tsNode = jsonNodeIterator.next();
+                String ts = tsNode.has("ts") ? tsNode.get("ts").getTextValue() : "";
 
-                if (StringUtils.isNumeric(ts)) {
+                if (!StringUtils.isBlank(ts) && StringUtils.isNumeric(ts)) {
                     defineBean.setInd(ts);
                 } else {
                     defineBean.setResult(ProcessResult.NET_VER_NULL);
