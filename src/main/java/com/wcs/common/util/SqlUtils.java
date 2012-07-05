@@ -80,7 +80,8 @@ public final class SqlUtils {
         }
 
         //过滤空字符
-        return Pattern.compile("\\s").matcher(srcStr).replaceAll("");
+//        return Pattern.compile("\\s").matcher(srcStr).replaceAll("");
+        return Pattern.compile("\r|\n|(\r\n)").matcher(srcStr).replaceAll("");
     }
 
 }
