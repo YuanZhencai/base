@@ -46,15 +46,15 @@ public class SyncJsonService implements Serializable {
         SUCCESS, SUCCESS_EQUAL, DELETE_FAULT, INSERT_FAULT, DB_VER_NULL, NET_VER_NULL, VER_NOT_MATCH, NET_DATA_NULL, FAULT, JSON_ERROR,
     }
 
-    private static final String SUCCESS_INFO = ":tableName同步成功，更新:count数据";
+    private static final String SUCCESS_INFO = ":tableName同步成功，更新:count条数据";
     private static final String SUCCESS_EQUAL_INFO = ":tableName同步成功，版本号相同";
-    private static final String DELETE_FAULT_INFO = ":tableName同步失败，插入数据库失败";
+    private static final String DELETE_FAULT_INFO = ":tableName同步失败，删除数据库失败";
     private static final String INSERT_FAULT_INFO = ":tableName同步失败，插入数据库失败";
     private static final String DB_VER_NULL_INFO = ":tableName同步失败，数据库版本为空";
     private static final String NET_VER_NULL_INFO = ":tableName同步失败，网络返回的版本号为空";
     private static final String VER_NOT_MATCH_INFO = ":tableName同步失败，数据库版本号大于网络返回的版本号";
     private static final String NET_DATA_NULL_INFO = ":tableName同步失败，网络数据为空";
-    private static final String JSON_ERROR_INFO = ":tableName同步失败，网络数据格式异常";
+    private static final String JSON_ERROR_INFO = ":tableName同步失败，网络返回的数据格式异常";
     private static final String FAULT_INFO = ":tableName同步失败";
 
 
@@ -174,7 +174,8 @@ public class SyncJsonService implements Serializable {
 
                 //如果版本号为空，则代表首次连接,设置为-1
                 if (rs.next()) {
-                    indMap.put(key, String.valueOf(rs.getLong(1)));
+                    String ver = String.valueOf(rs.getLong(1));
+                    indMap.put(key, "0".equals(ver)?"-1":ver);
                 }
             }
 
@@ -393,11 +394,11 @@ public class SyncJsonService implements Serializable {
         Set<String> keySet = indMap.keySet();
 
         for (SyncDefineBean defineBean : syncList) {
-            long ind = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : -1;
+            long ind = StringUtils.isNumeric(defineBean.getInd()) ? Long.parseLong(defineBean.getInd()) : 0;
 
             for (String key : keySet) {
 
-                long ver = StringUtils.isNumeric(indMap.get(key)) ? Long.parseLong(indMap.get(key)) : -2;
+                long ver = StringUtils.isNumeric(indMap.get(key)) ? Long.parseLong(indMap.get(key)) : -1;
 
                 if (key.equalsIgnoreCase(defineBean.getTableName())) {
                     if (ind > ver) {
