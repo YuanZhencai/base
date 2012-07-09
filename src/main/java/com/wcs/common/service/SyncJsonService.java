@@ -37,6 +37,7 @@ public class SyncJsonService implements Serializable {
     private static Logger logger;
 
     private static final String MAX_VERSION_SQL = "SELECT MAX(version) FROM SYNCLOG WHERE SYNC_TYPE=? AND UPPER(SYNC_IND)= 'Y'";
+    private static final String COUNT_VERSION_SQL = "SELECT COUNT(*) FROM SYNCLOG WHERE SYNC_TYPE=':tableName' AND UPPER(SYNC_IND)= 'Y'";
     private static final String DEL_SQL = "DELETE FROM ";
 
     private static final String INSERT_LOG_SQL = "INSERT INTO SYNCLOG(ID,VERSION,SYNC_IND,SYNC_TYPE,REMARKS) VALUES(nextval for SRC,?,?,?,?)";
@@ -166,6 +167,7 @@ public class SyncJsonService implements Serializable {
 
         try {
             PreparedStatement ps = this.getPreparedStatement(MAX_VERSION_SQL);
+            Statement stmt = this.getStatement();
             for (String key : keySet) {
 
                 ps.setString(1, key.trim());
@@ -175,7 +177,16 @@ public class SyncJsonService implements Serializable {
                 //如果版本号为空，则代表首次连接,设置为-1
                 if (rs.next()) {
                     String ver = String.valueOf(rs.getLong(1));
-                    indMap.put(key, "0".equals(ver)?"-1":ver);
+
+                    //计算当前表是否存在日志,如果不存在则设置版本号为-1，否则使用默认值
+                    ResultSet count = stmt.executeQuery(COUNT_VERSION_SQL.replace(":tableName",key));
+                    count.next();
+
+                    if(count.getInt(1) > 0 ){
+                        indMap.put(key, ver);
+                    }else{
+                        indMap.put(key, "-1");
+                    }
                 }
             }
 
