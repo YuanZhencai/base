@@ -1,6 +1,8 @@
-package com.wcs.common.service;
+package test.uat.service;
 
-import com.wcs.common.DBHandler;
+import test.uat.DBHandler;
+
+import com.wcs.common.service.SyncJsonService;
 import com.wcs.common.util.NetUtils;
 import org.junit.Ignore;
 import org.junit.Test;

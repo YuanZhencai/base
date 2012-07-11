@@ -1,7 +1,9 @@
-package com.wcs.common.util;
+package test.uat.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+
+import com.wcs.common.util.NetUtils;
 
 /**
  * <p>Project: BTC</p>

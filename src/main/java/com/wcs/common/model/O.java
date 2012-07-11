@@ -14,13 +14,13 @@ public class O implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=20)
+	@Column(unique=true, length=20)
 	private String id;
 
 	@Column(length=200)
 	private String bukrs;
 
-	@Column(name="DEFUNCT_IND", nullable=false, length=1)
+	@Column(name="DEFUNCT_IND", length=1)
 	private String defunctInd;
 
 	@Column(length=200)

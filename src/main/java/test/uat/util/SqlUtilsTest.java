@@ -1,8 +1,12 @@
-package com.wcs.common.util;
+package test.uat.util;
 
-import com.wcs.common.DBHandler;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+
+import com.wcs.common.util.SqlUtils;
+
+import test.uat.DBHandler;
 
 import java.sql.ResultSet;
 import java.util.Date;

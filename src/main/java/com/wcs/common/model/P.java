@@ -14,7 +14,7 @@ public class P implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=20)
+	@Column(unique=true, length=20)
 	private String id;
 
 	@Column(length=200)
@@ -23,7 +23,7 @@ public class P implements Serializable {
 	@Column(length=200)
 	private String celno;
 
-	@Column(name="DEFUNCT_IND", nullable=false, length=1)
+	@Column(name="DEFUNCT_IND", length=1)
 	private String defunctInd;
 
 	@Column(length=200)
@@ -49,12 +49,6 @@ public class P implements Serializable {
 
 	@Column(length=200)
 	private String telno;
-
-	@Column(length=200)
-	private String zhrzjid;
-
-	@Column(length=200)
-	private String zhrzjms;
 
     public P() {
     }
@@ -153,22 +147,6 @@ public class P implements Serializable {
 
 	public void setTelno(String telno) {
 		this.telno = telno;
-	}
-
-	public String getZhrzjid() {
-		return this.zhrzjid;
-	}
-
-	public void setZhrzjid(String zhrzjid) {
-		this.zhrzjid = zhrzjid;
-	}
-
-	public String getZhrzjms() {
-		return this.zhrzjms;
-	}
-
-	public void setZhrzjms(String zhrzjms) {
-		this.zhrzjms = zhrzjms;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.wcs.common;
+package test.uat;
 
 import org.junit.After;
 import org.junit.Before;
