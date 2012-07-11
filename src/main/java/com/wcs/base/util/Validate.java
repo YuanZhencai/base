@@ -19,6 +19,7 @@ package com.wcs.base.util;
 import java.util.Collection;
 import java.util.Map;
 
+
 public abstract class Validate extends org.apache.commons.lang.Validate {
 
 	public static void isTrue(boolean expression, RuntimeException throwIfAssertFail) {

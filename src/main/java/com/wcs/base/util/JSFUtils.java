@@ -10,7 +10,6 @@ import javax.faces.context.Flash;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.wcs.base.conf.SystemConfiguration;
 
 public class JSFUtils {
 	public static Flash flashScope (){
@@ -36,7 +35,7 @@ public class JSFUtils {
 	public static void handleException(String message) {
 		try {
 			JSFUtils.flashScope().put("exceptionMessage", message);
-			JSFUtils.redirect(JSFUtils.contextPath() + SystemConfiguration.EXCEPTION_HANDLE_PAGE);
+			JSFUtils.redirect(JSFUtils.contextPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

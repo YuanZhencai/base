@@ -299,9 +299,8 @@ html {
 }
 
 #top_up_left {
-	width: 370px;
+	width: 400px;
 	height: 32px;
-	background: url(images/main_01.gif);
 	float: left;
 }
 
@@ -619,22 +618,9 @@ a:hover{
 	
 }
 
-.resLabel label {
-	text-align: right;
-	width: 140px;
-}
-.resText input{
-	text-align: left;
-	width: 300px;
-}
-.resBtn {
-	text-align: right;
-	width: 10%;
-}
-
 .column0 {
 	text-align: right;
-	width: 95px;
+	width: 90px;
 }
 
 .column1 {
@@ -644,6 +630,11 @@ a:hover{
 
 .column2 {
 	text-align: left;
+}
+
+.column40 {
+	text-align: right;
+	width: 103px;
 }
 
 .column41 {
@@ -662,6 +653,11 @@ a:hover{
 
 .column44 { /*background-color:White;*/
 	
+}
+
+.argitem-edit {
+	text-align: right;
+	width: 79px;
 }
 
 .textarea_420 {
@@ -694,28 +690,58 @@ a:hover{
 	border: 1px solid #aed0ea;
 }
 
+.ic_card_input{
+	font-weight: bold;
+	width: 382px;
+	font-size: 1.1em;
+	height: 30px;
+	line-height: 20px;
+	border: 1px solid #aed0ea;
+}
+
 .date {
+	width: 66px;
+	height: 23px;
+	cursor: pointer;
+	font-weight: bold;
+	line-height: 20px;
+	font-size: 9px;
+	border: 1px solid #aed0ea;
+}
+
+.ui-date {
+	width: 59px;
+	cursor: pointer;
 	font-size: 9px;
 }
 
-.date input {
-	width: 58px;
+.date input{
+	width: 56px;
 	height: 16px;
+	cursor: pointer;
+	font-weight: bold;
+	line-height: 18px;
+	font-size: 9px;
+	border: 1px solid #aed0ea;
+	border-radius: 3px 3px 3px 3px;
 }
+
+
 
 select {
 	height: 26px;
 	width: 144px;
 }
 
+
 input {
+	border-radius: 3px 3px 3px 3px;
 	height: 16px;
 	width: 134px;
 }
 
-.selectOneRadio input, input.selectBooleanCheckbox {
-	height: 0px;
-	width: 0px;
+input:hover {
+	border: 1px solid #74b2e2;
 }
 
 .button_r {
@@ -727,32 +753,32 @@ input {
 }
 
 .operating_30{
-	width:40px;
+	width:30px;
 	text-align:center;
 }
 
 .operating_60{
-	width:70px;
+	width:60px;
 	text-align:center;
 }
 
 .operating_90{
-	width:100px;
+	width:90px;
 	text-align:center;
 }
 
 .operating_120{
-	width:130px;
+	width:120px;
 	text-align:center;
 }
 
 .operating_150{
-	width:160px;
+	width:150px;
 	text-align:center;
 }
 
 .operating_180{
-	width:190px;
+	width:180px;
 	text-align:center;
 }
 
@@ -783,14 +809,14 @@ input {
     height:100%;
     line-height:100%;
     vertical-align:middle;
-    background-color:Gray;
+    /*background-color:Gray;*/
     position:absolute;
 	text-align:center;
    	left:0px;
     top:0px;
-    opacity: 0.2;                /* Firefox, Safari(WebKit), Opera)*/
-    filter: "alpha(opacity=20)"; /* IE 8 */
-    filter: alpha(opacity=20);   /* IE 4-7 */
+   /* opacity: 0.2; */               /* Firefox, Safari(WebKit), Opera)*/
+    /* filter: "alpha(opacity=20)";*/ /* IE 8 */
+    /* filter: alpha(opacity=20);*/   /* IE 4-7 */
     display:table;
 }
 
@@ -801,22 +827,27 @@ input {
 	top:48%;
 	display:table-cell;
 	vertical-align:middle;
+	width:180px;
+	height:40px;
+	border:2px solid #74b2e2;
+	background-color:#FFFFFF;
 }
 
 .ajaxStatus span img{
+	top:10px;
 	z-index:99994; 
 	position:relative;
-	left:-48%;
-	top:-48%;
+
 }
 
 .ajaxStatus span label{
+	top:10px;
 	z-index:99993; 
 	position:relative;
-	background-color:#FFFFFF;
+	
 	color:black;
 	font-weight:bold;
-	left:-48%;
+
 }
 /*加载图片样式结束*/
 
@@ -836,3 +867,44 @@ input {
 }
 #tooltip h3, #tooltip div { margin: 0; }
 /*提示框样式结束*/
+
+
+/*解决部分下拉菜单样式不统一的问题*/
+.ui-inputfield {
+	margin: 0;
+	outline: medium none;
+}
+.ui-inputtextarea-resizable {
+	display:block;
+	overflow:auto;
+}
+
+.ui-state-error {
+	border: 1px solid #74b2e2;
+}
+
+/*复选框大小调整*/
+.ui-tree .ui-tree-checkbox div.ui-tree-checkbox-box {
+	height: 12px;
+	width: 14px;
+}
+
+.ui-tree div.ui-widget {padding: 2px 0 0; }
+
+.ui-tree span.ui-icon-check{
+	background-position: -65px -147px;
+}
+
+.ui-tree .ui-icon-minus{
+	background-position: -49px -131px;
+}
+
+.number{
+	text-align: right;
+}
+
+.tr-red {
+    background-color: Red !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
