@@ -2,7 +2,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.wcs</groupId>
-	<artifactId>btcbase-lite</artifactId>
+	<artifactId>btcbase-module</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -37,7 +37,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- btcbase-lite -->
+			<!-- btcbase-module -->
 			<dependency>
 				<groupId>com.wcs</groupId>
 				<artifactId>btcbase-core</artifactId>
@@ -46,6 +46,11 @@
 			<dependency>
 				<groupId>com.wcs</groupId>
 				<artifactId>btcbase-security</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.wcs</groupId>
+				<artifactId>btcbase-report</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
