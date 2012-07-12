@@ -1,277 +1,310 @@
-/**
- * RoleBean.java Created: 2011-7-8 上午11:04:11
- */
 package com.wcs.base.security.controller;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
-import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-import com.wcs.base.conf.SystemConfiguration;
-import com.wcs.base.controller.ConversationBaseBean;
-import com.wcs.base.security.model.Permission;
-import com.wcs.base.security.model.Resource;
-import com.wcs.base.security.model.Role;
-import com.wcs.base.security.service.ResourceService;
-import com.wcs.base.security.service.RoleService;
-import com.wcs.base.security.vo.ResourcesNode;
-import com.wcs.base.service.StatelessEntityService;
-import com.wcs.base.util.JSFUtils;
-import com.wcs.base.util.MessageUtils;
+import com.wcs.base.security.model.Resourcemstr;
+import com.wcs.base.security.model.Rolemstr;
+import com.wcs.base.security.model.Roleresource;
+import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.RoleServcie;
 
 /**
- * <p>Project: btcbase</p> 
- * <p>Title: RoleBean.java</p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright .All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * Project: tih
+ * Description: Role Managed Bean 
+ * Copyright (c) 2012 Wilmar Consultancy Services
+ * All Rights Reserved.
+ * @author <a href="mailto:guanluyong@wcs-global.com">Mr.Guan</a>
  */
+@SuppressWarnings("serial")
+@ManagedBean
+@ViewScoped
+public class RoleBean implements Serializable {
+    // role service
+    @EJB RoleServcie roleServcie;
+    @EJB LoginService loginService;
+    
+    // index.xhtml; search conditions.
+    private HashMap<String, String> query;
+    // DataLazyModel for show results of the search
+    private LazyDataModel<Rolemstr> roles;
+    // current object of the Rolemstr
+    private Rolemstr role;
+    
+    // Resources Tree Node root
+    private TreeNode root;
+    // Resources list
+    private List<Resourcemstr> resources;
+    // Selected Resources
+    private TreeNode[] selectedNodes;
+    
+    // total nodes
+    private List<TreeNode> totalNodes = new ArrayList<TreeNode>();
+    
+    // has been communicate resources
+    private List<Roleresource> resourced;
+    
+    public RoleBean() { }
+    
+    @PostConstruct public void initRoleBean() {
+        query = new HashMap<String, String>(2);
+        search();
+    }
+    
+	public void initAddRole() {
+		role = null;
+    }
 
-@SuppressWarnings("rawtypes")
-@Named
-@ConversationScoped
-public class RoleBean extends ConversationBaseBean {
-	private static final long serialVersionUID = 1L;
-	private final Logger logger = LoggerFactory.getLogger(RoleBean.class);
+    // reset search conditions
+    public void reset() {
+        query.clear();
+    }
+    // empty method for no action button
+    public void editRole() {}
+    
+    /**
+     * <p>Description: search roles by query conditions</p>
+     */
+    public void search() {
+        roles = new LazyDataModel<Rolemstr>() {
+            public List<Rolemstr> load(int arg0, int arg1, String arg2, SortOrder arg3, Map<String, String> arg4) {
+                List<Rolemstr> list = roleServcie.search(query);
+                setRowCount(list.size());
+                if(getRowCount() > arg1) {
+                    try {
+                        return list.subList(arg0, arg0 + arg1);
+                    } catch (IndexOutOfBoundsException e) {
+                        return list.subList(arg0, arg0 + (getRowCount() % arg1));
+                    }
+                } else {
+                    return list;
+                }
+            }
+        };
+    }
+    
+    /**
+     * <p>Description: add role</p>
+     */
+    public void addRole() {
+        
+        role.setCreatedBy(loginService.getCurrentUserName());
+        role.setCreatedDatetime(new Date());
+        role.setUpdatedBy(loginService.getCurrentUserName());
+        role.setUpdatedDatetime(new Date());
+        
+        try {
+            roleServcie.insert(role);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "新增错误:", e.getMessage()));
+            return;
+        }
+        search();   //re search
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: edit role</p>
+     */
+    public void updateRole() {
+        role.setUpdatedBy(loginService.getCurrentUserName());
+        role.setUpdatedDatetime(new Date());
+        
+        try {
+            roleServcie.update(role);
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "编辑错误:", e.getMessage()));
+            return;
+        }
+        
+        search();   //re search
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: communicate the role and resources</p>
+     */
+    public void roleResourceCommunicate() {
+        if(role.getDefunctInd().equals("Y")) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "当前角色为失效状态，不可分配资源"));
+            return;
+        }
+//        if(selectedNodes == null || selectedNodes.length == 0) {
+//            FacesContext.getCurrentInstance().addMessage(null, 
+//                    new FacesMessage(FacesMessage.SEVERITY_WARN, "角色权限分配：", "没有选择任何资源，无法分配资源"));
+//            return;
+//        }
+        
+        List<Resourcemstr> newRes = new ArrayList<Resourcemstr>();
+        List<Roleresource> repeat = new ArrayList<Roleresource>();
+        List<Roleresource> source = new ArrayList<Roleresource>();
+        for(Roleresource r : resourced) {
+            source.add(r);
+        }
+        
+        for(int i = 0; i < selectedNodes.length; i ++) {
+            boolean f = false;
+            for(Roleresource r : resourced) {
+                if((long) r.getResourcemstr().getId() == ((Resourcemstr) selectedNodes[i].getData()).getId()) {
+                    repeat.add(r);
+                    f = true;
+                    break;
+                }
+            }
+            if(!f) {
+                newRes.add((Resourcemstr) selectedNodes[i].getData());
+            }
+        }
+        source.removeAll(repeat);
+        try {
+            roleServcie.dispatchRoleToResources(source, repeat, newRes, role, loginService.getCurrentUserName());
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "角色权限分配：", "请刷新重试。如果还没有解决问题，请联系系统管理员"));
+            return;
+        }
+        
+        RequestContext.getCurrentInstance().addCallbackParam("issucc", "yes");
+    }
+    
+    /**
+     * <p>Description: find all useful resources</p>
+     */
+    public void searchResources() {
+        // initial
+        root = new DefaultTreeNode("root", null);
+        totalNodes.clear();
+        
+        // build tree nodes
+        resources = roleServcie.searchResources();
+        for(Resourcemstr r : resources) {
+            if(r.getParentId() == 0) {
+                TreeNode tn = new DefaultTreeNode(r, root);
+                totalNodes.add(tn);
+                findSonResource(r, tn, resources);
+            }
+        }
 
-	@Inject
-	private StatelessEntityService entityService;
-	@Inject
-	private RoleService roleService;
-	@Inject
-	private ResourceService resourceService;
+        // old communicates
+        resourced = roleServcie.searchOldResources(role);
+        
+        // find those last son nodes
+        for(int i = 0; i < resourced.size(); i ++) {
+            Resourcemstr r = resourced.get(i).getResourcemstr();
+            boolean f = false;
+            for(Resourcemstr ri : resources) {
+                if((long) r.getId() == ri.getParentId()) {
+                    f = true;
+                    break;
+                }
+            }
+            if(!f) {    // is the last son nodes, then selected
+                for(TreeNode n : totalNodes) {
+                    if((long) ((Resourcemstr)n.getData()).getId() == (long) r.getId()) {
+                        n.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    // 递归
+    public void findSonResource(Resourcemstr r, TreeNode tn, List<Resourcemstr> rs) {
+        for(Resourcemstr rm : rs) {
+            if(rm.getParentId() == r.getId()) {
+                TreeNode n = new DefaultTreeNode(rm, tn);
+                totalNodes.add(n);
+                findSonResource(rm, n, rs);
+            }
+        }
+    }
+    
+    // Getter & Setter
+    public HashMap<String, String> getQuery() {
+        return query;
+    }
 
-	private TreeNode root;// 资源树
-	private TreeNode[] selectedNodes;// 节点数组
-	private LazyDataModel<Role> lazyModel;// 数据模型
-	private String roName;// 角色名字
-	private Map<String, Object> queryMap = new HashMap<String, Object>();// 查询条件Map封装
-	private Role currentRole = new Role(); // 当前角色对象
+    public void setQuery(HashMap<String, String> query) {
+        this.query = query;
+    }
 
-	private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
-	private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
-	
-	public RoleBean() {
-		
-	}
+    public LazyDataModel<Rolemstr> getRoles() {
+        return roles;
+    }
 
-	@SuppressWarnings("unused")
-	@PostConstruct
-	private void initLazyModel() {
-		this.search();
-	}
-	
-	/**
-	 * 角色查询方法
-	 * @return
-	 */
-	public void search() {
-		this.lazyModel = roleService.findModelByMap(queryMap);
-	}
-	
-	/**
-	 * 保存角色
-	 */
-	public void saveRole() {
-		try {
-			// this.currentRole.setAdmin(false);
-			this.entityService.create(this.currentRole);
-			MessageUtils.addSuccessMessage("rolemessgeId", "角色添加成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			MessageUtils.addErrorMessage("rolemessgeId", "角色添加失败");
-		}
+    public void setRoles(LazyDataModel<Rolemstr> roles) {
+        this.roles = roles;
+    }
 
-	}
+    public Rolemstr getRole() {
+        if(this.role == null) {
+            this.role = new Rolemstr();
+            this.role.setDefunctInd("N");
+        }
+        return role;
+    }
 
-	/**
-	 * 保存角色资源
-	 * @return
-	 */
-	public String saveRoleResource() {
-		if (this.currentRole == null) {
-			MessageUtils.addErrorMessage("rolemessgeId", "当前角色为空!");
-			return JSFUtils.getViewId();
-		}
+    public void setRole(Rolemstr role) {
+        this.role = role;
+    }
 
-		// 删除当前角色旧的授权
-		try {
-			this.resourceService.deleteRolePermission(this.currentRole);
-		} catch (Exception e) {
-			MessageUtils.addErrorMessage("rolemessgeId", "删除角色旧资源失败.");
-			return JSFUtils.getViewId();
-		}
+    public TreeNode getRoot() {
+        return root;
+    }
 
-		// 保存角色授权
-		try {
-			List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
-			for (Resource resource : listresouce) {
-			     Permission permission = new Permission();
-			     permission.setRoleid(this.currentRole.getId());
-			     permission.setPermission(resource.getKeyName());
-			     this.entityService.create(permission);
-			 }
-		} catch (Exception e) {
-			MessageUtils.addErrorMessage("rolemessgeId", "保存角色资源失败.");
-			return JSFUtils.getViewId();
-		}
+    public void setRoot(TreeNode root) {
+        this.root = root;
+    }
 
-		MessageUtils.addSuccessMessage("rolemessgeId", "角色资源分配成功");
-		return LIST_PAGE;
-	}
+    public List<Resourcemstr> getResources() {
+        return resources;
+    }
 
-	/**
-	 * 角色编辑
-	 */
-	public void update() {
-		try {
-			this.entityService.update(currentRole);
-			MessageUtils.addSuccessMessage("rolemessgeId", "角色更新成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			MessageUtils.addErrorMessage("rolemessgeId", "角色更新失败");
-		}
+    public void setResources(List<Resourcemstr> resources) {
+        this.resources = resources;
+    }
 
-	}
+    public TreeNode[] getSelectedNodes() {
+        return selectedNodes;
+    }
 
-	/**
-	 * 节点选中监听
-	 * @param eve
-	 */
-	public void onTreeNodeClicked(NodeSelectEvent eve) {
-		System.out.println("onTreeNodeClicked >>>>> into");
-	}
+    public void setSelectedNodes(TreeNode[] selectedNodes) {
+        this.selectedNodes = selectedNodes;
+    }
 
-	/**
-	 * 角色名输入匹配
-	 * @param queryStr
-	 * @return
-	 */
-	public List<String> complete(String queryStr) {
-		if (queryStr != null && !"".equals(queryStr)) {
-			return this.roleService.searchRole(roName);
-		} else {
-			return Lists.newArrayList("无配置项");
-		}
+    public List<Roleresource> getResourced() {
+        return resourced;
+    }
 
-	}
+    public void setResourced(List<Roleresource> resourced) {
+        this.resourced = resourced;
+    }
 
-	/**
-	 * 角色删除
-	 */
-	public void deleteRole() {
-		try {
-			logger.debug("当前角色  --->> " + this.currentRole.getId());
-			this.roleService.deleteRole(currentRole);
-			MessageUtils.addSuccessMessage("rolemessgeId", "角色删除成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			MessageUtils.addErrorMessage("rolemessgeId", "删除失败");
-		}
-	}
+    public List<TreeNode> getTotalNodes() {
+        return totalNodes;
+    }
 
-	/**
-	 * 角色管理页面跳转
-	 * @return
-	 */
-	public String roleList() {
-		return LIST_PAGE;
-	}
-
-	/**
-	 * 资源分配页面跳转
-	 * @return
-	 */
-	public String resourceJump() {
-		// this.roleVo.setRoleName(this.currentRole.getRoleName());
-		root = new ResourcesNode("系统资源", null);
-		// 若该角色已经分配过资源则查询已有的资源 并设置选中
-		List<Resource> allResource = resourceService.findAllResource();
-		try {
-			this.roleService.isSelectedResourceByRole(root, allResource, this.currentRole);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return ROLE_RESOURCE_PAGE;
-	}
-
-	public String goBack() {
-
-		return LIST_PAGE;
-	}
-
-	/**
-	 * 资源分配页面跳转 直接通过角色名查询角色对象之后
-	 * @return
-	 */
-	public String rescourceJump() {
-		return "/faces/permissions/role/resourceRoleInput.xhtml";
-	}
-
-	public TreeNode getRoot() {
-		return root;
-	}
-
-	public void setRoot(TreeNode root) {
-		this.root = root;
-	}
-
-	public TreeNode[] getSelectedNodes() {
-		return selectedNodes;
-	}
-
-	public void setSelectedNodes(TreeNode[] selectedNodes) {
-		this.selectedNodes = selectedNodes;
-	}
-
-	public LazyDataModel<Role> getLazyModel() {
-		return lazyModel;
-	}
-
-	public void setLazyModel(LazyDataModel<Role> lazyModel) {
-		this.lazyModel = lazyModel;
-	}
-
-	public String getRoName() {
-		return roName;
-	}
-
-	public void setRoName(String roName) {
-		this.roName = roName;
-	}
-
-	public Map<String, Object> getQueryMap() {
-		return queryMap;
-	}
-
-	public void setQueryMap(Map<String, Object> queryMap) {
-		this.queryMap = queryMap;
-	}
-
-	public Role getCurrentRole() {
-		return currentRole;
-	}
-
-	public void setCurrentRole(Role currentRole) {
-		this.currentRole = currentRole;
-	}
-
-	public String getRowsPerPageTemplate() {
-		return SystemConfiguration.ROWS_PER_PAGE_TEMPLATE;
-	}
+    public void setTotalNodes(List<TreeNode> totalNodes) {
+        this.totalNodes = totalNodes;
+    }
 }

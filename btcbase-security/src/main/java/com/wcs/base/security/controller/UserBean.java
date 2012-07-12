@@ -1,209 +1,273 @@
 package com.wcs.base.security.controller;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
-import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
-import com.wcs.base.controller.ConversationBaseBean;
-import com.wcs.base.security.model.Role;
-import com.wcs.base.security.model.User;
+import com.wcs.base.security.controller.vo.RoleVo;
+import com.wcs.base.security.controller.vo.UsermstrFormItemsVo;
+import com.wcs.base.security.controller.vo.UsermstrVo;
+import com.wcs.base.security.model.Usermstr;
+import com.wcs.base.security.model.Userrole;
+import com.wcs.base.security.service.LoginService;
 import com.wcs.base.security.service.UserService;
-import com.wcs.base.util.MessageUtils;
+import com.wcs.common.controller.helper.PageModel;
+import com.wcs.common.model.P;
 
-/**
- * <p>Project: btcbase</p> 
- * <p>Title: UserBean.java</p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright .All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
- */
+@ManagedBean(name = "userBean")
+@ViewScoped
+public class UserBean {
 
-@Named
-@ConversationScoped
-public class UserBean extends ConversationBaseBean<User> implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private static final Logger logger = LoggerFactory.getLogger(UserBean.class);
+	@EJB
+	UserService userService;
+	@EJB
+	LoginService loginService;
 
-    private Map<String, Object> queryMap = Maps.newHashMapWithExpectedSize(4);; // 查询条件Map封装
-    private LazyDataModel<User> lazyModel;
-    private DualListModel<Role> roles;
+	private UsermstrFormItemsVo usermstrFormItemsVo = new UsermstrFormItemsVo();
+	private Usermstr usermstr = new Usermstr();
+	private UsermstrVo selectedUsermstrVo;
+	private List<UsermstrVo> usermstrVos;
+	private UsermstrVo[] selectedUsermstrVos;
+	private LazyDataModel<UsermstrVo> lazyUsermstrVoModel;
 
-    @Inject
-    private UserService userService;
+	private P p = new P();
+	private Map<String, Long> roleVos;
+	private List<Long> selectedRoleVos;
+	private List<RoleVo> rolemstrList = new ArrayList<RoleVo>();
 
-    @PostConstruct
-    public void initLazyModel() {
-        searchUser();
-        initRoles();
-    }
+	private String method;
+	private String bukrsName;
+	private String tempAdAccount;
 
-    /**
-     * 查询用户
-     * @return
-     */
-    public void searchUser() {
-        lazyModel = userService.findUsers(queryMap);
-    }
+	public UserBean() {
 
-    /**
-     * 添加或者修改用户
-     */
-    public void saveUser() {
-        try {
-            this.save();
-            MessageUtils.addErrorMessage("resMsg", "操作成功！");
-        } catch (Exception e) {
-            MessageUtils.addErrorMessage("resMsg", "操作失败，请检查！");
-            logger.info("添加或者修改用户操作失败，原因:");
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Set current user roles
-     * @return
-     */
-    public void saveCurrentUserRoles() {
-        User currentUser = getInstance();
-        // 删除当前用户角色
-        userService.delUserRole(currentUser);
+	}
 
-        // 新分配当前用户角色
-        List<Role> roleList = roles.getTarget();
-        userService.createUserRoles(currentUser, roleList);
-    }
-    
-    /**
-     * Init roles
-     */
-    private void initRoles() {
-        findRoles();
-    }
+	@PostConstruct
+	public void init() {
+		rolemstrList = this.userService.getAllRoleVo();
+		search();
+	}
 
-    /**
-     * Find roles for dualList
-     */
-    public void findRoles() {
-        List<Role> allRoles = userService.getRoles();
-        List<Role> userRoles = getInstance().getRoleList();
-        for (Role role : getInstance().getRoleList()) {
-            allRoles.remove(role);
-        }
-        roles = new DualListModel<Role>(allRoles, userRoles);
-    }
+	public void search() {
+		usermstrVos = userService.getAllUsermstrVo(usermstrFormItemsVo);
+		lazyUsermstrVoModel = new PageModel<UsermstrVo>(usermstrVos, false);
+	}
 
-    /**
-    * Clean instance
-    */
-    public void cleanInstance() {
-        setInstance(new User());
-    }
+	public void reset() {
+		usermstrFormItemsVo = new UsermstrFormItemsVo();
+	}
+	
+	public void updateUser() {
+		this.usermstr = selectedUsermstrVo.getUsermstr();
+		this.p = selectedUsermstrVo.getP();
 
-    public LazyDataModel<User> getLazyModel() {
-        return lazyModel;
-    }
+		this.bukrsName = selectedUsermstrVo.getO().getStext();
+		this.tempAdAccount = usermstr.getAdAccount();
+	}
 
-    public void setLazyModel(LazyDataModel<User> lazyModel) {
-        this.lazyModel = lazyModel;
-    }
+	public void valid(FacesContext context, UIComponent component,
+			java.lang.Object value) throws ValidatorException {
+		if ("adAccount".equals(component.getId())) {
+			if (value == null || "".equals(value.toString().trim())) {
+				throw new ValidatorException(new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "用户帐号：", "不允许为空或空格"));
+			} else if (value.toString().length() > 50) {
+				throw new ValidatorException(new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "用户帐号：", "长度不能超过50个字符"));
+			} else {
+				if ("update".equals(this.method)) {
+					if (!value.toString().equals(this.tempAdAccount)) {
+						int num = this.userService.getUserCount(value
+								.toString().trim());
+						if (num != 0) {
+							throw new ValidatorException(new FacesMessage(
+									FacesMessage.SEVERITY_ERROR, "用户帐号：",
+									"帐号已经存在，请重新输入"));
+						}
+					}
+				} else if ("insert".equals(this.method)) {
+					int num = this.userService.getUserCount(value.toString()
+							.trim());
+					if (num != 0) {
+						throw new ValidatorException(new FacesMessage(
+								FacesMessage.SEVERITY_ERROR, "用户帐号：",
+								"帐号已经存在，请重新输入"));
+					}
+				}
+			}
+		}
+		if ("idtentityId".equals(component.getId())) {
+			if (value == null || "".equals(value.toString().trim())) {
+				throw new ValidatorException(new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "证件号：", "不允许为空或空格"));
+			} else if (value.toString().length() > 50) {
+				throw new ValidatorException(new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, "证件号：", "长度不能超过50个字符"));
+			}
+		}
 
-    public Map<String, Object> getQueryMap() {
-        return queryMap;
-    }
+	}
 
-    public void setQueryMap(Map<String, Object> queryMap) {
-        this.queryMap = queryMap;
-    }
+	public void userRole() {
 
-    public DualListModel<Role> getRoles() {
-        return roles;
-    }
+		roleVos = new HashMap<String, Long>();
+		selectedRoleVos = new ArrayList<Long>();
 
-    public void setRoles(DualListModel<Role> roles) {
-        this.roles = roles;
-    }
+		this.usermstr = selectedUsermstrVo.getUsermstr();
+		this.p = selectedUsermstrVo.getP();
 
-    /**
-     * 选中用户记录
-     * @param event
-     */
-    /*
-     * @SuppressWarnings("unused") public void onRowSelect(SelectEvent event) { User user = (User) event.getObject(); //
-     * this.setInstance(user); }
-     *//**
-       * 初始化角色列表
-       */
-    /*
-     * public void initRoleList() { if (this.roleList == null || this.roleList.size() > 0) { this.roleList = new
-     * ArrayList<SelectItem>(); }
-     * 
-     * this.roleList = this.userService.initRoleList(); }
-     *//**
-       * 当前用户角色
-       * @param user
-       */
-    /*
-     * public void assignUserRole() { List<Role> allRoles = roleService.getRoleList(); List<Role> userRoles = new
-     * ArrayList<Role>(); User user = null; // getInstance();
-     * 
-     * if (user != null) { userRoles = null; // userService.findRolesByUser(getInstance()); for (Role role : userRoles) {
-     * allRoles.remove(role); } }
-     * 
-     * roles = new DualListModel<Role>(allRoles, userRoles); }
-     *//**
-       * 保存或者更新当前用户角色
-       * @return
-       */
-    /*
-     * @SuppressWarnings({ "rawtypes", "unused" }) public String saveUserRole() { User user = null; // getInstance(); try { //
-     * roleService.deleteUserRole(user.getId()); List roleIdList = roles.getTarget();
-     * 
-     * for (int i = 0; i < roleIdList.size(); i++) { UserRole userrole = new UserRole(); Long roleId =
-     * Long.valueOf(roleIdList.get(i).toString()); Role role = userService.findRoleById(roleId); if (role != null) {
-     * userrole.setRole(role); } userrole.setUser(user); this.entityService.create(userrole); }
-     * 
-     * MessageUtils.addSuccessMessage("usermessgeId", "用户角色分配成功"); } catch (Exception e) {
-     * MessageUtils.addErrorMessage("usermessgeId", "用户角色分配失败"); e.printStackTrace(); return JSFUtils.getViewId(); }
-     * 
-     * return LIST_PAGE; }
-     *//**
-       * 账户查询
-       * @return
-       */
-    /*
-     * public String search() { StringBuilder sql = new StringBuilder("from User u where 1=1");
-     * sql.append(" /~ and u.name like  {name}~/ "); this.lazyModel = this.entityService.findXsqlPage(sql.toString(),
-     * this.queryMap);
-     * 
-     * return LIST_PAGE; }
-     *//**
-       * 管理界面跳转
-       * @return
-       */
-    /*
-     * public String goBack() { return LIST_PAGE; }
-     *//**
-       *  输入匹配账号
-       * @param queryStr
-       * @return
-       */
-    /*
-     * public List<String> complete(String queryStr) { if (queryStr != null && !"".equals(queryStr)) { return
-     * this.userService.getUserAccountByInput(account); } else { return Lists.newArrayList(); }
-     * 
-     * }
-     */
+		List<RoleVo> rolemstrList = this.userService.getAllRoleVo();
+		if (rolemstrList.size() != 0) {
+			for (RoleVo rv : rolemstrList) {
+				roleVos.put(rv.getRolemstr().getName(), rv.getRolemstr()
+						.getId());
+			}
+		}
+
+		List<Userrole> userroleList = this.usermstr.getUserroles();
+		Userrole ur = null;
+		if (userroleList != null && userroleList.size() != 0) {
+			for (int i = 0; i < userroleList.size(); i++) {
+				ur = userroleList.get(i);
+				if ("N".equals(ur.getDefunctInd().trim())) {
+					selectedRoleVos.add(ur.getRolemstr().getId());
+				}
+			}
+		}
+
+	}
+
+	public void saveUserRole() {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		boolean b = this.userService.saveUserRole(selectedRoleVos,
+				this.selectedUsermstrVo.getUsermstr(),
+				loginService.getCurrentUserName());
+		if (b) {
+			context.addMessage(null, new FacesMessage("成功", "用户角色分配成功"));
+		} else {
+			context.addMessage(null, new FacesMessage("失败", "用户角色分配失败"));
+		}
+		search();
+
+	}
+
+	public Map<String, Long> getRoleVos() {
+		return roleVos;
+	}
+
+	public void setRoleVos(Map<String, Long> roleVos) {
+		this.roleVos = roleVos;
+	}
+
+	public List<Long> getSelectedRoleVos() {
+		return selectedRoleVos;
+	}
+
+	public void setSelectedRoleVos(List<Long> selectedRoleVos) {
+		this.selectedRoleVos = selectedRoleVos;
+	}
+
+	public UsermstrFormItemsVo getUsermstrFormItemsVo() {
+		return usermstrFormItemsVo;
+	}
+
+	public void setUsermstrFormItemsVo(UsermstrFormItemsVo usermstrFormItemsVo) {
+		this.usermstrFormItemsVo = usermstrFormItemsVo;
+	}
+
+	public List<UsermstrVo> getUsermstrVos() {
+		return usermstrVos;
+	}
+
+	public void setUsermstrVos(List<UsermstrVo> usermstrVos) {
+		this.usermstrVos = usermstrVos;
+	}
+
+	public Usermstr getUsermstr() {
+		return usermstr;
+	}
+
+	public void setUsermstr(Usermstr usermstr) {
+		this.usermstr = usermstr;
+	}
+
+	public P getP() {
+		return p;
+	}
+
+	public void setP(P p) {
+		this.p = p;
+	}
+
+	public UsermstrVo getSelectedUsermstrVo() {
+		return selectedUsermstrVo;
+	}
+
+	public void setSelectedUsermstrVo(UsermstrVo selectedUsermstrVo) {
+		this.selectedUsermstrVo = selectedUsermstrVo;
+	}
+
+	public UsermstrVo[] getSelectedUsermstrVos() {
+		return selectedUsermstrVos;
+	}
+
+	public void setSelectedUsermstrVos(UsermstrVo[] selectedUsermstrVos) {
+		this.selectedUsermstrVos = selectedUsermstrVos;
+	}
+
+	public LazyDataModel<UsermstrVo> getLazyUsermstrVoModel() {
+		return lazyUsermstrVoModel;
+	}
+
+	public void setLazyUsermstrVoModel(
+			LazyDataModel<UsermstrVo> lazyUsermstrVoModel) {
+		this.lazyUsermstrVoModel = lazyUsermstrVoModel;
+	}
+
+	public List<RoleVo> getRolemstrList() {
+		return rolemstrList;
+	}
+
+	public void setRolemstrList(List<RoleVo> rolemstrList) {
+		this.rolemstrList = rolemstrList;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	
+	public String getBukrsName() {
+		return bukrsName;
+	}
+
+	public void setBukrsName(String bukrsName) {
+		this.bukrsName = bukrsName;
+	}
+
+	public String getTempAdAccount() {
+		return tempAdAccount;
+	}
+
+	public void setTempAdAccount(String tempAdAccount) {
+		this.tempAdAccount = tempAdAccount;
+	}
 
 }

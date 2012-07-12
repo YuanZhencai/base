@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.User;
-import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.LoginService2;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
@@ -47,7 +47,7 @@ public class LoginBean implements Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
 	@Inject
-	private LoginService loginService;
+	private LoginService2 loginService;
 
 	private final String LOGIN_SUCCESS = "/template/template.xhtml";
 	private final String LOGIN_PAGE = "/login.xhtml";

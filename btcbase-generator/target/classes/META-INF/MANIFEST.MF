@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: yangshiyun
+Build-Jdk: 1.6.0_24
+Specification-Title: btcbase-generator
+Specification-Version: 0.0.1-SNAPSHOT
+Implementation-Title: btcbase-generator
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.wcs
+Created-By: Maven Integration for Eclipse
+

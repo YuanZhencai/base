@@ -26,7 +26,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.User;
-import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.LoginService2;
 
 /** 
 * <p>Project: btcbase</p> 
@@ -39,7 +39,7 @@ import com.wcs.base.security.service.LoginService;
 @SuppressWarnings("serial")
 public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 	private BeanManager beanManager;
-	private LoginService loginService;
+	private LoginService2 loginService;
 
 	public CustomAuthorizer() throws NamingException {
 		this.beanManager = (BeanManager) new InitialContext().lookup("java:comp/BeanManager");
@@ -51,7 +51,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 	@Override
 	public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		loginService = this.getBean(LoginService.class);
+		loginService = this.getBean(LoginService2.class);
 		User user = loginService.findUser(token.getUsername());
 		if (user != null) {
 			return new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), getName());
@@ -66,7 +66,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		String loginName = principals.fromRealm(getName()).iterator().next().toString();
-		loginService = this.getBean(LoginService.class);
+		loginService = this.getBean(LoginService2.class);
 		User user = loginService.findUser(loginName);
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
