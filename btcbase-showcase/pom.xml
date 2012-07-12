@@ -24,7 +24,7 @@
 	</repositories>
 
 	<dependencies>
-		<!-- btcbase-lite -->
+		<!-- btcbase-module -->
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-core</artifactId>
