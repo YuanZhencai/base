@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.ibm.db2.jcc.DB2Driver</property>
+        <property name="hibernate.connection.password">123</property>
+        <property name="hibernate.connection.url">jdbc:db2://192.168.88.253:50000/NEW_TEST</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.DB2Dialect</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.show_sql">true</property>
+        <mapping class="com.wcs.demo.model.OrgMaterialCode" />
+        <mapping class="com.wcs.demo.model.IndCategory" />
+        <mapping class="com.wcs.demo.model.WeightBridgeWeightDeduction" />
+        <mapping class="com.wcs.demo.model.PurchaseDoc" />
+        <mapping class="com.wcs.demo.model.TestIndicatorResults" />
+        <mapping class="com.wcs.demo.model.PurchaseEntity" />
+        <mapping class="com.wcs.demo.model.IdCard" />
+        <mapping class="com.wcs.demo.model.ProcessNode" />
+        <mapping class="com.wcs.demo.model.RoleResource" />
+        <mapping class="com.wcs.demo.model.StorageLocBatch" />
+        <mapping class="com.wcs.demo.model.QcResultPriceAdjustment" />
+        <mapping class="com.wcs.demo.model.Book" />
+        <mapping class="com.wcs.demo.model.PurchaseEntranceDoc" />
+        <mapping class="com.wcs.demo.model.QcResult" />
+        <mapping class="com.wcs.demo.model.EntranceDocItem" />
+        <mapping class="com.wcs.demo.model.Storedlog" />
+        <mapping class="com.wcs.demo.model.SystemLog" />
+        <mapping class="com.wcs.demo.model.ProcessInstance" />
+        <mapping class="com.wcs.demo.model.HibernateSequence" />
+        <mapping class="com.wcs.demo.model.Vendor" />
+        <mapping class="com.wcs.demo.model.AgreementItemPackingMaterial" />
+        <mapping class="com.wcs.demo.model.IcCard" />
+        <mapping class="com.wcs.demo.model.OrgMaterialInd" />
+        <mapping class="com.wcs.demo.model.Revinfo" />
+        <mapping class="com.wcs.demo.model.Material" />
+        <mapping class="com.wcs.demo.model.WeightBridgeDoc" />
+        <mapping class="com.wcs.demo.model.ItabNcp00In" />
+        <mapping class="com.wcs.demo.model.ExceptionDocumemt" />
+        <mapping class="com.wcs.demo.model.OrgPlaceOfProduction" />
+        <mapping class="com.wcs.demo.model.OrgParameter" />
+        <mapping class="com.wcs.demo.model.PurchaseDocPackingMaterial" />
+        <mapping class="com.wcs.demo.model.HibernateSequences" />
+        <mapping class="com.wcs.demo.model.IndMaster" />
+        <mapping class="com.wcs.demo.model.Resource" />
+        <mapping class="com.wcs.demo.model.Dict" />
+        <mapping class="com.wcs.demo.model.ZmmNcp03" />
+        <mapping class="com.wcs.demo.model.ItemIcCard" />
+        <mapping class="com.wcs.demo.model.OrgVendor" />
+        <mapping class="com.wcs.demo.model.OrgMaterial" />
+        <mapping class="com.wcs.demo.model.Role" />
+        <mapping class="com.wcs.demo.model.Activity" />
+        <mapping class="com.wcs.demo.model.PurchaseLoc" />
+        <mapping class="com.wcs.demo.model.Execution" />
+        <mapping class="com.wcs.demo.model.Process" />
+        <mapping class="com.wcs.demo.model.NoticeInd" />
+        <mapping class="com.wcs.demo.model.Supplier" />
+        <mapping class="com.wcs.demo.model.AgreementItem" />
+        <mapping class="com.wcs.demo.model.UserRole" />
+        <mapping class="com.wcs.demo.model.IdGen" />
+        <mapping class="com.wcs.demo.model.BillingDoc" />
+        <mapping class="com.wcs.demo.model.ReceiptPlan" />
+        <mapping class="com.wcs.demo.model.Agreementfile" />
+        <mapping class="com.wcs.demo.model.Test" />
+        <mapping class="com.wcs.demo.model.IndCategoryMaster" />
+        <mapping class="com.wcs.demo.model.NoticeDoc" />
+        <mapping class="com.wcs.demo.model.StorageLoc" />
+        <mapping class="com.wcs.demo.model.UserOrg" />
+        <mapping class="com.wcs.demo.model.PurchaseAgreement" />
+        <mapping class="com.wcs.demo.model.ItabNcp03" />
+        <mapping class="com.wcs.demo.model.ItabNcp02" />
+        <mapping class="com.wcs.demo.model.ItabNcp01" />
+        <mapping class="com.wcs.demo.model.EntranceDoc" />
+        <mapping class="com.wcs.demo.model.ProcessLocentity" />
+        <mapping class="com.wcs.demo.model.PurchaseDocItem" />
+        <mapping class="com.wcs.demo.model.PackingMaterial" />
+        <mapping class="com.wcs.demo.model.ZmmNcp01" />
+        <mapping class="com.wcs.demo.model.QcDoc" />
+        <mapping class="com.wcs.demo.model.ZmmNcp02" />
+        <mapping class="com.wcs.demo.model.User" />
+        <mapping class="com.wcs.demo.model.PurchaseLocEntity" />
+    </session-factory>
+</hibernate-configuration>
