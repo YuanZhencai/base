@@ -34,7 +34,7 @@
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-security</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-report</artifactId>
