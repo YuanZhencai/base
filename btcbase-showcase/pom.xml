@@ -28,17 +28,10 @@
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-security</artifactId>
-			<scope>provided</scope>
-		</dependency> 
-		<dependency>
-			<groupId>com.wcs</groupId>
-			<artifactId>btcbase-report</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Java EE -->
@@ -126,8 +119,20 @@
 		<!-- shiro web -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-all</artifactId>
+			<artifactId>shiro-core</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-faces</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+        </dependency>
 
 		<!-- logger -->
 		<dependency>
