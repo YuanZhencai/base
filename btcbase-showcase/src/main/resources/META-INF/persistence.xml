@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 
 <!-- 
-	<persistence-unit name="pu2" transaction-type="JTA">
+	<persistence-unit name="pu" transaction-type="JTA">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<jta-data-source>jdbc/btcbase</jta-data-source>
 		
@@ -32,10 +32,10 @@
         <class>com.wcs.base.security.model.Role</class>
         <class>com.wcs.base.security.model.User</class>
         <class>com.wcs.base.security.model.UserRole</class>
-        <class>com.wcs.base.dict.model.Dict</class>
+        <class>com.wcs.common.model.Dict</class>
 		<properties>
       	   <!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> -->
-            <property name="eclipselink.ddl-generation" value="update" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" /> 
             <property name="eclipselink.logging.level.sql" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>

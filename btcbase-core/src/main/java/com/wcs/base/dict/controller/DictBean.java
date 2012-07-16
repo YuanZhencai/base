@@ -12,7 +12,7 @@ import javax.inject.Named;
 
 import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
-import com.wcs.base.dict.model.Dict;
+import com.wcs.base.dict.model.Dict2;
 import com.wcs.base.service.StatelessEntityService;
 
 /**
@@ -47,7 +47,7 @@ public class DictBean implements Serializable {
                         return name != null?name:"";
                     }
                 });
-        List<Dict> dictList = this.entityService.findList(sql);
+        List<Dict2> dictList = this.entityService.findList(sql);
         this.addElement(dictList);
     }
 
@@ -56,9 +56,9 @@ public class DictBean implements Serializable {
      * <p>Description: 将数据放入到Map</p>
      * @param dictList
      */
-    public void addElement(List<Dict> dictList) {
+    public void addElement(List<Dict2> dictList) {
         if (dictList != null && !dictList.isEmpty()) {
-            for (Dict dict : dictList) {
+            for (Dict2 dict : dictList) {
                 codeCaseMap.put(dict.getCode(), dict.getName());
             }
         }
@@ -77,18 +77,18 @@ public class DictBean implements Serializable {
      * @param number
      * @return
      */
-    public Dict findByCode(String number) {
+    public Dict2 findByCode(String number) {
         String sql = "select dict from Dict dict where dict.code = ?1 ";
         List list = this.entityService.findList(sql, number);
         if (!list.isEmpty() && list.size() == 1) { 
-            return (Dict) list.get(0); 
+            return (Dict2) list.get(0); 
         }else{
             String sql1 = "select dict from Dict dict where  dict.parentCode = ?1";
             List list1 = this.entityService.findList(sql, number);
             if(!list1.isEmpty() && list1.size() == 1){
-                return (Dict) list1.get(0); 
+                return (Dict2) list1.get(0); 
             }else{
-                return new Dict();
+                return new Dict2();
             }
            
         }

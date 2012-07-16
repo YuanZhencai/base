@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import com.wcs.base.security.model.Rolemstr;
 
 
+
+
 /**
  * The persistent class for the RPT_ROLE database table.
  * 

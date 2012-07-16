@@ -27,3 +27,287 @@ CREATE TABLE user_role ( user_id BIGINT NOT NULL, role_id BIGINT NOT NULL, PRIMA
 CREATE TABLE users ( id BIGINT NOT NULL, email CHARACTER VARYING(255), loginname CHARACTER VARYING(255), name CHARACTER VARYING(255), password CHARACTER VARYING(255), PRIMARY KEY (id) );
 ALTER TABLE user_role ADD CONSTRAINT fk_user_role_role_id FOREIGN KEY (role_id) REFERENCES public.role (id);
 ALTER TABLE user_role ADD CONSTRAINT fk_user_role_user_id FOREIGN KEY (user_id) REFERENCES public.users (id);
+
+
+
+DROP TABLE  DICT 
+;
+DROP TABLE  O 
+;
+DROP TABLE  P 
+;
+DROP TABLE  PS 
+;
+DROP TABLE  PU 
+;
+DROP TABLE  RESOURCEMSTR 
+;
+DROP TABLE  ROLEMSTR 
+;
+DROP TABLE  ROLERESOURCE 
+;
+DROP TABLE  S 
+;
+DROP TABLE  SYNCLOG 
+;
+DROP TABLE  USERMSTR 
+;
+DROP TABLE  USERROLE 
+;
+-- 
+-- TABLE:  DICT  
+--
+
+CREATE TABLE  DICT (
+     ID                 int8            NOT NULL,
+     CODE_CAT           varchar(50)     NOT NULL,
+     CODE_KEY           varchar(50)     NOT NULL,
+     CODE_VAL           varchar(100)    NOT NULL,
+     REMARKS            varchar(200),
+     SEQ_NO             int8,
+     SYS_IND            char(1)         DEFAULT 'N' NOT NULL,
+     LANG               char(5)         DEFAULT 'zh_CN' NOT NULL,
+     DEFUNCT_IND        char(1)         DEFAULT 'N' NOT NULL,
+     CREATED_BY         varchar(50)     NOT NULL,
+     CREATED_DATETIME   timestamp       NOT NULL,
+     UPDATED_BY         varchar(50)     NOT NULL,
+     UPDATED_DATETIME   timestamp       NOT NULL,
+    CONSTRAINT  PK41  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  O  
+--
+
+CREATE TABLE  O (
+     ID            varchar(20)    NOT NULL,
+     BUKRS         varchar(20),
+     STEXT         varchar(20),
+     PARENT        varchar(20),
+     KOSTL         varchar(20),
+     ZHRZZCJID     varchar(20),
+     ZHRZZDWID     varchar(20),
+     ZHRTXXLID     varchar(20),
+     ZHRTXXLMS     varchar(50),
+     DEFUNCT_IND   char(1)        DEFAULT 'N' NOT NULL,
+    CONSTRAINT  PK4_1  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  P  
+--
+
+CREATE TABLE  P (
+     ID            varchar(20)    NOT NULL,
+     NACHN         varchar(20),
+     NAME2         varchar(20),
+     ICNUM         varchar(30),
+     EMAIL         varchar(50),
+     GESCH         varchar(20),
+     TELNO         varchar(20),
+     CELNO         varchar(20),
+     BUKRS         varchar(20),
+     KOSTL         varchar(20),
+     DEFUNCT_IND   char(1)        DEFAULT 'N' NOT NULL,
+    CONSTRAINT  PK4_2_3  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  PS  
+--
+
+CREATE TABLE  PS (
+     ID            varchar(20)    NOT NULL,
+     SID           varchar(20)    NOT NULL,
+     PID           varchar(20)    NOT NULL,
+     DEFUNCT_IND   char(1)        DEFAULT 'N' NOT NULL,
+    CONSTRAINT  PK14_1  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  PU  
+--
+
+CREATE TABLE  PU (
+     ID            varchar(50)    NOT NULL,
+     PERNR         varchar(20),
+     DEFUNCT_IND   char(1)
+)
+;
+
+
+
+-- 
+-- TABLE:  RESOURCEMSTR  
+--
+
+CREATE TABLE  RESOURCEMSTR (
+     ID                 int8            NOT NULL,
+     NAME               varchar(20)     NOT NULL,
+     CODE               varchar(50)     NOT NULL,
+     SEQ_NO             varchar(255),
+     PARENT_ID          int8,
+     TYPE               varchar(50)     NOT NULL,
+     URI                varchar(200),
+     DEFUNCT_IND        char(1)         DEFAULT 'N' NOT NULL,
+     CREATED_BY         varchar(50)     NOT NULL,
+     CREATED_DATETIME   timestamp       NOT NULL,
+     UPDATED_BY         varchar(50)     NOT NULL,
+     UPDATED_DATETIME   timestamp       NOT NULL,
+    CONSTRAINT  PK17  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  ROLEMSTR  
+--
+
+CREATE TABLE  ROLEMSTR (
+     ID                 int8           NOT NULL,
+     NAME               varchar(20)    NOT NULL,
+     "DESC"               varchar(50),
+     CODE               varchar(50)    NOT NULL,
+     DEFUNCT_IND        char(1)        DEFAULT 'N' NOT NULL,
+     CREATED_BY         varchar(50)    NOT NULL,
+     CREATED_DATETIME   timestamp      NOT NULL,
+     UPDATED_BY         varchar(50)    NOT NULL,
+     UPDATED_DATETIME   timestamp      NOT NULL,
+    CONSTRAINT  PK9  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  ROLERESOURCE  
+--
+
+CREATE TABLE  ROLERESOURCE (
+     ID                 int8           NOT NULL,
+     RESOURCEMSTR_ID    int8,
+     ROLEMSTR_ID        int8,
+     DEFUNCT_IND        char(1),
+     CREATED_BY         varchar(50),
+     CREATED_DATETIME   timestamp,
+     UPDATED_BY         varchar(50),
+     UPDATED_DATETIME   timestamp,
+    CONSTRAINT  PK18  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  S  
+--
+
+CREATE TABLE  S (
+     ID            varchar(20)    NOT NULL,
+     OID           varchar(20)    NOT NULL,
+     STEXT         varchar(20),
+     KOSTL         varchar(20),
+     ZHRTXXLID     varchar(20),
+     ZHRTXXLMS     varchar(50),
+     DEFUNCT_IND   char(1)        DEFAULT 'N' NOT NULL,
+    CONSTRAINT  PK14_2  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  SYNCLOG  
+--
+
+CREATE TABLE  SYNCLOG (
+     ID              int8           NOT NULL,
+     VERSION         timestamp      NOT NULL,
+     SYNC_TYPE       varchar(20),
+     SYNC_DATETIME   timestamp,
+     REMARKS         varchar(50),
+    CONSTRAINT  PK52  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  USERMSTR  
+--
+
+CREATE TABLE  USERMSTR (
+     ID                 int8           NOT NULL,
+     AD_ACCOUNT         varchar(50),
+     PERNR              varchar(20),
+     DEFUNCT_IND        char(1)        DEFAULT 'N' NOT NULL,
+     CREATED_BY         varchar(50)    NOT NULL,
+     CREATED_DATETIME   timestamp      NOT NULL,
+     UPDATED_BY         varchar(50)    NOT NULL,
+     UPDATED_DATETIME   timestamp      NOT NULL,
+    CONSTRAINT  PK2  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  USERROLE  
+--
+
+CREATE TABLE  USERROLE (
+     ID                 int8           NOT NULL,
+     USERMSTR_ID        int8,
+     ROLEMSTR_ID        int8,
+     DEFUNCT_IND        char(1),
+     CREATED_BY         varchar(50),
+     CREATED_DATETIME   timestamp,
+     UPDATED_BY         varchar(50),
+     UPDATED_DATETIME   timestamp,
+    CONSTRAINT  PK14  PRIMARY KEY ( ID )
+)
+;
+
+
+
+-- 
+-- TABLE:  ROLERESOURCE  
+--
+
+ALTER TABLE  ROLERESOURCE  ADD CONSTRAINT  RefROLEMSTR191  
+    FOREIGN KEY ( ROLEMSTR_ID )
+    REFERENCES  ROLEMSTR ( ID )
+;
+
+ALTER TABLE  ROLERESOURCE  ADD CONSTRAINT  RefRESOURCEMSTR201  
+    FOREIGN KEY ( RESOURCEMSTR_ID )
+    REFERENCES  RESOURCEMSTR ( ID )
+;
+
+
+-- 
+-- TABLE:  USERROLE  
+--
+
+ALTER TABLE  USERROLE  ADD CONSTRAINT  RefUSERMSTR1001  
+    FOREIGN KEY ( USERMSTR_ID )
+    REFERENCES  USERMSTR ( ID )
+;
+
+ALTER TABLE  USERROLE  ADD CONSTRAINT  RefROLEMSTR1011  
+    FOREIGN KEY ( ROLEMSTR_ID )
+    REFERENCES  ROLEMSTR ( ID )
+;

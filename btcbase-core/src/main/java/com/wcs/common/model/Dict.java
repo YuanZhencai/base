@@ -28,8 +28,7 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
 
-	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME")
+	
 	private Date createdDatetime;
 
 	@Column(name="DEFUNCT_IND", nullable=false, length=1)
@@ -88,7 +87,9 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-
+	
+	@Temporal( TemporalType.TIMESTAMP)
+	@Column(name="CREATED_DATETIME")
 	public Date getCreatedDatetime() {
 		return this.createdDatetime;
 	}

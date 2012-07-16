@@ -17,8 +17,8 @@ import com.wcs.base.entity.IdEntity;
  * @author <a href="mailto:chenlong@wcs-global.com">Chen Long</a>
  */
 @Entity
-@Table(name = "dict")
-public class Dict extends IdEntity {
+@Table(name = "dict2")
+public class Dict2 extends IdEntity {
     private static final long serialVersionUID = 1L;
     /** 代码编号*/
     private String code;
@@ -30,15 +30,15 @@ public class Dict extends IdEntity {
     private String parentCode;
     private Boolean defunctInd;
 
-    public Dict() {
+    public Dict2() {
     }
 
-    public Dict(String code, String name) {
+    public Dict2(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public Dict(String code, String name, String value, String parentCode) {
+    public Dict2(String code, String name, String value, String parentCode) {
         this.code = code;
         this.name = name;
         this.value = value;

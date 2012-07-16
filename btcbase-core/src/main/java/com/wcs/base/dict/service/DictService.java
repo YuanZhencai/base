@@ -12,7 +12,7 @@ import javax.persistence.Query;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.wcs.base.dict.model.Dict;
+import com.wcs.base.dict.model.Dict2;
 import com.wcs.base.entity.BaseEntity;
 import com.wcs.base.service.StatelessEntityService;
 
@@ -45,8 +45,8 @@ public class DictService implements Serializable {
 	 * @param parentCode  字典元素的parent code
 	 * @return  包含所有Dict子项
 	 */
-	public List<Dict> findWithList(String parentCode) {
-		List<Dict> sonDicts = entityService.findList(Dict.class, "parentCode", parentCode);
+	public List<Dict2> findWithList(String parentCode) {
+		List<Dict2> sonDicts = entityService.findList(Dict2.class, "parentCode", parentCode);
 		return sonDicts;
 	}
 
@@ -79,10 +79,10 @@ public class DictService implements Serializable {
 	 * @return  Map的 key 为 SelectBox 的caption，Map的 value 为 SelectIBox 的 value，供标签 <f:selectItem> 和 <f:selectItems> 使用
 	 */
 	public Map<String, String> findWithMap(String parentCode) {
-		List<Dict> dicts = entityService.findList(Dict.class, "parentCode", parentCode);
+		List<Dict2> dicts = entityService.findList(Dict2.class, "parentCode", parentCode);
 		Map<String, String> map = Maps.newHashMapWithExpectedSize(3);
 
-		for (Dict d : dicts) {
+		for (Dict2 d : dicts) {
 			map.put(d.getName(), d.getValue());
 		}
 		return map;
@@ -117,10 +117,10 @@ public class DictService implements Serializable {
 	 * @return  List<SelectItem>中的 SelectItem 为JSF 的类，它包含 SelectBox 的 value/caption，供标签 <f:selectItem> 和 <f:selectItems> 使用
 	 */
 	public List<SelectItem> findWithSelectItem(String parentCode) {
-		List<Dict> dicts = entityService.findList(Dict.class, "parentCode", parentCode);
+		List<Dict2> dicts = entityService.findList(Dict2.class, "parentCode", parentCode);
 		List<SelectItem> items = Lists.newArrayList();
 
-		for (Dict d : dicts) {
+		for (Dict2 d : dicts) {
 			items.add(new SelectItem(d.getCode(), d.getName()));
 		}
 		return items;
@@ -134,13 +134,13 @@ public class DictService implements Serializable {
 	@SuppressWarnings("unchecked")
 	public List<SelectItem> findSelectItemByHql(String hql) {
 		Query query = entityService.createQuery(hql);
-		List<Dict> dicts = query.getResultList();
+		List<Dict2> dicts = query.getResultList();
 		if (dicts == null || dicts.size() == 0) {
 			return null;
 		}
 
 		List<SelectItem> items = Lists.newArrayList();
-		for (Dict d : dicts) {
+		for (Dict2 d : dicts) {
 			items.add(new SelectItem(d.getCode(), d.getName()));
 		}
 		return items;
@@ -234,9 +234,9 @@ public class DictService implements Serializable {
 	}
 
 	public String getDictString(String parentCode, String value) {
-		List<Dict> dictList = this.findWithList(parentCode);
+		List<Dict2> dictList = this.findWithList(parentCode);
 
-		for (Dict dict : dictList) {
+		for (Dict2 dict : dictList) {
 			if (null != dict.getValue() && value.trim().equals(dict.getValue().trim())) {
 				return dict.getName();
 			}
