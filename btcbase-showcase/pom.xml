@@ -28,17 +28,14 @@
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-security</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.wcs</groupId>
 			<artifactId>btcbase-report</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Java EE -->

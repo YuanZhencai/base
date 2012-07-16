@@ -15,48 +15,24 @@ import java.util.Date;
 public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-
-	@Column(name="CODE_CAT", nullable=false, length=50)
 	private String codeCat;
-
-	@Column(name="CODE_KEY", nullable=false, length=50)
 	private String codeKey;
-
-	@Column(name="CODE_VAL", nullable=false, length=100)
 	private String codeVal;
-
-	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
-
-	
 	private Date createdDatetime;
-
-	@Column(name="DEFUNCT_IND", nullable=false, length=1)
 	private String defunctInd;
-
-	@Column(nullable=false, length=5)
 	private String lang;
-
-	@Column(length=200)
 	private String remarks;
-
-	@Column(name="SEQ_NO")
 	private long seqNo;
-
-	@Column(name="SYS_IND", nullable=false, length=1)
 	private String sysInd;
-
-	@Column(name="UPDATED_BY", nullable=false, length=50)
 	private String updatedBy;
-
-	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="UPDATED_DATETIME")
 	private Date updatedDatetime;
 
     public Dict() {
     }
 
-	public String getCodeCat() {
+    @Column(name="CODE_CAT", nullable=false, length=50)
+    public String getCodeCat() {
 		return this.codeCat;
 	}
 
@@ -64,7 +40,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.codeCat = codeCat;
 	}
 
-	public String getCodeKey() {
+    @Column(name="CODE_KEY", nullable=false, length=50)
+    public String getCodeKey() {
 		return this.codeKey;
 	}
 
@@ -72,7 +49,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.codeKey = codeKey;
 	}
 
-	public String getCodeVal() {
+    @Column(name="CODE_VAL", nullable=false, length=100)
+    public String getCodeVal() {
 		return this.codeVal;
 	}
 
@@ -80,7 +58,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.codeVal = codeVal;
 	}
 
-	public String getCreatedBy() {
+    @Column(name="CREATED_BY", nullable=false, length=50)
+    public String getCreatedBy() {
 		return this.createdBy;
 	}
 
@@ -98,7 +77,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.createdDatetime = createdDatetime;
 	}
 
-	public String getDefunctInd() {
+    @Column(name="DEFUNCT_IND", nullable=false, length=1)
+    public String getDefunctInd() {
 		return this.defunctInd;
 	}
 
@@ -106,7 +86,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.defunctInd = defunctInd;
 	}
 
-	public String getLang() {
+    @Column(nullable=false, length=5)
+    public String getLang() {
 		return this.lang;
 	}
 
@@ -114,7 +95,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.lang = lang;
 	}
 
-	public String getRemarks() {
+    @Column(length=200)
+    public String getRemarks() {
 		return this.remarks;
 	}
 
@@ -122,7 +104,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.remarks = remarks;
 	}
 
-	public long getSeqNo() {
+    @Column(name="SEQ_NO")
+    public long getSeqNo() {
 		return this.seqNo;
 	}
 
@@ -130,7 +113,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.seqNo = seqNo;
 	}
 
-	public String getSysInd() {
+    @Column(name="SYS_IND", nullable=false, length=1)
+    public String getSysInd() {
 		return this.sysInd;
 	}
 
@@ -138,7 +122,8 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.sysInd = sysInd;
 	}
 
-	public String getUpdatedBy() {
+    @Column(name="UPDATED_BY", nullable=false, length=50)
+    public String getUpdatedBy() {
 		return this.updatedBy;
 	}
 
@@ -146,7 +131,9 @@ public class Dict extends com.wcs.base.entity.IdEntity implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public Date getUpdatedDatetime() {
+    @Temporal( TemporalType.TIMESTAMP)
+    @Column(name="UPDATED_DATETIME")
+    public Date getUpdatedDatetime() {
 		return this.updatedDatetime;
 	}
 
