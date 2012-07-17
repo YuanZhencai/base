@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/btcbase-core/btcbase-core.iml" filepath="$PROJECT_DIR$/btcbase-core/btcbase-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/btcbase-generator/btcbase-generator.iml" filepath="$PROJECT_DIR$/btcbase-generator/btcbase-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/btcbase-module.iml" filepath="$PROJECT_DIR$/btcbase-module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/btcbase-report/btcbase-report.iml" filepath="$PROJECT_DIR$/btcbase-report/btcbase-report.iml" />
+      <module fileurl="file://$PROJECT_DIR$/btcbase-security/btcbase-security.iml" filepath="$PROJECT_DIR$/btcbase-security/btcbase-security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/btcbase-showcase/btcbase-showcase.iml" filepath="$PROJECT_DIR$/btcbase-showcase/btcbase-showcase.iml" />
+    </modules>
+  </component>
+</project>
+

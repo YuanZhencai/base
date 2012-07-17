@@ -14,14 +14,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.wcs.base.security.model.Resourcemstr;
+import com.wcs.base.security.model.Rolemstr;
+import com.wcs.base.security.model.Usermstr;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-
-import com.wcs.base.security.model.Resourcemstr;
-import com.wcs.base.security.model.Rolemstr;
-import com.wcs.base.security.model.Usermstr;
 
 /**
  * <p>Project: btcbase</p>
@@ -142,7 +141,7 @@ public class LoginService {
 		if (principal == null || principal.trim().isEmpty()) {
 			return null;
 		}
-		Query q = em.createQuery("select ur.rolemstr from Userrole ur where ur.defunctInd <> 'Y' and ur.rolemstr.defunctInd <> 'Y' and ur.usermstr.adAccount=:principal", Usermstr.class);
+		Query q = em.createQuery("select ur.rolemstr from UserRole ur where ur.defunctInd <> 'Y' and ur.rolemstr.defunctInd <> 'Y' and ur.usermstr.adAccount=:principal", Usermstr.class);
 		q.setParameter("principal", principal);
 		return q.getResultList();
 	} 
@@ -157,7 +156,7 @@ public class LoginService {
 			return null;
 		}
 		String qs = "select DISTINCT rsr.resourcemstr" +
-				" from Userrole ur,Roleresource rsr" +
+				" from UserRole ur,RoleResource rsr" +
 				" where ur.defunctInd <> 'Y' and ur.rolemstr=rsr.rolemstr and ur.usermstr.adAccount=:principal" +
 				" and rsr.defunctInd <> 'Y' and rsr.resourcemstr.defunctInd <> 'Y'" +
 				" and rsr.rolemstr.defunctInd <> 'Y'" +

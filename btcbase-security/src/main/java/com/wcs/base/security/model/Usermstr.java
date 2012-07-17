@@ -1,5 +1,7 @@
 package com.wcs.base.security.model;
 
+import com.wcs.base.entity.IdEntity;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="USERMSTR")
-public class Usermstr extends com.wcs.base.entity.IdEntity implements Serializable {
+public class Usermstr extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="AD_ACCOUNT", length=50)
@@ -41,7 +43,7 @@ public class Usermstr extends com.wcs.base.entity.IdEntity implements Serializab
 
 	//bi-directional many-to-one association to Userrole
 	@OneToMany(mappedBy="usermstr",fetch=FetchType.EAGER)
-	private List<Userrole> userroles;
+	private List<UserRole> userRoles;
 
     public Usermstr() {
     }
@@ -102,12 +104,12 @@ public class Usermstr extends com.wcs.base.entity.IdEntity implements Serializab
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public List<Userrole> getUserroles() {
-		return this.userroles;
+	public List<UserRole> getUserRoles() {
+		return this.userRoles;
 	}
 
-	public void setUserroles(List<Userrole> userroles) {
-		this.userroles = userroles;
+	public void setUserRoles(List<UserRole> userroles) {
+		this.userRoles = userroles;
 	}
 	
 }

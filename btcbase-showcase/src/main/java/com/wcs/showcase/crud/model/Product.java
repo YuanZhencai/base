@@ -28,13 +28,21 @@ import com.wcs.base.entity.BaseEntity;
 @Table(name = "PRODUCT")
 @SuppressWarnings("serial")
 public class Product extends BaseEntity {
-	
-	private String name;             // 商品名称
+
+    @Column(name = "NAME")
+    private String name;             // 商品名称
+    @Column(name = "CODE")
 	private String code;             // 商品编码
+    @Column(name = "CATEGORY")
 	private String category;         // 商品类别
+    @Column(name = "PRICE")
 	private Double price;            // 商品价格
+    @Column(name = "AVAILABLE")
 	private Boolean available;       // 是否还有
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "PRODUCTION_DATE")
 	private Date productingDate;     // 生产日期
+    @Column(name = "DESCRIBE", length = 1000)
 	private String description;      // 商品描述
 
 	@Override
@@ -51,7 +59,7 @@ public class Product extends BaseEntity {
 		this.name = name;
 	}
 
-    @Column(name = "NAME")
+
 	public String getName() {
 		return name;
 	}
@@ -60,7 +68,7 @@ public class Product extends BaseEntity {
 		this.name = name;
 	}
 
-	@Column(name = "CODE")
+
 	public String getCode() {
 		return code;
 	}
@@ -69,7 +77,7 @@ public class Product extends BaseEntity {
 		this.code = code;
 	}
 
-	@Column(name = "CATEGORY")
+
 	public String getCategory() {
 		return category;
 	}
@@ -78,7 +86,7 @@ public class Product extends BaseEntity {
 		this.category = category;
 	}
 
-	@Column(name = "PRICE")
+
 	public Double getPrice() {
 		return price;
 	}
@@ -87,7 +95,7 @@ public class Product extends BaseEntity {
 		this.price = price;
 	}
 
-	@Column(name = "AVAILABLE")
+
 	public Boolean getAvailable() {
 		return available;
 	}
@@ -96,8 +104,7 @@ public class Product extends BaseEntity {
 		this.available = available;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "PRODUCTION_DATE")
+
 	public Date getProductingDate() {
 		return productingDate;
 	}
@@ -106,7 +113,7 @@ public class Product extends BaseEntity {
 		this.productingDate = productingDate;
 	}
 
-	@Column(name = "DESCRIBE", length = 1000)
+
 	public String getDescription() {
 		return description;
 	}

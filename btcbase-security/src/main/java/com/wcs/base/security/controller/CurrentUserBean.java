@@ -1,4 +1,7 @@
-
+/**
+ * CurrentUserBean.java
+ * Created: 2012-1-30 上午11:20:07
+ */
 package com.wcs.base.security.controller;
 
 import java.io.Serializable;
@@ -10,12 +13,11 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import org.primefaces.model.TreeNode;
-
 import com.wcs.base.security.model.Resourcemstr;
 import com.wcs.base.security.model.Rolemstr;
 import com.wcs.base.security.model.Usermstr;
 import com.wcs.base.security.service.LoginService;
+import org.primefaces.model.TreeNode;
 
 /**
  * <p>
@@ -138,5 +140,4 @@ public class CurrentUserBean implements Serializable {
 	public void setMidNavs(List<TreeNode> midNavs) {
 		this.midNavs = midNavs;
 	}
-	
 }

@@ -4,7 +4,8 @@
 	<display-name>btcbase-security</display-name>
 	<name>btcbase_security</name>
 	<!-- shiro configuration -->
-	<listener>
+	<!--
+    <listener>
 		<listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
 	</listener>
 	<filter>
@@ -14,7 +15,7 @@
 	<filter-mapping>
 		<filter-name>ShiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping>-->
 
 	<!-- welcome page -->
 	<welcome-file-list>

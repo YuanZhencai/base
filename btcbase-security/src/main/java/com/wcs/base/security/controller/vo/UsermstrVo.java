@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import com.wcs.base.security.model.Usermstr;
 import com.wcs.common.controller.helper.IdModel;
-import com.wcs.common.model.O;
-import com.wcs.common.model.P;
+import com.wcs.base.security.model.master.O;
+import com.wcs.base.security.model.master.P;
 
 public class UsermstrVo extends IdModel implements Serializable {
 	private static final long serialVersionUID = 7922530371478759792L;

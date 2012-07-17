@@ -12,7 +12,7 @@
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>
 		<property name="hibernate.show_sql">true</property>
         
-        <mapping class="com.wcs.base.security.model.User" />
+        <mapping class="com.wcs.base.security.model.master.PersonMstr" />
         <mapping class="com.wcs.base.security.model.Role" />
         <mapping class="com.wcs.base.security.model.Resource" />
         <mapping class="com.wcs.base.security.model.Permission" />

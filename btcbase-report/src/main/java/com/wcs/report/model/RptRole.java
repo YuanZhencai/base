@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import com.wcs.base.security.model.Rolemstr;
 
 
-
-
 /**
  * The persistent class for the RPT_ROLE database table.
  * 
@@ -46,7 +44,7 @@ public class RptRole implements Serializable {
 	@Column(name="UPDATED_DATETIME")
 	private Timestamp updatedDatetime;
 
-	//bi-directional many-to-one association to Rolemstr
+    //bi-directional many-to-one association to Role
     @ManyToOne
 	@JoinColumn(name="ROLEMSTR_ID")
 	private Rolemstr rolemstr;
@@ -90,6 +88,13 @@ public class RptRole implements Serializable {
 	public void setDefunctInd(String defunctInd) {
 		this.defunctInd = defunctInd;
 	}
+    public Rolemstr getRolemstr() {
+        return rolemstr;
+    }
+
+    public void setRolemstr(Rolemstr rolemstr) {
+        this.rolemstr = rolemstr;
+    }
 
 	public String getUpdatedBy() {
 		return this.updatedBy;
@@ -107,13 +112,7 @@ public class RptRole implements Serializable {
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public Rolemstr getRolemstr() {
-		return this.rolemstr;
-	}
 
-	public void setRolemstr(Rolemstr rolemstr) {
-		this.rolemstr = rolemstr;
-	}
 	
 	public RptReportmstr getRptReportmstr() {
 		return this.rptReportmstr;

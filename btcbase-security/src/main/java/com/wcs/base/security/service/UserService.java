@@ -1,24 +1,24 @@
 package com.wcs.base.security.service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.wcs.base.security.controller.vo.RoleVo;
+import com.wcs.base.security.controller.vo.UsermstrVo;
+import com.wcs.base.security.model.Rolemstr;
+import com.wcs.base.security.model.UserRole;
+import com.wcs.base.security.model.Usermstr;
+import com.wcs.base.security.model.master.O;
+import com.wcs.base.security.model.master.P;
+import com.wcs.base.security.model.master.PU;
+import com.wcs.common.controller.vo.UsermstrFormItemsVo;
+
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import com.wcs.base.security.controller.vo.RoleVo;
-import com.wcs.base.security.controller.vo.UsermstrFormItemsVo;
-import com.wcs.base.security.controller.vo.UsermstrVo;
-import com.wcs.base.security.model.Rolemstr;
-import com.wcs.base.security.model.Usermstr;
-import com.wcs.base.security.model.Userrole;
-import com.wcs.common.model.O;
-import com.wcs.common.model.P;
-import com.wcs.common.model.PU;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Stateless
 public class UserService implements Serializable {
@@ -127,14 +127,14 @@ public class UserService implements Serializable {
 			String userName) {
 		boolean b = false;
 		try {
-			Userrole userrole = null;
-			List<Userrole> selectedUserroleList = new ArrayList<Userrole>();
+			UserRole userrole = null;
+			List<UserRole> selectedUserroleList = new ArrayList<UserRole>();
 			if (selectedRoleVos != null && selectedRoleVos.size() != 0) {
 				for (int i = 0; i < selectedRoleVos.size(); i++) {
-					userrole = new Userrole();
+					userrole = new UserRole();
 					userrole.setUsermstr(u);
 					userrole.setRolemstr(this.em.find(Rolemstr.class,
-							selectedRoleVos.get(i)));
+                            selectedRoleVos.get(i)));
 					selectedUserroleList.add(userrole);
 				}
 			}
@@ -143,15 +143,15 @@ public class UserService implements Serializable {
 			sb.append("select ur from Userrole ur where ur.usermstr.id="
 					+ u.getId());
 			String sql = sb.toString();
-			List<Userrole> existUserroleList = this.em.createQuery(sql)
+			List<UserRole> existUserroleList = this.em.createQuery(sql)
 					.getResultList();
 
 			if (selectedUserroleList.size() != 0) {
 				boolean bb = false;
-				for (Userrole ur1 : selectedUserroleList) {
+				for (UserRole ur1 : selectedUserroleList) {
 					bb = false;
 					if (existUserroleList.size() != 0) {
-						for (Userrole ur2 : existUserroleList) {
+						for (UserRole ur2 : existUserroleList) {
 							if (ur1.getRolemstr().getId()
 									.compareTo(ur2.getRolemstr().getId()) == 0) {
 								bb = true;
@@ -172,10 +172,10 @@ public class UserService implements Serializable {
 
 			if (existUserroleList.size() != 0) {
 				boolean bb = false;
-				for (Userrole ur1 : existUserroleList) {
+				for (UserRole ur1 : existUserroleList) {
 					bb = false;
 					if (selectedUserroleList.size() != 0) {
-						for (Userrole ur2 : selectedUserroleList) {
+						for (UserRole ur2 : selectedUserroleList) {
 							if (ur1.getRolemstr().getId()
 									.compareTo(ur2.getRolemstr().getId()) == 0) {
 								bb = true;
@@ -183,7 +183,7 @@ public class UserService implements Serializable {
 							}
 						}
 					}
-					userrole = this.em.find(Userrole.class, ur1.getId());
+					userrole = this.em.find(UserRole.class, ur1.getId());
 					if (bb) {
 						userrole.setDefunctInd("N");
 					} else {

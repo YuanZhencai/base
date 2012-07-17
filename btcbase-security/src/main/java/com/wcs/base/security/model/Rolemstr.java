@@ -1,16 +1,12 @@
 package com.wcs.base.security.model;
 
+import com.wcs.base.entity.IdEntity;
+
 import java.io.Serializable;
+import javax.persistence.*;
+
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -19,7 +15,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="ROLEMSTR")
-public class Rolemstr extends com.wcs.base.entity.IdEntity implements Serializable {
+public class Rolemstr extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable=false, length=50)
@@ -50,11 +46,11 @@ public class Rolemstr extends com.wcs.base.entity.IdEntity implements Serializab
 
 	//bi-directional many-to-one association to Roleresource
 	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
-	private List<Roleresource> roleresources;
+	private List<RoleResource> roleresources;
 
 	//bi-directional many-to-one association to Userrole
 	@OneToMany(mappedBy="rolemstr", fetch=FetchType.EAGER)
-	private List<Userrole> userroles;
+	private List<UserRole> userroles;
 
     public Rolemstr() {
     }
@@ -123,19 +119,19 @@ public class Rolemstr extends com.wcs.base.entity.IdEntity implements Serializab
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public List<Roleresource> getRoleresources() {
+	public List<RoleResource> getRoleresources() {
 		return this.roleresources;
 	}
 
-	public void setRoleresources(List<Roleresource> roleresources) {
+	public void setRoleresources(List<RoleResource> roleresources) {
 		this.roleresources = roleresources;
 	}
 	
-	public List<Userrole> getUserroles() {
+	public List<UserRole> getUserroles() {
 		return this.userroles;
 	}
 
-	public void setUserroles(List<Userrole> userroles) {
+	public void setUserroles(List<UserRole> userroles) {
 		this.userroles = userroles;
 	}
 	

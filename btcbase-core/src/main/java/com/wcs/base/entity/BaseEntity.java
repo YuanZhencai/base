@@ -1,13 +1,17 @@
 package com.wcs.base.entity;
 
-import java.sql.Timestamp;
+import com.wcs.base.entity.IdEntity;
+
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
 
 /**
  * 基本的抽象实体父类。
@@ -18,80 +22,95 @@ import javax.persistence.Transient;
  * 用户可以根据自己的要求实现。
  *
  * @author Chris Guan
- * 
+ *
  */
 @MappedSuperclass
 public abstract class BaseEntity extends IdEntity {
-	private static final long serialVersionUID = 1L;
 
-	private String createdBy;
-	private Timestamp createdDatetime;
-	private Boolean defunctInd;
-	private String updatedBy;
-	private Timestamp updatedDatetime;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "created_by", length = 30)
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATETIME")
+    private Date createdDatetime;
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    @Column(name = "CREATED_BY", length = 30)
+    private String createdBy;
 
-	@Column(name = "created_datetime")
-	public Timestamp getCreatedDatetime() {
-		return this.createdDatetime;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATED_DATETIME")
+    private Date updatedDatetime;
 
-	public void setCreatedDatetime(Timestamp createdDatetime) {
-		this.createdDatetime = createdDatetime;
-	}
+    @Column(name = "UPDATED_BY", length = 30)
+    private String updatedBy;
 
-	@Column(name = "defunct_ind")
-	public Boolean getDefunctInd() {
-		return this.defunctInd;
-	}
+    @Column(name = "DEFUNCT_IND", columnDefinition = "smallint")
+    private Boolean defunctInd = false;
 
-	public void setDefunctInd(Boolean defunctInd) {
-		this.defunctInd = defunctInd;
-	}
+    public Date getCreatedDatetime() {
+        return createdDatetime;
+    }
 
-	@Column(name = "updated_by", length = 30)
-	public String getUpdatedBy() {
-		return this.updatedBy;
-	}
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	@Column(name = "updated_datetime")
-	public Timestamp getUpdatedDatetime() {
-		return this.updatedDatetime;
-	}
 
-	public void setUpdatedDatetime(Timestamp updatedDatetime) {
-		this.updatedDatetime = updatedDatetime;
-	}
+    public Date getUpdatedDatetime() {
+        return updatedDatetime;
+    }
 
-	@Transient
-	public abstract String getDisplayText();
-	
-	@PrePersist
-	public void initTimeStamps() {
-		if (createdDatetime == null) {
-			Timestamp ts = new Timestamp(new Date().getTime()); 
-			createdDatetime = ts;
-		}
-		updatedDatetime = createdDatetime;
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+
+    public Boolean isDefunctInd() {
+        return defunctInd;
+    }
+
+    public Boolean getDefunctInd() {
+        return defunctInd;
+    }
+
+    public void setDefunctInd(Boolean defunctInd) {
+        this.defunctInd = defunctInd;
+    }
+
+    public void setUpdatedDatetime(Date updatedDatetime) {
+        this.updatedDatetime = updatedDatetime;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCreatedDatetime(Date createdDatetime) {
+        this.createdDatetime = createdDatetime;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    @Transient
+    public abstract String getDisplayText();
+
+    @PrePersist
+    public void initTimeStamps() {
+        // we do this for the purpose of the demo, this lets us create our own
+        // creation dates. Typically we would just set the createdOn field.
+        if (createdDatetime == null) {
+            createdDatetime = new Date();
+        }
+        updatedDatetime = createdDatetime;
         defunctInd = false;
-	}
-	
-	@PreUpdate
-	public void updateTimeStamp() {
-		updatedDatetime = new Timestamp(new Date().getTime());
-	}
+    }
 
+    @PreUpdate
+    public void updateTimeStamp() {
+        updatedDatetime = new Date();
+    }
 
 }

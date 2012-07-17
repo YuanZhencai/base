@@ -5,7 +5,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.wcs.base.security.model.User;
+import com.wcs.base.security.model.master.PersonMstr;
 
 /**
  * <p>Project: btcbase</p> 
@@ -23,7 +23,7 @@ public class UserRepositoryBean implements UserRepository {
 
 	@Override
 	public String searchUser() {
-		User user = new User();
+		PersonMstr user = new PersonMstr();
 		em.persist(user);
 
 		return "yes";

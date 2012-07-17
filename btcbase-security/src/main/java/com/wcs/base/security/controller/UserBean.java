@@ -1,4 +1,4 @@
-package com.wcs.base.security.controller;
+package com.wcs.common.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,26 +14,26 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import org.primefaces.model.LazyDataModel;
-
-import com.wcs.base.security.controller.vo.RoleVo;
-import com.wcs.base.security.controller.vo.UsermstrFormItemsVo;
 import com.wcs.base.security.controller.vo.UsermstrVo;
+import com.wcs.base.security.model.UserRole;
 import com.wcs.base.security.model.Usermstr;
-import com.wcs.base.security.model.Userrole;
 import com.wcs.base.security.service.LoginService;
 import com.wcs.base.security.service.UserService;
+import org.primefaces.model.LazyDataModel;
+
 import com.wcs.common.controller.helper.PageModel;
-import com.wcs.common.model.P;
+import com.wcs.base.security.controller.vo.RoleVo;
+import com.wcs.common.controller.vo.UsermstrFormItemsVo;
+import com.wcs.base.security.model.master.P;
 
 @ManagedBean(name = "userBean")
 @ViewScoped
 public class UserBean {
 
 	@EJB
-	UserService userService;
+    UserService userService;
 	@EJB
-	LoginService loginService;
+    LoginService loginService;
 
 	private UsermstrFormItemsVo usermstrFormItemsVo = new UsermstrFormItemsVo();
 	private Usermstr usermstr = new Usermstr();
@@ -137,8 +137,8 @@ public class UserBean {
 			}
 		}
 
-		List<Userrole> userroleList = this.usermstr.getUserroles();
-		Userrole ur = null;
+		List<UserRole> userroleList = this.usermstr.getUserRoles();
+        UserRole ur = null;
 		if (userroleList != null && userroleList.size() != 0) {
 			for (int i = 0; i < userroleList.size(); i++) {
 				ur = userroleList.get(i);

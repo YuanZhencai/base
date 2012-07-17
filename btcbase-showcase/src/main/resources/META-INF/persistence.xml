@@ -27,13 +27,25 @@
 		<jta-data-source>jdbc/btcbase</jta-data-source>
         <class>com.wcs.base.entity.IdEntity</class>
         <class>com.wcs.base.entity.BaseEntity</class>
-        <class>com.wcs.base.security.model.Permission</class>
-        <class>com.wcs.base.security.model.Resource</class>
-        <class>com.wcs.base.security.model.Role</class>
-        <class>com.wcs.base.security.model.User</class>
+
+        <class>com.wcs.base.security.model.Usermstr</class>
+        <class>com.wcs.base.security.model.Rolemstr</class>
+        <class>com.wcs.base.security.model.Resourcemstr</class>
         <class>com.wcs.base.security.model.UserRole</class>
+        <class>com.wcs.base.security.model.RoleResource</class>
+
+        <class>com.wcs.base.security.model.master.O</class>
+        <class>com.wcs.base.security.model.master.P</class>
+        <class>com.wcs.base.security.model.master.S</class>
+        <class>com.wcs.base.security.model.master.PS</class>
+        <!--
+        <class>com.wcs.base.security.model.master.PU</class>
+        <class>com.wcs.base.security.model.master.Synclog</class>
+        <class>com.wcs.base.security.model.master.Usr</class>
+        -->
         <class>com.wcs.common.model.Dict</class>
-		<properties>
+
+        <properties>
       	   <!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> -->
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" /> 

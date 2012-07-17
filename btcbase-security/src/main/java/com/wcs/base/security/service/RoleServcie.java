@@ -12,8 +12,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.wcs.base.security.model.Resourcemstr;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.model.Rolemstr;
-import com.wcs.base.security.model.Roleresource;
+
 
 /**
  * Project: tih
@@ -74,17 +75,17 @@ public class RoleServcie {
     }
     
 //    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<Roleresource> searchOldResources(Rolemstr r) {
-        String sql = "SELECT r FROM Roleresource r,Rolemstr m,Resourcemstr c " +
+    public List<RoleResource> searchOldResources(Rolemstr r) {
+        String sql = "SELECT r FROM RoleResource r,Rolemstr m,Resourcemstr c " +
         		"WHERE r.rolemstr=m AND r.resourcemstr=c AND c.defunctInd='N' AND r.defunctInd='N' AND m.id=:id";
         return em.createQuery(sql).setParameter("id", r.getId()).getResultList();
     }
     
-    public void dispatchRoleToResources(List<Roleresource> older, List<Roleresource> repeat,
+    public void dispatchRoleToResources(List<RoleResource> older, List<RoleResource> repeat,
             List<Resourcemstr> newer, Rolemstr role, String user) throws Exception {
         try {
             // change 'Y' to old
-            for(Roleresource r : older) {
+            for(RoleResource r : older) {
                 System.out.println("older:" + r.getResourcemstr().getName());
                 r.setDefunctInd("Y");
                 r.setUpdatedBy(user);
@@ -92,15 +93,15 @@ public class RoleServcie {
                 em.merge(r);
             }
             
-            String sql = "SELECT r FROM Roleresource r,Rolemstr l,Resourcemstr c " +
+            String sql = "SELECT r FROM RoleResource r,Rolemstr l,Resourcemstr c " +
                     "WHERE r.resourcemstr=c AND r.rolemstr=l AND l.id=:lid AND c.id=:cid";
             
             // repeat.parent 'N'
-            for(Roleresource r : repeat) {
+            for(RoleResource r : repeat) {
                 Resourcemstr rp = r.getResourcemstr();
                 while(rp.getParentId() != 0) {
                     rp = em.find(Resourcemstr.class, rp.getParentId());
-                    Roleresource t = (Roleresource) em.createQuery(sql)
+                    RoleResource t = (RoleResource) em.createQuery(sql)
                             .setParameter("lid", role.getId())
                             .setParameter("cid", rp.getId())
                             .getResultList()
@@ -116,15 +117,15 @@ public class RoleServcie {
             Query query = em.createQuery(sql).setParameter("lid", role.getId());
             for(Resourcemstr r : newer) {
                 query.setParameter("cid", r.getId());
-                List<Roleresource> tmp = query.getResultList();
+                List<RoleResource> tmp = query.getResultList();
                 if(tmp.size() > 0) {
-                    Roleresource t = tmp.get(0);
+                    RoleResource t = tmp.get(0);
                     t.setDefunctInd("N");
                     t.setUpdatedBy(user);
                     t.setUpdatedDatetime(new Date());
                     em.merge(t);
                 } else {
-                    Roleresource t = new Roleresource();
+                    RoleResource t = new RoleResource();
                     t.setCreatedBy(user);
                     t.setCreatedDatetime(new Date());
                     t.setUpdatedBy(user);
@@ -139,11 +140,11 @@ public class RoleServcie {
                     while(rp.getParentId() != 0) {
                         rp = em.find(Resourcemstr.class, rp.getParentId());
                         @SuppressWarnings("unchecked")
-                        List<Roleresource> ps = em.createQuery(sql).setParameter("lid", role.getId())
+                        List<RoleResource> ps = em.createQuery(sql).setParameter("lid", role.getId())
                                 .setParameter("cid", rp.getId())
                                 .getResultList();
                         if(ps.size() == 0) {
-                            Roleresource p = new Roleresource();
+                            RoleResource p = new RoleResource();
                             p.setCreatedBy(user);
                             p.setCreatedDatetime(new Date());
                             p.setUpdatedBy(user);

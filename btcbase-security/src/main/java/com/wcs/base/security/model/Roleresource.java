@@ -1,9 +1,9 @@
 package com.wcs.base.security.model;
 
+import com.wcs.base.entity.IdEntity;
+
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.wcs.base.security.model.Rolemstr;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="ROLERESOURCE")
-public class Roleresource extends com.wcs.base.entity.IdEntity implements Serializable {
+public class RoleResource extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="CREATED_BY", length=50)
@@ -44,7 +44,7 @@ public class Roleresource extends com.wcs.base.entity.IdEntity implements Serial
 	@JoinColumn(name="ROLEMSTR_ID")
 	private Rolemstr rolemstr;
 
-    public Roleresource() {
+    public RoleResource() {
     }
 
 	public String getCreatedBy() {

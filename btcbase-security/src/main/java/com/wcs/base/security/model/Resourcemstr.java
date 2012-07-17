@@ -1,5 +1,7 @@
 package com.wcs.base.security.model;
 
+import com.wcs.base.entity.IdEntity;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="RESOURCEMSTR")
-public class Resourcemstr extends com.wcs.base.entity.IdEntity implements Serializable {
+public class Resourcemstr extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(nullable=false, length=50)
@@ -53,7 +55,7 @@ public class Resourcemstr extends com.wcs.base.entity.IdEntity implements Serial
 
 	//bi-directional many-to-one association to Roleresource
 	@OneToMany(mappedBy="resourcemstr", fetch=FetchType.EAGER)
-	private List<Roleresource> roleresources;
+	private List<RoleResource> roleresources;
 
     public Resourcemstr() {
     }
@@ -146,11 +148,11 @@ public class Resourcemstr extends com.wcs.base.entity.IdEntity implements Serial
 		this.uri = uri;
 	}
 
-	public List<Roleresource> getRoleresources() {
+	public List<RoleResource> getRoleresources() {
 		return this.roleresources;
 	}
 
-	public void setRoleresources(List<Roleresource> roleresources) {
+	public void setRoleresources(List<RoleResource> roleresources) {
 		this.roleresources = roleresources;
 	}
 	

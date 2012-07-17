@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="btcbase-showcase:war">
+    <output-path>$PROJECT_DIR$/btcbase-showcase/target</output-path>
+    <root id="archive" name="btcbase-showcase.war">
+      <element id="artifact" artifact-name="btcbase-showcase:war exploded" />
+    </root>
+  </artifact>
+</component>

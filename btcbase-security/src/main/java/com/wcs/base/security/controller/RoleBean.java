@@ -12,19 +12,20 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
+import com.wcs.base.security.model.Resourcemstr;
+import com.wcs.base.security.model.RoleResource;
+import com.wcs.base.security.model.Rolemstr;
+import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.RoleServcie;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
-
-import com.wcs.base.security.model.Resourcemstr;
-import com.wcs.base.security.model.Rolemstr;
-import com.wcs.base.security.model.Roleresource;
-import com.wcs.base.security.service.LoginService;
-import com.wcs.base.security.service.RoleServcie;
 
 /**
  * Project: tih
@@ -38,8 +39,10 @@ import com.wcs.base.security.service.RoleServcie;
 @ViewScoped
 public class RoleBean implements Serializable {
     // role service
-    @EJB RoleServcie roleServcie;
-    @EJB LoginService loginService;
+    @EJB
+    RoleServcie roleServcie;
+    @EJB
+    LoginService loginService;
     
     // index.xhtml; search conditions.
     private HashMap<String, String> query;
@@ -59,7 +62,7 @@ public class RoleBean implements Serializable {
     private List<TreeNode> totalNodes = new ArrayList<TreeNode>();
     
     // has been communicate resources
-    private List<Roleresource> resourced;
+    private List<RoleResource> resourced;
     
     public RoleBean() { }
     
@@ -156,15 +159,15 @@ public class RoleBean implements Serializable {
 //        }
         
         List<Resourcemstr> newRes = new ArrayList<Resourcemstr>();
-        List<Roleresource> repeat = new ArrayList<Roleresource>();
-        List<Roleresource> source = new ArrayList<Roleresource>();
-        for(Roleresource r : resourced) {
+        List<RoleResource> repeat = new ArrayList<RoleResource>();
+        List<RoleResource> source = new ArrayList<RoleResource>();
+        for(RoleResource r : resourced) {
             source.add(r);
         }
         
         for(int i = 0; i < selectedNodes.length; i ++) {
             boolean f = false;
-            for(Roleresource r : resourced) {
+            for(RoleResource r : resourced) {
                 if((long) r.getResourcemstr().getId() == ((Resourcemstr) selectedNodes[i].getData()).getId()) {
                     repeat.add(r);
                     f = true;
@@ -292,11 +295,11 @@ public class RoleBean implements Serializable {
         this.selectedNodes = selectedNodes;
     }
 
-    public List<Roleresource> getResourced() {
+    public List<RoleResource> getResourced() {
         return resourced;
     }
 
-    public void setResourced(List<Roleresource> resourced) {
+    public void setResourced(List<RoleResource> resourced) {
         this.resourced = resourced;
     }
 
