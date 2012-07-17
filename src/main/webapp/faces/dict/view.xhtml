@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template/template.xhtml">
+
+	<ui:define name="title">Detail</ui:define>
+	<ui:define name="styleAndScript">
+	<style type="text/css">
+
+	</style>
+	</ui:define>
+
+    <ui:define name="content">
+        <f:metadata>
+			<f:viewParam name="id" value="#{dictBean.id}" />
+			<f:event type="preRenderView" listener="#{dictBean.initConversation}" />
+		</f:metadata>
+
+        <h:form  id="dictViewForm">
+
+            <p:panel styleClass="panel1">
+
+                <f:facet name="header">
+                    <img src="#{request.contextPath}/images/calculator_edit.png" alt=""/>
+                    <h:outputLabel value="Detail    |    "/>
+                    <h:outputLink value="#{request.contextPath}/faces/dict/list.xhtml">
+                        <h:outputText value="Query"/>
+                    </h:outputLink>
+                </f:facet>
+
+                <h:inputHidden value="#{dictBean.instance.id}"/>
+
+                <h:panelGrid columns="2" cellpadding="5"
+                             cellspacing="1" styleClass="style1" rowClasses="row1,row2"
+                             columnClasses="column1,column2"
+                             footerClass="footer1">
+
+                   
+        <h:outputLabel value="value:"/>
+        <h:outputText value="#{dictBean.instance.value}" style="font-weight:bold"/>
+        
+        <h:outputLabel value="parentCode:"/>
+        <h:outputText value="#{dictBean.instance.parentCode}" style="font-weight:bold"/>
+        
+        <h:outputLabel value="code:"/>
+        <h:outputText value="#{dictBean.instance.code}" style="font-weight:bold"/>
+        
+        <h:outputLabel value="name:"/>
+        <h:outputText value="#{dictBean.instance.name}" style="font-weight:bold"/>
+        
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btn_dict_Save" action="#{dictBean.save}" value="Save"
+                                         image="ui-icon ui-icon-disk" ajax="false" title="Save"/>
+
+                        <p:commandButton value="Cancel" image="ui-icon ui-icon-cancel" title="Cancel"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

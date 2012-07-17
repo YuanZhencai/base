@@ -1,0 +1,75 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ncp</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">123456</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="hibernate.show_sql">true</property>
+<mapping class="AgreementItem"/>
+<mapping class="AgreementItemPackingMateria"/>
+<mapping class="AgreementItemPackingMaterial"/>
+<mapping class="BillingDoc"/>
+<mapping class="Boo"/>
+<mapping class="Book"/>
+<mapping class="Code"/>
+<mapping class="Dict"/>
+<mapping class="EntranceDoc"/>
+<mapping class="EntranceDocItem"/>
+<mapping class="ExceptionDocumemt"/>
+<mapping class="HibernateSequences"/>
+<mapping class="HibernateSequencesId"/>
+<mapping class="Hook"/>
+<mapping class="IcCard"/>
+<mapping class="IdCard"/>
+<mapping class="IndCategory"/>
+<mapping class="IndMaster"/>
+<mapping class="ItemIcCard"/>
+<mapping class="Material"/>
+<mapping class="NoticeDoc"/>
+<mapping class="NoticeDocumemt"/>
+<mapping class="NoticeInd"/>
+<mapping class="OrgMaterial"/>
+<mapping class="OrgMaterialCode"/>
+<mapping class="OrgMaterialInd"/>
+<mapping class="OrgParameter"/>
+<mapping class="OrgPlaceOfProduction"/>
+<mapping class="OrgVendor"/>
+<mapping class="Packing"/>
+<mapping class="PackingMaterial"/>
+<mapping class="PurchaseAgreement"/>
+<mapping class="PurchaseDoc"/>
+<mapping class="PurchaseDocItem"/>
+<mapping class="PurchaseDocPackingMaterial"/>
+<mapping class="PurchaseEntity"/>
+<mapping class="PurchaseEntranceDoc"/>
+<mapping class="PurchaseLoc"/>
+<mapping class="PurchaseLocEntity"/>
+<mapping class="QcDoc"/>
+<mapping class="QcResult"/>
+<mapping class="QcResultPriceAdjustment"/>
+<mapping class="ReceiptPlan"/>
+<mapping class="Resource"/>
+<mapping class="Role"/>
+<mapping class="RoleResource"/>
+<mapping class="RoleUserRole"/>
+<mapping class="RoleUserRoleId"/>
+<mapping class="Sequence"/>
+<mapping class="StorageLoc"/>
+<mapping class="StorageLocBatch"/>
+<mapping class="Storedlog"/>
+<mapping class="Supplier"/>
+<mapping class="SystemLog"/>
+<mapping class="User"/>
+<mapping class="UserOrg"/>
+<mapping class="UserRole"/>
+<mapping class="Vendor"/>
+<mapping class="WeightBridgeDoc"/>
+<mapping class="WeightBridgeWeightDeduction"/>
+</session-factory>
+</hibernate-configuration>

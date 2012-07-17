@@ -18,7 +18,6 @@ import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
@@ -42,8 +41,6 @@ import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 import org.apache.commons.lang.StringUtils;
 
 import com.wcs.base.util.JSFUtils;
-import com.wcs.report.test.WebappDataSource;
-
 
 /** 
 * <p>Project: btcbase</p> 
@@ -63,9 +60,7 @@ public abstract class ReportBase implements Serializable {
     private String compiledFile = null;
     private String reportContent = "";
     private String printFile;
-	protected String pageValue;
-	protected String pageAll;
-	
+
     public ReportBase() {
 
     }
@@ -76,7 +71,7 @@ public abstract class ReportBase implements Serializable {
     public void initComplier() {
         try {
             if (StringUtils.isEmpty(this.getTemplateFile())) { return; }
-            JasperCompileManager.compileReportToFile(this.getTemplateFile());
+            JasperCompileManager.compileReportToFile(this.getTemplateFile(), this.getCompiledFile());
         } catch (JRException e) {
             e.printStackTrace();
         }
@@ -110,50 +105,23 @@ public abstract class ReportBase implements Serializable {
         JasperPrint jasperPrint = null;
         try {
             // jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, getConnection());
-            JasperFillManager.fillReport(jasperReport, parameters, new WebappDataSource());
+            JasperFillManager.fillReportToFile(jasperReport, this.getPrintFile(), parameters, getConnection());
             jasperPrint = loadReportPrint();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int pageIndex = 1;
-		int lastPageIndex = 1;
-		if (jasperPrint.getPages() != null)
-		{
-			lastPageIndex = jasperPrint.getPages().size();
-		}
-		if ("".equals(this.pageValue)){
-			this.pageValue="1";
-		}
-		pageIndex = Integer.parseInt(this.pageValue);
-		
-		if (pageIndex < 1)
-		{
-			pageIndex = 1;
-		}
-
-		if (pageIndex > lastPageIndex)
-		{
-			pageIndex = lastPageIndex;
-		}
-		this.pageAll = String.valueOf(lastPageIndex);
-		this.pageValue = String.valueOf(pageIndex);
-		String rootPath = JSFUtils.getRequest().getRealPath( "/" );
-		JRXhtmlExporter exporter = new JRXhtmlExporter();
-		StringBuffer sbuffer = new StringBuffer();
-		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
-	//	exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, "image?image=");
-		exporter.setParameter(JRHtmlExporterParameter.IMAGES_URI, rootPath+"images\\");
-		
-		exporter.setParameter(JRExporterParameter.OUTPUT_STRING_BUFFER, sbuffer);
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "UTF-8");
-		exporter.setParameter(JRExporterParameter.PAGE_INDEX, new Integer(pageIndex-1));
-		exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
-		exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
-		exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
-		
-		exporter.exportReport();
+        JRXhtmlExporter exporter = new JRXhtmlExporter();
+        JSFUtils.getSession().put(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
+        StringBuffer sbuffer = new StringBuffer();
+        exporter.setParameter(JRExporterParameter.OUTPUT_STRING_BUFFER, sbuffer);
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "UTF-8");
+        exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, "");
+        exporter.setParameter(JRHtmlExporterParameter.BETWEEN_PAGES_HTML, "");
+        exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, "");
+        exporter.exportReport();
         this.setReportContent(sbuffer.toString());
+        // System.out.println(sbuffer.toString());
     }
 
     public String exportPdf(HttpServletResponse response) throws JRException, IOException {
@@ -315,7 +283,7 @@ public abstract class ReportBase implements Serializable {
     private DataSource getDataSource() throws NamingException {
         if (ds == null) {
             javax.naming.Context ctx = new InitialContext();
-            ds = (DataSource) ctx.lookup("reportdb");
+            ds = (DataSource) ctx.lookup("jdbc/btcbase");
 
         }
         return ds;
@@ -335,11 +303,13 @@ public abstract class ReportBase implements Serializable {
      * @return projectPath
      */
     protected String getProjectPath() {
-    	
-    	
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletRequest request = ( HttpServletRequest ) context.getExternalContext().getRequest();
-		String projectPath = request.getRealPath( "/" )  +"jasperreports/";
+        String projectPath = "";
+        String realPath = JSFUtils.getRequest().getSession().getServletContext().getRealPath("");
+        String[] array = realPath.replaceAll("\\\\", "/").split("/");
+        int leng = array.length;
+        for (int i = 0; i < leng - 1; i++) {
+            projectPath += array[i] + "\\";
+        }
 
         return projectPath;
     }
@@ -377,21 +347,5 @@ public abstract class ReportBase implements Serializable {
     public void setPrintFile(String printFile) {
         this.printFile = printFile;
     }
-    
-	public String getPageAll() {
-		return pageAll;
-	}
-
-	public void setPageAll(String pageAll) {
-		this.pageAll = pageAll;
-	}
-
-	public String getPageValue() {
-		return pageValue;
-	}
-
-	public void setPageValue(String pageValue) {
-		this.pageValue = pageValue;
-	}
 
 }

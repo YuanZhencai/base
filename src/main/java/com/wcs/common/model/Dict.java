@@ -1,156 +1,105 @@
 package com.wcs.common.model;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import java.util.Date;
-
+import com.wcs.base.entity.IdEntity;
 
 /**
- * The persistent class for the DICT database table.
  * 
+ * <p>Project: btcbase</p>
+ * <p>Description: </p>
+ * <p>Copyright (c) 2011 Wilmar Consultancy Services</p>
+ * <p>All Rights Reserved.</p>
+ * @author <a href="mailto:chenlong@wcs-global.com">Chen Long</a>
  */
 @Entity
-@Table(name="DICT")
-public class Dict extends com.wcs.base.model.IdEntity implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-
-	@Column(name="CODE_CAT", nullable=false, length=50)
-	private String codeCat;
-
-	@Column(name="CODE_KEY", nullable=false, length=50)
-	private String codeKey;
-
-	@Column(name="CODE_VAL", nullable=false, length=100)
-	private String codeVal;
-
-	@Column(name="CREATED_BY", nullable=false, length=50)
-	private String createdBy;
-
-	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="CREATED_DATETIME")
-	private Date createdDatetime;
-
-	@Column(name="DEFUNCT_IND", nullable=false, length=1)
-	private String defunctInd;
-
-	@Column(nullable=false, length=5)
-	private String lang;
-
-	@Column(length=200)
-	private String remarks;
-
-	@Column(name="SEQ_NO")
-	private long seqNo;
-
-	@Column(name="SYS_IND", nullable=false, length=1)
-	private String sysInd;
-
-	@Column(name="UPDATED_BY", nullable=false, length=50)
-	private String updatedBy;
-
-	@Temporal( TemporalType.TIMESTAMP)
-	@Column(name="UPDATED_DATETIME")
-	private Date updatedDatetime;
+@Table(name = "dict")
+public class Dict extends IdEntity {
+    /**
+    * 
+    */
+    private static final long serialVersionUID = 1L;
+    /** 代码编号*/
+    private String code;
+    /** 代码名称*/
+    private String name;
+    /** 代码值*/
+    private String value;
+    /** 父级代码*/
+    private String parentCode;
+    private Boolean defunctInd;
 
     public Dict() {
     }
 
-	public String getCodeCat() {
-		return this.codeCat;
-	}
+    public Dict(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 
-	public void setCodeCat(String codeCat) {
-		this.codeCat = codeCat;
-	}
+    public Dict(String code, String name, String value, String parentCode) {
+        this.code = code;
+        this.name = name;
+        this.value = value;
+        this.parentCode = parentCode;
+    }
 
-	public String getCodeKey() {
-		return this.codeKey;
-	}
+    @Transient
+    public String getDisplayText() {
+        return null;
+    }
 
-	public void setCodeKey(String codeKey) {
-		this.codeKey = codeKey;
-	}
+    @Column(name = "CODE", nullable = false, length = 30)
+    public String getCode() {
+        return this.code;
+    }
 
-	public String getCodeVal() {
-		return this.codeVal;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setCodeVal(String codeVal) {
-		this.codeVal = codeVal;
-	}
+    @Column(name = "NAME", nullable = false, length = 30)
+    public String getName() {
+        return this.name;
+    }
 
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    @Column(name = "VALUE", length = 30)
+    public String getValue() {
+        return this.value;
+    }
 
-	public Date getCreatedDatetime() {
-		return this.createdDatetime;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public void setCreatedDatetime(Date createdDatetime) {
-		this.createdDatetime = createdDatetime;
-	}
+    @Column(name = "PARENT_CODE", length = 30)
+    public String getParentCode() {
+        return this.parentCode;
+    }
 
-	public String getDefunctInd() {
-		return this.defunctInd;
-	}
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
 
-	public void setDefunctInd(String defunctInd) {
-		this.defunctInd = defunctInd;
-	}
+    @Column(name = "DEFUNCT_IND", columnDefinition = "smallint")
+    public Boolean isDefunctInd() {
+        return defunctInd;
+    }
 
-	public String getLang() {
-		return this.lang;
-	}
+    public void setDefunctInd(Boolean defunctInd) {
+        this.defunctInd = defunctInd;
+    }
 
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
-
-	public String getRemarks() {
-		return this.remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-
-	public long getSeqNo() {
-		return this.seqNo;
-	}
-
-	public void setSeqNo(long seqNo) {
-		this.seqNo = seqNo;
-	}
-
-	public String getSysInd() {
-		return this.sysInd;
-	}
-
-	public void setSysInd(String sysInd) {
-		this.sysInd = sysInd;
-	}
-
-	public String getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getUpdatedDatetime() {
-		return this.updatedDatetime;
-	}
-
-	public void setUpdatedDatetime(Date updatedDatetime) {
-		this.updatedDatetime = updatedDatetime;
-	}
-
+    @PrePersist
+    public void init() {
+        defunctInd = false;
+    }
 }

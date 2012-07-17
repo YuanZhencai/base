@@ -87,7 +87,7 @@ public abstract class CollectionUtils extends org.apache.commons.collections.Col
 	 * Merge the given Properties instance into the given Map,
 	 * copying all properties (key-value pairs) over.
 	 * <p>Uses <code>Properties.propertyNames()</code> to even catch
-	 * default.properties properties linked into the original Properties instance.
+	 * default properties linked into the original Properties instance.
 	 * @param props the Properties instance to merge (may be <code>null</code>)
 	 * @param map the target Map to merge the properties into
 	 */
