@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<ul id="nav">
+		<ui:repeat var="midMenu" value="#{currentUser.midNavs}"
+			varStatus="current">
+			<li><a href="#{request.contextPath}/template/template.xhtml#"
+				id="#{midMenu.data.id}"><h:outputText
+						value="#{midMenu.data.name}" /> </a>
+				<ul>
+					<ui:repeat var="btmNav"
+						value="#{midMenu.children}">
+
+						<li id="#{btmNav.data.id}"><a
+							href="#{request.contextPath}#{btmNav.data.uri}"><h:outputText
+									value="#{btmNav.data.name}" /> </a></li>
+					</ui:repeat>
+				</ul></li>
+
+		</ui:repeat>
+	</ul>
+
+</ui:composition>
