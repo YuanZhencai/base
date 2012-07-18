@@ -1,0 +1,282 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wcs</groupId>
+	<artifactId>btcbase</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1</version>
+	<name>Tax Info Hub</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<profiles>
+		<profile>
+			<!-- mvn clean compile package -Pdev -->
+			<id>dev</id>
+			<properties>
+				<db.jndi>TIH</db.jndi>
+				<!-- MODIF LOCAL IP -->
+				<cas.client.url>http://127.0.0.1:9080</cas.client.url>
+			</properties>
+		</profile>
+		<profile>
+			<!-- mvn clean compile package -Ptest -->
+			<id>test</id>
+			<properties>
+				<db.jndi>TIHQA</db.jndi>
+			</properties>
+			<modules>
+			</modules>
+		</profile>
+	</profiles>
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>wcs-central</id>
+			<url>http://10.229.14.10:8080/nexus/content/groups/public</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- CAS Repo <repository> <id>wcs-snapshots</id> <url>http://10.229.14.10:8080/nexus/content/groups/public-snapshots</url> 
+			<releases> <enabled>true</enabled> </releases> </repository> -->
+		<repository>
+			<id>deluan.repo</id>
+			<name>DEluan's Projects Repository</name>
+			<url>http://deluan.googlecode.com/svn/releases</url>
+		</repository>
+		<repository>
+			<id>deluan.snapshorts</id>
+			<name>Deluan's Projects Snapshots Repository</name>
+			<url>http://deluan.googlecode.com/svn/snapshots</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	<dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.ejb</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+		<!-- Myfaces -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<!-- OpenJPA -->
+		<dependency>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa-all</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-ra</artifactId>
+			<version>5.5.0</version>
+		</dependency>
+
+		<!-- cas client 3.2.0 -->
+		<dependency>
+			<groupId>com.wcs.cas</groupId>
+			<artifactId>casclient</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.2</version>
+			<type>jar</type>
+		</dependency>
+		<!-- shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-faces</artifactId>
+			<version>2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- 文件上传包 -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- Myfaces -->
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>2.1.3</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+			<version>2.1.3</version>
+			<type>jar</type>
+		</dependency>
+		
+		<!-- jasperreports -->
+	    <dependency>
+	        <groupId>net.sf.jasperreports</groupId>
+	        <artifactId>jasperreports</artifactId>
+	        <version>4.5.0</version>
+	        <scope>compile</scope>
+	        <exclusions>
+	          <exclusion>
+	            <artifactId>jfreechart</artifactId>
+	            <groupId>jfree</groupId>
+	          </exclusion>
+	          <exclusion>
+	            <artifactId>jcommon</artifactId>
+	            <groupId>jfree</groupId>
+	          </exclusion>
+	          <exclusion>
+	            <artifactId>jdtcore</artifactId>
+	            <groupId>eclipse</groupId>
+	          </exclusion>
+	        </exclusions>
+	    </dependency>
+    	<!-- Tools -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.0</version>
+		</dependency>
+		
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+				<webResources>
+					<resource>
+						<filtering>true</filtering>
+						<directory>${project.basedir}/src/main/webapp/WEB-INF</directory>	
+						<targetPath>WEB-INF</targetPath>					
+					</resource>
+				</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>btcbase</finalName>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>${project.basedir}/src/main/resources</directory>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
