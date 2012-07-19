@@ -1,4 +1,4 @@
-package com.wcs.common.service;
+package com.wcs.base.security.service;
 
 import com.wcs.base.security.service.SyncJsonService;
 import com.wcs.common.util.ConfigManager;
