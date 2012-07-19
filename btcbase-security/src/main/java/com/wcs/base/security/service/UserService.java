@@ -1,6 +1,7 @@
 package com.wcs.base.security.service;
 
 import com.wcs.base.security.controller.vo.RoleVo;
+import com.wcs.base.security.controller.vo.UsermstrFormItemsVo;
 import com.wcs.base.security.controller.vo.UsermstrVo;
 import com.wcs.base.security.model.Rolemstr;
 import com.wcs.base.security.model.UserRole;
@@ -8,7 +9,6 @@ import com.wcs.base.security.model.Usermstr;
 import com.wcs.base.security.model.master.O;
 import com.wcs.base.security.model.master.P;
 import com.wcs.base.security.model.master.PU;
-import com.wcs.common.controller.vo.UsermstrFormItemsVo;
 
 
 import javax.ejb.Stateless;

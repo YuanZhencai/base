@@ -1,4 +1,4 @@
-package com.wcs.common.controller.vo;
+package com.wcs.base.security.controller.vo;
 
 public class UsermstrFormItemsVo implements java.io.Serializable {
 

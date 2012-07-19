@@ -1,4 +1,4 @@
-package com.wcs.common.controller;
+package com.wcs.base.security.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
+import com.wcs.base.security.controller.vo.UsermstrFormItemsVo;
 import com.wcs.base.security.controller.vo.UsermstrVo;
 import com.wcs.base.security.model.UserRole;
 import com.wcs.base.security.model.Usermstr;
@@ -23,7 +24,6 @@ import org.primefaces.model.LazyDataModel;
 
 import com.wcs.common.controller.helper.PageModel;
 import com.wcs.base.security.controller.vo.RoleVo;
-import com.wcs.common.controller.vo.UsermstrFormItemsVo;
 import com.wcs.base.security.model.master.P;
 
 @ManagedBean(name = "userBean")
