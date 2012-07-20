@@ -13,7 +13,7 @@ import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.exception.ExceptionKeyMessage;
 import com.wcs.base.exception.ExceptionMessage;
 
-public class ExceptionUtils extends org.apache.commons.lang.exception.ExceptionUtils{
+public class ExceptionUtils extends org.apache.commons.lang3.exception.ExceptionUtils{
 
 	/**
 	 * 将CheckedException转换为UnCheckedException.

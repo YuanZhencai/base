@@ -2,8 +2,6 @@ package com.wcs.base.util;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.google.common.collect.Lists;
 
 /**

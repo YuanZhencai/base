@@ -1,14 +1,13 @@
 package com.wcs.common.util;
 
-import org.apache.commons.lang.StringUtils;
-
-import javax.annotation.Resource;
-import javax.ejb.*;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import com.wcs.base.util.StringUtils;
 
 /**
  * <p>Project: BTC</p>

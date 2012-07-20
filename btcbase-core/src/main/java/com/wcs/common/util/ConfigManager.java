@@ -7,8 +7,6 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.System.out;
-
 /**
  * <p>Project: BTC</p>
  * <p>Description: 配置文件读取工具</p>

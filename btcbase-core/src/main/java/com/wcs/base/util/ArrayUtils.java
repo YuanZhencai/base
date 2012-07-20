@@ -26,7 +26,7 @@ import java.lang.reflect.Array;
  * @version $Revision: 1.1 $ $Date: 2006/06/12 02:18:54 $
  */
 @SuppressWarnings("unchecked")
-public class ArrayUtils extends org.apache.commons.lang.ArrayUtils{
+public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils{
 
         /**
          *

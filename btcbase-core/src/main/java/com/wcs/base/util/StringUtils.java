@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  * @see org.apache.commons.lang.StringUtils
  */
 @SuppressWarnings("unchecked")
-public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
+public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
 	
 		Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
@@ -900,7 +900,7 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
                         return new String[]{toSplit};
                 }
 
-                return org.apache.commons.lang.StringUtils.split(toSplit, delimiter);
+                return org.apache.commons.lang3.StringUtils.split(toSplit, delimiter);
         }
 
         /**
@@ -1121,18 +1121,6 @@ public abstract class StringUtils extends org.apache.commons.lang.StringUtils {
                         }
                 }
                 return sb.toString();
-        }
-
-
-        /**
-         * Convenience method to return a Collection as a delimited (e.g. CSV)
-         * String. E.g. useful for <code>toString()</code> implementations.
-         * @param coll the Collection to display
-         * @param delim the delimiter to use (probably a ",")
-         * @return the delimited String
-         */
-        public static String join(Collection coll, String delim) {
-                return join(coll, delim, "", "");
         }
 
 

@@ -39,9 +39,8 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.wcs.base.util.JSFUtils;
+import com.wcs.base.util.StringUtils;
 import com.wcs.report.test.WebappDataSource;
 
 

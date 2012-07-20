@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * @since 19.03.2004
  * @see org.apache.commons.lang.ObjectUtils
  */
-public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
+public abstract class ObjectUtils extends org.apache.commons.lang3.ObjectUtils {
 
 	private static final int INITIAL_HASH = 7;
 	private static final int MULTIPLIER = 31;

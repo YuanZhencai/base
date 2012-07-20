@@ -79,10 +79,7 @@
 		</dependency>
 
 		<!-- shiro dependency -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-all</artifactId>
-		</dependency>
+
 		
 	    <dependency>
 	        <groupId>net.sf.jasperreports</groupId>
