@@ -13,6 +13,10 @@ import javax.persistence.*;
 public class Usr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(length=50)
+	private String id;
+	
 	@Column(length=200)
 	private String celno;
 
@@ -25,8 +29,7 @@ public class Usr implements Serializable {
 	@Column(length=200)
 	private String email;
 
-	@Column(length=50)
-	private String id;
+
 
 	@Column(length=200)
 	private String name;
