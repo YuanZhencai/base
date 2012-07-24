@@ -4,13 +4,14 @@
  */
 package com.wcs.common.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.ejb.Stateless;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -44,8 +45,6 @@ public class CommonService {
 	
 	@PersistenceContext 
 	public EntityManager em;
-
-    private ResourceBundle res;
 	
 	/**
 	 * <p>Description: 系统加载时查询DICT表，将所有defunct_ind!='Y'的记录放到map,key=CODE_CAT+"."+CODE_KEY,value=CODE+VAL并放到application级别的bean中。</p>
@@ -82,19 +81,15 @@ public class CommonService {
 			String keyData=(allResult.get(l).getCodeCat().toString()+"."+allResult.get(l).getCodeKey().toString()+"."+allResult.get(l).getLang().toString()).replace(".", "_");
 			getValueMap.put(keyData, allResult.get(l).getCodeVal().toString());
 		}
-
-
-        //初始化国际化资源环境
-        FacesContext context = FacesContext.getCurrentInstance();
-        res = context.getApplication().getResourceBundle(context,"msgs");
-
+		
+		
 	}
 	
 	/**
 	 * <p>Description: 从application级别的bean获取该值，不要直接从数据库获取
 	 * 这里是以d.getCodeCat()+"."+d.getCodeKey()来dictMap中获取相应的value值.
 	 * </p>
-	 * @param cat_point_key_lang
+	 * @param catKey
 	 * @return
 	 */
 	public String getValueByDictCatKey(String cat_point_key_lang) {
@@ -119,23 +114,18 @@ public class CommonService {
 	/**
 	 * <p>Description: 根据cat值获得所有的Dict列表</p>
 	 * @param codeCat
-	 * @param lang
 	 * @return
 	 */
-	public List<Dict> getDictByCat(String codeCat,String lang) {
+	public List<Dict> getDictByCat(String cat,String lang) {
 		//根据浏览器语言环境选取langKeyMap中的 List<Dict>集合.
 		dicts=langKeyDictMap.get(lang);
 		List<Dict> listByCat=new ArrayList<Dict>();
 		for( int i=0;i<dicts.size();i++){
-			if(dicts.get(i).getCodeCat().equals(codeCat)){
+			if(dicts.get(i).getCodeCat().equals(cat)){
 				listByCat.add(dicts.get(i));
 			}
 		}
 		//返回结果.
 		return listByCat;
 	}
-
-    public String getMessage(String key){
-          return this.res.getString(key);
-    }
 }

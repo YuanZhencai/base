@@ -41,7 +41,7 @@ public class ScheduService implements Serializable {
     /**
      * <p>Description: 执行同步任务</p>
      */
-//    @Schedule(minute = "30", hour = "*")
+    @Schedule(minute = "30", hour = "*")
     public void syncTask() {
 
         //获取请求资源地址和表名
