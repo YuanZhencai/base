@@ -36,6 +36,11 @@ public class CommonBean {
 		Locale browserLang=FacesContext.getCurrentInstance().getViewRoot().getLocale();
 		return commonService.getDictByCat(cat,browserLang.toString());
 	}
+
+    //获取国际化资源信息
+    public String getMessage(String key){
+        return commonService.getMessage(key);
+    }
 	
 	//刷新调用的方法
 	public void refreshDictData(){

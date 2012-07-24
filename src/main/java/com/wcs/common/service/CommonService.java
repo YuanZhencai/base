@@ -4,14 +4,13 @@
  */
 package com.wcs.common.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.Stateless;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -27,8 +26,7 @@ import com.wcs.common.model.Dict;
  * 注解Starup,启动程序就立即加载.
  */
 
-@Startup
-@Singleton
+@Stateless
 public class CommonService {
 	
 	//查询所有语言类 loadDict()使用
@@ -45,6 +43,8 @@ public class CommonService {
 	
 	@PersistenceContext 
 	public EntityManager em;
+
+    private ResourceBundle res;
 	
 	/**
 	 * <p>Description: 系统加载时查询DICT表，将所有defunct_ind!='Y'的记录放到map,key=CODE_CAT+"."+CODE_KEY,value=CODE+VAL并放到application级别的bean中。</p>
@@ -81,15 +81,19 @@ public class CommonService {
 			String keyData=(allResult.get(l).getCodeCat().toString()+"."+allResult.get(l).getCodeKey().toString()+"."+allResult.get(l).getLang().toString()).replace(".", "_");
 			getValueMap.put(keyData, allResult.get(l).getCodeVal().toString());
 		}
-		
-		
+
+
+        //初始化国际化资源环境
+        FacesContext context = FacesContext.getCurrentInstance();
+        res = context.getApplication().getResourceBundle(context,"msgs");
+
 	}
 	
 	/**
 	 * <p>Description: 从application级别的bean获取该值，不要直接从数据库获取
 	 * 这里是以d.getCodeCat()+"."+d.getCodeKey()来dictMap中获取相应的value值.
 	 * </p>
-	 * @param catKey
+	 * @param cat_point_key_lang
 	 * @return
 	 */
 	public String getValueByDictCatKey(String cat_point_key_lang) {
@@ -114,18 +118,23 @@ public class CommonService {
 	/**
 	 * <p>Description: 根据cat值获得所有的Dict列表</p>
 	 * @param codeCat
+	 * @param lang
 	 * @return
 	 */
-	public List<Dict> getDictByCat(String cat,String lang) {
+	public List<Dict> getDictByCat(String codeCat,String lang) {
 		//根据浏览器语言环境选取langKeyMap中的 List<Dict>集合.
 		dicts=langKeyDictMap.get(lang);
 		List<Dict> listByCat=new ArrayList<Dict>();
 		for( int i=0;i<dicts.size();i++){
-			if(dicts.get(i).getCodeCat().equals(cat)){
+			if(dicts.get(i).getCodeCat().equals(codeCat)){
 				listByCat.add(dicts.get(i));
 			}
 		}
 		//返回结果.
 		return listByCat;
 	}
+
+    public String getMessage(String key){
+          return this.res.getString(key);
+    }
 }

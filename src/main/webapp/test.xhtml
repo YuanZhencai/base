@@ -1,51 +1,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:jr="http://jasperreportjsf.sf.net/tld/jasperreports-jsf-1_2.tld"
-	  xmlns:p="http://primefaces.org/ui">
-    
-    <h:head>
-        <title>Hello  World</title>
-        <meta  http-equiv="keywords"  content="enter,your,keywords,here"  />
-        <meta  http-equiv="description"  content="A  short  description  of  this  page."  />
-        <meta  http-equiv="content-type"  content="text/html;  charset=UTF-8"  />
-    </h:head>
-    <h:body>
-    
-        <h:form  id="form">
-            <!-- <jr:source id="bookSource" type="jndi" value="db2test" />
-    		
-	    	<jr:reportLink id="reportLink" format="pdf" target="blank" source="bookSource" 
-	    		value="/jasperreports/report2.jrxml">
-	    		<h:outputText value="View Report" />
-	    	</jr:reportLink> -->
-            <div>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:w="http://www.wcs-global.com/customtaglib">
 
-			   	<p:panel id="panel">   
-			   		<p:commandButton value="testReportExport"  actionListener="#{testReport.testReportExport}"  ajax="false"/>/
-			        <p:inputText value="#{testReport.exportType}" />
-			        
-			  		<br/>  
-			        <p:commandButton value="pre"  actionListener="#{testReport.testReportPagePre}"  update="panel"/>
-			        <p:inputText value="#{testReport.pageValue}" />
-			        <p:commandButton value="go"  actionListener="#{testReport.testReportPage}"  update="panel"/>/
-			        <h:outputText value="#{testReport.pageAll}" id="pageAll"  escape="false"/>
-			        <p:commandButton value="next"  actionListener="#{testReport.testReportPageNext}"  update="panel"/>  
-			        <br/>
-			        
-			        <h:panelGroup style="width:100%;text-align:center;" id="reportContent">
-					    <h:outputText value="#{testReport.reportContent}" escape="false"  />   
-					</h:panelGroup>
-				
+<h:head>
+    <title>Hello World</title>
+    <meta http-equiv="keywords" content="enter,your,keywords,here"/>
+    <meta http-equiv="description" content="A  short  description  of  this  page."/>
+    <meta http-equiv="content-type" content="text/html;  charset=UTF-8"/>
+</h:head>
+<h:body>
 
-			    </p:panel>  
-                    
-            </div>
-	       <!--  <jr:reportFrame id="reportFrame" source="bookSource"
-	        	value="/jasperreports/report2.jrxml"
-	        	format="pdf" height="400px" width="80%" 
-	        />-->
+
+    <!--国际化-->
+    <p:panel>
+        <h:form id="form">
+            <h:panelGroup>
+                <p:commandButton value="#{msgs.btn_save}" title="直接在JSF中绑定国际化资源"/>
+            </h:panelGroup>
+
+            <h:panelGroup>
+                <p:commandButton value="#{internationalBean.mess}" title="通过JAVA代码获取国际化资源"/>
+            </h:panelGroup>
+
+            <h:panelGroup>
+                <p:selectOneMenu value="#{internationalBean.cnMenuItem}">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{internationalBean.cnMenuItem}"/>
+                </p:selectOneMenu>
+            </h:panelGroup>
+
+            <h:panelGroup>
+                <p:selectOneMenu value="#{internationalBean.enMenuItem}">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItems value="#{internationalBean.enMenuItem}"/>
+                </p:selectOneMenu>
+            </h:panelGroup>
         </h:form>
-    </h:body>
+
+    </p:panel>
+    <!--国际化-->
+
+
+    <!--验证-->
+    <p:panel>
+        <p:messages id="mess"/>
+
+        <h:form>
+            <h:panelGroup>
+                <!--注意这里所设置的属性应该与CustomValidator中对应-->
+                <p:inputText value="#{validateBean.validateStr4}" >
+                    <f:validator validatorId="customValidator" />
+
+                    <!--minLengthMark是输入参数，以逗号分割，会依次替换提示信息中的{*}符号-->
+                    <w:validateMinLength minLength="3" minLengthMark="#{msgs.txt_min},3" />
+
+                    <!--maxLengthMark是输入参数，以逗号分割，会依次替换提示信息中的{*}符号-->
+                    <w:validateMaxLength maxLength="16" maxLengthMark="#{msgs.txt_max},16" />
+
+                    <!--这里的PHONE应该与regex.properties文件内定义相匹配.regexMark是输入参数，以逗号分割，会依次替换提示信息中的{*}符号-->
+                    <w:validateRegex regex="PHONE" regexMark="#{msgs.txt_phone}" />
+
+                </p:inputText>
+                <!--注意这里所设置的属性应该与CustomValidator中对应-->
+            </h:panelGroup>
+            <p:commandButton action="#{validateBean.testInput}" update="mess" value="#{msgs.btn_ok}"/>
+        </h:form>
+
+    </p:panel>
+    <!--验证-->
+
+</h:body>
 </html> 
