@@ -36,7 +36,31 @@ public class PersonService implements Serializable {
     	List<Person> list = entityService.findAll(Person.class);
     	
 		return  list;	
-	}	
+	}
+    
+    /**
+     * 删除指定人员信息
+     * @param id
+     */
+    public void delete(Long id){
+    	List<Person> list = entityService.findList("selet p from Person p where id = " + id);
+    	if(list != null && list.size()>0){
+    		entityService.delete(list.get(0));
+    	}
+    	
+    	/*int j=0;
+		List<Person> list = search();
+		System.out.println("************总共： "+list.size()+" 条数据************");
+		for(int i=0;i<list.size();i++){
+			if(list.get(i).getId()<10){
+				entityService.delete(list.get(i));
+				j++;
+			}
+		}
+		System.out.println("************已删除："+j+" 条数据************");
+		List<Person> list1 = search();
+		System.out.println("************剩余： "+list1.size()+" 条数据************");*/
+    }
 
     /**
      * 动态分页， XSQL 查询 （推荐使用）
