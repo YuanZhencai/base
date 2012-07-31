@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,7 +27,6 @@ import java.util.*;
  */
 
 @Stateless
-//@TransactionAttribute(value = TransactionAttributeType.NEVER)
 @TransactionManagement(TransactionManagementType.BEAN)
 public class SyncJsonService implements Serializable {
 
@@ -435,7 +433,6 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList 同步对象
      */
-//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateData(List<SyncDefineBean> syncList) {
 
         logger.debug("Start : updateData.");
@@ -472,7 +469,6 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList 同步对象
      */
-//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateOldSyncData(List<SyncDefineBean> syncList) {
 
         logger.debug("Start : updateOldSyncData.");
@@ -507,7 +503,6 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList
      */
-//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void updateNewSyncData(List<SyncDefineBean> syncList) {
 
         logger.debug("Start : updateNewSyncData.");
@@ -558,7 +553,6 @@ public class SyncJsonService implements Serializable {
      *
      * @param syncList
      */
-//    @TransactionAttribute(value = TransactionAttributeType.NEVER)
     private void log(List<SyncDefineBean> syncList) {
 
         logger.debug("Start : log.");
