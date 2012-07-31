@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:dialog header="用户信息维护" widgetVar="updateUserDialog"
-		id="updateUserDlg" resizable="false" width="580" height="330"
+		id="updateUserDlg" resizable="false" width="580" height="150"
 		modal="true">
 		<p:messages id="errorMsg" showDetail="true" showSummary="true" />
 		<h:form id="updateUserDialogForm" prependId="false">
@@ -41,12 +41,6 @@
 					<f:selectItem itemLabel="男" itemValue="男" />
 					<f:selectItem itemLabel="女" itemValue="女" />
 				</h:selectOneMenu>
-			</h:panelGrid>
-			<h:panelGrid columns="2" columnClasses="column1,column2">
-				<h:outputText value="背景说明：" />
-				<p:inputTextarea value="#{userBean.usermstr.backgroundInfo}" disabled="true"
-					style="width:401px;height:60px;" effectDuration="400"
-					maxlength="198" />
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

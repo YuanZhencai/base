@@ -95,22 +95,32 @@ public class UserService implements Serializable {
 	}
 
 	public P getP(String id) {
-		return this.em.find(P.class, id);
+		P p = null;
+		if (id != null){
+			p = this.em.find(P.class, id);
+		}
+		return p;
 	}
 	
 	public PU getPU(String id) {
-//		String sql = "select pu from PU pu where pu.id = :id";
-//		Query q = em.createQuery(sql);
-//		q.setParameter("id", id);
-//		return (PU) q.getSingleResult();
-		return this.em.find(PU.class, id);
+		PU pu = null;
+		if (id != null){
+			pu = this.em.find(PU.class, id);
+		}
+		return pu;
 	}
 
 	public O getO(String bukrs) {
-		String sql = "select o from O o where o.bukrs = :bukrs";
+		O o = new O();
+		String sql = "select o from O o where o.bukrs = :bukrs and o.zhrzzcjid = :zhrzzcjid order by o.id";
 		Query q = em.createQuery(sql);
 		q.setParameter("bukrs", bukrs);
-		return (O) q.getSingleResult();
+		q.setParameter("zhrzzcjid", "40");
+		List<O> oList = q.getResultList();
+		if(oList.size()>0){
+			o = oList.get(0);
+		}
+		return o;
 	}
 
 	public int getUserCount(String adAccount) {
