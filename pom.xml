@@ -28,8 +28,73 @@
 			<modules>
 			</modules>
 		</profile>
+
+		<profile>
+			<id>arquillian-glassfish-remote</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.spec</groupId>
+					<artifactId>jboss-javaee-6.0</artifactId>
+					<version>1.0.0.Final</version>
+					<type>pom</type>
+					<scope>provided</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.weld</groupId>
+					<artifactId>weld-api</artifactId>
+					<version>1.0-SP1</version>
+					<exclusions>
+						<exclusion>
+							<groupId>javax.enterprise</groupId>
+							<artifactId>cdi-api</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+
+				<dependency>
+					<groupId>com.sun.jersey</groupId>
+					<artifactId>jersey-bundle</artifactId>
+					<version>1.12</version>
+					<exclusions>
+						<exclusion>
+							<groupId>javax.ws.rs</groupId>
+							<artifactId>jsr311-api</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-glassfish-remote-3.1</artifactId>
+					<version>1.0.0.CR3</version>
+				</dependency>
+				<dependency>
+					<groupId>com.sun.jersey.contribs</groupId>
+					<artifactId>jersey-multipart</artifactId>
+					<version>1.12</version>
+				</dependency>
+			</dependencies>
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+					</testResource>
+					<testResource>
+						<directory>src/test/resources-glassfish-embedded</directory>
+					</testResource>
+				</testResources>
+			</build>
+		</profile>
 	</profiles>
 	<repositories>
+
+		<repository>
+			<id>JBoss repository</id>
+			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+
 		<repository>
 			<id>prime-repo</id>
 			<name>PrimeFaces Maven Repository</name>
@@ -43,6 +108,8 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
+
 		<!-- CAS Repo <repository> <id>wcs-snapshots</id> <url>http://10.229.14.10:8080/nexus/content/groups/public-snapshots</url> 
 			<releases> <enabled>true</enabled> </releases> </repository> -->
 		<repository>
@@ -60,11 +127,6 @@
 		</repository>
 	</repositories>
 	<dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-        </dependency>
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
@@ -106,7 +168,7 @@
 			<artifactId>openjpa-all</artifactId>
 			<version>2.1.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-ra</artifactId>
@@ -120,12 +182,15 @@
 			<version>3.2.0</version>
 		</dependency>
 
+		<!--<dependency> <groupId>javax</groupId> <artifactId>javaee-web-api</artifactId> 
+			<version>6.0</version> <type>jar</type> <scope>provided</scope> </dependency> -->
+
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
-			<version>6.0</version>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-all-6.0</artifactId>
+			<version>3.0.1.Final</version>
 			<type>jar</type>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -138,8 +203,8 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.2</version>
-			<type>jar</type>
+			<version>1.5.11</version>
+
 		</dependency>
 		<!-- shiro -->
 		<dependency>
@@ -212,36 +277,70 @@
 			<version>2.1.3</version>
 			<type>jar</type>
 		</dependency>
-		
+
 		<!-- jasperreports -->
-	    <dependency>
-	        <groupId>net.sf.jasperreports</groupId>
-	        <artifactId>jasperreports</artifactId>
-	        <version>4.5.0</version>
-	        <scope>compile</scope>
-	        <exclusions>
-	          <exclusion>
-	            <artifactId>jfreechart</artifactId>
-	            <groupId>jfree</groupId>
-	          </exclusion>
-	          <exclusion>
-	            <artifactId>jcommon</artifactId>
-	            <groupId>jfree</groupId>
-	          </exclusion>
-	          <exclusion>
-	            <artifactId>jdtcore</artifactId>
-	            <groupId>eclipse</groupId>
-	          </exclusion>
-	        </exclusions>
-	    </dependency>
-    	<!-- Tools -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>4.5.0</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jfreechart</artifactId>
+					<groupId>jfree</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcommon</artifactId>
+					<groupId>jfree</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jdtcore</artifactId>
+					<groupId>eclipse</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Tools -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
+		<!-- Arquilian Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Arquilian Test -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>1.0.0.Final</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -257,13 +356,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-				<webResources>
-					<resource>
-						<filtering>true</filtering>
-						<directory>${project.basedir}/src/main/webapp/WEB-INF</directory>	
-						<targetPath>WEB-INF</targetPath>					
-					</resource>
-				</webResources>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>${project.basedir}/src/main/webapp/WEB-INF</directory>
+							<targetPath>WEB-INF</targetPath>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>
