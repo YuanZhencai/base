@@ -147,7 +147,7 @@ public class DictServiceTest {
      */
 	@Test
 	public void testDelData(){
-		dictService.deleteData(null, "性别", "XB", null, null, null);
+		//dictService.deleteData(null, "性别", "XB", null, null, null);
 	}
 
 }
