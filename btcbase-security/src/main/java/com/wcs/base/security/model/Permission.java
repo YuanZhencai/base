@@ -18,7 +18,10 @@ import com.wcs.base.entity.IdEntity;
 @Table(name = "permission")
 public class Permission extends IdEntity {
 	private static final long serialVersionUID = 1L;
+	
 	private Long roleid;
+
+	@Column(length = 255)
 	private String permission;
 
 	public Permission() {
@@ -32,7 +35,7 @@ public class Permission extends IdEntity {
 		this.roleid = roleid;
 	}
 
-	@Column(length = 255)
+	
 	public String getPermission() {
 		return permission;
 	}

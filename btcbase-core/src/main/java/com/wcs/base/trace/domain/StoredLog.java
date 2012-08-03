@@ -38,6 +38,7 @@ public class StoredLog {
 
     private static final long serialVersionUID = -5765589801658858248L;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date logdttm;
 
     private String logLevel;
@@ -49,7 +50,7 @@ public class StoredLog {
     private String throwAbleMessage;
 
 
-    @Temporal(TemporalType.TIMESTAMP)
+    
     public Date getLogdttm() {
         return logdttm;
     }

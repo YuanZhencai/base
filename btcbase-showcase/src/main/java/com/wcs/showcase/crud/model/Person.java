@@ -25,14 +25,32 @@ import com.wcs.base.entity.BaseEntity;
 @SuppressWarnings("serial")
 public class Person extends BaseEntity {
 	
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;           // 姓名
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "BIRTHDAY")	
     private Date birthday;         // 出生日期
+
+    @Column(name = "SEX", length = 10)
     private String sex;            // 性别
+
+    @Column(name = "PHONE", length = 20)
     private String phone;          // 电话
+
+    @Column(name = "ADDRESS", length = 100)
     private String address;        // 地址
+
+    @Column(name = "EMAIL", length = 50)
     private String email;          // 邮箱
+
+    @Column(name = "NATIONALITY", length = 50)
     private String nationality;    // 国籍
+
+    @Column(name = "VIP")
     private Boolean vip;           // VIP
+
+    @Column(name = "REMARKS", length = 500)
     private String remarks;        // 备注
 	
 	@Override
@@ -40,16 +58,8 @@ public class Person extends BaseEntity {
 	public String getDisplayText() {
 		return this.getName();
 	}
-	
-	public Person() {
-		
-	}
-	
-	public Person(String name) {
-		this.name = name;
-	}
 
-	@Column(name = "NAME", nullable = false, length = 50)
+	
 	public String getName() {
 		return name;
 	}
@@ -58,7 +68,7 @@ public class Person extends BaseEntity {
 		this.name = name;
 	}
 	
-	@Column(name = "PHONE", length = 20)
+	
 	public String getPhone() {
 		return phone;
 	}
@@ -67,7 +77,7 @@ public class Person extends BaseEntity {
 		this.phone = phone;
 	}
 
-	@Column(name = "ADDRESS", length = 100)
+	
 	public String getAddress() {
 		return address;
 	}
@@ -76,7 +86,7 @@ public class Person extends BaseEntity {
 		this.address = address;
 	}
 
-	@Column(name = "EMAIL", length = 50)
+	
 	public String getEmail() {
 		return email;
 	}
@@ -85,7 +95,7 @@ public class Person extends BaseEntity {
 		this.email = email;
 	}
 	
-	@Column(name = "SEX", length = 10)
+	
 	public String getSex() {
 		return sex;
 	}
@@ -94,8 +104,7 @@ public class Person extends BaseEntity {
 		this.sex = sex;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "BIRTHDAY")
+
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -104,7 +113,7 @@ public class Person extends BaseEntity {
 		this.birthday = birthday;
 	}
 
-	@Column(name = "REMARKS", length = 500)
+	
 	public String getRemarks() {
 		return remarks;
 	}
@@ -113,7 +122,7 @@ public class Person extends BaseEntity {
 		this.remarks = remarks;
 	}
 
-	@Column(name = "NATIONALITY", length = 50)
+	
 	public String getNationality() {
 		return nationality;
 	}
@@ -122,7 +131,7 @@ public class Person extends BaseEntity {
 		this.nationality = nationality;
 	}
 
-	@Column(name = "VIP")
+	
 	public Boolean getVip() {
 		return vip;
 	}

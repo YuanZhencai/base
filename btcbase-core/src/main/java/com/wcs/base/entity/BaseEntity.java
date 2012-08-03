@@ -24,13 +24,22 @@ import javax.persistence.Transient;
 public abstract class BaseEntity extends IdEntity {
 	private static final long serialVersionUID = 1L;
 
+    @Column(name = "created_by", length = 30)
 	private String createdBy;
+    
+    @Column(name = "created_datetime")
 	private Timestamp createdDatetime;
+    
+    @Column(name = "defunct_ind")
 	private Boolean defunctInd;
+    
+    @Column(name = "updated_by", length = 30)
 	private String updatedBy;
+    
+    @Column(name = "updated_datetime")
 	private Timestamp updatedDatetime;
 
-	@Column(name = "created_by", length = 30)
+	
 	public String getCreatedBy() {
 		return this.createdBy;
 	}
@@ -39,7 +48,7 @@ public abstract class BaseEntity extends IdEntity {
 		this.createdBy = createdBy;
 	}
 
-	@Column(name = "created_datetime")
+	
 	public Timestamp getCreatedDatetime() {
 		return this.createdDatetime;
 	}
@@ -48,7 +57,7 @@ public abstract class BaseEntity extends IdEntity {
 		this.createdDatetime = createdDatetime;
 	}
 
-	@Column(name = "defunct_ind")
+	
 	public Boolean getDefunctInd() {
 		return this.defunctInd;
 	}
@@ -57,7 +66,7 @@ public abstract class BaseEntity extends IdEntity {
 		this.defunctInd = defunctInd;
 	}
 
-	@Column(name = "updated_by", length = 30)
+	
 	public String getUpdatedBy() {
 		return this.updatedBy;
 	}
@@ -66,7 +75,7 @@ public abstract class BaseEntity extends IdEntity {
 		this.updatedBy = updatedBy;
 	}
 
-	@Column(name = "updated_datetime")
+	
 	public Timestamp getUpdatedDatetime() {
 		return this.updatedDatetime;
 	}

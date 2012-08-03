@@ -26,8 +26,6 @@ public class User extends BaseEntity {
 	private String password;
 	private List<Role> roleList = Lists.newArrayList();// 有序的关联对象集合
 
-	public User() {
-	}
 
 	public String getEmail() {
 		return this.email;

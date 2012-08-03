@@ -20,14 +20,20 @@ import com.wcs.base.entity.IdEntity;
 @Table(name = "dict")
 public class Dict extends IdEntity {
     private static final long serialVersionUID = 1L;
-    /** 代码编号*/
-    private String code;
-    /** 代码名称*/
-    private String name;
-    /** 代码值*/
-    private String value;
-    /** 父级代码*/
-    private String parentCode;
+
+    @Column(name = "CODE", nullable = false, length = 30)
+    private String code;   //代码编号
+
+    @Column(name = "NAME", nullable = false, length = 30)
+    private String name;    //代码名称
+
+    @Column(name = "VALUE", length = 30)
+    private String value;   //代码值
+
+    @Column(name = "PARENT_CODE", length = 30)
+    private String parentCode;  //父级代码
+
+    @Column(name = "DEFUNCT_IND")
     private Boolean defunctInd;
 
     public Dict() {
@@ -50,7 +56,7 @@ public class Dict extends IdEntity {
         return null;
     }
 
-    @Column(name = "CODE", nullable = false, length = 30)
+    
     public String getCode() {
         return this.code;
     }
@@ -59,7 +65,7 @@ public class Dict extends IdEntity {
         this.code = code;
     }
 
-    @Column(name = "NAME", nullable = false, length = 30)
+    
     public String getName() {
         return this.name;
     }
@@ -68,7 +74,7 @@ public class Dict extends IdEntity {
         this.name = name;
     }
 
-    @Column(name = "VALUE", length = 30)
+    
     public String getValue() {
         return this.value;
     }
@@ -77,7 +83,7 @@ public class Dict extends IdEntity {
         this.value = value;
     }
 
-    @Column(name = "PARENT_CODE", length = 30)
+    
     public String getParentCode() {
         return this.parentCode;
     }
@@ -86,7 +92,7 @@ public class Dict extends IdEntity {
         this.parentCode = parentCode;
     }
 
-    @Column(name = "DEFUNCT_IND")
+    
     public Boolean isDefunctInd() {
         return defunctInd;
     }

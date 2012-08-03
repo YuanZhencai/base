@@ -13,10 +13,13 @@ import com.wcs.base.entity.IdEntity;
 @Table(name = "user_role")
 public class UserRole extends IdEntity implements Serializable{
 	
+	@Column(name="user_id")
 	private Long userid;
+
+	@Column(name="role_id")
 	private Long roleid;
 	
-	@Column(name="user_id")
+	
 	public Long getUserid() {
 		return userid;
 	}
@@ -25,7 +28,7 @@ public class UserRole extends IdEntity implements Serializable{
 		this.userid = userid;
 	}
 	
-	@Column(name="role_id")
+	
 	public Long getRoleid() {
 		return roleid;
 	}

@@ -8,10 +8,11 @@ import javax.persistence.TableGenerator;
 
 @MappedSuperclass
 public abstract class IdEntity implements java.io.Serializable {
-	private Long id;
-    
+        
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 
 //    @GeneratedValue(strategy=GenerationType.TABLE, generator="myGen")
 //    @TableGenerator(name="myGen", table="ID_GEN", pkColumnName="ID_NAME", valueColumnName="ID_VAL", initialValue=5000)

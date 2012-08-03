@@ -14,33 +14,35 @@ import com.wcs.base.entity.IdEntity;
 @Table(name="resource")
 public class Resource extends IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Long id;
+
+	@Column(name="is_leaf")
 	private Boolean isLeaf;
+
+	@Column(name="is_menu")
 	private Boolean isMenu;
+
+	@Column(name="key_name", nullable=false, length=255)
 	private String keyName;
 	private Integer level;
+
+	@Column(length=40)
 	private String name;
+
+	@Column(length=255)
 	private String number;
+
+	@Column(name="parent_id")
 	private Long parentId;
+
+	@Column(length=100)
 	private String url;
 
     public Resource() {
     }
 
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
-	public Long getId() {
-		return this.id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	@Column(name="is_leaf")
+	
 	public Boolean getIsLeaf() {
 		return this.isLeaf;
 	}
@@ -50,7 +52,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(name="is_menu")
+	
 	public Boolean getIsMenu() {
 		return this.isMenu;
 	}
@@ -60,7 +62,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(name="key_name", nullable=false, length=255)
+	
 	public String getKeyName() {
 		return this.keyName;
 	}
@@ -79,7 +81,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(length=40)
+	
 	public String getName() {
 		return this.name;
 	}
@@ -89,7 +91,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(length=255)
+	
 	public String getNumber() {
 		return this.number;
 	}
@@ -99,7 +101,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(name="parent_id")
+	
 	public Long getParentId() {
 		return this.parentId;
 	}
@@ -109,7 +111,7 @@ public class Resource extends IdEntity implements Serializable {
 	}
 
 
-	@Column(length=100)
+	
 	public String getUrl() {
 		return this.url;
 	}
