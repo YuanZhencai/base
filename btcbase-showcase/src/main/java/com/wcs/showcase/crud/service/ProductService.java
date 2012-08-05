@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.primefaces.model.LazyDataModel;
 

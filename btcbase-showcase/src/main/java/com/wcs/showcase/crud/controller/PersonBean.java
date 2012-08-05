@@ -58,7 +58,6 @@ public class PersonBean extends ViewBaseBean<Person> {
 	/**
 	 * 构造方法执行后会自动执行此方法
 	 */
-	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
 		this.setSexList(dictService.findWithSelectItem("SEX"));

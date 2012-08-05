@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -56,7 +55,6 @@ public class ProductBean extends ConversationBaseBean<Product> {
     /**
 	 * 构造方法执行后会自动执行此方法
 	 */
-	@SuppressWarnings("unused")
 	@PostConstruct
 	private void postConstruct() {
 		this.setProductCategoryList(dictService.findWithSelectItem("PROT"));

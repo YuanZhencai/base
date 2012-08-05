@@ -156,7 +156,7 @@
 	<build>
 		<finalName>btcbase-showcase</finalName>
 		<plugins>
-			<!-- ejb plugin -->
+			<!-- ejb plugin 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ejb-plugin</artifactId>
@@ -169,7 +169,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-
+-->
 			<!-- eclipse plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
