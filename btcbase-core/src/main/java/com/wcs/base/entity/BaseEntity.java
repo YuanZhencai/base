@@ -24,17 +24,17 @@ import javax.persistence.Transient;
 public abstract class BaseEntity extends IdEntity {
 	private static final long serialVersionUID = 1L;
 
-    @Column(name = "created_by", length = 30)
-	private String createdBy;
+    @Column(name = "created_by", length = 50)
+	private String createdBy;   //邮件地址 @ 之前的部分，同AD账号(AD_ACCOUNT)
     
     @Column(name = "created_datetime")
 	private Timestamp createdDatetime;
     
     @Column(name = "defunct_ind")
-	private Boolean defunctInd;
+	private Character defunctInd = 'N';   // Y表示失效/逻辑删除，N表示有效
     
-    @Column(name = "updated_by", length = 30)
-	private String updatedBy;
+    @Column(name = "updated_by", length = 50)
+	private String updatedBy;   //邮件地址 @ 之前的部分，同AD账号(AD_ACCOUNT)
     
     @Column(name = "updated_datetime")
 	private Timestamp updatedDatetime;
@@ -58,11 +58,11 @@ public abstract class BaseEntity extends IdEntity {
 	}
 
 	
-	public Boolean getDefunctInd() {
+	public Character getDefunctInd() {
 		return this.defunctInd;
 	}
 
-	public void setDefunctInd(Boolean defunctInd) {
+	public void setDefunctInd(Character defunctInd) {
 		this.defunctInd = defunctInd;
 	}
 
@@ -94,13 +94,12 @@ public abstract class BaseEntity extends IdEntity {
 			createdDatetime = ts;
 		}
 		updatedDatetime = createdDatetime;
-        defunctInd = false;
+        defunctInd = 'N';
 	}
 	
 	@PreUpdate
 	public void updateTimeStamp() {
 		updatedDatetime = new Timestamp(new Date().getTime());
 	}
-
 
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.StatelessEntityService;
-import com.wcs.showcase.crud.model.Person;
+import com.wcs.showcase.crud.model.Person2;
 
 /** 
 * <p>Project: btcbase</p> 
@@ -32,8 +32,8 @@ public class PersonService implements Serializable {
      * 查询所有的人员信息
      * @return List<Person>
      */
-    public List<Person> search() {
-    	List<Person> list = entityService.findAll(Person.class);
+    public List<Person2> search() {
+    	List<Person2> list = entityService.findAll(Person2.class);
     	
 		return  list;	
 	}	
@@ -43,7 +43,7 @@ public class PersonService implements Serializable {
      * @param filterMap
      * @return LazyDataModel<Person>
      */
-	public LazyDataModel<Person> findModelByMap(Map<String, Object> filterMap) {
+	public LazyDataModel<Person2> findModelByMap(Map<String, Object> filterMap) {
 		String hql = "select p from Person p where p.defunctInd = false";
 		StringBuilder xsql =  new StringBuilder(hql);
 	    xsql.append(" /~ and p.name like {name} ~/ ")

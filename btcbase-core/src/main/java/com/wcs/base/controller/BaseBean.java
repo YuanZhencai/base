@@ -37,7 +37,7 @@ public class BaseBean<T extends BaseEntity>  extends AbstractBaseBean<T> {
     
     public void deleteEntity() {
         T entity = getInstance();
-        entity.setDefunctInd(true);
+        entity.setDefunctInd('Y');
         entityService.update(entity);
     }
 	

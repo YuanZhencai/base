@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
@@ -22,9 +21,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.controller.ConversationBaseBean;
-import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.security.service.RoleService;
 import com.wcs.base.security.vo.ResourcesNode;
@@ -120,9 +119,9 @@ public class RoleBean extends ConversationBaseBean {
 		try {
 			List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
 			for (Resource resource : listresouce) {
-			     Permission permission = new Permission();
-			     permission.setRoleid(this.currentRole.getId());
-			     permission.setPermission(resource.getKeyName());
+				RoleResource permission = new RoleResource();
+			     permission.setRole(this.currentRole);
+			     permission.setUri(resource.getUri());
 			     this.entityService.create(permission);
 			 }
 		} catch (Exception e) {

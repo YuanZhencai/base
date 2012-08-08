@@ -32,14 +32,13 @@ import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
 /**
- * <p>Project: btcbase</p> 
- * <p>Title: LoginBean.java</p> 
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: </p> 
  * <p>Description: </p> 
- * <p>Copyright: Copyright 2005-2011.All rights reserved.</p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
  * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * @author guanjianghuai
  */
-
 @Named
 @ConversationScoped
 public class LoginBean implements Serializable {
@@ -70,7 +69,7 @@ public class LoginBean implements Serializable {
 		SecurityUtils.setSecurityManager(securityManager);
 		
 		Subject currentUser = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getPassword());
+		UsernamePasswordToken token = new UsernamePasswordToken(user.getAdAccount(), "");  //?密码为空？
 		token.setRememberMe(true);
 		try {
 			currentUser.login(token);
@@ -102,9 +101,9 @@ public class LoginBean implements Serializable {
      * @return
      */
     private List<List<Resource>> initAllResources() {
-        List<List<Resource>> allResList = Lists.newArrayList();
         List<Resource> resList = loginService.findAllSysResource();
         Map<String, List<Resource>> allResMap = Maps.newHashMap();
+        
         for (Resource r : resList) {
             String level = "level" + r.getLevel();
             List<Resource> list = allResMap.get(level);
@@ -113,6 +112,8 @@ public class LoginBean implements Serializable {
             }
             allResMap.get(level).add(r);
         }
+        
+        List<List<Resource>> allResList = Lists.newArrayList();
         for (int i = 0; i < allResMap.size(); i++) {
             allResList.add(allResMap.get("level" + i));
         }

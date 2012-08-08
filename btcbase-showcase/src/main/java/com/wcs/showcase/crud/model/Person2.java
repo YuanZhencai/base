@@ -23,7 +23,7 @@ import com.wcs.base.entity.BaseEntity;
 @Entity
 @Table(name = "PERSON")
 @SuppressWarnings("serial")
-public class Person extends BaseEntity {
+public class Person2 extends BaseEntity {
 	
 	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;           // 姓名

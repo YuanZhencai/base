@@ -14,19 +14,19 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 import com.google.common.collect.Lists;
-import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.ResourcesNode;
 
 /**
- * 
- * <p>Project: cmdpms</p>
- * <p>Description: </p>
- * <p>Copyright (c) 2011 Wilmar Consultancy Services</p>
- * <p>All Rights Reserved.</p>
- * @author <a href="mailto:yourname@wcs-global.com">Your Name</a>
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: </p> 
+ * <p>Description: </p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
+ * <p>Company: wcs.com</p> 
+ * @author guanjianghuai
  */
 
 @Stateless
@@ -202,15 +202,15 @@ public class RoleService implements Serializable {
 	 * @param sysResource
 	 * @param map
 	 */
-	public void initFatherNode(TreeNode root, List<Resource> sysResource, Map<String, Permission> map) {
+	public void initFatherNode(TreeNode root, List<Resource> sysResource, Map<String, RoleResource> map) {
 		List<Resource> flist = this.findTopResource(sysResource);
 		for (Resource father : flist) {
 			ResourcesNode fnode = new ResourcesNode(father.getName(), root);
-			if (map.get(father.getKeyName()) != null) {
+			if (map.get(father.getCode())!=null ) {
 				fnode.setSelected(true);
 			}
 			fnode.setId(father.getId());
-			fnode.setUrl(father.getUrl());
+			fnode.setUrl(father.getUri());
 			initChildNode(father.getId(), fnode, sysResource, map);
 		}
 	}
@@ -223,28 +223,28 @@ public class RoleService implements Serializable {
 	 * @param map
 	 */
 	@SuppressWarnings("unused")
-	public void initChildNode(Long id, TreeNode father, List<Resource> sysResource, Map<String, Permission> map) {
+	public void initChildNode(Long id, TreeNode father, List<Resource> sysResource, Map<String, RoleResource> map) {
 		List<Resource> chillist = this.findChildResource(id, sysResource);
 		boolean flag = false;
 		for (Resource child : chillist) {
 			List<Resource> sercondlist = this.findChildResource(child.getId(), sysResource);
 			if (!sercondlist.isEmpty()) {
 				ResourcesNode childnode = new ResourcesNode(child.getName(), father);
-				if (map.get(child.getKeyName()) != null) {
+				if ( map.get(child.getCode()) !=null) {
 					childnode.setSelected(true);
 				}
 				childnode.setId(child.getId());
-				childnode.setUrl(child.getUrl());
+				childnode.setUrl(child.getUri());
 				initChildNode(child.getId(), childnode, sysResource, map);
 			} else {
 
 				ResourcesNode fnode = new ResourcesNode(child.getName(), father);
-				if (map.get(child.getKeyName()) != null) {
+				if (map.get(child.getCode()) != null) {
 					fnode.setSelected(true);
 				}
 				// fnode.setSelected(flag);
 				fnode.setId(child.getId());
-				fnode.setUrl(child.getUrl());
+				fnode.setUrl(child.getUri());
 			}
 
 		}
@@ -288,11 +288,11 @@ public class RoleService implements Serializable {
 	 * @throws Exception
 	 */
 	public void isSelectedResourceByRole(TreeNode root, List<Resource> sysResource, Role role) throws Exception {
-		List<Permission> roleResource = this.resourceService.findResouceByRole(role);
-		Map<String, Permission> map = new HashMap<String, Permission>();
+		List<RoleResource> roleResource = this.resourceService.findResouceByRole(role);
+		Map<String, RoleResource> map = new HashMap<String, RoleResource>();
 		if (!roleResource.isEmpty()) {
-			for (Permission p : roleResource) {
-				map.put(p.getPermission(), p);
+			for (RoleResource p : roleResource) {
+				map.put(p.getUri(), p);
 			}
 
 		}

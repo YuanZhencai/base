@@ -23,19 +23,19 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
-import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Role;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.model.User;
 import com.wcs.base.security.service.LoginService;
 
-/** 
-* <p>Project: btcbase</p> 
-* <p>Title: ShiroRealm.java</p> 
-* <p>Description: </p> 
-* <p>Copyright: Copyright All rights reserved.</p> 
-* <p>Company: wcs.com</p> 
-* @author <a href="mailto:yujingu@wcs-global.com">Yu JinGu</a> 
-*/
+/**
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: </p> 
+ * <p>Description: </p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
+ * <p>Company: wcs.com</p> 
+ * @author guanjianghuai
+ */
 @SuppressWarnings("serial")
 public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 	private BeanManager beanManager;
@@ -54,7 +54,7 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 		loginService = this.getBean(LoginService.class);
 		User user = loginService.findUser(token.getUsername());
 		if (user != null) {
-			return new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), getName());
+			return new SimpleAuthenticationInfo(token.getUsername(), "", getName());
 		} else {
 			return null;
 		}
@@ -71,9 +71,9 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			for (Role role : user.getRoleList()) {
-				List<Permission> permissions = loginService.findPermissions(role);
-				for (Permission permission : permissions) {
-					info.addStringPermission(permission.getPermission().toString());
+				List<RoleResource> permissions = loginService.findPermissions(role);
+				for (RoleResource permission : permissions) {
+					info.addStringPermission(permission.getUri());
 				}
 			}
 			return info;

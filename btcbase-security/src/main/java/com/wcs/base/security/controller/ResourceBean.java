@@ -13,6 +13,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
@@ -22,17 +23,18 @@ import org.slf4j.LoggerFactory;
 
 import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.Resource;
+import com.wcs.base.security.model.Resource.ResourceType;
 import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
 /**
- * <p>Project: btcbase</p> 
- * <p>Title: ResourceBean.java</p> 
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: </p> 
  * <p>Description: </p> 
- * <p>Copyright: Copyright .All rights reserved.</p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
  * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * @author guanjianghuai
  */
 
 @SuppressWarnings("rawtypes")
@@ -88,9 +90,9 @@ public class ResourceBean implements Serializable {
 		}
 
 		// 判断选择菜单是否为叶子节点，是则更新为包节点
-		Boolean isLeaf = selectedResource.getIsLeaf();
-		if (isLeaf) {
-			this.selectedResource.setIsLeaf(false);
+		if ("MENU".equals(selectedResource.getType()) 
+				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
+			//this.selectedResource.setIsLeaf(false);
 			resourceService.updateCurrentResource(this.selectedResource);
 		}
 
@@ -120,13 +122,12 @@ public class ResourceBean implements Serializable {
 	 * 构建新建资源
 	 * @param selectedResource
 	 */
-	@SuppressWarnings("unused")
 	private void buildNewResource(Resource selectedResource) {
 		// 上级菜单ID
 		// getInstance().setParentId(selectedResource.getId());
 
 		// 菜单级别
-		int level = selectedResource.getLevel() + 1;
+		//int level = selectedResource.getLevel() + 1;
 		// getInstance().setLevel(level);
 
 		// 设置默认isLeaf
@@ -198,9 +199,9 @@ public class ResourceBean implements Serializable {
 		}
 
 		// 更新上级菜单不是叶子节点
-		Boolean isLeaf = selectedResource.getIsLeaf();
-		if (isLeaf) {
-			this.selectedResource.setIsLeaf(false);
+		if ("MENU".equals(selectedResource.getType()) 
+				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
+			//this.selectedResource.setIsLeaf(false);
 			resourceService.updateCurrentResource(this.selectedResource);
 		}
 
@@ -218,7 +219,7 @@ public class ResourceBean implements Serializable {
 			if (checkIsLeaf) {
 				Resource res = null; // new Resource();
 				res.setId(parentId);
-				res.setIsLeaf(true);
+				res.setType(ResourceType.LEAF_MENU);
 				resourceService.updateCurrentResource(res);
 			}
 
@@ -265,7 +266,7 @@ public class ResourceBean implements Serializable {
 			Resource resource = resList.get(i);
 			if (resource.getParentId() == 0) {
 				TreeNode node = new DefaultTreeNode(resource, root);
-				if (resource.getIsLeaf() == false) {
+				if ( ResourceType.LEAF_MENU.equals(resource.getType()) ) {
 					findChildResource(resource, node);
 				}
 			}
@@ -283,7 +284,7 @@ public class ResourceBean implements Serializable {
 		for (Resource r : resList) {
 			if (r.getParentId() == currentId) {
 				TreeNode childNode = new DefaultTreeNode(r, node);
-				if (r.getIsLeaf() == false) {
+				if (! ResourceType.LEAF_MENU.equals(r.getType()) ) {
 					findChildResource(r, childNode);
 				}
 			}

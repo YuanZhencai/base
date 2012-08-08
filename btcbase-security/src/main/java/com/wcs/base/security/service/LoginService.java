@@ -9,22 +9,21 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.model.User;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 
 /**
  * <p>Project: btcbase-security</p> 
- * <p>Title: LoginService.java</p> 
+ * <p>Title: </p> 
  * <p>Description: </p> 
  * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
  * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * @author guanjianghuai
  */
-
 @Stateless
 public class LoginService implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -60,9 +59,9 @@ public class LoginService implements Serializable {
      * @param role
      * @return
      */
-    public List<Permission> findPermissions(Role role) {
-        String jpql = "SELECT p FROM Permission p WHERE p.roleid = ?1";
-        List<Permission> permissions = entityService.findList(jpql, role.getId());
+    public List<RoleResource> findPermissions(Role role) {
+        String jpql = "SELECT p FROM RoleResource p WHERE p.role.id = ?1";
+        List<RoleResource> permissions = entityService.findList(jpql, role.getId());
         return permissions;
     }
 }

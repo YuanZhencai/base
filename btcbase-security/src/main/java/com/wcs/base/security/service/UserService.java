@@ -3,6 +3,7 @@ package com.wcs.base.security.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,7 +18,6 @@ import com.google.common.collect.Lists;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.User;
-import com.wcs.base.security.model.UserRole;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.CollectionUtils;
 
@@ -250,7 +250,7 @@ public class UserService implements Serializable {
 
     @SuppressWarnings({ "unused", "null" })
     public Long[] assignUserRole(User user) {
-        User currentUser = this.findUniqueUser(user.getLoginName());
+        User currentUser = this.findUniqueUser(user.getAdAccount());
         Set<Role> roles = null; // currentUser.getRole();
         Object[] userRole = roles.toArray();
         Long[] uRole = new Long[userRole.length];
@@ -351,12 +351,24 @@ public class UserService implements Serializable {
      * Set current user roles
      * @param roleList
      */
-    public void createUserRoles(User user, List<Role> roleList) {
-        UserRole userRole = new UserRole();
-        for (Role role : roleList) {
-            userRole.setUserid(user.getId());
-            userRole.setRoleid(role.getId());
-            entityService.create(userRole);
-        }
+    public void setRolesOfUser(User user, List<Role> roleList) {
+    	User u = entityService.findUnique(User.class, user.getId());  // 得到持久化的User
+    	List<Role> userRoles = u.getRoleList();
+    	
+    	// 删除未被选中的Role
+    	ListIterator<Role> roles = userRoles.listIterator();
+		while(roles.hasNext()) {
+			Role r = roles.next();
+    		if (!roleList.contains(r)){
+    			userRoles.remove(r);
+    		}
+		}
+    	
+    	// 剔除已有的角色
+    	List<Role> appendedRoles = (List<Role>) CollectionUtils.subtract(roleList, userRoles);
+    	// 给User添加新的Role（这个appendedRoles是非持久化的，保存（更新）可能会出错）
+    	userRoles.addAll(appendedRoles);
+    	
+    	entityService.update(u);
     }
 }

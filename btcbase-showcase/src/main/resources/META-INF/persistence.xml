@@ -27,11 +27,10 @@
 		<jta-data-source>jdbc/btcbase</jta-data-source>
         <class>com.wcs.base.entity.IdEntity</class>
         <class>com.wcs.base.entity.BaseEntity</class>
-        <class>com.wcs.base.security.model.Permission</class>
+        <class>com.wcs.base.security.model.RoleResource</class>
         <class>com.wcs.base.security.model.Resource</class>
         <class>com.wcs.base.security.model.Role</class>
         <class>com.wcs.base.security.model.User</class>
-        <class>com.wcs.base.security.model.UserRole</class>
         <class>com.wcs.base.dict.model.Dict</class>
 		<properties>
       	   <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />

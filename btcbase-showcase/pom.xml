@@ -35,12 +35,13 @@
 		</dependency>
 
 		<!-- Java EE -->
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<optional>true</optional>
-		</dependency>
-
+	    <dependency>
+	        <groupId>org.jboss.spec</groupId>
+	        <artifactId>jboss-javaee-6.0</artifactId>
+	        <type>pom</type>
+	        <optional>true</optional>
+	    </dependency>
+				
 		<!-- JSF 2.1 -->
 		<dependency>
 			<groupId>javax.faces</groupId>
@@ -151,8 +152,26 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
-	</dependencies>
 
+		<!-- Arquilian Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<!-- import maven dependencies into arquillian -->
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
 	<build>
 		<finalName>btcbase-showcase</finalName>
 		<plugins>
@@ -197,4 +216,35 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>arquillian-glassfish-remote</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-glassfish-remote-3.1</artifactId>
+					<version>1.0.0.CR3</version>
+				</dependency>
+				<dependency>
+				    <groupId>org.jboss.weld</groupId>
+				    <artifactId>weld-core</artifactId>
+				    <version>1.1.5.Final</version>
+				    <scope>test</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+					</testResource>
+					<testResource>
+						<directory>src/test/resources-glassfish-embedded</directory>
+					</testResource>
+				</testResources>
+			</build>
+		</profile>
+	</profiles>	
 </project>

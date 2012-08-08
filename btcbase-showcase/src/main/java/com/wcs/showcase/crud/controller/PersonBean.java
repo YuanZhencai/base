@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ViewBaseBean;
 import com.wcs.base.dict.service.DictService;
-import com.wcs.showcase.crud.model.Person;
+import com.wcs.showcase.crud.model.Person2;
 import com.wcs.showcase.crud.service.PersonService;
 
 /** 
@@ -32,7 +32,7 @@ import com.wcs.showcase.crud.service.PersonService;
 @ManagedBean
 @ViewScoped
 @SuppressWarnings("serial")
-public class PersonBean extends ViewBaseBean<Person> {
+public class PersonBean extends ViewBaseBean<Person2> {
 
 	@Inject
 	private PersonService personService;
@@ -40,8 +40,8 @@ public class PersonBean extends ViewBaseBean<Person> {
 	private DictService dictService;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);
-	private LazyDataModel<Person> lazyModel;           // 动态分页使用
-	private List<Person> personList = new ArrayList<Person>();
+	private LazyDataModel<Person2> lazyModel;           // 动态分页使用
+	private List<Person2> personList = new ArrayList<Person2>();
 	private boolean editMode;        					// 是否修改
 	private List<SelectItem> sexList = new ArrayList<SelectItem>();        // 性别下拉框
 	
@@ -88,19 +88,19 @@ public class PersonBean extends ViewBaseBean<Person> {
 		this.filterMap = filterMap;
 	}
 
-	public LazyDataModel<Person> getLazyModel() {
+	public LazyDataModel<Person2> getLazyModel() {
 		return lazyModel;
 	}
 
-	public void setLazyModel(LazyDataModel<Person> lazyModel) {
+	public void setLazyModel(LazyDataModel<Person2> lazyModel) {
 		this.lazyModel = lazyModel;
 	}
 
-	public List<Person> getPersonList() {
+	public List<Person2> getPersonList() {
 		return personList;
 	}
 
-	public void setPersonList(List<Person> personList) {
+	public void setPersonList(List<Person2> personList) {
 		this.personList = personList;
 	}
 

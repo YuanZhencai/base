@@ -8,24 +8,24 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
-import com.wcs.base.security.model.Permission;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
+import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.service.StatelessEntityService;
 import com.wcs.base.util.ResourcesNode;
 
 /**
- * <p>Project: btcbase</p> 
- * <p>Title: ResourceService.java</p> 
+ * <p>Project: btcbase-security</p> 
+ * <p>Title: </p> 
  * <p>Description: </p> 
- * <p>Copyright: Copyright .All rights reserved.</p> 
+ * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
  * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * @author guanjianghuai
  */
-
 @Stateless
 public class ResourceService implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class ResourceService implements Serializable {
 	}
 
 	public List<Resource> findAllSysResource() {
-		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.number";
+		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.code";
 		List<Resource> resList = this.entityService.findList(sql);
 		return resList;
 	}
@@ -134,11 +134,11 @@ public class ResourceService implements Serializable {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Permission> getResourceListByRole(Role role) {
+	public List<RoleResource> getResourceListByRole(Role role) {
 		try {
-			String sql = "SELECT p FROM Permission p WHERE p.roleid = ?1 ";
+			String sql = "SELECT p FROM RoleResource p WHERE p.role.id = ?1 ";
 			Query query = entityService.createQuery(sql, role.getId());
-			List<Permission> permissionList = query.getResultList();
+			List<RoleResource> permissionList = query.getResultList();
 			return permissionList;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,8 +149,8 @@ public class ResourceService implements Serializable {
 	/**
 	 * Description: 查询角色的资源
 	 */
-	public List<Permission> findResouceByRole(Role role) throws Exception {
-		List<Permission> permissionList = this.getResourceListByRole(role);
+	public List<RoleResource> findResouceByRole(Role role) throws Exception {
+		List<RoleResource> permissionList = this.getResourceListByRole(role);
 		
 		return permissionList;
 	}
@@ -170,12 +170,12 @@ public class ResourceService implements Serializable {
 		if (compoent != null && !"".equals(compoent) && sysResouce != null) {
 
 			for (Resource rs : sysResouce) {
-				if (currentUrl.equals(rs.getUrl())) {
-					compoent = rs.getNumber() + compoent;
+				if (currentUrl.equals(rs.getUri())) {
+					compoent = rs.getCode() + compoent;
 				}
 			}
 			for (Resource rs : sysResouce) {
-				if (compoent.equals(rs.getNumber())) {
+				if (compoent.equals(rs.getCode())) {
 					return rs;
 				}
 			}
@@ -193,7 +193,7 @@ public class ResourceService implements Serializable {
 	public Resource findResourceByUrl(List<Resource> sysResouce, String url) throws Exception {
 		if (url != null && url.length() != 0 && sysResouce != null) {
 			for (Resource r : sysResouce) {
-				if (url.equals(r.getUrl())) {
+				if (url.equals(r.getUri())) {
 					return r;
 				}
 			}
@@ -376,7 +376,8 @@ public class ResourceService implements Serializable {
 	public void updateCurrentResource(Resource selectedResource) {
 		String sql = "Update Resource SET IS_LEAF= :IsLeaf WHERE id= :id";
 		Query query = this.entityService.createQuery(sql);
-		if (selectedResource.getIsLeaf()) {
+		if ("MENU".equals(selectedResource.getType()) 
+				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
 			query.setParameter("IsLeaf", 1);
 		} else {
 			query.setParameter("IsLeaf", 0);
