@@ -17,17 +17,4 @@
         </properties>
     </persistence-unit>
     
-    <!-- <persistence-unit name="test" transaction-type="JTA">
-		<jta-data-source>jdbc/arquillian</jta-data-source>
-		<class>com.base.arquilian.model.Game</class>
-		<properties>
-			日志的级别  
-			<property name="openjpa.Log" value="DefaultLevel=TRACE,SQL=TRACE" />
-			<property name="openjpa.DynamicEnhancementAgent" value="false" />
-			<property name="openjpa.jdbc.DBDictionary" value="useWildCardForCount=true" />
-			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema" />
-			<property name="openjpa.jdbc.UpdateManager" value="operation-order" />
-			<property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
-		</properties>
-	</persistence-unit> -->
 </persistence>
