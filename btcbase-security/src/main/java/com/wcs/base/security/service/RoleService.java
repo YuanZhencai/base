@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.RoleResource;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 import com.wcs.base.util.ResourcesNode;
 
 /**
@@ -34,7 +34,7 @@ public class RoleService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private StatelessEntityService entityService;
+	private EntityService entityService;
 	@Inject
 	private ResourceService resourceService;
 

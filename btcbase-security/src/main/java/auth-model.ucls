@@ -2,7 +2,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.wcs.base.security.model.Role" project="btcbase-security" 
     file="/btcbase-security/src/main/java/com/wcs/base/security/model/Role.java" binary="false">    
-    <position height="-1" width="-1" x="410" y="145"/>    
+    <position height="-1" width="-1" x="321" y="142"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -10,7 +10,7 @@
   </class>  
   <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.wcs.base.security.model.User" project="btcbase-security" 
     file="/btcbase-security/src/main/java/com/wcs/base/security/model/User.java" binary="false">    
-    <position height="-1" width="-1" x="643" y="140"/>    
+    <position height="-1" width="-1" x="565" y="140"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -19,7 +19,7 @@
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="com.wcs.base.security.model.Resource" 
     project="btcbase-security" file="/btcbase-security/src/main/java/com/wcs/base/security/model/Resource.java" 
     binary="false">    
-    <position height="-1" width="-1" x="132" y="147"/>    
+    <position height="-1" width="-1" x="107" y="149"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -28,7 +28,7 @@
   <class id="4" corner="BOTTOM_RIGHT" language="java" name="com.wcs.base.security.model.master.Person" 
     project="btcbase-security" file="/btcbase-security/src/main/java/com/wcs/base/security/model/master/Person.java" 
     binary="false">    
-    <position height="-1" width="-1" x="930" y="140"/>    
+    <position height="-1" width="-1" x="863" y="139"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -37,18 +37,18 @@
   <class id="5" corner="BOTTOM_RIGHT" language="java" name="com.wcs.base.security.model.master.Station" 
     project="btcbase-security" file="/btcbase-security/src/main/java/com/wcs/base/security/model/master/Station.java" 
     binary="false">    
-    <position height="-1" width="-1" x="668" y="378"/>    
+    <position height="-1" width="-1" x="588" y="373"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
   <association id="6">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="7" name="resourceList"/>      
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="7" name="stationList"/>      
       <multiplicity id="8" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="9">    
@@ -65,14 +65,6 @@
       <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="16" name="stationList"/>      
-      <multiplicity id="17" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

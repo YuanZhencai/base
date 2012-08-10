@@ -13,7 +13,7 @@ import javax.inject.Named;
 import com.google.common.base.Function;
 import com.google.common.collect.MapMaker;
 import com.wcs.base.dict.model.Dict;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 
 /**
  * 
@@ -28,7 +28,7 @@ import com.wcs.base.service.StatelessEntityService;
 public class DictBean implements Serializable {
     private static final long serialVersionUID = 1L;
     @Inject
-    private StatelessEntityService entityService;
+    private EntityService entityService;
     /** 代码缓存Map*/
     private  ConcurrentMap<String, String> codeCaseMap;
 

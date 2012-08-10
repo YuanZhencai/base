@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 
 import javacommon.xsqlbuilder.XsqlBuilder;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.primefaces.model.LazyDataModel;
@@ -31,8 +35,20 @@ import com.wcs.base.util.Validate;
  *
  * @author chris
  */
-public abstract class EntityService extends CrudEntityService {
+@Stateless
+public class EntityService extends CrudEntityService {
 	private static final long serialVersionUID = 1L;
+	
+	@PersistenceContext(unitName = "pu")
+	public EntityManager entityManager;
+
+	@SuppressWarnings("unused")
+	@PostConstruct
+	private void initEntityManager() {
+		logger.info("初始化 EntityManager");
+		this.setEntityManager(entityManager);
+	}
+	
     // -----------------------------------  List 查询  --------------------------------------//
 	/**
      * <p>按 XSQL 查询，参数以 Filter(Map) 形式提供.
@@ -294,7 +310,7 @@ public abstract class EntityService extends CrudEntityService {
      * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
      * @param filterMap 参数集合，从页面上以Map形式传过来的属性集合.
      * @return paramMap  回调的参数列表，Map的key剔除了前缀
-     * @see StatelessEntityService#findXsqlPage
+     * @see EntityService#findXsqlPage
      */
     public Map<String, Object> buildParamMap(String xsql, Map<String, Object> filterMap) {
         // 得到需要动态构建的字段

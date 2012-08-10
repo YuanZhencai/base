@@ -14,14 +14,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wcs.base.dict.model.Dict;
 import com.wcs.base.entity.BaseEntity;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 
 @Named(value = "dictService")
 public class DictService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	StatelessEntityService entityService;
+	EntityService entityService;
 
 	/**
 	 *  <p>Description:

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +15,8 @@ import org.primefaces.model.TreeNode;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.RoleResource;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityReader;
+import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.ResourcesNode;
 
 /**
@@ -30,79 +31,11 @@ import com.wcs.base.util.ResourcesNode;
 public class ResourceService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private StatelessEntityService entityService;
-
-	public ResourceService() {
-	}
-
-	public List<Resource> findAllSysResource() {
-		String sql = "SELECT rs FROM Resource rs  ORDER BY rs.code";
-		List<Resource> resList = this.entityService.findList(sql);
-		return resList;
-	}
-
-	/**
-	 * 根据菜单Id得到孩子菜单
-	 * @param parentid
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Resource> getChildListById(Long parentid) {
-		try {
-			Query query = entityService.createQuery("SELECT r FROM Resource r WHERE r.parentId = ?1");
-			query.setParameter(1, parentid);
-			return (List<Resource>) query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * <p>Description: 得到所有资源</p>
-	 * @return
-	 */
-
-	@SuppressWarnings("unchecked")
-	public List<Resource> getAllTree() {
-		try {
-			return (List<Resource>) entityService.createQuery("SELECT r FROM Resource r").getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Description:得到父级资源集合
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Resource> getFatherTree() {
-		try {
-			String sql = "SELECT r FROM Resource r where r.parentId is null";
-			return (List<Resource>) entityService.createQuery(sql).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Description: 通过ID加载资源
-	 * @param id
-	 * @return
-	 */
-	public Resource loadTree(Long id) {
-		try {
-			return entityService.findUnique(Resource.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	@EJB(beanName="EntityReader")
+	private EntityReader entityReader;
+	
+	@EJB
+	private EntityWriter entityWriter;
 
 	/**
 	 * Description: 得到选中节点资源对象集合
@@ -116,7 +49,7 @@ public class ResourceService implements Serializable {
 			if (size != 0) {
 				for (int i = 0; i < size; i++) {
 					ResourcesNode node = (ResourcesNode) selectedNodes[i];
-					Resource rs = this.entityService.findUnique(Resource.class, node.getId());
+					Resource rs = this.entityReader.findUnique(Resource.class, node.getId());
 					list.add(rs);
 				}
 				return list;
@@ -137,7 +70,7 @@ public class ResourceService implements Serializable {
 	public List<RoleResource> getResourceListByRole(Role role) {
 		try {
 			String sql = "SELECT p FROM RoleResource p WHERE p.role.id = ?1 ";
-			Query query = entityService.createQuery(sql, role.getId());
+			Query query = entityReader.createQuery(sql, role.getId());
 			List<RoleResource> permissionList = query.getResultList();
 			return permissionList;
 		} catch (Exception e) {
@@ -156,97 +89,13 @@ public class ResourceService implements Serializable {
 	}
 
 	/**
-	 * Description: 根据id查找资源
-	 * @param sysResouce
-	 * @param compoent
-	 * @param currentUrl
-	 * @return
-	 * @throws Exception
-	 */
-	public Resource findResourceByCompenet(List<Resource> sysResouce, String compoent, String currentUrl) throws Exception {
-		if (currentUrl == null || "".equals(currentUrl)) {
-			return null;
-		}
-		if (compoent != null && !"".equals(compoent) && sysResouce != null) {
-
-			for (Resource rs : sysResouce) {
-				if (currentUrl.equals(rs.getUri())) {
-					compoent = rs.getCode() + compoent;
-				}
-			}
-			for (Resource rs : sysResouce) {
-				if (compoent.equals(rs.getCode())) {
-					return rs;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Description: 根据Uri查找资源菜单 针对菜单级别
-	 * @param sysResouce
-	 * @param url
-	 * @return
-	 * @throws Exception
-	 */
-	public Resource findResourceByUrl(List<Resource> sysResouce, String url) throws Exception {
-		if (url != null && url.length() != 0 && sysResouce != null) {
-			for (Resource r : sysResouce) {
-				if (url.equals(r.getUri())) {
-					return r;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Description: 查询菜单资源下的组件资源
-	 * @param sysResouce
-	 * @param rs
-	 * @return
-	 * @throws Exception
-	 */
-	public List<Resource> findMenuComponentResouce(List<Resource> sysResouce, Resource rs) throws Exception {
-		List<Resource> compoentResource = new ArrayList<Resource>();
-		if (rs != null) {
-			for (Resource r : sysResouce) {
-				if (r.getParentId().equals(rs.getId())) {
-					compoentResource.add(r);
-				}
-			}
-		}
-
-		return compoentResource;
-	}
-
-	/**
-	 * Description:查询当前用户所拥有的组件资源
-	 * @param allUserResource
-	 * @param compoentResouce
-	 * @return
-	 */
-	public List<Resource> findUserCompoentResource(List<Resource> allUserResource, List<Resource> compoentResouce) {
-		List<Resource> userCompoentList = new ArrayList<Resource>();
-		if (!compoentResouce.isEmpty()) {
-			for (Resource r : compoentResouce) {
-				if (allUserResource.contains(r)) {
-					userCompoentList.add(r);
-				}
-			}
-		}
-		return userCompoentList;
-	}
-
-	/**
 	 * 查找所有资源
 	 * @return
 	 */
 	@SuppressWarnings("unused")
 	public LazyDataModel<Resource> searchAllResource() {
 		String sql = "SELECT r FROM Resource r WHERE r.id > 1";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		List<?> queryList = query.getResultList();
 		List<Resource> rsList = getResourceList(queryList);
 
@@ -280,7 +129,7 @@ public class ResourceService implements Serializable {
 	 */
 	private List<Resource> findResourceByName(String searchResourceName) {
 		String sql = "SELECT r FROM Resource r WHERE r.id > 1 and r.name LIKE :name";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		query.setParameter("name", "%" + searchResourceName + "%");
 		List<?> queryList = query.getResultList();
 
@@ -293,8 +142,7 @@ public class ResourceService implements Serializable {
 	 */
 	public List<Resource> findAllResource() {
 		String sql = "SELECT r FROM Resource r";
-		Query query = this.entityService.createQuery(sql);
-		List<?> queryList = query.getResultList();
+		List<Resource> queryList = this.entityReader.findList(sql);
 
 		return getResourceList(queryList);
 	}
@@ -329,7 +177,7 @@ public class ResourceService implements Serializable {
 	@SuppressWarnings("unused")
 	private String findParentName(Resource resource) {
 		String sql = "SELECT r FROM Resource r WHERE r.id = :id";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		query.setParameter("id", resource.getParentId());
 		List<?> resourceList = query.getResultList();
 		if (resourceList.isEmpty()) {
@@ -349,7 +197,7 @@ public class ResourceService implements Serializable {
 	 */
 	public void deleteRolePermission(Role role) {
 		String sql = "DELETE FROM Permission p WHERE p.roleid = ?1";
-		this.entityService.batchExecute(sql, role.getId());
+		this.entityWriter.batchExecute(sql, role.getId());
 	}
 
 	/**
@@ -358,7 +206,7 @@ public class ResourceService implements Serializable {
 	 */
 	public void deleteResource(Resource res) {
 		String sql = "DELETE FROM Resource r WHERE r.id=?1";
-		this.entityService.batchExecute(sql, res.getId());
+		this.entityWriter.batchExecute(sql, res.getId());
 	}
 
 	/**
@@ -366,7 +214,7 @@ public class ResourceService implements Serializable {
 	 * @param currentResource
 	 */
 	public void modResource(Resource res) {
-		this.entityService.update(res);
+		this.entityWriter.update(res);
 	}
 
 	/**
@@ -375,7 +223,7 @@ public class ResourceService implements Serializable {
 	 */
 	public void updateCurrentResource(Resource selectedResource) {
 		String sql = "Update Resource SET IS_LEAF= :IsLeaf WHERE id= :id";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		if ("MENU".equals(selectedResource.getType()) 
 				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
 			query.setParameter("IsLeaf", 1);
@@ -393,7 +241,7 @@ public class ResourceService implements Serializable {
 	 */
 	public Boolean judgeKeyNameUnique(String keyName) {
 		String sql = "SELECT COUNT(*) FROM Resource r WHERE r.keyName = :keyName";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		query.setParameter("keyName", keyName);
 		Long count = (Long) query.getSingleResult();
 		if (count > 0) {
@@ -410,7 +258,7 @@ public class ResourceService implements Serializable {
 	 */
 	public Boolean checkCurrentResIsLeaf(Long parentId) {
 		String sql = "SELECT COUNT(*) FROM Resource r WHERE r.parentId = :parentId";
-		Query query = this.entityService.createQuery(sql);
+		Query query = this.entityReader.createQuery(sql);
 		query.setParameter("parentId", parentId);
 		Long count = (Long) query.getSingleResult();
 		if (count > 0) {
@@ -427,7 +275,7 @@ public class ResourceService implements Serializable {
 	 */
 	public Resource findResourceByKeyName(String keyName) {
 		String sql = "SELECT r FROM Resource r WHERE r.keyName = :keyName";
-		Query query = entityService.createQuery(sql);
+		Query query = entityReader.createQuery(sql);
 		query.setParameter("keyName", keyName);
 		Resource resource = (Resource) query.getSingleResult();
 

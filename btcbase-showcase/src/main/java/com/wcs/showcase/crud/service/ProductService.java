@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 import com.wcs.showcase.crud.model.Product;
 
 /** 
@@ -30,7 +30,7 @@ public class ProductService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	public StatelessEntityService es;
+	public EntityService es;
 	
     /**
      * 查询所有的商品信息
@@ -61,7 +61,7 @@ public class ProductService implements Serializable {
 	
 	//-------------------- setter & getter --------------------//
 	
-	public void setEntityService(StatelessEntityService entityService) {
+	public void setEntityService(EntityService entityService) {
 		this.es = entityService;
 	}
 	

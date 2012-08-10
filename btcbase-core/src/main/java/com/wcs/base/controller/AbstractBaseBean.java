@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.inject.Inject;
 
 import com.wcs.base.entity.IdEntity;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 import com.wcs.base.util.ReflectionUtils;
 /**
  * 
@@ -20,7 +20,7 @@ public abstract class AbstractBaseBean<T extends IdEntity> implements Serializab
     protected Long id;
     protected T instance; // currentEntity
     @Inject
-    protected StatelessEntityService entityService;
+    protected EntityService entityService;
 
     protected void initInstance() {
         if (instance == null) {

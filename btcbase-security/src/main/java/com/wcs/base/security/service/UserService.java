@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.User;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 import com.wcs.base.util.CollectionUtils;
 
 /**
@@ -35,7 +35,7 @@ public class UserService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private StatelessEntityService entityService;
+	private EntityService entityService;
 	
     public UserService() {}
 

@@ -6,7 +6,7 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +22,7 @@ public class StoredLogService implements Serializable {
 //	private EntityService entityService;
 	private static final long serialVersionUID = 1L;
 	@Inject
-    StatelessEntityService entityService;
+    EntityService entityService;
 
     public enum LogLevel {
                 DEBUG, INFO, WARN, ERROR, TRACE;

@@ -27,7 +27,7 @@ import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.service.ResourceService;
 import com.wcs.base.security.service.RoleService;
 import com.wcs.base.security.vo.ResourcesNode;
-import com.wcs.base.service.StatelessEntityService;
+import com.wcs.base.service.EntityService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
@@ -48,7 +48,7 @@ public class RoleBean extends ConversationBaseBean {
 	private final Logger logger = LoggerFactory.getLogger(RoleBean.class);
 
 	@Inject
-	private StatelessEntityService entityService;
+	private EntityService entityService;
 	@Inject
 	private RoleService roleService;
 	@Inject
