@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.Query;
@@ -35,8 +36,9 @@ public class RoleService implements Serializable {
 
 	@Inject
 	private EntityService entityService;
-	@Inject
-	private ResourceService resourceService;
+	
+	@EJB
+	PermissionCache permissionCache;
 
 	public RoleService() {
 		System.out.println("start roleservice....");
@@ -288,7 +290,7 @@ public class RoleService implements Serializable {
 	 * @throws Exception
 	 */
 	public void isSelectedResourceByRole(TreeNode root, List<Resource> sysResource, Role role) throws Exception {
-		List<RoleResource> roleResource = this.resourceService.findResouceByRole(role);
+		List<RoleResource> roleResource = this.permissionCache.findResouceByRole(role);
 		Map<String, RoleResource> map = new HashMap<String, RoleResource>();
 		if (!roleResource.isEmpty()) {
 			for (RoleResource p : roleResource) {

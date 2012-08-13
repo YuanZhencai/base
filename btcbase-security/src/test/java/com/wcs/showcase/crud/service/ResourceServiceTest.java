@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.wcs.base.security.model.Resource;
-import com.wcs.base.security.service.ResourceService;
+import com.wcs.base.security.service.ResourceCache;
 
 /**
  * <p>Project: btcbase-security</p> 
@@ -29,7 +29,7 @@ import com.wcs.base.security.service.ResourceService;
 public class ResourceServiceTest extends BaseTest{
 
 	@EJB
-	private ResourceService resourceService;
+	private ResourceCache resourceCache;
 	
     /**
      * <b>案例:</b> search() 查询人员信息 <br/> 

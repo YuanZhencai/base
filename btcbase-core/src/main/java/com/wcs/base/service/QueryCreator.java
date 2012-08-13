@@ -50,5 +50,9 @@ public abstract class QueryCreator implements Serializable{
         }
         return query;
     }
+    
+    public EntityManager getEM(){
+    	return entityManager;
+    }
 
 }

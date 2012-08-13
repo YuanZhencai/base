@@ -1,10 +1,13 @@
 package com.wcs.showcase.crud.service;
 
+import java.awt.print.Book;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
@@ -52,5 +55,5 @@ public abstract class BaseTest{
 				//.artifact("net.sf.jasperreports:jasperreports")
                 .resolveAsFiles());
 	}
-
+	
 }

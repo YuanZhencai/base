@@ -3,11 +3,13 @@
  */
 package com.wcs.base.security.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,9 +26,11 @@ import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.RoleResource;
-import com.wcs.base.security.service.ResourceService;
+import com.wcs.base.security.service.PermissionCache;
+import com.wcs.base.security.service.ResourceCache;
 import com.wcs.base.security.service.RoleService;
 import com.wcs.base.security.vo.ResourcesNode;
+import com.wcs.base.service.EntityReader;
 import com.wcs.base.service.EntityService;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
@@ -52,7 +56,10 @@ public class RoleBean extends ConversationBaseBean {
 	@Inject
 	private RoleService roleService;
 	@Inject
-	private ResourceService resourceService;
+	private ResourceCache resourceCache;
+	
+	@EJB
+	PermissionCache permissionCache;
 
 	private TreeNode root;// 资源树
 	private TreeNode[] selectedNodes;// 节点数组
@@ -64,9 +71,8 @@ public class RoleBean extends ConversationBaseBean {
 	private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
 	private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
 	
-	public RoleBean() {
-		
-	}
+	@EJB(beanName="EntityReader")
+	private EntityReader entityReader;
 
 	@SuppressWarnings("unused")
 	@PostConstruct
@@ -109,7 +115,7 @@ public class RoleBean extends ConversationBaseBean {
 
 		// 删除当前角色旧的授权
 		try {
-			this.resourceService.deleteRolePermission(this.currentRole);
+			this.permissionCache.deleteRolePermission(this.currentRole);
 		} catch (Exception e) {
 			MessageUtils.addErrorMessage("rolemessgeId", "删除角色旧资源失败.");
 			return JSFUtils.getViewId();
@@ -117,7 +123,7 @@ public class RoleBean extends ConversationBaseBean {
 
 		// 保存角色授权
 		try {
-			List<Resource> listresouce = this.resourceService.getSelectResource(selectedNodes);
+			List<Resource> listresouce = this.loadSelectResource(selectedNodes);
 			for (Resource resource : listresouce) {
 				RoleResource permission = new RoleResource();
 			     permission.setRole(this.currentRole);
@@ -131,6 +137,23 @@ public class RoleBean extends ConversationBaseBean {
 
 		MessageUtils.addSuccessMessage("rolemessgeId", "角色资源分配成功");
 		return LIST_PAGE;
+	}
+	
+	/**
+	 * Description: 得到选中节点资源对象集合
+	 * @param selectedNodes
+	 * @return
+	 */
+	private List<Resource> loadSelectResource(TreeNode[] selectedNodes) {
+		List<Resource> list = new ArrayList<Resource>();
+		if (selectedNodes != null) {
+			for (TreeNode node : selectedNodes ){
+				Resource rs = entityReader.findUnique(Resource.class, ((ResourcesNode) node).getId());
+				list.add(rs);
+			}
+		} 
+
+		return list;
 	}
 
 	/**
@@ -199,7 +222,7 @@ public class RoleBean extends ConversationBaseBean {
 		// this.roleVo.setRoleName(this.currentRole.getRoleName());
 		root = new ResourcesNode("系统资源", null);
 		// 若该角色已经分配过资源则查询已有的资源 并设置选中
-		List<Resource> allResource = resourceService.findAllResource();
+		List<Resource> allResource = resourceCache.loadAllResource();
 		try {
 			this.roleService.isSelectedResourceByRole(root, allResource, this.currentRole);
 		} catch (Exception e) {

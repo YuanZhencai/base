@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,7 +25,8 @@ import org.slf4j.LoggerFactory;
 import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.base.security.model.Resource;
 import com.wcs.base.security.model.Resource.ResourceType;
-import com.wcs.base.security.service.ResourceService;
+import com.wcs.base.security.service.ResourceCache;
+import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
@@ -45,9 +47,11 @@ public class ResourceBean implements Serializable {
 	private final Logger log = LoggerFactory.getLogger(ResourceBean.class);
 
 	@Inject
-	private ResourceService resourceService;
+	private ResourceCache resourceCache;
+	
+	@EJB
+	private EntityWriter entityWriter;	
 
-	private LazyDataModel<Resource> lazyModel;
 	private Resource selectedResource; // 节点操作资源
 	private TreeNode root; // 菜单资源
 	private TreeNode selectedNode; // 选中节点
@@ -55,7 +59,6 @@ public class ResourceBean implements Serializable {
 
 	@PostConstruct
 	public void initResource() {
-		this.lazyModel = resourceService.searchAllResource();
 		this.initResourceTree();
 	}
 
@@ -65,7 +68,6 @@ public class ResourceBean implements Serializable {
 	public void searchResource() {
 		log.info("Search Resource start.");
 		String searchResourceName = JSFUtils.getRequestParam("resName");
-		this.lazyModel = this.resourceService.searchResourceByName(searchResourceName);
 	}
 
 	/**
@@ -93,16 +95,16 @@ public class ResourceBean implements Serializable {
 		if ("MENU".equals(selectedResource.getType()) 
 				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
 			//this.selectedResource.setIsLeaf(false);
-			resourceService.updateCurrentResource(this.selectedResource);
+			resourceCache.updateCurrentResource(this.selectedResource);
 		}
 
-		// 判断关键字是否唯一
-		String keyName = JSFUtils.getRequestParam("keyName");
-		Boolean isUnique = this.resourceService.judgeKeyNameUnique(keyName);
-		if (!isUnique) {
-			MessageUtils.addSuccessMessage("resMsg", "关键字已经存在,请从新输入！");
-			return;
-		}
+//		// 判断关键字是否唯一
+//		String keyName = JSFUtils.getRequestParam("keyName");
+//		Boolean isUnique = this.resourceService.judgeKeyNameUnique(keyName);
+//		if (!isUnique) {
+//			MessageUtils.addSuccessMessage("resMsg", "关键字已经存在,请从新输入！");
+//			return;
+//		}
 
 		// 构建新建资源
 		buildNewResource(selectedResource);
@@ -145,7 +147,7 @@ public class ResourceBean implements Serializable {
 			return;
 		}
 		try {
-			this.resourceService.deleteResource(resource);
+			this.resourceCache.deleteResource(resource);
 			MessageUtils.addSuccessMessage("resMsg", "删除资源成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,23 +188,23 @@ public class ResourceBean implements Serializable {
 			return;
 		}
 
-		// 判断关键字是否唯一
-		String keyName = JSFUtils.getRequestParam("keyName");
-		Boolean isUnique = this.resourceService.judgeKeyNameUnique(keyName);
-		if (!isUnique) {
-			// 判断keyName对象是否为同一资源
-			Resource resByKeyName = resourceService.findResourceByKeyName(keyName);
-			if (resByKeyName.getId().longValue() != resource.getId().longValue()) {
-				MessageUtils.addSuccessMessage("resMsg", "关键字已经存在,请从新输入！");
-				return;
-			}
-		}
+//		// 判断关键字是否唯一
+//		String keyName = JSFUtils.getRequestParam("keyName");
+//		Boolean isUnique = this.resourceService.judgeKeyNameUnique(keyName);
+//		if (!isUnique) {
+//			// 判断keyName对象是否为同一资源
+//			Resource resByKeyName = resourceService.findResourceByKeyName(keyName);
+//			if (resByKeyName.getId().longValue() != resource.getId().longValue()) {
+//				MessageUtils.addSuccessMessage("resMsg", "关键字已经存在,请从新输入！");
+//				return;
+//			}
+//		}
 
 		// 更新上级菜单不是叶子节点
 		if ("MENU".equals(selectedResource.getType()) 
 				&& StringUtils.isNotEmpty(selectedResource.getUri())) {
 			//this.selectedResource.setIsLeaf(false);
-			resourceService.updateCurrentResource(this.selectedResource);
+			resourceCache.updateCurrentResource(this.selectedResource);
 		}
 
 		// 修改当前资源
@@ -212,15 +214,15 @@ public class ResourceBean implements Serializable {
 			if (selectedParentId != parentId) {
 				resource.setParentId(selectedParentId);
 			}
-			this.resourceService.modResource(resource);
+			entityWriter.update(resource);
 
 			// 检查旧的上级菜单是否应该为叶子节点
-			Boolean checkIsLeaf = resourceService.checkCurrentResIsLeaf(parentId);
+			Boolean checkIsLeaf = resourceCache.checkCurrentResIsLeaf(parentId);
 			if (checkIsLeaf) {
 				Resource res = null; // new Resource();
 				res.setId(parentId);
 				res.setType(ResourceType.LEAF_MENU);
-				resourceService.updateCurrentResource(res);
+				resourceCache.updateCurrentResource(res);
 			}
 
 			MessageUtils.addSuccessMessage("resMsg", "修改资源成功！");
@@ -251,7 +253,7 @@ public class ResourceBean implements Serializable {
 		if (this.resList == null) {
 			this.resList = new ArrayList<Resource>();
 		}
-		this.resList = resourceService.findAllResource();
+		this.resList = resourceCache.loadAllResource();
 
 		// 构建资源树
 		createResourceTree();
@@ -295,16 +297,7 @@ public class ResourceBean implements Serializable {
 	 * 刷新
 	 */
 	private void refresh() {
-		this.lazyModel = resourceService.searchAllResource();
 		initResourceTree();
-	}
-
-	public LazyDataModel<Resource> getLazyModel() {
-		return lazyModel;
-	}
-
-	public void setLazyModel(LazyDataModel<Resource> lazyModel) {
-		this.lazyModel = lazyModel;
 	}
 
 	public Resource getSelectedResource() {
