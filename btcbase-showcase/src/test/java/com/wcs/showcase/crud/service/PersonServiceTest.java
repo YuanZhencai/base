@@ -8,9 +8,7 @@ import javax.ejb.EJB;
 
 import org.junit.Test;
 
-import com.wcs.base.security.model.Role;
-import com.wcs.base.security.model.User;
-import com.wcs.base.security.service.LoginService;
+import com.wcs.showcase.crud.model.Person2;
 
 /**
 /**
@@ -21,22 +19,11 @@ import com.wcs.base.security.service.LoginService;
  * <p>Company: wcs.com</p> 
  * @author guanjianghuai
  */
-public class LoginServiceTest extends BaseTest{
+public class PersonServiceTest extends BaseTest{
 
 	@EJB
-	LoginService loginService;
-
-	@Test
-	public void test_findUser(){
-		User user = loginService.findUser(1L);
-	}
+	private PersonService personService;
 	
-	@Test
-	public void test_findUser2(){
-		User user = loginService.findUser("guanjianghuai");
-	}
-	
-
     /**
      * <b>案例:</b> search() 查询人员信息 <br/> 
      * [前提条件]<br/>
@@ -45,8 +32,8 @@ public class LoginServiceTest extends BaseTest{
      * [预期异常]<br/>
      */
 	@Test
-	public void test_findRoles(){
-		List<Role> list = loginService.findRoles("guanjianghuai");
+	public void test_search(){
+		List<Person2> list = personService.search();
 		assertTrue( list.size() >=0 );
 	}
 	

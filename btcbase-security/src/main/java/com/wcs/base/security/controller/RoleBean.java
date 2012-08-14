@@ -127,7 +127,7 @@ public class RoleBean extends ConversationBaseBean {
 			for (Resource resource : listresouce) {
 				RoleResource permission = new RoleResource();
 			     permission.setRole(this.currentRole);
-			     permission.setUri(resource.getUri());
+			     permission.setCode(resource.getCode());
 			     this.entityService.create(permission);
 			 }
 		} catch (Exception e) {

@@ -1,10 +1,7 @@
-/** * ShiroRealm.java 
-* Created on 2011-11-28 上午9:44:12 
-*/
-
 package com.wcs.base.security.realms;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.spi.CreationalContext;
@@ -23,10 +20,12 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import com.google.common.collect.Lists;
 import com.wcs.base.security.model.Role;
 import com.wcs.base.security.model.RoleResource;
 import com.wcs.base.security.model.User;
 import com.wcs.base.security.service.LoginService;
+import com.wcs.base.util.ContainerUtils;
 
 /**
  * <p>Project: btcbase-security</p> 
@@ -37,27 +36,22 @@ import com.wcs.base.security.service.LoginService;
  * @author guanjianghuai
  */
 @SuppressWarnings("serial")
-public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
-	private BeanManager beanManager;
+public class JdbcRealm extends AuthorizingRealm implements Serializable {
+	
 	private LoginService loginService;
-
-	public CustomAuthorizer() throws NamingException {
-		this.beanManager = (BeanManager) new InitialContext().lookup("java:comp/BeanManager");
-	}
 
 	/**
 	 * 认证回调函数, 登录时调用
 	 */
 	@Override
 	public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
+		// 获取界面传递过来的认证信息（用户名/密码）
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		loginService = this.getBean(LoginService.class);
-		User user = loginService.findUser(token.getUsername());
-		if (user != null) {
-			return new SimpleAuthenticationInfo(token.getUsername(), "", getName());
-		} else {
-			return null;
-		}
+		// 校验认证信息的合法性
+		loginService = ContainerUtils.getBean(LoginService.class);
+		User user = loginService.findUser(token.getUsername()); //adAccount
+		
+		return user==null ? null : new SimpleAuthenticationInfo(token.getUsername(), "", getName()); //密码为空
 	}
 
 	/**
@@ -65,30 +59,23 @@ public class CustomAuthorizer extends AuthorizingRealm implements Serializable {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		String loginName = principals.fromRealm(getName()).iterator().next().toString();
-		loginService = this.getBean(LoginService.class);
-		User user = loginService.findUser(loginName);
-		if (user != null) {
-			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-			for (Role role : user.getRoleList()) {
-				List<RoleResource> permissions = loginService.findPermissions(role);
-				for (RoleResource permission : permissions) {
-					info.addStringPermission(permission.getUri());
-				}
+		String adAccount = principals.fromRealm(getName()).iterator().next().toString();
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		
+		// 查询登录用户的授权资源列表
+		loginService = ContainerUtils.getBean(LoginService.class);
+		
+		List<Role> roles = loginService.findRoles(adAccount);
+		
+		for (Role role : roles){
+			info.addRole(role.getCode());    // 定义 Role check
+			List<RoleResource> permissions = loginService.findPermissions(role.getId());
+			for (RoleResource p : permissions){
+				info.addStringPermission(p.getCode());  // 定义 Permission check
 			}
-			return info;
-		} else {
-			return null;
 		}
-	}
-
-	private <T> T getBean(Class<? extends T> clazz) {
-		@SuppressWarnings("unchecked")
-		Bean<T> bean = (Bean<T>) beanManager.getBeans(clazz).iterator().next();
-		CreationalContext<T> ctx = beanManager.createCreationalContext(bean);
-		@SuppressWarnings("unchecked")
-		T obj = (T) beanManager.getReference(bean, clazz, ctx);
-		return obj;
+		
+		return info;
 	}
 
 }

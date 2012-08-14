@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,8 +27,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wcs.base.security.model.Resource;
-import com.wcs.base.security.model.User;
 import com.wcs.base.security.service.LoginService;
+import com.wcs.base.security.service.ResourceCache;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 
@@ -47,6 +48,9 @@ public class LoginBean implements Serializable {
 
 	@Inject
 	private LoginService loginService;
+	
+	@EJB
+	ResourceCache resourceCache;
 
 	private final String LOGIN_SUCCESS = "/template/template.xhtml";
 	private final String LOGIN_PAGE = "/login.xhtml";
@@ -56,12 +60,7 @@ public class LoginBean implements Serializable {
 	 */
 	public String userLogin() {
 		// 用户认证
-		String loginName = JSFUtils.getRequestParam("loginName");
-		User user = loginService.findUser(loginName);
-		if (user == null) {
-			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
-			return LOGIN_PAGE;
-		}
+		String adAccount = JSFUtils.getRequestParam("loginName");
 		
 		// 装入INI配置, 设置为VM静态Singleton
 		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
@@ -69,12 +68,13 @@ public class LoginBean implements Serializable {
 		SecurityUtils.setSecurityManager(securityManager);
 		
 		Subject currentUser = SecurityUtils.getSubject();
-		UsernamePasswordToken token = new UsernamePasswordToken(user.getAdAccount(), "");  //?密码为空？
+		UsernamePasswordToken token = new UsernamePasswordToken(adAccount, "");  //?密码为空？
 		token.setRememberMe(true);
 		try {
 			currentUser.login(token);
 		} catch (UnknownAccountException uae) {
 			logger.info("There is no user with username of " + token.getPrincipal());
+			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
 			return LOGIN_PAGE;
 		} catch (IncorrectCredentialsException ice) {
 			logger.info("Password for account " + token.getPrincipal() + " was incorrect!");
@@ -89,7 +89,7 @@ public class LoginBean implements Serializable {
 		
 		// 初始化系统资源
 		List<List<Resource>> allResList = initAllResources();
-		JSFUtils.getSession().put("user", user);
+		JSFUtils.getSession().put("user", adAccount);
 		JSFUtils.getSession().put("allResList", allResList);
 		JSFUtils.getSession().put("selectId", 2); // 选中的菜单
 
@@ -101,7 +101,7 @@ public class LoginBean implements Serializable {
      * @return
      */
     private List<List<Resource>> initAllResources() {
-        List<Resource> resList = loginService.findAllSysResource();
+        List<Resource> resList = resourceCache.loadAllResource();
         Map<String, List<Resource>> allResMap = Maps.newHashMap();
         
         for (Resource r : resList) {

@@ -217,7 +217,7 @@ public class PagingEntityReader extends XqlEntityReader {
      * @return 分页的查询结果.  以 PrimeFaces 的LazyDataModel 形式返回。
      */
     @SuppressWarnings("unchecked")
-    public <T extends IdEntity> LazyDataModel<T> findXsqlPage(final String xsql, final Map<String, Object> xsqlFilterMap) {
+    public <T extends IdEntity> LazyDataModel<T> findXqlPage(final String xsql, final Map<String, Object> xsqlFilterMap) {
         //Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
         Map<String, Object> paramMap = new HashMap<String,Object>();      
         paramMap = this.buildParamMap(xsql, xsqlFilterMap);

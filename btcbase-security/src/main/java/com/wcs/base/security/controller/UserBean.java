@@ -54,7 +54,7 @@ public class UserBean extends ConversationBaseBean<User> implements Serializable
      * @return
      */
     public void searchUser() {
-        lazyModel = userService.findUsers(queryMap);
+        lazyModel = userService.findUsers((String)queryMap.get("adAccount"));
     }
 
     /**

@@ -25,7 +25,7 @@ import com.wcs.base.entity.IdEntity;
  */
 @Entity
 @Table(name="resource")
-public class Resource extends IdEntity implements Serializable {
+public class Resource extends IdEntity {
 	private static final long serialVersionUID = 1L;
 	
     public enum ResourceType {

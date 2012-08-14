@@ -32,8 +32,8 @@ public class RoleResource extends IdEntity {
 	@JoinColumn(name="ROLE_ID")
 	private Role role;
 	
-	@Column(length=200)
-	private String uri;
+	@Column(length=50)
+	private String code;
 
 	//--------------------- setter & getter -------------------//
 	
@@ -53,12 +53,11 @@ public class RoleResource extends IdEntity {
 		this.role = role;
 	}
 
-	public String getUri() {
-		return uri;
+	public String getCode() {
+		return code;
 	}
 
-	public void setUri(String uri) {
-		this.uri = uri;
+	public void setCode(String code) {
+		this.code = code;
 	}
-
 }

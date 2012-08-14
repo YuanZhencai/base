@@ -1,29 +1,169 @@
-DROP TABLE dict;
-DROP TABLE permission;
-DROP TABLE person;
-DROP TABLE product;
-DROP TABLE resource;
-DROP TABLE role;
-DROP TABLE sequence;
-DROP TABLE user_role;
-DROP TABLE users;
+# --------------------------------------------------------
+# Host:                         127.0.0.1
+# Database:                     btcbasecd
+# Server version:               5.5.11
+# Server OS:                    Win32
+# HeidiSQL version:             5.0.0.3272
+# Date/time:                    2012-08-14 12:10:05
+# --------------------------------------------------------
 
-CREATE TABLE dict(id BIGINT NOT NULL, code CHARACTER VARYING(30) NOT NULL, defunct_ind BOOLEAN, name CHARACTER VARYING(30) NOT NULL, parent_code CHARACTER VARYING(30), value CHARACTER VARYING(30), PRIMARY KEY (id))
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+# Dumping database structure for btcbasecd
+DROP DATABASE IF EXISTS `btcbasecd`;
+CREATE DATABASE IF NOT EXISTS `btcbasecd` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `btcbasecd`;
 
-CREATE TABLE permission ( id BIGINT NOT NULL, roleid BIGINT, permission CHARACTER VARYING(255), PRIMARY KEY (id) );
 
-CREATE TABLE person ( id BIGINT NOT NULL, address CHARACTER VARYING(100), birthday TIMESTAMP(6) WITHOUT TIME ZONE, created_by CHARACTER VARYING(30), created_datetime TIMESTAMP(6) WITHOUT TIME ZONE, defunct_ind BOOLEAN, email CHARACTER VARYING(50), name CHARACTER VARYING(50) NOT NULL, nationality CHARACTER VARYING(50), phone CHARACTER VARYING(20), remarks CHARACTER VARYING(500), sex CHARACTER VARYING(10), updated_by CHARACTER VARYING(30), updated_datetime TIMESTAMP(6) WITHOUT TIME ZONE, vip SMALLINT, PRIMARY KEY (id) );
+# Dumping structure for table btcbasecd.dict
+DROP TABLE IF EXISTS `dict`;
+CREATE TABLE IF NOT EXISTS `dict` (
+  `ID` bigint(20) NOT NULL,
+  `CODE` varchar(30) NOT NULL,
+  `DEFUNCT_IND` tinyint(1) DEFAULT '0',
+  `NAME` varchar(30) NOT NULL,
+  `PARENT_CODE` varchar(30) DEFAULT NULL,
+  `VALUE` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE product ( id BIGINT NOT NULL, available BOOLEAN, category CHARACTER VARYING(255), code CHARACTER VARYING(255), created_by CHARACTER VARYING(30), created_datetime TIMESTAMP(6) WITHOUT TIME ZONE, defunct_ind BOOLEAN, describe CHARACTER VARYING(1000), name CHARACTER VARYING(255), price DOUBLE PRECISION, production_date TIMESTAMP(6) WITHOUT TIME ZONE, updated_by CHARACTER VARYING(30), updated_datetime TIMESTAMP(6) WITHOUT TIME ZONE, PRIMARY KEY (id) );
+# Data exporting was unselected.
 
-CREATE TABLE resource ( id BIGINT NOT NULL, is_leaf BOOLEAN, is_menu BOOLEAN, key_name CHARACTER VARYING(255) NOT NULL, level INTEGER, name CHARACTER VARYING(40), number CHARACTER VARYING(255), parent_id BIGINT, url CHARACTER VARYING(100), PRIMARY KEY (id) );
 
-CREATE TABLE role ( id BIGINT NOT NULL, name CHARACTER VARYING(255), PRIMARY KEY (id) );
+# Dumping structure for table btcbasecd.person
+DROP TABLE IF EXISTS `person`;
+CREATE TABLE IF NOT EXISTS `person` (
+  `ID` bigint(20) NOT NULL,
+  `ADDRESS` varchar(100) DEFAULT NULL,
+  `BIRTHDAY` datetime DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `created_datetime` datetime DEFAULT NULL,
+  `defunct_ind` char(1) DEFAULT NULL,
+  `EMAIL` varchar(50) DEFAULT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `NATIONALITY` varchar(50) DEFAULT NULL,
+  `PHONE` varchar(20) DEFAULT NULL,
+  `REMARKS` varchar(500) DEFAULT NULL,
+  `SEX` varchar(10) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  `updated_datetime` datetime DEFAULT NULL,
+  `VIP` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE sequence ( seq_name CHARACTER VARYING(50) NOT NULL, seq_count NUMERIC(38,0), PRIMARY KEY (seq_name) );
+# Data exporting was unselected.
 
-CREATE TABLE user_role ( user_id BIGINT NOT NULL, role_id BIGINT NOT NULL, PRIMARY KEY (user_id, role_id) );
 
-CREATE TABLE users ( id BIGINT NOT NULL, email CHARACTER VARYING(255), loginname CHARACTER VARYING(255), name CHARACTER VARYING(255), password CHARACTER VARYING(255), PRIMARY KEY (id) );
-ALTER TABLE user_role ADD CONSTRAINT fk_user_role_role_id FOREIGN KEY (role_id) REFERENCES public.role (id);
-ALTER TABLE user_role ADD CONSTRAINT fk_user_role_user_id FOREIGN KEY (user_id) REFERENCES public.users (id);
+# Dumping structure for table btcbasecd.product
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `ID` bigint(20) NOT NULL,
+  `AVAILABLE` tinyint(1) DEFAULT '0',
+  `CATEGORY` varchar(255) DEFAULT NULL,
+  `CODE` varchar(255) DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `created_datetime` datetime DEFAULT NULL,
+  `defunct_ind` char(1) DEFAULT NULL,
+  `DESCRIPTION` varchar(1000) DEFAULT NULL,
+  `NAME` varchar(255) DEFAULT NULL,
+  `PRICE` double DEFAULT NULL,
+  `PRODUCTION_DATE` datetime DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  `updated_datetime` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.resource
+DROP TABLE IF EXISTS `resource`;
+CREATE TABLE IF NOT EXISTS `resource` (
+  `ID` bigint(20) NOT NULL,
+  `CODE` varchar(50) NOT NULL,
+  `NAME` varchar(20) NOT NULL,
+  `PARENT_ID` bigint(20) DEFAULT NULL,
+  `SEQ_NO` varchar(255) DEFAULT NULL,
+  `TYPE` varchar(50) NOT NULL,
+  `URI` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.role
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE IF NOT EXISTS `role` (
+  `ID` bigint(20) NOT NULL,
+  `CODE` varchar(50) NOT NULL,
+  `DESCRIPTION` varchar(50) DEFAULT NULL,
+  `NAME` varchar(20) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.role_resource
+DROP TABLE IF EXISTS `role_resource`;
+CREATE TABLE IF NOT EXISTS `role_resource` (
+  `ID` bigint(20) NOT NULL,
+  `URI` varchar(200) DEFAULT NULL,
+  `RESOURCE_ID` bigint(20) DEFAULT NULL,
+  `ROLE_ID` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_ROLE_RESOURCE_ROLE_ID` (`ROLE_ID`),
+  KEY `FK_ROLE_RESOURCE_RESOURCE_ID` (`RESOURCE_ID`),
+  CONSTRAINT `FK_ROLE_RESOURCE_RESOURCE_ID` FOREIGN KEY (`RESOURCE_ID`) REFERENCES `resource` (`ID`),
+  CONSTRAINT `FK_ROLE_RESOURCE_ROLE_ID` FOREIGN KEY (`ROLE_ID`) REFERENCES `role` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.sequence
+DROP TABLE IF EXISTS `sequence`;
+CREATE TABLE IF NOT EXISTS `sequence` (
+  `SEQ_NAME` varchar(50) NOT NULL,
+  `SEQ_COUNT` decimal(38,0) DEFAULT NULL,
+  PRIMARY KEY (`SEQ_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `ID` bigint(20) NOT NULL,
+  `AD_ACCOUNT` varchar(50) DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `created_datetime` datetime DEFAULT NULL,
+  `defunct_ind` char(1) DEFAULT NULL,
+  `PERNR` varchar(20) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  `updated_datetime` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.user_role
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE IF NOT EXISTS `user_role` (
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `FK_user_role_role_id` (`role_id`),
+  CONSTRAINT `FK_user_role_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`ID`),
+  CONSTRAINT `FK_user_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

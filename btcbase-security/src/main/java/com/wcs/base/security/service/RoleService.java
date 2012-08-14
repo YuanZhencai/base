@@ -294,7 +294,7 @@ public class RoleService implements Serializable {
 		Map<String, RoleResource> map = new HashMap<String, RoleResource>();
 		if (!roleResource.isEmpty()) {
 			for (RoleResource p : roleResource) {
-				map.put(p.getUri(), p);
+				map.put(p.getCode(), p);
 			}
 
 		}

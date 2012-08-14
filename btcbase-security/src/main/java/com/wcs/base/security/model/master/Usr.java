@@ -23,8 +23,8 @@ public class Usr implements Serializable {
 	@Column(name="DEFUNCT_IND", length=1)
 	private String defunctInd;
 
-	@Column(name="DESC", length=200)
-	private String desc;
+	@Column(length=200)
+	private String description;
 
 	@Column(length=200)
 	private String email;
@@ -59,12 +59,12 @@ public class Usr implements Serializable {
 		this.defunctInd = defunctInd;
 	}
 
-	public String getDesc() {
-		return this.desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getEmail() {

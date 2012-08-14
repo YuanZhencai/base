@@ -32,8 +32,8 @@ public class Role extends IdEntity {
 	@Column(nullable=false, length=20)
 	private String name;
 
-	@Column(name="DESC", length=50)
-	private String desc;
+	@Column(length=50)
+	private String description;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "role")
 	private List<RoleResource> roleResources = Lists.newArrayList();
@@ -60,12 +60,12 @@ public class Role extends IdEntity {
 		this.code = code;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<RoleResource> getRoleResources() {

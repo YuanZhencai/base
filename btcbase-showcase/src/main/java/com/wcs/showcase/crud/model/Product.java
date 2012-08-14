@@ -48,7 +48,7 @@ public class Product extends BaseEntity {
 	@Column(name = "PRODUCTION_DATE")	
 	private Date productingDate;     // 生产日期
 
-	@Column(name = "DESCRIBE", length = 1000)
+	@Column(length = 1000)
 	private String description;      // 商品描述
 
 	@Override
