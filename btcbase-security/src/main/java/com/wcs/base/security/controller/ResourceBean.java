@@ -11,6 +11,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -39,29 +41,62 @@ import com.wcs.base.util.MessageUtils;
  * @author guanjianghuai
  */
 
-@SuppressWarnings("rawtypes")
-@Named
-@ConversationScoped
+@ManagedBean
+@ViewScoped
 public class ResourceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final Logger log = LoggerFactory.getLogger(ResourceBean.class);
 
-	@Inject
-	private ResourceCache resourceCache;
-	
 	@EJB
-	private EntityWriter entityWriter;	
+	private ResourceCache resourceCache;
+	@EJB
+	private EntityWriter entityWriter;
 
-	private Resource selectedResource; // 节点操作资源
-	private TreeNode root; // 菜单资源
+    private TreeNode root = new DefaultTreeNode("root", null); // 资源树
+
+    private Resource selectedResource; // 节点操作资源
 	private TreeNode selectedNode; // 选中节点
 	List<Resource> resList; // 所有菜单资源
 
+    public ResourceBean(){
+        System.out.println("-------------ResourceBean");
+    }
 	@PostConstruct
 	public void initResource() {
-		this.initResourceTree();
+        System.out.println("-------------initResource");
+        this.buildTreeTable(resourceCache.loadSubResources(0L), root);
 	}
 
+    private void buildTreeTable(List<Resource> resList,TreeNode parentNode){
+        System.out.println("-------------buildTreeTable");
+
+        for (Resource r : resList){
+            System.out.println(r.getCode());
+            TreeNode node = new DefaultTreeNode(r, parentNode);
+            List<Resource> subResList = resourceCache.loadSubResources(r.getParentId());
+            buildTreeTable(subResList,node);
+        }
+    }
+
+
+    //-------------------------- setter & getter -----------------------//
+    public TreeNode getRoot() {
+        System.out.println("-------------getRoot");
+        return root;
+    }
+
+    public void setRoot(TreeNode root) {
+        this.root = root;
+    }
+
+    public Resource getSelectedResource() {
+        return selectedResource;
+    }
+
+    public void setSelectedResource(Resource selectedResource) {
+        this.selectedResource = selectedResource;
+    }
+    // --------------------------- 以下未整理 ----------------------------//
 	/**
 	 * 根据条件查询资源
 	 */
@@ -237,7 +272,6 @@ public class ResourceBean implements Serializable {
 
 	/**
 	 * 树节点点击事件
-	 * @param event
 	 */
 	public void selectedNodeResource() {
 		if (selectedNode != null) {
@@ -298,22 +332,6 @@ public class ResourceBean implements Serializable {
 	 */
 	private void refresh() {
 		initResourceTree();
-	}
-
-	public Resource getSelectedResource() {
-		return selectedResource;
-	}
-
-	public void setSelectedResource(Resource selectedResource) {
-		this.selectedResource = selectedResource;
-	}
-
-	public TreeNode getRoot() {
-		return root;
-	}
-
-	public void setRoot(TreeNode root) {
-		this.root = root;
 	}
 
 	public TreeNode getSelectedNode() {

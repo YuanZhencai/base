@@ -8,22 +8,59 @@
 	template="/template/template.xhtml">
 
 	<ui:define name="title">资源参数维护</ui:define>
-	<ui:define name="styleAndScript">
-		<script type="text/javascript" src="#{request.contextPath}/scripts/material.js"></script>
-	</ui:define>
+	
 	<ui:define name="content">
-		<p:layout fullPage="true">
-		    <p:layoutUnit position="west" size="370" resizable="true" closable="true" collapsible="true">
-		    	<ui:include src="/faces/permissions/resource/leftTree.xhtml"/>
-		    </p:layoutUnit>  
-		    
-		    <p:layoutUnit position="center">  
-		    	<ui:include src="/faces/permissions/resource/resViewManage.xhtml"/> 
-		    </p:layoutUnit>  
-		</p:layout> 
+        <h:outputLabel value="dddddtt"></h:outputLabel>
+        <h:outputLabel value="#{empty resourceBean}"></h:outputLabel>
+<h:form>
+	
+    <p:treeTable value="#{resourceBean.root}" var="res">
+        <f:facet name="header">Resource Viewer</f:facet>
+
+        <p:column style="width:100px" headerText="Name">
+            <h:outputText value="#{res.name}" />
+        </p:column>
+
+        <p:column style="width:80px" headerText="Code">
+            <h:outputText value="#{res.code}" />
+        </p:column>
+
+        <p:column style="width:30px" headerText="SeqNo">
+            <h:outputText value="#{res.seqNo}" />
+        </p:column>
+
+        <p:column style="width:100px" headerText="URI">
+            <h:outputText value="#{res.uri}" />
+        </p:column>
+
+        <p:column style="width:20px">
+            <p:commandLink update="documentPanel" oncomplete="documentDialog.show()" title="View Detail" styleClass="ui-icon ui-icon-search">
+                <f:setPropertyActionListener value="#{res}" target="#{resourceBean.selectedResource}" />
+            </p:commandLink>
+        </p:column>
+    </p:treeTable>
+
+    <p:dialog header="Document Detail" showEffect="fade" widgetVar="documentDialog" modal="true">
+        <p:outputPanel id="documentPanel">
+            <h:panelGrid  columns="2" cellpadding="5" rendered="#{not empty resourceBean.selectedResource}">
+                <h:outputLabel for="name" value="Name: " />
+                <h:outputText id="name" value="#{resourceBean.selectedResource.name}" style="font-weight:bold" />
+
+                <h:outputLabel for="Code" value="Code: " />
+                <h:outputText id="Code" value="#{resourceBean.selectedResource.code}" style="font-weight:bold" />
+
+                <h:outputLabel for="SeqNo" value="SeqNo: " />
+                <h:outputText id="SeqNo" value="#{resourceBean.selectedResource.seqNo}" style="font-weight:bold" />
+
+                <h:outputLabel for="uri" value="URI: " />
+                <h:outputText id="uri" value="#{resourceBean.selectedResource.uri}" style="font-weight:bold" />
+            </h:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+
+</h:form>
 		
 		<!-- 删除弹出确认 -->
-		<ui:include src="/faces/permissions/resource/delResourceDialog.xhtml" />
 	</ui:define>
 </ui:composition>
 

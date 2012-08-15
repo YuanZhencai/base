@@ -11,6 +11,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.Query;
 
+import com.google.common.collect.Lists;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,17 @@ public class ResourceCache {
 	 */
 	public List<Resource> loadAllResource() {
 		return cache;
-	}	
+	}
+
+    public List<Resource> loadSubResources(Long parentId){
+        List<Resource> list = Lists.newArrayList();
+        for (Resource r : cache){
+            if (parentId.equals(r.getParentId())){
+                list.add(r);
+            }
+        }
+        return null;
+    }
 	
 	public void clear() {
 		if (CollectionUtils.isNotEmpty(cache))
