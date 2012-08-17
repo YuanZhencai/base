@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ViewBaseBean;
 import com.wcs.base.dict.service.DictService;
-import com.wcs.showcase.crud.model.Person2;
-import com.wcs.showcase.crud.service.PersonService;
+import com.wcs.showcase.crud.model.Teacher;
+import com.wcs.showcase.crud.service.TeacherService;
 
 /** 
 * <p>Project: btcbase</p> 
-* <p>Title: PersonBean.java</p> 
+* <p>Title: </p> 
 * <p>Description: </p> 
 * <p>Copyright: Copyright 2011.All rights reserved.</p> 
 * <p>Company: wcs.com</p> 
@@ -32,16 +32,16 @@ import com.wcs.showcase.crud.service.PersonService;
 @ManagedBean
 @ViewScoped
 @SuppressWarnings("serial")
-public class PersonBean extends ViewBaseBean<Person2> {
+public class TeacherBean extends ViewBaseBean<Teacher> {
 
 	@Inject
-	private PersonService personService;
+	private TeacherService teacherService;
 	@Inject
 	private DictService dictService;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);
-	private LazyDataModel<Person2> lazyModel;           // 动态分页使用
-	private List<Person2> personList = new ArrayList<Person2>();
+	private LazyDataModel<Teacher> lazyModel;           // 动态分页使用
+	private List<Teacher> teacherList = new ArrayList<Teacher>();
 	private boolean editMode;        					// 是否修改
 	private List<SelectItem> sexList = new ArrayList<SelectItem>();        // 性别下拉框
 	
@@ -50,9 +50,9 @@ public class PersonBean extends ViewBaseBean<Person2> {
 	/**
 	 * 构造函数
 	 */
-	public PersonBean() {
-		this.listPage = "/faces/person/list.xhtml";
-		this.inputPage = "/faces/person/input.xhtml";
+	public TeacherBean() {
+		this.listPage = "/faces/teacher/list.xhtml";
+		this.inputPage = "/faces/teacher/input.xhtml";
 	}
 	
 	/**
@@ -65,10 +65,10 @@ public class PersonBean extends ViewBaseBean<Person2> {
 	}
 	
 	/**
-	 * 查找person
+	 * 查找
      */
     public void search() {
-    	lazyModel = personService.findModelByMap(filterMap);
+    	lazyModel = teacherService.findModelByMap(filterMap);
     }
     
     /**
@@ -88,20 +88,20 @@ public class PersonBean extends ViewBaseBean<Person2> {
 		this.filterMap = filterMap;
 	}
 
-	public LazyDataModel<Person2> getLazyModel() {
+	public LazyDataModel<Teacher> getLazyModel() {
 		return lazyModel;
 	}
 
-	public void setLazyModel(LazyDataModel<Person2> lazyModel) {
+	public void setLazyModel(LazyDataModel<Teacher> lazyModel) {
 		this.lazyModel = lazyModel;
 	}
 
-	public List<Person2> getPersonList() {
-		return personList;
+	public List<Teacher> getTeacherList() {
+		return teacherList;
 	}
 
-	public void setPersonList(List<Person2> personList) {
-		this.personList = personList;
+	public void setTeacherList(List<Teacher> teacherList) {
+		this.teacherList = teacherList;
 	}
 
 	public boolean isEditMode() {

@@ -13,7 +13,7 @@ import com.wcs.base.entity.BaseEntity;
 
 /** 
 * <p>Project: btcbase</p> 
-* <p>Title: Person.java</p> 
+* <p>Title: </p> 
 * <p>Description: </p> 
 * <p>Copyright: Copyright 2011.All rights reserved.</p> 
 * <p>Company: wcs.com</p> 
@@ -21,9 +21,9 @@ import com.wcs.base.entity.BaseEntity;
 */
 
 @Entity
-@Table(name = "PERSON")
+@Table(name = "TEACHER")
 @SuppressWarnings("serial")
-public class Person2 extends BaseEntity {
+public class Teacher extends BaseEntity {
 	
 	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;           // 姓名

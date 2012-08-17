@@ -10,25 +10,25 @@
 	
 	<ui:define name="title">添加人员</ui:define>
     <ui:define name="content">
-        <h:form  id="formInputPerson" >
+        <h:form  id="formInputTeacher" >
             <p:panel styleClass="panel1">
                 <f:facet name="header">
                     <img src="#{request.contextPath}/images/calculator_edit.png" alt=""/>
                     <h:outputLabel value="添加人员    |    "/>
-                    <h:outputLink value="#{request.contextPath}/faces/person/list.xhtml">
+                    <h:outputLink value="#{request.contextPath}/faces/teacher/list.xhtml">
                         <h:outputText value="人员查询"/>
                     </h:outputLink>
                 </f:facet>
                 
-                <p:messages id="msg_person_name" />   
-                <h:inputHidden value="#{personBean.instance.id}"/>
+                <p:messages id="msg_teacher_name" />   
+                <h:inputHidden value="#{teacherBean.instance.id}"/>
 
                 <h:panelGrid columns="2" cellpadding="5" cellspacing="1" styleClass="style1" rowClasses="row1,row2" columnClasses="column1,column2" footerClass="footer1">
                     
                     <ui:include src="input-item.xhtml"/>
 
                     <f:facet name="footer">
-                        <p:commandButton id="btn_author_Save" action="#{personBean.save}" value="保存" icon="ui-icon ui-icon-disk" ajax="false" title="保存" />
+                        <p:commandButton id="btn_author_Save" action="#{teacherBean.save}" value="保存" icon="ui-icon ui-icon-disk" ajax="false" title="保存" />
 						<p:commandButton value="取消" icon="ui-icon ui-icon-cancel" title="取消"/>
                     </f:facet>
                 </h:panelGrid>

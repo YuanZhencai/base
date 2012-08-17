@@ -8,7 +8,7 @@ import javax.ejb.EJB;
 
 import org.junit.Test;
 
-import com.wcs.showcase.crud.model.Person2;
+import com.wcs.showcase.crud.model.Teacher;
 
 /**
 /**
@@ -19,10 +19,10 @@ import com.wcs.showcase.crud.model.Person2;
  * <p>Company: wcs.com</p> 
  * @author guanjianghuai
  */
-public class PersonServiceTest extends BaseTest{
+public class TeacherServiceTest extends BaseTest{
 
 	@EJB
-	private PersonService personService;
+	private TeacherService teacherService;
 	
     /**
      * <b>案例:</b> search() 查询人员信息 <br/> 
@@ -33,7 +33,7 @@ public class PersonServiceTest extends BaseTest{
      */
 	@Test
 	public void test_search(){
-		List<Person2> list = personService.search();
+		List<Teacher> list = teacherService.search();
 		assertTrue( list.size() >=0 );
 	}
 	

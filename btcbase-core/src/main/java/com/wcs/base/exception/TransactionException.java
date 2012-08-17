@@ -19,27 +19,31 @@ package com.wcs.base.exception;
 
 import java.util.List;
 
+import javax.ejb.ApplicationException;
+import javax.ejb.EJBException;
 
 /**
- * A general run-time exception used by the JSR-299 reference implementation Weld.
- * 
- * @author Chris Guan
+ * @author guanjianghuai
  */
-public class ServiceException extends RuntimeException
+public class TransactionException extends RuntimeException
 {
-   private static final long             serialVersionUID = 2L;
+    private static final long serialVersionUID = 2L;
 
-   private ExceptionMessage message;
-   
+    private ExceptionMessage message;
+
+
+    public TransactionException(String rawMessage) {
+        this.message = new ExceptionStringMessage(rawMessage);
+    }
+
    /**
     * Creates a new exception with the given cause.
     * 
-    * @param throwable The cause of the exception
     */
-   public ServiceException(Throwable throwable)
+   public TransactionException(Throwable e)
    {
-      super(throwable);
-      this.message = new ExceptionStringMessage(throwable.getLocalizedMessage());
+      super(e);
+      this.message = new ExceptionStringMessage(e.getLocalizedMessage());
    }
 
    /**
@@ -50,7 +54,7 @@ public class ServiceException extends RuntimeException
     * @param key The localized message to use
     * @param args Optional arguments to insert into the message
     */
-   public <E extends Enum<?>> ServiceException(E key, Object... args)
+   public <E extends Enum<?>> TransactionException(E key, Object... args)
    {
       this.message = new ExceptionKeyMessage(key, args);
    }
@@ -61,12 +65,11 @@ public class ServiceException extends RuntimeException
     * 
     * @param <E> The enumeration type for the message keys
     * @param key The localized message to use
-    * @param throwable The cause for this exception
     * @param args Optional arguments to insert into the message
     */
-   public <E extends Enum<?>> ServiceException(E key, Throwable throwable, Object... args)
+   public <E extends Enum<?>> TransactionException(E key, Exception e, Object... args)
    {
-      super(throwable);
+      super(e);
       this.message = new ExceptionKeyMessage(key, args);
    }
 
@@ -77,7 +80,7 @@ public class ServiceException extends RuntimeException
     * 
     * @param errors A list of throwables to use in the message
     */
-   public ServiceException(List<Throwable> errors)
+   public TransactionException(List<Throwable> errors)
    {
       super();
       this.message = new ExceptionListMessage(errors);

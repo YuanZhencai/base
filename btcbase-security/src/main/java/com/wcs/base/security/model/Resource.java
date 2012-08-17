@@ -29,7 +29,7 @@ public class Resource extends IdEntity {
 	private static final long serialVersionUID = 1L;
 	
     public enum ResourceType {
-    	MENU, LEAF_MENU, COMPONENT
+    	MENU, COMPONENT
     }
     
 	@Column(nullable=false, length=50)
@@ -42,7 +42,7 @@ public class Resource extends IdEntity {
 	private Long parentId;	
 	
 	@Column(name="SEQ_NO", length=255)
-	private String seqNo;
+	private Short seqNo;
 	
 	@Column(nullable=false, length=50)
 	@Enumerated(EnumType.STRING)
@@ -83,11 +83,11 @@ public class Resource extends IdEntity {
 		this.parentId = parentId;
 	}
 
-	public String getSeqNo() {
+	public Short getSeqNo() {
 		return seqNo;
 	}
 
-	public void setSeqNo(String seqNo) {
+	public void setSeqNo(Short seqNo) {
 		this.seqNo = seqNo;
 	}
 

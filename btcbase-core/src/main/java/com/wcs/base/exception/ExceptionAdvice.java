@@ -11,13 +11,13 @@ import com.wcs.base.util.JSFUtils;
  * @author Chris Guan
  */
 @ExceptionHandler @Interceptor
-public class AccessExceptionAdvice implements Serializable{
+public class ExceptionAdvice implements Serializable{
 	  
       @AroundInvoke
       public Object handleAccessException(InvocationContext joinPoint) throws Exception {
     	  try{
     		  return joinPoint.proceed();
-    	  } catch(ServiceException ae){
+    	  } catch(TransactionException ae){
     		  JSFUtils.flashScope().put("exceptionMessage", ae.getMessage());
     		  JSFUtils.redirect(JSFUtils.contextPath()+SystemConfiguration.EXCEPTION_HANDLE_PAGE);
     		  return null;

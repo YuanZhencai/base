@@ -35,7 +35,7 @@
 				<div align="right">
 			        	<p:commandButton id="searchBtn" actionListener="#{resourceBean.searchResource}" update="resourceTable" immediate="true" value="查询" image="ui-icon ui-icon-search"/>
 						<p:commandButton id="addBtn" actionListener="#{resourceBean.addResource}"  update="resourceTable,resTree, growl"  value="添加" disabled="#{resourceBean.addBtnDisplay}" image="ui-icon ui-icon-search"/>
-						<p:commandButton id="modBtn" actionListener="#{resourceBean.modResource}"  update="resourceTable,resTree, growl"  value="修改" disabled="#{resourceBean.modBtnDisplay}" image="ui-icon ui-icon-pencil"/>
+						<p:commandButton id="modBtn" actionListener="#{resourceBean.update}"  update="resourceTable,resTree, growl"  value="修改" disabled="#{resourceBean.modBtnDisplay}" image="ui-icon ui-icon-pencil"/>
 						<p:commandButton id="delBtn" value="删除" oncomplete="confirmation.show()" immediate="true"  disabled="#{resourceBean.delBtnDisplay}" image="ui-icon-close"/>
 						<p:commandButton id="cleanBtn" actionListener="#{resourceBean.clean}" update="resourceTable, resTree, resForm"  value="清空" immediate="true"  image="ui-icon ui-icon-pencil" process="cleanBtn" />
 			    </div> 

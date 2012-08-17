@@ -45,7 +45,6 @@ public class UserService extends AbstractUserService {
 
     /**
      * 根据角色ID找到角色
-     * @param object
      * @return
      */
     public Role findRoleById(Long roleId) {
@@ -58,8 +57,6 @@ public class UserService extends AbstractUserService {
 
     /**
      * Find users by loginName from queryMap
-     * @param queryMap
-     * @return
      */
 	public LazyDataModel<User> findUsers(String adAccount) {
 		String jpql = "SELECT u FROM User u WHERE u.defunctInd = false and u.adAccount LIKE ?1";
@@ -78,7 +75,6 @@ public class UserService extends AbstractUserService {
     
      /**
      * Delete user roles by userId
-     * @param instance
      */
     public void delUserRole(User user) {
         Query q = entityReader.createQuery("DELETE FROM UserRole ur where  ur.userid = :userId");

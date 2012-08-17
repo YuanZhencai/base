@@ -45,7 +45,6 @@ public class ProductService implements Serializable {
     /**
      * 动态分页， XSQL 查询 （推荐使用）
      * @param filterMap
-     * @return LazyDataModel<Person>
      */
 	public LazyDataModel<Product> findModelByMap(Map<String, Object> filterMap) {
 		String hql = "SELECT p FROM Product p WHERE p.defunctInd = false";

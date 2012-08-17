@@ -4,7 +4,7 @@
 # Server version:               5.5.11
 # Server OS:                    Win32
 # HeidiSQL version:             5.0.0.3272
-# Date/time:                    2012-08-14 12:10:05
+# Date/time:                    2012-08-17 16:18:31
 # --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -26,30 +26,6 @@ CREATE TABLE IF NOT EXISTS `dict` (
   `NAME` varchar(30) NOT NULL,
   `PARENT_CODE` varchar(30) DEFAULT NULL,
   `VALUE` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-# Data exporting was unselected.
-
-
-# Dumping structure for table btcbasecd.person
-DROP TABLE IF EXISTS `person`;
-CREATE TABLE IF NOT EXISTS `person` (
-  `ID` bigint(20) NOT NULL,
-  `ADDRESS` varchar(100) DEFAULT NULL,
-  `BIRTHDAY` datetime DEFAULT NULL,
-  `created_by` varchar(50) DEFAULT NULL,
-  `created_datetime` datetime DEFAULT NULL,
-  `defunct_ind` char(1) DEFAULT NULL,
-  `EMAIL` varchar(50) DEFAULT NULL,
-  `NAME` varchar(50) NOT NULL,
-  `NATIONALITY` varchar(50) DEFAULT NULL,
-  `PHONE` varchar(20) DEFAULT NULL,
-  `REMARKS` varchar(500) DEFAULT NULL,
-  `SEX` varchar(10) DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL,
-  `updated_datetime` datetime DEFAULT NULL,
-  `VIP` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -85,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `CODE` varchar(50) NOT NULL,
   `NAME` varchar(20) NOT NULL,
   `PARENT_ID` bigint(20) DEFAULT NULL,
-  `SEQ_NO` varchar(255) DEFAULT NULL,
+  `SEQ_NO` smallint(6) DEFAULT NULL,
   `TYPE` varchar(50) NOT NULL,
   `URI` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`ID`)
@@ -111,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `role` (
 DROP TABLE IF EXISTS `role_resource`;
 CREATE TABLE IF NOT EXISTS `role_resource` (
   `ID` bigint(20) NOT NULL,
-  `URI` varchar(200) DEFAULT NULL,
+  `CODE` varchar(50) DEFAULT NULL,
   `RESOURCE_ID` bigint(20) DEFAULT NULL,
   `ROLE_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
@@ -130,6 +106,30 @@ CREATE TABLE IF NOT EXISTS `sequence` (
   `SEQ_NAME` varchar(50) NOT NULL,
   `SEQ_COUNT` decimal(38,0) DEFAULT NULL,
   PRIMARY KEY (`SEQ_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Data exporting was unselected.
+
+
+# Dumping structure for table btcbasecd.teacher
+DROP TABLE IF EXISTS `teacher`;
+CREATE TABLE IF NOT EXISTS `teacher` (
+  `ID` bigint(20) NOT NULL,
+  `ADDRESS` varchar(100) DEFAULT NULL,
+  `BIRTHDAY` datetime DEFAULT NULL,
+  `created_by` varchar(50) DEFAULT NULL,
+  `created_datetime` datetime DEFAULT NULL,
+  `defunct_ind` char(1) DEFAULT NULL,
+  `EMAIL` varchar(50) DEFAULT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `NATIONALITY` varchar(50) DEFAULT NULL,
+  `PHONE` varchar(20) DEFAULT NULL,
+  `REMARKS` varchar(500) DEFAULT NULL,
+  `SEX` varchar(10) DEFAULT NULL,
+  `updated_by` varchar(50) DEFAULT NULL,
+  `updated_datetime` datetime DEFAULT NULL,
+  `VIP` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Data exporting was unselected.

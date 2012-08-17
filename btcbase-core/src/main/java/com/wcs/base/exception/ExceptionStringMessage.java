@@ -35,7 +35,7 @@ public class ExceptionStringMessage implements Serializable, ExceptionMessage
     * message from a wrapped exception is being used. Since it is already
     * localized, it will simply be stored here and used as the message.
     */
-   private String            message;
+   private String message;
 
    /**
     * <p>

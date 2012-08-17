@@ -12,7 +12,7 @@
 		<property name="hibernate.hbm2ddl.auto">create-drop</property>
 		<property name="hibernate.show_sql">true</property>
         
-        <mapping class="com.wcs.showcase.crud.Person" />
+        <mapping class="com.wcs.showcase.crud.Teacher" />
         <mapping class="com.wcs.showcase.crud.Product" />
         
 </session-factory>
