@@ -37,7 +37,7 @@ import com.wcs.base.util.MessageUtils;
 @ViewScoped
 public class ResourceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private final Logger log = LoggerFactory.getLogger(ResourceBean.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public enum OpMode{
         ADD("新增"),EDIT("修改"),VIEW("查看");
@@ -60,6 +60,7 @@ public class ResourceBean implements Serializable {
 
 	@PostConstruct
 	public void initResourceTree() {
+		logger.info("初始化资源管理树 TreeTable");
         root = new DefaultTreeNode("root", null);
         this.buildTreeTable(resourceCache.loadSubResources(0L), root);
 	}
@@ -119,10 +120,10 @@ public class ResourceBean implements Serializable {
             // 修改当前资源
 
             entityWriter.update(selectedResource);
-            //MessageUtils.addSuccessMessage("resMsg", "修改资源成功！");
+            MessageUtils.addSuccessMessage("resMsg", "修改资源成功！");
         } catch (Exception e) {
             e.printStackTrace();
-            //MessageUtils.addErrorMessage("resMsg", "修改资源失败！");
+            MessageUtils.addErrorMessage("resMsg", "修改资源失败！");
         }finally {
             // 更新Resource Cache 和 Resource-Tree
             resourceCache.initResourceCache();
@@ -133,7 +134,6 @@ public class ResourceBean implements Serializable {
     /**
      * 删除资源
      */
-    @SuppressWarnings("null")
     public void delete() {
         try {
             this.resourceCache.deleteResource(selectedResource);
@@ -141,7 +141,7 @@ public class ResourceBean implements Serializable {
         } catch(TransactionException te){
             MessageUtils.addErrorMessage("resMsg", "删除资源失败, 请检查！"+te.getMessage());
         } catch(Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             MessageUtils.addErrorMessage("resMsg", "删除资源失败, 请检查！");
         }
 
@@ -149,6 +149,9 @@ public class ResourceBean implements Serializable {
         initResourceTree();
     }
 
+    /**
+     * 初始化 SelectOneMenu 组件
+     */
     public Resource.ResourceType[] getResourceTypeValues() {
         return Resource.ResourceType.values();
     }
