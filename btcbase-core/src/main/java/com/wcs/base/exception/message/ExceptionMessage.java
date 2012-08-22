@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.wcs.base.exception;
+package com.wcs.base.exception.message;
 
 /**
  * Interface for all exception messages in Weld.  This replaces the simple

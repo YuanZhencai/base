@@ -16,7 +16,7 @@ import ch.qos.cal10n.LocaleData;
 @LocaleData({
    @Locale("zh_CN")
 })
-public enum ExceptionMessage {
+public enum ExceptionMessageEnum {
 	// WELD-001408
     @MessageId("E0001") GOOD_MAN_ZHANGSAN,
     @MessageId("E0002") NOT_FOUND_PAGE_404,

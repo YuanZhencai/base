@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ViewBaseBean;
-import com.wcs.base.dict.service.DictService;
+import com.wcs.commons.dict.controller.DictBean;
+import com.wcs.commons.dict.service.DictService;
 import com.wcs.showcase.crud.model.Teacher;
 import com.wcs.showcase.crud.service.TeacherService;
 
@@ -37,7 +38,7 @@ public class TeacherBean extends ViewBaseBean<Teacher> {
 	@Inject
 	private TeacherService teacherService;
 	@Inject
-	private DictService dictService;
+	private DictBean dictBean;
 	
 	private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);
 	private LazyDataModel<Teacher> lazyModel;           // 动态分页使用
@@ -60,7 +61,7 @@ public class TeacherBean extends ViewBaseBean<Teacher> {
 	 */
 	@PostConstruct
 	private void postConstruct() {
-		this.setSexList(dictService.findWithSelectItem("SEX"));
+		this.setSexList(dictBean.getItems("SEX"));
     	this.search();	
 	}
 	
@@ -118,14 +119,6 @@ public class TeacherBean extends ViewBaseBean<Teacher> {
 
 	public void setSexList(List<SelectItem> sexList) {
 		this.sexList = sexList;
-	}
-
-	public DictService getDictService() {
-		return dictService;
-	}
-
-	public void setDictService(DictService dictService) {
-		this.dictService = dictService;
 	}
 
 }

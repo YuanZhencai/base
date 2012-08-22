@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.wcs.base.exception;
+package com.wcs.base.exception.message;
 
 
 import static com.wcs.base.message.MessageConveyorFactory.messageConveyerFactory;

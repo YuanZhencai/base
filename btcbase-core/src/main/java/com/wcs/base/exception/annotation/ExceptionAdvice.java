@@ -1,4 +1,4 @@
-package com.wcs.base.exception;
+package com.wcs.base.exception.annotation;
 import java.io.Serializable;
 
 import javax.interceptor.AroundInvoke;
@@ -6,6 +6,7 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import com.wcs.base.conf.SystemConfiguration;
+import com.wcs.base.exception.TransactionException;
 import com.wcs.base.util.JSFUtils;
 /**
  * @author Chris Guan

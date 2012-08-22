@@ -16,12 +16,9 @@ import com.wcs.base.entity.IdEntity;
 
 
 /**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
+ *
  */
 @Entity
 @Table(name="resource")

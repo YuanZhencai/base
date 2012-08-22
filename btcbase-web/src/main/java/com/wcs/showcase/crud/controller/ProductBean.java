@@ -18,7 +18,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.ConversationBaseBean;
-import com.wcs.base.dict.service.DictService;
+import com.wcs.commons.dict.controller.DictBean;
 import com.wcs.showcase.crud.model.Product;
 import com.wcs.showcase.crud.service.ProductService;
 
@@ -38,7 +38,7 @@ public class ProductBean extends ConversationBaseBean<Product> {
 	@Inject
 	ProductService productService;
 	@Inject
-	private DictService dictService;
+	private DictBean dictBean;
 	
 	private Map<String,Object> filterMap = Maps.newHashMapWithExpectedSize(5);
     private LazyDataModel<Product> lazyModel;
@@ -57,7 +57,7 @@ public class ProductBean extends ConversationBaseBean<Product> {
 	 */
 	@PostConstruct
 	private void postConstruct() {
-		this.setProductCategoryList(dictService.findWithSelectItem("PROT"));
+		this.setProductCategoryList(dictBean.getItems("PROT"));
     	this.search();	
 	}
 	

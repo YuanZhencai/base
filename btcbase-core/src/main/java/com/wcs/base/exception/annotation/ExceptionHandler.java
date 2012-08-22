@@ -1,4 +1,4 @@
-package com.wcs.base.exception;
+package com.wcs.base.exception.annotation;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

@@ -6,6 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.TableGenerator;
 
+/**
+ * Exception message that produces a list of exceptions and their stack traces
+ * for logging.  This is typically used in lifecycle events which accumulate
+ * exceptions across observers.
+ * 
+ * @author Chris Guan
+ *
+ */
+
 @MappedSuperclass
 public abstract class IdEntity implements java.io.Serializable {
 
