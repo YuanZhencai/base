@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+	<ui:define name="title">角色权限分配</ui:define>
+	<ui:define name="styleAndScript">
+	</ui:define>
+	<ui:define name="content">
+	
+		<p:panel styleClass="panel1">
+			<h:form prependId="false" id="addSharedForm"
+				onsubmit="statusComplete();">
+				<p:breadCrumb preview="true" expandEffectDuration="200"
+					previewWidth="24">
+					<p:menuitem value="系统管理" url="#" />
+					<p:menuitem value="角色管理" url="#" />
+				</p:breadCrumb>
+				
+				<p:messages id="msg"/>
+				
+				<div style="position: relative; margin-top: 5px;">
+					<div class="style1">
+					
+						<p:tree value="#{resourceBean.root}" var="node" id="resTree" selectionMode="checkbox" selection="#{resourceBean.selectedNodes}">
+							<p:treeNode>
+								<h:outputText value="#{node.name}"/>
+							</p:treeNode>
+						</p:tree>
+						
+						<div style="text-align: center; margin-top: 5px;">
+							<p:commandButton value="保存" action="#{resourceBean.allocResources}" ajax="false" icon="ui-icon ui-icon-plus"/>
+						</div>
+					</div>
+
+				</div>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

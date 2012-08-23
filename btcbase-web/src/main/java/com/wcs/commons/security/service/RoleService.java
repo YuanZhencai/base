@@ -59,37 +59,6 @@ public class RoleService implements Serializable {
 		entityWriter.create(role);
 	}
 	
-	/**
-	 * 为给定的role分配资源
-	 * @param role  给定某一个角色
-	 * @param allocatedResources 选选定的resource
-	 */
-	public void allocResources(Role role,List<Resource> allocatedResources){
-		//原有为A，新的为B；
-		// 得到原有的 List<Resource>
 
-		// 1. delete A-B （删除被取消掉的 Resource）
-		ListIterator<RoleResource> rrList = role.getRoleResources().listIterator();  // 已有的RoleResource
-		while(rrList.hasNext()) {
-			RoleResource rr = rrList.next();
-			if (!allocatedResources.contains(rr.getResource())){
-				rrList.remove();
-			}
-		}
-		
-		// 2. add B-A（添加新增的 Resource）
-		String jpql = new String("SELECT res FROM RoleResource rr JOIN rr.role r JOIN rr.resource res WHERE r.id=?1");
-		List<Resource> oldResList = entityReader.findList(jpql, role.getId());
-		
-		List<Resource> list = (List<Resource>)CollectionUtils.subtract(allocatedResources, oldResList);
-		for (Resource r : list){
-			RoleResource rr = new RoleResource();
-			rr.setRole(role);
-			rr.setResource(r);
-			rr.setCode(r.getCode());
-			role.getRoleResources().add(rr);
-		}
-		entityWriter.update(role);
-	}
 
 }

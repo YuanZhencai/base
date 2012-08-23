@@ -114,41 +114,6 @@ public class RoleBean implements Serializable {
 		}
 	}
 	
-	/**
-	 * 资源分配页面跳转
-	 * @return
-	 */
-	public String allocResources() {
-		// this.roleVo.setRoleName(this.instance.getRoleName());
-		root = new ResourcesNode("系统资源", null);
-		// 若该角色已经分配过资源则查询已有的资源 并设置选中
-		List<Resource> allResource = resourceCache.loadAllResource();
-		try {
-			//this.roleService.isSelectedResourceByRole(root, allResource, this.instance);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return ROLE_RESOURCE_PAGE;
-	}
-
-	
-	/**
-	 * Description: 得到选中节点资源对象集合
-	 * @param selectedNodes
-	 * @return
-	 */
-	private List<Resource> loadSelectResource(TreeNode[] selectedNodes) {
-		List<Resource> list = new ArrayList<Resource>();
-		if (selectedNodes != null) {
-			for (TreeNode node : selectedNodes ){
-				Resource rs = entityReader.findUnique(Resource.class, ((ResourcesNode) node).getId());
-				list.add(rs);
-			}
-		}
-
-		return list;
-	}
 	
 	//-------------------------------- setter & getter -----------------------------//
 	

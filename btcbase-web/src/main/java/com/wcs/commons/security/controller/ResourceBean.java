@@ -17,12 +17,16 @@ import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.wcs.base.exception.TransactionException;
-import com.wcs.commons.security.model.Resource;
-import com.wcs.commons.security.service.ResourceCache;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
 import com.wcs.base.util.MessageUtils;
+import com.wcs.commons.security.model.Resource;
+import com.wcs.commons.security.model.Role;
+import com.wcs.commons.security.model.RoleResource;
+import com.wcs.commons.security.service.ResourceCache;
+import com.wcs.commons.security.vo.ResourcesNode;
 
 /**
  * 
@@ -48,26 +52,67 @@ public class ResourceBean implements Serializable {
 
     private TreeNode root = null; // 资源树
 	private TreeNode selectedNode; // 选中节点
-    private Resource newResource = new Resource(); // 节点操作资源
+	private TreeNode[] selectedNodes; // checkbox
+    //private Resource newResource = new Resource(); // 节点操作资源
     private Resource selectedResource; // 节点操作资源
 
     private OpMode opMode;
 
 	@PostConstruct
 	public void initResourceTree() {
-		logger.info("初始化资源管理树 TreeTable");
+		logger.info("初始化资源树 Tree");
         root = new DefaultTreeNode("root", null);
-        this.buildTreeTable(resourceCache.loadSubResources(0L), root);
+        this.buildTree(resourceCache.loadSubResources(0L), root);
 	}
 
-    private void buildTreeTable(List<Resource> subResList,TreeNode parentNode){
+	/**
+	 * 用来维护Resource，采用递归方式实现
+	 * @param subResList 给定的父节点的儿子资源列表
+	 * @param parentNode 父节点
+	 */
+    private void buildTree(List<Resource> subResList,TreeNode parentNode){
         for (Resource r : subResList){
             TreeNode node = new DefaultTreeNode(r, parentNode);
             List<Resource> subList = resourceCache.loadSubResources(r.getId());
             //System.out.printf("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
             if (CollectionUtils.isNotEmpty(subList))
-                buildTreeTable(subList,node);
+                buildTree(subList,node);
         }
+    }
+    
+    public void setAllocatedResources(Role role){
+    	List<Resource> resList = resourceCache.loadResource(role);
+    	for (Resource res : resList){
+    		setSelectedNode(res,root);
+    	}
+    	//return "/faces/auth/role-resource.xhtml";
+    }
+	/**
+	 * 资源分配页面跳转
+	 * @return
+	 */
+	public void allocResources(Role role) {
+		List<Resource> selectedResource = Lists.newArrayList();
+		for(TreeNode node : selectedNodes) {
+			selectedResource.add((Resource)node.getData());
+		}
+		
+		resourceCache.allocResources(role,selectedResource);
+		
+		//return "/faces/auth/role-list.xhtml";
+	}
+	
+    private void setSelectedNode(Resource res,TreeNode parentNode){
+    	Object obj = parentNode.getData();
+    	if (obj instanceof Resource && res.equals((Resource)obj)){
+    		parentNode.setSelected(true);
+    	}
+    	 List<TreeNode> children = parentNode.getChildren();
+    	if (CollectionUtils.isNotEmpty(children)){
+    		for (TreeNode node : children){
+    			setSelectedNode(res,node);
+    		}
+    	}
     }
 
     public void toAdd(){
@@ -176,15 +221,15 @@ public class ResourceBean implements Serializable {
         this.selectedNode = selectedNode;
     }
 
-    public Resource getNewResource() {
-        return newResource;
-    }
+    public TreeNode[] getSelectedNodes() {
+		return selectedNodes;
+	}
 
-    public void setNewResource(Resource newResource) {
-        this.newResource = newResource;
-    }
+	public void setSelectedNodes(TreeNode[] selectedNodes) {
+		this.selectedNodes = selectedNodes;
+	}
 
-    public OpMode getOpMode() {
+	public OpMode getOpMode() {
         return opMode;
     }
 

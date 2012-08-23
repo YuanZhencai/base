@@ -101,7 +101,7 @@ public class LoginBean implements Serializable {
      * @return
      */
     private List<List<Resource>> initAllResources() {
-        List<Resource> resList = resourceCache.loadAllResource();
+        List<Resource> resList = resourceCache.loadAllResources();
         Map<String, List<Resource>> allResMap = Maps.newHashMap();
         
         for (Resource r : resList) {

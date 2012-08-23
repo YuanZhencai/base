@@ -2,19 +2,28 @@ package com.wcs.commons.security.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
+import javax.ejb.EJB;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
-import com.google.common.collect.Lists;
-import com.wcs.base.exception.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wcs.commons.security.model.Resource;
+import com.google.common.collect.Lists;
+import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
+import com.wcs.commons.security.model.Resource;
+import com.wcs.commons.security.model.Role;
+import com.wcs.commons.security.model.RoleResource;
 
 /**
  * 
@@ -45,10 +54,33 @@ public class ResourceCache {
 	/**
 	 * 装载系统的资源
 	 */
-	public List<Resource> loadAllResource() {
+	public List<Resource> loadAllResources() {
 		return cache;
 	}
-
+	
+	public Resource loadResource(String code){
+		for (Resource r : cache){
+			if (r.getCode().equals(code)){
+				return r;
+			}
+		}
+		return null;
+	}
+	
+	public List<Resource> loadResource(Role role){
+		List<Resource> resList = Lists.newArrayList();
+    	List<RoleResource> rrList = this.entityReader.findList("SELECT rr FROM RoleResource rr WHERE rr.role.id=?1", role.getId());
+    	for (RoleResource rr : rrList){
+    		resList.add( loadResource(rr.getCode()) );
+    	}
+    	return resList;
+	}
+ 
+	/**
+	 * 得到某一个父Id parentId 下的资源列表
+	 * @param parentId
+	 * @return
+	 */
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Resource> loadSubResources(Long parentId){
         List<Resource> list = Lists.newArrayList();
@@ -59,6 +91,40 @@ public class ResourceCache {
         }
         return list;
     }
+    
+	/**
+	 * 为给定的role分配资源
+	 * @param role  给定某一个角色
+	 * @param allocatedResources 选选定的resource
+	 */
+	public void allocResources(Role role,List<Resource> allocatedResources){
+		role = this.entityReader.findUnique(Role.class, role.getId());
+		//原有为A，新的为B；
+		// 得到原有的 List<Resource>
+
+		// 1. delete A-B （删除被取消掉的 Resource）
+		ListIterator<RoleResource> rrList = role.getRoleResources().listIterator();  // 已有的RoleResource
+		while(rrList.hasNext()) {
+			RoleResource rr = rrList.next();
+			if (!allocatedResources.contains(rr.getResource())){
+				rrList.remove();
+			}
+		}
+		
+		// 2. add B-A（添加新增的 Resource）
+		String jpql = new String("SELECT res FROM RoleResource rr JOIN rr.role r JOIN rr.resource res WHERE r.id=?1");
+		List<Resource> oldResList = entityReader.findList(jpql, role.getId());
+		
+		List<Resource> list = (List<Resource>)CollectionUtils.subtract(allocatedResources, oldResList);
+		for (Resource r : list){
+			RoleResource rr = new RoleResource();
+			rr.setRole(role);
+			rr.setResource(r);
+			rr.setCode(r.getCode());
+			role.getRoleResources().add(rr);
+		}
+		entityWriter.update(role); //TODO:级联更新有问题
+	}    
 
 	/**
 	 * 删除当前选中资源
