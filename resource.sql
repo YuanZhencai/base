@@ -22,3 +22,26 @@ INSERT INTO RESOURCE ( ID, NAME, CODE, SEQ_NO, PARENT_ID, TYPE, URI) VALUES ( 30
 --7.16 新的2个报表
 INSERT INTO RESOURCE ( ID, NAME, CODE, SEQ_NO, PARENT_ID, TYPE, URI) VALUES ( 31, '投资理财产品额度明细表', 'tms:report:invest', 2, 21, 'MENU', '/faces/report/inveProduct/inveProduct-detail.xhtml') ;
 INSERT INTO RESOURCE ( ID, NAME, CODE, SEQ_NO, PARENT_ID, TYPE, URI) VALUES ( 32, '授信额度明细表', 'tms:report:credit', 3, 21, 'MENU', '/faces/report/bankCredit/bankCredit-detail.xhtml') ;
+
+
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (1, '系统管理员','admin', 'sysadmin', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (504, '普通申请人', '', 'Requester', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (505, '工厂财务经理', '', 'FacFinance', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (506, '工厂总经理', '', 'FacManager', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (510, '工厂资金岗位人员', '', 'FacFundPos', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (511, '工厂成本会计', '', 'FacAccount', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (512, '公司贸易内勤 ', '', 'ComTrader', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (513, '公司贸易经理', '', 'ComTraderM', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (514, '集团品种转向总监', '', 'CopGv2director', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (515, '集团会计部门人员', '', 'CopAccount', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (516, '集团资金部门人员-授信组', '', 'CopFund1', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (517, '集团资金部门人员-担保组', '', 'CopFund2', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (518, '集团资金部门人员-理财组', '', 'CopFund3', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (519, '集团资金部门人员-外债申请组', '', 'CopFund4', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (520, '集团资金部门人员-银行账户申请组', '', 'CopFund5', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (521, '集团资金部门经理', '', 'CopFundM', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (522, '集团资金总监', '', 'w', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (523, '集团项目经理', '', 'r', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (524, '集团资金计划员', '', 'CopPlanner', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (525, '集团财务总监', '', 'CopCFO', 'N');
+insert into ROLE (ID, NAME, description, CODE, DEFUNCT_IND) values (526, '新加坡领导', '', 'Singapore', 'N');

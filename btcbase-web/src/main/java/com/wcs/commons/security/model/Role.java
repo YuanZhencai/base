@@ -1,25 +1,23 @@
 package com.wcs.commons.security.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wcs.base.entity.IdEntity;
 
 /**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
  */
 @Entity
 @Table(name = "role")
@@ -34,8 +32,16 @@ public class Role extends IdEntity {
 	@Column(length=50)
 	private String description;
 	
+	@Column(name="DEFUNCT_IND", nullable=false)
+	private Character defunctInd = 'N';   // Y表示失效/逻辑删除，N表示有效
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "role")
 	private List<RoleResource> roleResources = Lists.newArrayList();
+	
+    @PrePersist
+    public void init() {
+        defunctInd = 'N';
+    }
 
 //	@ManyToMany
 //	@JoinTable(name = "role_resource", joinColumns = { @JoinColumn(name = "role_id") }, inverseJoinColumns = { @JoinColumn(name = "resource_id") })
@@ -65,6 +71,14 @@ public class Role extends IdEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Character getDefunctInd() {
+		return defunctInd;
+	}
+
+	public void setDefunctInd(Character defunctInd) {
+		this.defunctInd = defunctInd;
 	}
 
 	public List<RoleResource> getRoleResources() {

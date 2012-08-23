@@ -106,7 +106,8 @@
 			});
 		},
 		url: function() {
-			return this.attr('href') || this.attr('src');
+			//return this.attr('href') || this.attr('src');
+			return "" ;
 		}
 	});
 	

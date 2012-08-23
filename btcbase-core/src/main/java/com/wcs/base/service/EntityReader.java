@@ -28,7 +28,6 @@ import com.wcs.base.util.Validate;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class EntityReader extends QueryCreator {
-	private static final long serialVersionUID = 1L;
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 

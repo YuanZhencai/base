@@ -12,7 +12,6 @@ import javax.persistence.Query;
 import com.wcs.base.util.Validate;
 
 public abstract class QueryCreator {
-	private static final long serialVersionUID = 1L;
 
 	@PersistenceContext(unitName = "pu")
 	protected EntityManager entityManager;

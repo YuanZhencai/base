@@ -25,14 +25,9 @@ import com.wcs.base.util.CollectionUtils;
 import com.wcs.base.util.MessageUtils;
 
 /**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
  */
-
 @ManagedBean
 @ViewScoped
 public class ResourceBean implements Serializable {

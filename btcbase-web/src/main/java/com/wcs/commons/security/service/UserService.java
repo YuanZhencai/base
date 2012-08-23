@@ -86,7 +86,7 @@ public class UserService extends AbstractUserService {
      * Set current user roles
      * @param roleList
      */
-    public void setRolesOfUser(User user, List<Role> roleList) {
+    public void allocRoles(User user, List<Role> roleList) {
     	User u = entityReader.findUnique(User.class, user.getId());  // 得到持久化的User
     	List<Role> userRoles = u.getRoleList();
     	

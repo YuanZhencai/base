@@ -27,12 +27,11 @@ import com.wcs.base.util.Validate;
  * 扩展功能包括分页查询,按属性过滤条件列表查询.
  * 可直接使用,也可以扩展EntityService
  *
- * @author chris
+ * @author Chris Guan
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class XqlEntityReader extends EntityReader {
-	private static final long serialVersionUID = 1L;
 	
     // -----------------------------------  List 查询  --------------------------------------//
 	/**

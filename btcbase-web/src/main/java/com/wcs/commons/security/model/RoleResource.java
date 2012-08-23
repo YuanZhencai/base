@@ -32,7 +32,7 @@ public class RoleResource extends IdEntity {
 	private Role role;
 	
 	@Column(length=50)
-	private String code;
+	private String code;	// Resource->code , 方便Resource 获取
 
 	//--------------------- setter & getter -------------------//
 	

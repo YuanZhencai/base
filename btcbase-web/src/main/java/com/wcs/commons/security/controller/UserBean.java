@@ -82,7 +82,7 @@ public class UserBean extends ConversationBaseBean<User> implements Serializable
 
         // 新分配当前用户角色
         List<Role> roleList = roles.getTarget();
-        userService.setRolesOfUser(currentUser, roleList);
+        userService.allocRoles(currentUser, roleList);
     }
     
     /**

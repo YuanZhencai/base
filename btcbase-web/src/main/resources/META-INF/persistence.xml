@@ -52,19 +52,20 @@
 	<persistence-unit name="pu" transaction-type="JTA">
 	    <provider>org.hibernate.ejb.HibernatePersistence</provider>
 	    <jta-data-source>java:/jdbc/btcbase</jta-data-source>
-	 
+ 	 
 	    <class>com.wcs.base.entity.IdEntity</class>
 	    <class>com.wcs.base.entity.BaseEntity</class>
-	    <class>com.wcs.base.dict.model.Dict</class>
+	    <class>com.wcs.commons.dict.model.Dict</class>
 	    
 	    <class>com.wcs.commons.security.model.RoleResource</class>
 	    <class>com.wcs.commons.security.model.Resource</class>
 	    <class>com.wcs.commons.security.model.Role</class>
 	    <class>com.wcs.commons.security.model.User</class>
-	           
+	    
 	    <properties>
 	      <property name="hibernate.connection.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 	      <property name="hibernate.hbm2ddl.auto" value="update"/>
+	      <property name="hibernate.show_sql" value="true"/>
 	   </properties>
 	  </persistence-unit>
   

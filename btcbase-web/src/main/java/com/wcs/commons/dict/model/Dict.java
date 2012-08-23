@@ -24,7 +24,7 @@ public class Dict extends IdEntity {
     private String category;   //代码分类。    [“系统分类”]. [“系统名称”]. [“字典数据类型”]. [”CAT编码”] ， 原则：无分类不加
 
 
-    @Column(nullable = false, length = 30)
+    @Column(name="code_key",nullable = false, length = 30)
     private String key;    //代码键值，eg. 1
 
     @Column(length = 30)
@@ -50,6 +50,12 @@ public class Dict extends IdEntity {
     public Dict(String category, String key) {
         this.category = category;
         this.key = key;
+    }
+
+    @PrePersist
+    public void init() {
+        defunctInd = 'N';
+        sysInd = 'N';
     }
 
     public Dict(String category, String key, String value) {
@@ -122,9 +128,4 @@ public class Dict extends IdEntity {
         this.defunctInd = defunctInd;
     }
 
-    @PrePersist
-    public void init() {
-        defunctInd = 'N';
-        sysInd = 'N';
-    }
 }

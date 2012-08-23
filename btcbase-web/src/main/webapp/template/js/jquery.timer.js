@@ -123,6 +123,7 @@
             } else {
                 jQuery(target).text(date);
             }
+            //goMessage();
         }
     });
     jQuery.fn.timer = function (options) {
