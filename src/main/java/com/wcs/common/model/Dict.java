@@ -42,7 +42,7 @@ public class Dict extends com.wcs.base.model.IdEntity implements Serializable {
 	private String remarks;
 
 	@Column(name="SEQ_NO")
-	private long seqNo;
+	private Long seqNo;
 
 	@Column(name="SYS_IND", nullable=false, length=1)
 	private String sysInd;
@@ -121,11 +121,11 @@ public class Dict extends com.wcs.base.model.IdEntity implements Serializable {
 		this.remarks = remarks;
 	}
 
-	public long getSeqNo() {
+	public Long getSeqNo() {
 		return this.seqNo;
 	}
 
-	public void setSeqNo(long seqNo) {
+	public void setSeqNo(Long seqNo) {
 		this.seqNo = seqNo;
 	}
 

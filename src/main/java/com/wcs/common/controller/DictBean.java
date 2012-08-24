@@ -137,7 +137,7 @@ public class DictBean implements Serializable{
 		
 		//注意SeqNO必须为NUM.在前台进行验证.
 		if(dictSeqNo =="" || dictSeqNo == null){
-			addDict.setSeqNo(0);
+			addDict.setSeqNo(new Long(0));
 		}else{
 			addDict.setSeqNo(Long.parseLong(dictSeqNo));
 		}

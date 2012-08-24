@@ -98,7 +98,7 @@ public class RoleServcie {
             // repeat.parent 'N'
             for(Roleresource r : repeat) {
                 Resourcemstr rp = r.getResourcemstr();
-                while(rp.getParentId() != 0) {
+                while(rp.getParentId() != null) {
                     rp = em.find(Resourcemstr.class, rp.getParentId());
                     Roleresource t = (Roleresource) em.createQuery(sql)
                             .setParameter("lid", role.getId())
@@ -136,7 +136,7 @@ public class RoleServcie {
                     
                     // loop parent
                     Resourcemstr rp = r;
-                    while(rp.getParentId() != 0) {
+                    while(rp.getParentId() != null) {
                         rp = em.find(Resourcemstr.class, rp.getParentId());
                         @SuppressWarnings("unchecked")
                         List<Roleresource> ps = em.createQuery(sql).setParameter("lid", role.getId())

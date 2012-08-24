@@ -190,7 +190,7 @@ public class LoginService {
 		List<TreeNode> list = new ArrayList<TreeNode>();
 		
 		for(Resourcemstr r : res) {
-		    if(r.getParentId() == 0) {    // first level
+		    if(r.getParentId() == null) {    // first level
 		        list.add(new DefaultTreeNode(r, null));
 		    }
 		}
@@ -208,7 +208,7 @@ public class LoginService {
 	 */
 	public void recursive(Resourcemstr r, TreeNode tn, List<Resourcemstr> rs) {
         for(Resourcemstr rm : rs) {
-            if(rm.getParentId() == r.getId()) {
+            if(r.getId().equals(rm.getParentId())) {
                 TreeNode n = new DefaultTreeNode(rm, tn);
                 recursive(rm, n, rs);
             }

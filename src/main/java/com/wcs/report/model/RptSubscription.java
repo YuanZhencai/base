@@ -11,13 +11,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="RPT_SUBSCRIPTION")
-public class RptSubscription implements Serializable {
+public class RptSubscription extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private long id;
 
 	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
@@ -38,7 +33,7 @@ public class RptSubscription implements Serializable {
 	private Timestamp updatedDatetime;
 
 	@Column(name="USERMSTR_ID")
-	private long usermstrId;
+	private Long usermstrId;
 
 	//bi-directional many-to-one association to RptReportmstr
     @ManyToOne
@@ -47,14 +42,6 @@ public class RptSubscription implements Serializable {
 
     public RptSubscription() {
     }
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return this.createdBy;
@@ -104,11 +91,11 @@ public class RptSubscription implements Serializable {
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public long getUsermstrId() {
+	public Long getUsermstrId() {
 		return this.usermstrId;
 	}
 
-	public void setUsermstrId(long usermstrId) {
+	public void setUsermstrId(Long usermstrId) {
 		this.usermstrId = usermstrId;
 	}
 

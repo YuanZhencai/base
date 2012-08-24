@@ -17,7 +17,7 @@ public class RptExecutionplanparameter implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
-	private long id;
+	private Long id;
 
 	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
@@ -65,11 +65,11 @@ public class RptExecutionplanparameter implements Serializable {
     public RptExecutionplanparameter() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

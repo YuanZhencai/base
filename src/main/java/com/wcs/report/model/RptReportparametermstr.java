@@ -11,13 +11,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="RPT_REPORTPARAMETERMSTR")
-public class RptReportparametermstr implements Serializable {
+public class RptReportparametermstr extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private long id;
 
 	@Column(name="CREATED_BY", length=50)
 	private String createdBy;
@@ -78,14 +73,6 @@ public class RptReportparametermstr implements Serializable {
 
     public RptReportparametermstr() {
     }
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return this.createdBy;

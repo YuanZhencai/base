@@ -18,7 +18,7 @@ public class RptExecutionplanmstr implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
-	private long id;
+	private Long id;
 
 	@Column(name="AUTO_PUBLISH_IND", nullable=false, length=1)
 	private String autoPublishInd;
@@ -81,11 +81,11 @@ public class RptExecutionplanmstr implements Serializable {
     public RptExecutionplanmstr() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

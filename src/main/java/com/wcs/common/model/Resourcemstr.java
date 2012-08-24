@@ -33,7 +33,7 @@ public class Resourcemstr extends com.wcs.base.model.IdEntity implements Seriali
 	private String name;
 
 	@Column(name="PARENT_ID")
-	private long parentId;
+	private Long parentId;
 
 	@Column(name="SEQ_NO", length=255)
 	private String seqNo;
@@ -98,11 +98,11 @@ public class Resourcemstr extends com.wcs.base.model.IdEntity implements Seriali
 		this.name = name;
 	}
 
-	public long getParentId() {
+	public Long getParentId() {
 		return this.parentId;
 	}
 
-	public void setParentId(long parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
 

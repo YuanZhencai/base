@@ -12,13 +12,8 @@ import java.util.List;
  */
 @Entity
 @Table(name="RPT_SNAPSHOT")
-public class RptSnapshot implements Serializable {
+public class RptSnapshot extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
-	private long id;
 
 	@Column(name="CREATED_BY", nullable=false, length=50)
 	private String createdBy;
@@ -72,14 +67,6 @@ public class RptSnapshot implements Serializable {
 
     public RptSnapshot() {
     }
-
-	public long getId() {
-		return this.id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getCreatedBy() {
 		return this.createdBy;

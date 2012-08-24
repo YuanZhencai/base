@@ -27,7 +27,7 @@ public class Synclog extends com.wcs.base.model.IdEntity implements Serializable
 	private String syncType;
 
 	@Column(name="VERSION", nullable=false)
-	private long version;
+	private Long version;
 
     public Synclog() {
     }
@@ -64,11 +64,11 @@ public class Synclog extends com.wcs.base.model.IdEntity implements Serializable
 		this.syncType = syncType;
 	}
 
-	public long getVersion() {
+	public Long getVersion() {
 		return this.version;
 	}
 
-	public void setVersion(long version) {
+	public void setVersion(Long version) {
 		this.version = version;
 	}
 

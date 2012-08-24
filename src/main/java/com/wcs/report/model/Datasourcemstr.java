@@ -17,8 +17,8 @@ public class Datasourcemstr implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="DATASOURCEMSTR_ID", unique=true, nullable=false)
-	private long datasourcemstrId;
+	@Column(name="ID", unique=true, nullable=false)
+	private Long datasourcemstrId;
 
 	@Column(name="CONNECT_URL", length=2000)
 	private String connectUrl;
@@ -66,11 +66,11 @@ public class Datasourcemstr implements Serializable {
     public Datasourcemstr() {
     }
 
-	public long getDatasourcemstrId() {
+	public Long getDatasourcemstrId() {
 		return this.datasourcemstrId;
 	}
 
-	public void setDatasourcemstrId(long datasourcemstrId) {
+	public void setDatasourcemstrId(Long datasourcemstrId) {
 		this.datasourcemstrId = datasourcemstrId;
 	}
 

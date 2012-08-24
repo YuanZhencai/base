@@ -18,7 +18,7 @@ public class RptReportmstr implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
-	private long id;
+	private Long id;
 
 	@Column(name="CREATED_BY", length=50)
 	private String createdBy;
@@ -48,7 +48,7 @@ public class RptReportmstr implements Serializable {
 	private String reportName;
 
 	@Column(name="SNAPSHOT_TITLE_PATTERN")
-	private long snapshotTitlePattern;
+	private Long snapshotTitlePattern;
 
 	@Column(name="UPDATED_BY", length=50)
 	private String updatedBy;
@@ -108,11 +108,11 @@ public class RptReportmstr implements Serializable {
     public RptReportmstr() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -188,11 +188,11 @@ public class RptReportmstr implements Serializable {
 		this.reportName = reportName;
 	}
 
-	public long getSnapshotTitlePattern() {
+	public Long getSnapshotTitlePattern() {
 		return this.snapshotTitlePattern;
 	}
 
-	public void setSnapshotTitlePattern(long snapshotTitlePattern) {
+	public void setSnapshotTitlePattern(Long snapshotTitlePattern) {
 		this.snapshotTitlePattern = snapshotTitlePattern;
 	}
 

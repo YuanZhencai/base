@@ -167,7 +167,7 @@ public class RoleBean implements Serializable {
         for(int i = 0; i < selectedNodes.length; i ++) {
             boolean f = false;
             for(Roleresource r : resourced) {
-                if((long) r.getResourcemstr().getId() == ((Resourcemstr) selectedNodes[i].getData()).getId()) {
+                if(r.getResourcemstr().getId().equals(((Resourcemstr) selectedNodes[i].getData()).getId())) {
                     repeat.add(r);
                     f = true;
                     break;
@@ -200,7 +200,7 @@ public class RoleBean implements Serializable {
         // build tree nodes
         resources = roleServcie.searchResources();
         for(Resourcemstr r : resources) {
-            if(r.getParentId() == 0) {
+            if(r.getParentId() == null) {
                 TreeNode tn = new DefaultTreeNode(r, root);
                 totalNodes.add(tn);
                 findSonResource(r, tn, resources);
@@ -215,14 +215,14 @@ public class RoleBean implements Serializable {
             Resourcemstr r = resourced.get(i).getResourcemstr();
             boolean f = false;
             for(Resourcemstr ri : resources) {
-                if((long) r.getId() == ri.getParentId()) {
+                if(r.getId().equals(ri.getParentId())) {
                     f = true;
                     break;
                 }
             }
             if(!f) {    // is the last son nodes, then selected
                 for(TreeNode n : totalNodes) {
-                    if((long) ((Resourcemstr)n.getData()).getId() == (long) r.getId()) {
+                    if(((Resourcemstr)n.getData()).getId().equals(r.getId())) {
                         n.setSelected(true);
                         break;
                     }
@@ -233,7 +233,7 @@ public class RoleBean implements Serializable {
     // 递归
     public void findSonResource(Resourcemstr r, TreeNode tn, List<Resourcemstr> rs) {
         for(Resourcemstr rm : rs) {
-            if(rm.getParentId() == r.getId()) {
+            if(r.getId().equals(rm.getParentId())) {
                 TreeNode n = new DefaultTreeNode(rm, tn);
                 totalNodes.add(n);
                 findSonResource(rm, n, rs);

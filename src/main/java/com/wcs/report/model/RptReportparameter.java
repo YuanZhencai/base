@@ -18,7 +18,7 @@ public class RptReportparameter implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(unique=true, nullable=false)
-	private long id;
+	private Long id;
 
 	@Column(name="CREATED_BY", length=50)
 	private String createdBy;
@@ -84,11 +84,11 @@ public class RptReportparameter implements Serializable {
     public RptReportparameter() {
     }
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
