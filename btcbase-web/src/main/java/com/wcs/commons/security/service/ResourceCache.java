@@ -40,10 +40,6 @@ public class ResourceCache {
 	@EJB(beanName="EntityReader")
 	private EntityReader entityReader;
 	
-	@EJB
-	private EntityWriter entityWriter;
-	
-	@SuppressWarnings("unused")
 	@PostConstruct
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public void initResourceCache() {
@@ -67,14 +63,6 @@ public class ResourceCache {
 		return null;
 	}
 	
-	public List<Resource> loadResource(Role role){
-		List<Resource> resList = Lists.newArrayList();
-    	List<RoleResource> rrList = this.entityReader.findList("SELECT rr FROM RoleResource rr WHERE rr.role.id=?1", role.getId());
-    	for (RoleResource rr : rrList){
-    		resList.add( loadResource(rr.getCode()) );
-    	}
-    	return resList;
-	}
  
 	/**
 	 * 得到某一个父Id parentId 下的资源列表
@@ -92,72 +80,6 @@ public class ResourceCache {
         return list;
     }
     
-	/**
-	 * 为给定的role分配资源
-	 * @param role  给定某一个角色
-	 * @param allocatedResources 选选定的resource
-	 */
-	public void allocResources(Role role,List<Resource> allocatedResources){
-		role = this.entityReader.findUnique(Role.class, role.getId());
-		//原有为A，新的为B；
-		// 得到原有的 List<Resource>
-
-		// 1. delete A-B （删除被取消掉的 Resource）
-		ListIterator<RoleResource> rrList = role.getRoleResources().listIterator();  // 已有的RoleResource
-		while(rrList.hasNext()) {
-			RoleResource rr = rrList.next();
-			if (!allocatedResources.contains(rr.getResource())){
-				rrList.remove();
-			}
-		}
-		
-		// 2. add B-A（添加新增的 Resource）
-		String jpql = new String("SELECT res FROM RoleResource rr JOIN rr.role r JOIN rr.resource res WHERE r.id=?1");
-		List<Resource> oldResList = entityReader.findList(jpql, role.getId());
-		
-		List<Resource> list = (List<Resource>)CollectionUtils.subtract(allocatedResources, oldResList);
-		for (Resource r : list){
-			RoleResource rr = new RoleResource();
-			rr.setRole(role);
-			rr.setResource(r);
-			rr.setCode(r.getCode());
-			role.getRoleResources().add(rr);
-		}
-		entityWriter.update(role); //TODO:级联更新有问题
-	}    
-
-	/**
-	 * 删除当前选中资源
-	 */
-	public void deleteResource(Resource resource) throws TransactionException{
-        // 若为父节点，则不能删除
-        if ( CollectionUtils.isNotEmpty(loadSubResources(resource.getId())) ){
-            throw new TransactionException("父节点不能删除");
-        }
-
-        // 删除节点
-        String jpql = "DELETE FROM Resource r WHERE r.id=?1";
-		this.entityWriter.batchExecute(jpql, resource.getId());
-
-		// 从缓存中删除这个Resource
-		for (Resource r: cache){
-			if (r.getId().equals(resource.getId())){
-				cache.remove(r);
-				break;
-			}
-		}
-	}
-
-	/**
-	 * 设置当前资源为父菜单（有子菜单：type=LEAF_MENU）
-     * @param resource
-     */
-	public void updateResourceType(Resource resource) {
-		String sql = "UPDATE Resource SET type= ?1 WHERE id= ?2";
-		entityWriter.batchExecute(sql, resource.getType(), resource.getId());
-		
-		// TODO: 更新缓存中的这个Resource
-	}
 
     public List<Resource> findBrotherNode(Resource resource){
         return entityReader.findList("SELECT r FROM Resource r WHERE r.parentId=?1 ",resource.getParentId());

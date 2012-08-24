@@ -24,9 +24,8 @@ import com.wcs.base.util.CollectionUtils;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
-import com.wcs.commons.security.model.RoleResource;
 import com.wcs.commons.security.service.ResourceCache;
-import com.wcs.commons.security.vo.ResourcesNode;
+import com.wcs.commons.security.service.ResourceService;
 
 /**
  * 
@@ -48,6 +47,8 @@ public class ResourceBean implements Serializable {
 	@EJB
 	private ResourceCache resourceCache;
 	@EJB
+	private ResourceService resourceService;
+	@EJB
 	private EntityWriter entityWriter;
 
     private TreeNode root = null; // 资源树
@@ -55,11 +56,11 @@ public class ResourceBean implements Serializable {
 	private TreeNode[] selectedNodes; // checkbox
     //private Resource newResource = new Resource(); // 节点操作资源
     private Resource selectedResource; // 节点操作资源
-
+    
     private OpMode opMode;
 
 	@PostConstruct
-	public void initResourceTree() {
+	public void init() {
 		logger.info("初始化资源树 Tree");
         root = new DefaultTreeNode("root", null);
         this.buildTree(resourceCache.loadSubResources(0L), root);
@@ -71,6 +72,7 @@ public class ResourceBean implements Serializable {
 	 * @param parentNode 父节点
 	 */
     private void buildTree(List<Resource> subResList,TreeNode parentNode){
+    	
         for (Resource r : subResList){
             TreeNode node = new DefaultTreeNode(r, parentNode);
             List<Resource> subList = resourceCache.loadSubResources(r.getId());
@@ -81,36 +83,55 @@ public class ResourceBean implements Serializable {
     }
     
     public void setAllocatedResources(Role role){
-    	List<Resource> resList = resourceCache.loadResource(role);
-    	for (Resource res : resList){
+    	clearChecked(root);	// 清空 Tree 原有所有节点的 check 状态
+    	List<Resource> allocatedResList = resourceService.findResources(role);
+    	for (Resource res : allocatedResList){
     		setSelectedNode(res,root);
     	}
-    	//return "/faces/auth/role-resource.xhtml";
     }
 	/**
-	 * 资源分配页面跳转
-	 * @return
+	 * 为给定的 Role 分配 Resource
+	 * 1.从选中的节点列表中，获取新的 Resource 列表，这个列表将会分配给 role
+	 * 2.获取给定的 Role 现有的 Resource 列表
+	 * 3.剔除没有被反选的原有的 Resource，增加新加入 Resource
+	 * TODO:SQL多次查询，可以优化
+	 * 
 	 */
 	public void allocResources(Role role) {
+		// 将选中的 TreeNode 节点列表转换成 List<Resource>  
 		List<Resource> selectedResource = Lists.newArrayList();
 		for(TreeNode node : selectedNodes) {
 			selectedResource.add((Resource)node.getData());
 		}
-		
-		resourceCache.allocResources(role,selectedResource);
-		
-		//return "/faces/auth/role-list.xhtml";
+		// 按照新的 Resource 列表重新给 role 分配 Resource
+		resourceService.allocResources(role,selectedResource);
 	}
 	
+	/**
+	 * 将给定的 Resource 在 Resource Tree 中的节点设置为 checked
+	 * @param res 给定的 Resource
+	 * @param parentNode 从这个节点开始，遍历其所有子孙节点
+	 */
     private void setSelectedNode(Resource res,TreeNode parentNode){
     	Object obj = parentNode.getData();
     	if (obj instanceof Resource && res.equals((Resource)obj)){
     		parentNode.setSelected(true);
     	}
-    	 List<TreeNode> children = parentNode.getChildren();
+    	List<TreeNode> children = parentNode.getChildren();
     	if (CollectionUtils.isNotEmpty(children)){
     		for (TreeNode node : children){
     			setSelectedNode(res,node);
+    		}
+    	}
+    }
+    
+    private void clearChecked(TreeNode parentNode){
+    	parentNode.setSelected(false);   // 清空原有的 check 状态
+    	
+    	List<TreeNode> children = parentNode.getChildren();
+    	if (CollectionUtils.isNotEmpty(children)){
+    		for (TreeNode node : children){
+    			clearChecked(node);
     		}
     	}
     }
@@ -139,7 +160,7 @@ public class ResourceBean implements Serializable {
 
         // 更新页面数据
         resourceCache.initResourceCache();
-        this.initResourceTree();
+        this.init();
     }
 
     /**
@@ -167,7 +188,7 @@ public class ResourceBean implements Serializable {
         }finally {
             // 更新Resource Cache 和 Resource-Tree
             resourceCache.initResourceCache();
-            this.initResourceTree();
+            this.init();
         }
     }
 
@@ -176,7 +197,7 @@ public class ResourceBean implements Serializable {
      */
     public void delete() {
         try {
-            this.resourceCache.deleteResource(selectedResource);
+            this.resourceService.deleteResource(selectedResource);
             MessageUtils.addSuccessMessage("resMsg", "删除资源成功！");
         } catch(TransactionException te){
             MessageUtils.addErrorMessage("resMsg", "删除资源失败, 请检查！"+te.getMessage());
@@ -186,7 +207,7 @@ public class ResourceBean implements Serializable {
         }
 
         // 更新页面数据(Resource-Tree)
-        initResourceTree();
+        init();
     }
 
     /**
@@ -236,4 +257,5 @@ public class ResourceBean implements Serializable {
     public void setOpMode(OpMode opMode) {
         this.opMode = opMode;
     }
+    
 }

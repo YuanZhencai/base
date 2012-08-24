@@ -58,7 +58,8 @@
 							</p:commandButton>
 
 							<p:commandButton action="#{resourceBean.setAllocatedResources(role)}" title="分配资源"
-									oncomplete="role_resource_dialog.show();" icon="ui-icon ui-icon-person">
+									oncomplete="role_resource_dialog.show();" icon="ui-icon ui-icon-person"
+									update=":dlgAllocRes">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.instance}" />
 							</p:commandButton>
 							
@@ -126,6 +127,7 @@
 	<p:dialog id="role_resource_id" widgetVar="role_resource_dialog"
 		resizable="false" width="380" height="400" header="角色权限分配"
 		modal="true">
+		<p:outputPanel id="dlgAllocRes">
 		<h:form prependId="false" id="role_resource_form">
 			<p:messages autoUpdate="true" showDetail="true" showSummary="true"/>
 			
@@ -138,12 +140,13 @@
 
 			<div style="text-align: center; margin-top: 5px;">
 				<p:commandButton value="确定" action="#{resourceBean.allocResources(roleBean.instance)}" 
-					update="role_resource_form" oncomplete="handleComplete(role_resource_dialog,args);"
+					update=":dlgAllocRes" oncomplete="handleComplete(role_resource_dialog,args);"
 					icon="ui-icon ui-icon-disk" style="margin-right: 5px;"/>
 				<p:commandButton type="button" value="关闭" icon="ui-icon ui-icon-cancel"
 					onclick="role_resource_dialog.hide();" />
 			</div>
 		</h:form>
+		</p:outputPanel>
 	</p:dialog>
 	
 	</ui:define>
