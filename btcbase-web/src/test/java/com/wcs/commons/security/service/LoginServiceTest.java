@@ -1,4 +1,4 @@
-package com.wcs.showcase.crud.service;
+package com.wcs.commons.security.service;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -8,18 +8,13 @@ import javax.ejb.EJB;
 
 import org.junit.Test;
 
+import com.wcs.base.test.BaseTest;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.User;
-import com.wcs.commons.security.service.LoginService;
 
 /**
-/**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
  */
 public class LoginServiceTest extends BaseTest{
 

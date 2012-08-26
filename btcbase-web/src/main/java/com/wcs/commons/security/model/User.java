@@ -7,13 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.google.common.collect.Lists;
-import com.wcs.base.entity.BaseEntity;
+import com.wcs.base.entity.IdEntity;
 import com.wcs.commons.security.model.master.Person;
 
 /**
@@ -27,7 +26,7 @@ import com.wcs.commons.security.model.master.Person;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends IdEntity {
 
 	@Column(name="AD_ACCOUNT", length=50)
 	private String adAccount;  // TDS帐号(LDAP帐号)
@@ -67,11 +66,6 @@ public class User extends BaseEntity {
 	
 	public void setRoleList(List<Role> roleList) {
 		this.roleList = roleList;
-	}
-
-	@Override
-	public String getDisplayText() {
-		return null;
 	}
 
 	public Person getPerson() {

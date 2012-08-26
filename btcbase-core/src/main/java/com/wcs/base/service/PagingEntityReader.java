@@ -211,19 +211,19 @@ public class PagingEntityReader extends XqlEntityReader {
      * <p/>
      * </p>
      *
-     * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
-     * @param xsqlFilterMap 从页面上以Map形式传过来的属性集合.
+     * @param xql      基于 xsqlbuilder 样式的类SQL语句.
+     * @param filterMap 从页面上以Map形式传过来的属性集合.
      * @return 分页的查询结果.  以 PrimeFaces 的LazyDataModel 形式返回。
      */
     @SuppressWarnings("unchecked")
-    public <T extends IdEntity> LazyDataModel<T> findXqlPage(final String xsql, final Map<String, Object> xsqlFilterMap) {
+    public <T extends IdEntity> LazyDataModel<T> findXqlPage(final String xql, final Map<String, Object> filterMap) {
         //Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
         Map<String, Object> paramMap = new HashMap<String,Object>();      
-        paramMap = this.buildParamMap(xsql, xsqlFilterMap);
+        paramMap = this.buildParamMap(xql, filterMap);
         
         // 构建 JPQL 语句
         XsqlBuilder builder = new XsqlBuilder();
-        String jpql = builder.generateHql(xsql, paramMap).getXsql().toString();
+        String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
         
         return this.findPage(jpql, paramMap);
     }

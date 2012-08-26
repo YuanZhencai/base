@@ -11,12 +11,8 @@ import com.wcs.base.service.EntityReader;
 import com.wcs.base.util.CollectionUtils;
 
 /**
- * <p>Project: btcbase</p> 
- * <p>Title: UserService.java</p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright .All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author <a href="mailto:yujingu@wcs-gloabl.com">Yu JinGu</a>
+ * 
+ * @author Chris Guan
  */
 public abstract class AbstractUserService {
 	

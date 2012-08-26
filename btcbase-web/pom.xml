@@ -179,7 +179,7 @@
      <profile>
             <id>openjpa</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <dependencies>
 	            
@@ -285,7 +285,7 @@
 		<profile>
 		    <id>arquillian-glassfish-embedded</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 		    <dependencies>
 		        <dependency>

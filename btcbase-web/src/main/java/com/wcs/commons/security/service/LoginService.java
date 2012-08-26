@@ -14,12 +14,8 @@ import com.wcs.commons.security.model.RoleResource;
 import com.wcs.base.service.EntityReader;
 
 /**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)

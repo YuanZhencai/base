@@ -63,14 +63,14 @@ public class XqlEntityReader extends EntityReader {
      * <p/>
      * </p>
      *
-     * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
+     * @param xql      基于 xsqlbuilder 样式的类SQL语句.
      * @param filterMap 从页面上以Map形式传过来的属性集合.
      * @return 分页的查询结果.
      */
     @SuppressWarnings("unchecked")
-	public <X> List<X> findXqlList(final String xsql, final Map<String, Object> filterMap) {
-        Validate.hasText(xsql, "xsql不能为空");
-        Query q = createXqlQuery(xsql, filterMap);
+	public <X> List<X> findXqlList(final String xql, final Map<String, Object> filterMap) {
+        Validate.hasText(xql, "xsql不能为空");
+        Query q = createXqlQuery(xql, filterMap);
 
         return q.getResultList();
     }

@@ -4,7 +4,6 @@
 package com.wcs.commons.security.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +20,10 @@ import org.slf4j.LoggerFactory;
 import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.util.MessageUtils;
-import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
+import com.wcs.commons.security.model.User;
 import com.wcs.commons.security.service.ResourceCache;
 import com.wcs.commons.security.service.RoleService;
-import com.wcs.commons.security.vo.ResourcesNode;
 
 /**
  * 
@@ -56,12 +55,11 @@ public class RoleBean implements Serializable {
 
 	private TreeNode root;// 资源树
 	private TreeNode[] selectedNodes;// 节点数组
+	
+	private DualListModel<Role> listModel;
 
-	private static final String LIST_PAGE = "/faces/permissions/role/list.xhtml";
-	private static final String ROLE_RESOURCE_PAGE = "/faces/permissions/role/resource-role.xhtml";
 	
-	
-	@PostConstruct @SuppressWarnings("unused")
+	@PostConstruct
 	private void init() {
 		this.list();
 	}
@@ -114,6 +112,36 @@ public class RoleBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * 装载选定用户所拥有的 Role，采用 DualListModel 来展示。
+	 * 
+	 * 1.查询出系统所有的Role
+	 * 2.查询出给定用户所有拥有的Role
+	 * 3.在 DualListModel 的左边显示未分配给给定用户的Role，在右边显示用户拥有的 Role
+	 * 
+	 * @param selectedUser
+	 */
+	public void loadRoles(User selectedUser){
+        List<Role> allRoles = roleService.findAllRoles();
+        List<Role> userRoles = roleService.findRoles(selectedUser);
+        for (Role role : userRoles) {
+            allRoles.remove(role);
+        }
+        listModel = new DualListModel<Role>(allRoles, userRoles);
+	}
+	
+    /**
+     * 在进行用户所有拥有的 Role 变动后，将新的Role分配给用户。
+     * 
+     * @return
+     */
+	public void allocRoles(User selectedUser) {
+        List<Role> roleList = listModel.getTarget();
+        // 新分配当前用户角色
+        roleService.allocRoles(selectedUser, roleList);
+	}
+    
+
 	
 	//-------------------------------- setter & getter -----------------------------//
 	
@@ -160,4 +188,15 @@ public class RoleBean implements Serializable {
 	public String getRowsPerPageTemplate() {
 		return SystemConfiguration.ROWS_PER_PAGE_TEMPLATE;
 	}
+
+
+	public DualListModel<Role> getListModel() {
+		return listModel;
+	}
+
+
+	public void setListModel(DualListModel<Role> listModel) {
+		this.listModel = listModel;
+	}
+	
 }

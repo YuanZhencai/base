@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 
 import org.junit.Test;
 
+import com.wcs.base.test.BaseTest;
 import com.wcs.showcase.crud.model.Teacher;
 
 /**

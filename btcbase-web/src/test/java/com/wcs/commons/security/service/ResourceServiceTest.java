@@ -1,21 +1,10 @@
-package com.wcs.showcase.crud.service;
-
-import java.util.List;
+package com.wcs.commons.security.service;
 
 import javax.ejb.EJB;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import com.wcs.commons.security.model.Resource;
+import com.wcs.base.test.BaseTest;
 import com.wcs.commons.security.service.ResourceCache;
 
 /**

@@ -259,11 +259,6 @@ CREATE TABLE IF NOT EXISTS `teacher` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL,
-  `created_by` varchar(50) DEFAULT NULL,
-  `created_datetime` datetime DEFAULT NULL,
-  `defunct_ind` char(1) DEFAULT NULL,
-  `updated_by` varchar(50) DEFAULT NULL,
-  `updated_datetime` datetime DEFAULT NULL,
   `AD_ACCOUNT` varchar(50) DEFAULT NULL,
   `pernr` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
