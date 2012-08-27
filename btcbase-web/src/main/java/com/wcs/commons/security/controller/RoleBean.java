@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -18,11 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wcs.base.conf.SystemConfiguration;
-import com.wcs.base.service.EntityReader;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.User;
-import com.wcs.commons.security.service.ResourceCache;
 import com.wcs.commons.security.service.RoleService;
 
 /**
@@ -42,12 +39,8 @@ public class RoleBean implements Serializable {
         @Override public String toString(){return displayText;}
     }
 
-	@EJB(beanName="EntityReader")
-	private EntityReader entityReader;
 	@Inject
 	private RoleService roleService;
-	@Inject
-	private ResourceCache resourceCache;
 	
 	private OpMode opMode;		// 操作模式
 	private Role instance = new Role(); // 当前角色对象
@@ -59,6 +52,7 @@ public class RoleBean implements Serializable {
 	private DualListModel<Role> listModel;
 
 	
+	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init() {
 		this.list();

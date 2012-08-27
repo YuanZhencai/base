@@ -49,7 +49,7 @@ public class Person implements Serializable {
 	private String kostl;
 
 	@Column(length=200)
-	private String nachn;
+	private String nachn;	//姓名
 
 	@Column(length=200)
 	private String name2;

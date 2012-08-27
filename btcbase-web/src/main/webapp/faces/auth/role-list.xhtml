@@ -10,8 +10,7 @@
 
 	<ui:define name="title">角色查询</ui:define>
 	<ui:define name="styleAndScript">
-		<script type="text/javascript"
-			src="#{request.contextPath}/scripts/material.js"></script>
+		<script type="text/javascript" src="#{request.contextPath}/scripts/material.js"/>
 	</ui:define>
 	<ui:define name="content">
 	
@@ -57,9 +56,12 @@
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.instance}" />
 							</p:commandButton>
 
-							<p:commandButton action="#{roleBean.allocResources}" ajax="false" icon="ui-icon ui-icon-key" title="角色资源设置">
+							<p:commandButton action="#{resourceBean.setAllocatedResources(role)}" title="分配资源"
+									oncomplete="role_resource_dialog.show();" icon="ui-icon ui-icon-person"
+									update=":dlgAllocRes">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.instance}" />
 							</p:commandButton>
+							
 						</p:column>
 					</p:dataTable>
 				</p:outputPanel>
@@ -121,6 +123,31 @@
 			</p:dialog>
 		</h:form>
 
+	<p:dialog id="role_resource_id" widgetVar="role_resource_dialog"
+		resizable="false" width="380" height="400" header="角色权限分配"
+		modal="true">
+		<p:outputPanel id="dlgAllocRes">
+		<h:form prependId="false" id="role_resource_form">
+			<p:messages autoUpdate="true" showDetail="true" showSummary="true"/>
+			
+			<p:tree value="#{resourceBean.root}" var="node" id="resTree" selectionMode="checkbox" 
+							selection="#{resourceBean.selectedNodes}" style="width: 96%;">
+				<p:treeNode>
+					<h:outputText value="#{node.name}"/>
+				</p:treeNode>
+			</p:tree>
+
+			<div style="text-align: center; margin-top: 5px;">
+				<p:commandButton value="确定" action="#{resourceBean.allocResources(roleBean.instance)}" 
+					update=":dlgAllocRes" oncomplete="handleComplete(role_resource_dialog,args);"
+					icon="ui-icon ui-icon-disk" style="margin-right: 5px;"/>
+				<p:commandButton type="button" value="关闭" icon="ui-icon ui-icon-cancel"
+					onclick="role_resource_dialog.hide();" />
+			</div>
+		</h:form>
+		</p:outputPanel>
+	</p:dialog>
+	
 	</ui:define>
 
 </ui:composition>

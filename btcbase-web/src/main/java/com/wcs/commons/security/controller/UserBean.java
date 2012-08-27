@@ -13,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
-import com.wcs.base.controller.ConversationBaseBean;
 import com.wcs.commons.security.model.User;
 import com.wcs.commons.security.service.UserService;
+import com.wcs.commons.security.vo.UserVO;
 
 /**
  * 
@@ -25,17 +25,19 @@ import com.wcs.commons.security.service.UserService;
 @ViewScoped
 public class UserBean implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger logger = LoggerFactory.getLogger(UserBean.class);
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private Map<String, Object> queryMap = Maps.newHashMapWithExpectedSize(4);; // 查询条件Map封装
-    private LazyDataModel<User> lazyModel;
+    private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4); // 查询条件Map封装
+    private LazyDataModel<UserVO> lazyModel;
+    private User instance = new User(); // 当前角色对象
     
 
     @Inject
     private UserService userService;
 
     @PostConstruct
-    public void initLazyModel() {
+    public void init() {
+    	logger.info("UserBean=>init()");
         list();
     }
 
@@ -44,23 +46,31 @@ public class UserBean implements Serializable {
      * @return
      */
     public void list() {
-        lazyModel = userService.findUsers(queryMap);
+        lazyModel = userService.findUsers(filterMap);
     }
 
-    public LazyDataModel<User> getLazyModel() {
+    public LazyDataModel<UserVO> getLazyModel() {
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<User> lazyModel) {
+    public void setLazyModel(LazyDataModel<UserVO> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
-    public Map<String, Object> getQueryMap() {
-        return queryMap;
-    }
+	public Map<String, Object> getFilterMap() {
+		return filterMap;
+	}
 
-    public void setQueryMap(Map<String, Object> queryMap) {
-        this.queryMap = queryMap;
-    }
+	public void setFilterMap(Map<String, Object> filterMap) {
+		this.filterMap = filterMap;
+	}
 
+	public User getInstance() {
+		return instance;
+	}
+
+	public void setInstance(User instance) {
+		this.instance = instance;
+	}
+	
 }

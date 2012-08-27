@@ -31,18 +31,71 @@ import com.wcs.base.util.Validate;
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class PagingEntityReader extends XqlEntityReader {
 	
-    abstract class  PageDataModel<T extends IdEntity> extends LazyDataModel<T> {
+    abstract class  PageDataModel<T> extends LazyDataModel<T> {
 		private static final long serialVersionUID = 1L;
+		private String xql = null;
+		private Map<String,Object> values = null;
+		
+//		/**
+//		 * 供使用xql进行查询使用
+//		 * @param xql
+//		 */
+//		public PageDataModel(String xql, Map<String,Object> values){
+//			this.xql = xql;
+//			this.values =values;
+//		}
 
 		@Override  
         public Object getRowKey(T entity) {
-            return entity.getId();  
-        }  
+			if (entity instanceof IdEntity){
+				return ((IdEntity)entity).getId();
+			}
+			throw new UnsupportedOperationException("BTCBASE:getRowData(String rowKey) must be implemented when basic rowKey algorithm is not used.");
+        }
         
         @Override
         public int getPageSize(){
         	return SystemConfiguration.PAGE_SIZE;
         }
+        
+		protected List<T> getPageData(final String jpql, int first, int pageSize, final Object... values) {
+			// 得到总记录数
+			Integer count = Long.valueOf(countHqlResult(jpql, values)).intValue();
+            this.setRowCount(count);
+            // 得到查询结果
+            Query q = createQuery(jpql, values);
+            setPageParameterToQuery(q, first, pageSize);
+            List<T> result = q.getResultList();
+            return result;
+		}
+		
+		protected List<T> getPageData(final String jpql, int first, int pageSize, final Map<String, Object> values) {
+			// 得到总记录数
+            Integer count = Long.valueOf(countHqlResult(jpql, values)).intValue();
+            this.setRowCount(count);
+            // 得到查询结果
+            Query q = createQuery(jpql, values);
+            setPageParameterToQuery(q, first, pageSize);
+            List<T> result = q.getResultList();
+            return result;
+		}
+
+		public String getXql() {
+			return xql;
+		}
+
+		public void setXql(String xql) {
+			this.xql = xql;
+		}
+
+		public Map<String, Object> getValues() {
+			return values;
+		}
+
+		public void setValues(Map<String, Object> values) {
+			this.values = values;
+		}
+		
     }
     
 
@@ -118,7 +171,7 @@ public class PagingEntityReader extends XqlEntityReader {
     protected <T> Query setPageParameterToQuery(final Query q, final int first, final int pageSize) {     
     	Validate.isTrue(pageSize > 0, "Page Size must larger than zero");
 
-        //hibernate的firstResult的序号从0开始 primeface lazymodel first从0开始
+        // JPA的firstResult的序号从0开始 primeface lazymodel first从0开始
         q.setFirstResult(first);
         q.setMaxResults(pageSize);
         return q;
@@ -135,22 +188,15 @@ public class PagingEntityReader extends XqlEntityReader {
      * @return 分页查询结果, 以 PrimeFaces 的LazyDataModel 形式返回.
      */
     @SuppressWarnings("unchecked")
-    public <T extends IdEntity> LazyDataModel<T> findPage(final String jpql, final Object... values) {
+    public <T> LazyDataModel<T> findPage(final String jpql, final Object... values) {
     	PageDataModel<T> lazyModel = new PageDataModel<T>() {
 			@Override
 			public List<T> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, String> filters) {
-                // 得到总记录数
-                Integer count = Long.valueOf(countHqlResult(jpql, values)).intValue();
-                this.setRowCount(count);
-                //  得到查询结果
-                Query q = createQuery(jpql, values);
-                setPageParameterToQuery(q, first, pageSize);
-                List result = q.getResultList();
-                return result;
+                return getPageData(jpql, first, pageSize, values);
 			}
-			
-        };
 
+
+        };
 
         return lazyModel;
     }
@@ -164,18 +210,11 @@ public class PagingEntityReader extends XqlEntityReader {
      * @return 分页查询结果, 以 PrimeFaces 的LazyDataModel 形式返回.
      */
     @SuppressWarnings("unchecked")
-    public <T extends IdEntity> LazyDataModel<T> findPage(final String jpql, final Map<String, Object> values) {
+    public <T> LazyDataModel<T> findPage(final String jpql, final Map<String, Object> values) {
     	PageDataModel<T> lazyModel = new PageDataModel<T>() {
             @Override
             public List<T> load(int first, int pageSize, String sortField,SortOrder sortOrder, Map<String, String> filters) {
-                // 得到总记录数
-                Integer count = Long.valueOf(countHqlResult(jpql, values)).intValue();
-                this.setRowCount(count);
-                // 得到查询结果
-                Query q = createQuery(jpql, values);
-                setPageParameterToQuery(q, first, pageSize);
-                List result = q.getResultList();
-                return result;
+                return getPageData(jpql, first, pageSize, values);
             }
         };
 
@@ -216,8 +255,7 @@ public class PagingEntityReader extends XqlEntityReader {
      * @return 分页的查询结果.  以 PrimeFaces 的LazyDataModel 形式返回。
      */
     @SuppressWarnings("unchecked")
-    public <T extends IdEntity> LazyDataModel<T> findXqlPage(final String xql, final Map<String, Object> filterMap) {
-        //Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
+    public <T> LazyDataModel<T> findXqlPage(final String xql, final Map<String, Object> filterMap) {
         Map<String, Object> paramMap = new HashMap<String,Object>();      
         paramMap = this.buildParamMap(xql, filterMap);
         
@@ -226,6 +264,16 @@ public class PagingEntityReader extends XqlEntityReader {
         String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
         
         return this.findPage(jpql, paramMap);
+    }
+    
+    public Object[] xqlToJpql(final String xql, final Map<String, Object> filterMap){
+        Map<String, Object> paramMap = new HashMap<String,Object>();      
+        paramMap = this.buildParamMap(xql, filterMap);
+        
+        // 构建 JPQL 语句
+        XsqlBuilder builder = new XsqlBuilder();
+        String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
+        return new Object[]{jpql,paramMap};
     }
 
 }

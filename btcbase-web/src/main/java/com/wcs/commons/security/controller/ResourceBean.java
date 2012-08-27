@@ -5,6 +5,7 @@
 package com.wcs.commons.security.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +18,6 @@ import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
 import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
@@ -99,7 +99,7 @@ public class ResourceBean implements Serializable {
 	 */
 	public void allocResources(Role role) {
 		// 将选中的 TreeNode 节点列表转换成 List<Resource>  
-		List<Resource> selectedResource = Lists.newArrayList();
+		List<Resource> selectedResource = new ArrayList<Resource>();//Lists.newArrayList();
 		for(TreeNode node : selectedNodes) {
 			selectedResource.add((Resource)node.getData());
 		}
