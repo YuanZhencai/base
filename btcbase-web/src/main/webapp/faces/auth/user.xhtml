@@ -114,7 +114,7 @@
 								<h:outputText value="#{person.celno}" />
 							</p:column>
 							<p:column headerText="操作" style="width:40px; text-align:center;">
-								<p:commandButton title="添加" action="#{userBean.add}" icon="ui-icon ui-icon-wrench">
+								<p:commandButton title="添加" action="#{userBean.add}" icon="ui-icon ui-icon-close">
 									<f:setPropertyActionListener value="#{person.id}" target="#{userBean.instance.pernr}" />
 								</p:commandButton>
 							</p:column>

@@ -1,10 +1,12 @@
 package com.wcs.commons.security.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -14,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
+import com.wcs.base.exception.TransactionException;
+import com.wcs.base.service.EntityWriter;
+import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.User;
 import com.wcs.commons.security.model.master.Person;
 import com.wcs.commons.security.service.UserService;
@@ -31,10 +36,12 @@ public class UserBean implements Serializable {
     private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4); // 查询条件Map封装
     private LazyDataModel<User> lazyModel;
     private User instance = new User(); // 当前角色对象
-    private List<Person> persons;		// adAccount LIKE对应的person 列表
+    private List<Person> persons = new ArrayList<Person>();		// adAccount LIKE对应的person 列表
     
     @Inject
     private UserService userService;
+    @EJB
+    private EntityWriter entityWriter;
 
     @PostConstruct
     public void init() {
@@ -51,12 +58,32 @@ public class UserBean implements Serializable {
         list();
     }
     
+    /**
+     * 清空instance，准备存储要添加的 User
+     */
     public void toAdd(){
-    	
+    	logger.debug("toAdd");
+    	this.instance = new User();
     }
     
+    /**
+     * 按照 adAccount 查找Person对象，需要关联 CasUsr-->PU<--Person
+     */
+    public void findPersons(){
+    	persons = userService.findPersons(this.instance.getAdAccount());
+    }
+    
+    /**
+     * 添加一个User实体，User实体的adAccount 来自Usr.id，pernr 来自Person.id
+     */
     public void add(){
-    	
+    	String pernr = this.instance.getPernr();  // Person->id
+    	try{
+    		userService.addUser(pernr);
+    	} catch (TransactionException te){
+    		te.printStackTrace();
+    		//MessageUtils.addMessage("", te.getMessage());
+    	}
     }
     //--------------------------- setter & getter ----------------------------//
     

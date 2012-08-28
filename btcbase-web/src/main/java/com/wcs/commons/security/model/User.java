@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -55,6 +56,11 @@ public class User extends IdEntity {
 	}
 
 	//--------------------- setter & getter -------------------//
+	
+	@PrePersist
+	private void initData(){
+		this.defunctInd = "N";
+	}
 	
 	public String getAdAccount() {
 		return this.adAccount;

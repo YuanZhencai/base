@@ -111,6 +111,7 @@ INSERT INTO PU ( ID, PERNR, DEFUNCT_IND ) VALUES ( 'org2zj1', '27', 'N' );
 INSERT INTO PU ( ID, PERNR, DEFUNCT_IND ) VALUES ( 'org2cbkj1', '28', 'N' );
 INSERT INTO PU ( ID, PERNR, DEFUNCT_IND ) VALUES ( 'org2mynq1', '29', 'N' );
 INSERT INTO PU ( ID, PERNR, DEFUNCT_IND ) VALUES ( 'org2myjl', '30', 'N' );
+update users set defunct_ind='N'
 
 insert into P (ID, NACHN, NAME2, ICNUM, EMAIL, GESCH, TELNO, CELNO, BUKRS, KOSTL, DEFUNCT_IND) values ('1', '沈啵', 'shenbo', '111111111111111111', 'sh@163.com', '男', '02111111111', '18600000000', '001', '成本中心', 'N');
 insert into P (ID, NACHN, NAME2, ICNUM, EMAIL, GESCH, TELNO, CELNO, BUKRS, KOSTL, DEFUNCT_IND) values ('2', 'wilmar_cas', 'fnadmin', '222222222222222222', 'wilmar_cas@sina.com', '女', '02011111111', '18611111111', '001', '成本中心', 'N');

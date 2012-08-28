@@ -260,6 +260,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL,
   `AD_ACCOUNT` varchar(50) DEFAULT NULL,
+  `DEFUNCT_IND` varchar(1) DEFAULT NULL,
   `pernr` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

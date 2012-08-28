@@ -6,14 +6,16 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.wcs.base.ql.util.QueryUtils.*;
+import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.service.PagingEntityReader;
 import com.wcs.commons.security.model.User;
-import com.wcs.commons.security.model.master.CasUsr;
 import com.wcs.commons.security.model.master.Person;
 
 /**
@@ -55,27 +57,37 @@ public class UserService extends AbstractUserService {
 	}
 	
 	/**
-	 * 通过给定的 adAccount 查询 Cas(TDS) 用户。查询方式为 LIKE
-	 */
-	public List<CasUsr> findCasUsrs(String adAccount){
-		return this.entityReader.findList("SELECT cu FROM CasUsr cu WHERE cu.id=?1", adAccount);
-	}
-	
-	/**
 	 * CasUsr-->PU<--Person
 	 * 查询用户 adAccount 在Person表中是否有对应的用户信息
 	 * @param adAccount
-	 * @return
 	 */
-	public Person findPerson(String adAccount){
+	public List<Person> findPersons(String adAccount){
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("SELECT p FROM CasUsr u, Person p, PU pu ")
 		.append(" WHERE p.defunctInd='N' AND u.defunctInd='N' ")
-		.append(" AND u.id=pu.id AND p.id=pu.pernr AND cu.id LIKE ?1");
-		return this.entityReader.findUnique(jpql.toString(), "%"+adAccount+"%");
+		.append(" AND u.id=pu.id AND p.id=pu.pernr ");
+		if (StringUtils.isEmpty(adAccount)){
+			jpql.append(" AND 1=0");
+		} else {
+			jpql.append(" AND u.id LIKE '%"+adAccount.trim()+"%'");
+		}
+		return this.entityReader.findList(jpql.toString());
 	}
 	
-	public User addUser(String adAccount, String pernr){
+	/**
+	 * 1.通过 pernr 在PU中查询出对应的 adAccount
+	 * 2.检查 pernr，adAccount 联合确定的用户在 User 中是否已经存在
+	 * 3.添加User
+	 * @param pernr Person.id 即 User.pernr
+	 * @return 被添加的User对象
+	 */
+	public User addUser(String pernr){
+		// 通过给定的 pernr , 在PU中查询出 adAccount
+		String adAccount = entityReader.findUnique("SELECT pu.id FROM PU pu WHERE pu.pernr=?1", pernr);
+		User user = entityReader.findUnique("SELECT u FROM User u WHERE u.adAccount=?1 and u.pernr=?2");
+		if (user != null){
+			throw new TransactionException("用户（User）已经存在，请不要重复添加。");
+		}
 		return this.entityWriter.create( new User(adAccount,pernr) );
 	}
 
