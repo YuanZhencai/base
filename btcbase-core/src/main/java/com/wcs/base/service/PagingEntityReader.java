@@ -45,13 +45,16 @@ public class PagingEntityReader extends XqlEntityReader {
 //			this.values =values;
 //		}
 
-		@Override  
-        public Object getRowKey(T entity) {
-			if (entity instanceof IdEntity){
-				return ((IdEntity)entity).getId();
-			}
-			throw new UnsupportedOperationException("BTCBASE:getRowData(String rowKey) must be implemented when basic rowKey algorithm is not used.");
-        }
+		/**
+		 * 可以根据需要自己实现
+		 */
+//		@Override  
+//        public Object getRowKey(T entity) {
+//			if (entity instanceof IdEntity){
+//				return ((IdEntity)entity).getId();
+//			}
+//			throw new UnsupportedOperationException("BTCBASE:getRowData(String rowKey) must be implemented when basic rowKey algorithm is not used.");
+//        }
         
         @Override
         public int getPageSize(){
@@ -151,7 +154,7 @@ public class PagingEntityReader extends XqlEntityReader {
         if (pos != -1) {
             fromQl = fromQl.substring(0, pos);
         }
-        String[] fromQls =fromQl.split("\\s+");//多个空格
+        String[] fromQls =fromQl.split("[,\\s]+");//多个空格
         String fromQl1 ="";
 		if("AS".equals(fromQls[2].toUpperCase())){
 			fromQl1= fromQls[3];

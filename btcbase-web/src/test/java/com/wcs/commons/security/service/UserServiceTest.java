@@ -9,7 +9,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.test.BaseTest;
-import com.wcs.commons.security.vo.UserVO;
+import com.wcs.commons.security.model.User;
 
 /**
  * 
@@ -30,12 +30,12 @@ public class UserServiceTest extends BaseTest{
 	@Test
 	public void test_findUsers(){
 		Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4);
-		filterMap.put("LIKES_adAccount", "gjh");
+		filterMap.put("LIKES_adAccount", "fnadmin");
 		filterMap.put("LIKES_nachn", "");
 		filterMap.put("LIKES_telno", "");
 		
-		LazyDataModel<UserVO> list = userService.findUsers(filterMap);
-		System.out.println(list.getRowCount());
+		LazyDataModel<User> list = userService.findUsers(filterMap);
+		System.out.println("UserServiceTest=>test_findUsers() : "+list.getRowCount());
 		
 	}
 	

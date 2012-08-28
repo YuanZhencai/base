@@ -17,7 +17,7 @@ import com.wcs.base.util.CollectionUtils;
 public abstract class AbstractUserService {
 	
 	@EJB(beanName="EntityReader")
-	EntityReader entityReader;
+	protected EntityReader entityReader;
 
 
 	/**

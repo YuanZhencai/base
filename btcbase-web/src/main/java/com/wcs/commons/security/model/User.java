@@ -15,15 +15,11 @@ import com.google.common.collect.Lists;
 import com.wcs.base.entity.IdEntity;
 import com.wcs.commons.security.model.master.Person;
 
-/**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
- */
 
+/**
+ * 
+ * @author Chris Guan
+ */
 @Entity
 @Table(name = "users")
 public class User extends IdEntity {
@@ -32,7 +28,10 @@ public class User extends IdEntity {
 	private String adAccount;  // TDS帐号(LDAP帐号)
 
 	@Column(length=20)
-	private String pernr;  //员工工号
+	private String pernr;  //员工工号 Person->ID
+	
+	@Column(name="DEFUNCT_IND", length=1)
+	private String defunctInd;
 
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
@@ -41,6 +40,19 @@ public class User extends IdEntity {
 	
 	@Transient
 	private Person person = new Person();
+	
+	public User(){}
+	
+	public User(String adAccount, String pernr){
+		this.adAccount=adAccount;
+		this.pernr = pernr;
+	}
+	
+	public User(Long id, String adAccount, Person person){
+		this.setId(id);
+		this.adAccount=adAccount;
+		this.person = person;
+	}
 
 	//--------------------- setter & getter -------------------//
 	
@@ -58,6 +70,14 @@ public class User extends IdEntity {
 
 	public void setPernr(String pernr) {
 		this.pernr = pernr;
+	}
+
+	public String getDefunctInd() {
+		return defunctInd;
+	}
+
+	public void setDefunctInd(String defunctInd) {
+		this.defunctInd = defunctInd;
 	}
 
 	public List<Role> getRoleList() {

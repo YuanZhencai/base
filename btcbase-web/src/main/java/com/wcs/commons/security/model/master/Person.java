@@ -64,6 +64,25 @@ public class Person implements Serializable {
 	@JoinTable(name = "PS", joinColumns = { @JoinColumn(name = "pid") }, inverseJoinColumns = { @JoinColumn(name = "sid") })
 	private List<Station> stationList = Lists.newArrayList();
 
+	public Person(){}
+	
+	public Person(String id, String bukrs, String celno, String defunctInd,
+			String email, String gesch, String icnum, String kostl,
+			String nachn, String name2, String orgeh, String telno) {
+		this.id = id;
+		this.bukrs = bukrs;
+		this.celno = celno;
+		this.defunctInd = defunctInd;
+		this.email = email;
+		this.gesch = gesch;
+		this.icnum = icnum;
+		this.kostl = kostl;
+		this.nachn = nachn;
+		this.name2 = name2;
+		this.orgeh = orgeh;
+		this.telno = telno;
+	}
+
 	//--------------------- setter & getter -------------------//
 	
 	public String getId() {

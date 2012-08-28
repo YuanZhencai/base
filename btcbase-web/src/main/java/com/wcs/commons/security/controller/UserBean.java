@@ -1,6 +1,7 @@
 package com.wcs.commons.security.controller;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -14,8 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.commons.security.model.User;
+import com.wcs.commons.security.model.master.Person;
 import com.wcs.commons.security.service.UserService;
-import com.wcs.commons.security.vo.UserVO;
 
 /**
  * 
@@ -28,10 +29,10 @@ public class UserBean implements Serializable {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4); // 查询条件Map封装
-    private LazyDataModel<UserVO> lazyModel;
+    private LazyDataModel<User> lazyModel;
     private User instance = new User(); // 当前角色对象
+    private List<Person> persons;		// adAccount LIKE对应的person 列表
     
-
     @Inject
     private UserService userService;
 
@@ -41,19 +42,29 @@ public class UserBean implements Serializable {
         list();
     }
 
-    /**
-     * 查询用户
-     * @return
-     */
     public void list() {
         lazyModel = userService.findUsers(filterMap);
     }
 
-    public LazyDataModel<UserVO> getLazyModel() {
+    public void delete() {
+        userService.deleteUser(instance);
+        list();
+    }
+    
+    public void toAdd(){
+    	
+    }
+    
+    public void add(){
+    	
+    }
+    //--------------------------- setter & getter ----------------------------//
+    
+    public LazyDataModel<User> getLazyModel() {
         return lazyModel;
     }
 
-    public void setLazyModel(LazyDataModel<UserVO> lazyModel) {
+    public void setLazyModel(LazyDataModel<User> lazyModel) {
         this.lazyModel = lazyModel;
     }
 
@@ -71,6 +82,14 @@ public class UserBean implements Serializable {
 
 	public void setInstance(User instance) {
 		this.instance = instance;
+	}
+
+	public List<Person> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(List<Person> persons) {
+		this.persons = persons;
 	}
 	
 }

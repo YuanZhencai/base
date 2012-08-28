@@ -49,7 +49,7 @@ public class RoleBean implements Serializable {
 	private TreeNode root;// 资源树
 	private TreeNode[] selectedNodes;// 节点数组
 	
-	private DualListModel<Role> listModel;
+	private DualListModel<Role> listModel = new DualListModel<Role>();
 
 	
 	@SuppressWarnings("unused")
