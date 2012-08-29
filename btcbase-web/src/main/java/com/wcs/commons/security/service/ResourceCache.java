@@ -2,7 +2,6 @@ package com.wcs.commons.security.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,15 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityReader;
-import com.wcs.base.service.EntityWriter;
-import com.wcs.base.util.CollectionUtils;
 import com.wcs.commons.security.model.Resource;
-import com.wcs.commons.security.model.Role;
-import com.wcs.commons.security.model.RoleResource;
 
 /**
+ * revision 19085 可以恢复到没有Tree
  * 
  * @author Chris Guan
  */

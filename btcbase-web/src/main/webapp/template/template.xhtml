@@ -35,20 +35,31 @@
 
 				<div id="top_up_menu">
 					<h:form prependId="false" id="up_menu">
-						<ul> 
-							<c:forEach var="topMenu" items="#{sessionScope.allResList[1]}" varStatus="topMenuStatus">
-								<shiro:hasPermission name="#{topMenu.keyName}">
-									<c:if test="${sessionScope.selectId == topMenu.id}">
-										<li class="top_up_menu_ul_li_B">
-											<p:commandLink value="#{topMenu.name}" action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
-										</li>
-									</c:if>
-									<c:if test="${sessionScope.selectId != topMenu.id}">
-										<li class="top_up_menu_ul_li_A">
-											<p:commandLink value="#{topMenu.name}" action="#{loginBean.changeMenu(topMenu.id)}" ajax="false" />
-										</li>
-									</c:if>
-								</shiro:hasPermission>
+						<ul class="top_up_menu_ul"> 
+							<c:forEach var="first" items="#{applicationScope.resTree.children}" >
+								<li class="top_up_menu_ul_li">
+									<p:commandLink value="#{first.data.name}" ajax="false" styleClass="top_up_menu_ul_li_a"/>
+									
+					<div id="top_down_center" style="z-index: 1">				
+						<ul id="nav">
+							<c:forEach  var="second" items="#{first.children}">
+									<li>
+											<a id="#{second.data.code}" href="#">#{second.data.name}</a>
+											<ul>
+												<c:forEach var="third" items="#{second.children}">
+															<li id="#{third.data.code}">
+																<a id="#{third.data.code}" href="#{request.contextPath}#{third.data.uri}">#{third.data.name}</a>
+															</li>
+												</c:forEach>
+											</ul>
+									</li>
+							</c:forEach>
+						</ul>
+					</div>
+									
+									
+									
+								</li>
 							</c:forEach>
 						</ul>
 					</h:form>
@@ -72,30 +83,7 @@
 					<h:inputHidden id="requestContextPath"
 						value="#{request.contextPath}" />
 				</div>
-				<div id="top_down_center" style="z-index: 1">
-
-					<ul id="nav">
-						<c:forEach  var="keyResouce" items="#{sessionScope.allResList[2]}" varStatus="topMenuStatus">
-							<c:if test="${sessionScope.selectId==keyResouce.parentId}">
-								<li>
-									<shiro:hasPermission name="#{keyResouce.keyName}">
-										<a id="#{keyResouce.number}" href="#">#{keyResouce.name}</a>
-										<ul>
-											<c:forEach var="child" items="#{sessionScope.allResList[3]}">
-												<shiro:hasPermission name="#{child.keyName}">
-													<c:if test="#{(keyResouce.id==child.parentId) and child.isMenu}">
-														<li id="#{child.number}">
-															<a id="#{child.number}" href="#{request.contextPath}#{child.url}">#{child.name}</a>
-														</li>
-													</c:if>
-												</shiro:hasPermission>
-											</c:forEach>
-										</ul>
-									</shiro:hasPermission></li>
-							</c:if>
-						</c:forEach>
-					</ul>
-				</div>
+				
 				<div id="top_down_right">
 					<span class="img"> <img
 						src="#{request.contextPath}/images/user.gif" alt="" />

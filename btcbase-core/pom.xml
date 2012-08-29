@@ -95,7 +95,13 @@
             <artifactId>slf4j-log4j12</artifactId>
             <optional>true</optional>
         </dependency>
-
+        
+        <!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>

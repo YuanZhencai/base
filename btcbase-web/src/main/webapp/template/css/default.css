@@ -55,161 +55,94 @@ a:active {
 	height: 55px;
 }
 
-/*
-.side {
-	position:absolute; 
-	left:0px; 
-	top:55px; 
-	bottom:23px; 
-	width:172px; 
-	overflow:auto;
-    background:#d5e8f6;
-}
-*/
-/*--------------菜单显示、隐藏样式设置开始--------------*/
-/*
-.control_menu {
-	position:absolute; 
-	left:172px; 
-	top:55px; 
-	bottom:23px;
-	width:8px;
-	overflow:auto;
-}
-
-.navpoint {
-	cursor:pointer;
-}
-*/
-/*--------------菜单显示、隐藏样式设置结束--------------*/
-
-/*---------工作区域边框样式--------------
-.top_main {
-	position:absolute;
-	left:180px;
-	top:55px;
-	height:30px;
-	right:0px;
-	overflow:auto;
-}
-
-.bottom_main {
-	position:absolute;
-	left:180px;
-	bottom:23px;
-	height:29px;
-	right:0px;
-	overflow:auto;
-}
-
-.left_main {
-	position:absolute;
-	left:180px;
-	top:85px;
-	bottom:52px;
-	width:9px;
-	background:url(../../images/tab_12.gif);
-	overflow:auto;
-}
-
-.right_main {
-	position:absolute;
-	right:0px;
-	top:85px;
-	bottom:52px;
-	width:9px;
-	background:url(../../images/tab_16.gif);
-	overflow:auto;
-}
-*/
 
 /*----------二级菜单样式开始------------------*/
 #nav {
-	line-height: 24px;
-	list-style-type: none;
-	background: #666;
+	line-height: 24px !important;
+	list-style-type: none !important;
+	background: #666 !important;
 }
 
 #nav a {
-	display: block;
-	width: 100px;
-	text-align: center;
+	display: block !important;
+	width: 100px !important;
+	text-align: center !important;
 }
 
 #nav a:link {
-	color: #4d90bf;
-	text-decoration: none;
-	font-weight: bold;
+	color: #4d90bf !important;
+	text-decoration: none !important;
+	font-weight: bold !important;
 }
 
 #nav a:visited {
-	color: #4d90bf;
-	text-decoration: none;
-	font-weight: bold;
+	color: #4d90bf !important;
+	text-decoration: none !important;
+	font-weight: bold !important;
 }
 
 #nav a:hover {
-	color: #2496ec;
-	text-decoration: none;
-	font-weight: bold;
+	color: #2496ec !important;
+	text-decoration: none !important;
+	font-weight: bold !important;
 }
 
 #nav li {
-	float: left;
-	width: 100px;
+	float: left !important;
+	width: 100px !important;
 }
 
 #nav li a:hover {
-	background-image: url(../../images/nav-a-1.png);
+	background-image: url(../../images/nav-a-1.png) !important;
 }
 
 #nav li ul {
-	border: 1px solid #CCCCCC;
-	line-height: 27px;
-	list-style-type: none;
-	text-align: left;
-	left: -999em;
-	width: 180px;
-	position: absolute;
+	border: 1px solid #CCCCCC !important;
+	line-height: 27px !important;
+	list-style-type: none !important;
+	text-align: left !important;
+	left: -999em !important;
+	width: 180px !important;
+	position: absolute !important;
 }
 
 #nav li ul li {
-	float: left;
-	width: 180px;
-	background: #f1f5f8;
+	float: left !important;
+	width: 180px !important;
+	background: #f1f5f8 !important;
 }
 
 #nav li ul a {
-	display: block;
-	width: 180px;
-	w\idth: 156px;
-	text-align: left;
-	padding-left: 24px;
+	display: block !important;
+	width: 180px !important;
+	w\idth: 156px !important;
+	text-align: left !important;
+	padding-left: 24px !important;
 }
 
 #nav li ul a:link {
-	color: #4d90bf;
-	text-decoration: none;
+	color: #4d90bf !important;
+	text-decoration: none !important;
 }
 
 #nav li ul a:visited {
-	color: #4d90bf;
-	text-decoration: none;
+	color: #4d90bf !important;
+	text-decoration: none !important;
 }
 
 #nav li ul a:hover {
-	color: #2496ec;
-	text-decoration: none;
-	font-weight: bold;
-	background-image: url(../../images/nav-a-2.png);
+	color: #2496ec !important;
+	text-decoration: none !important;
+	font-weight: bold !important;
+	background-image: url(../../images/nav-a-2.png) !important;
 }
 
 #nav li:hover ul {
-	left: auto;
+	left: auto !important;
 }
 
 #nav li.sfhover ul {
-	left: auto;
+	left: auto !important;
 }
 /*----------二级菜单样式结束------------------*/
 .main {
@@ -235,55 +168,6 @@ a:active {
 	width: 100%;
 	height: 100%;
 }
-
-/*---ie6---
-html {
-	*padding:70px 10px;
-}
-.top {
-	*height:55px; 
-	*margin-top:-60px; 
-	*margin-bottom:10px; 
-	*position:relative; 
-	*top:0; 
-	*right:0; 
-	*bottom:0; 
-	*left:0;
-}
-
-.side {
-	*height:100%; 
-	*float:left; 
-	*width:200px; 
-	*position:relative; 
-	*top:0; 
-	*right:0; 
-	*bottom:0; 
-	*left:0;
-}
-
-.main {
-	*height:100%; 
-	*margin-left:210px; 
-	_margin-left:207px; 
-	*position:relative; 
-	*top:0; 
-	*right:0; 
-	*bottom:0; 
-	*left:0;
-}
-
-.bottom {
-	*height:23px; 
-	*margin-top:10px; 
-	*position:relative; 
-	*top:0; 
-	*right:0; 
-	*bottom:0; 
-	*left:0;
-	background:url(../../images/main_36.gif);
-}
-*/
 
 /*--------------华丽的分割线------------------*/
 #top_up {
@@ -325,7 +209,7 @@ html {
 	float: left;
 }
 
-#top_up_menu ul {
+.top_up_menu_ul {
 	position: absolute;
 	margin-top: 0px;
 	padding-top: 11px;
@@ -342,27 +226,24 @@ html {
 	cursor: pointer;
 }
 
-.top_up_menu_ul_li_B {
-	background: url(../../images/menu_02.gif);
-	height: 21px;
-	padding-right: 10px;
-	padding-left: 10px;
-	float: left;
-	margin-left: 3px;
-	list-style: none;
-	cursor: pointer;
+.top_up_menu_ul_li {
+
 }
 
 .top_up_menu_ul_li_A a {
 	color: #FFFFFF;
 }
 
-.top_up_menu_ul_li_B a {
+.top_up_menu_ul_li_a {
 	color: #3c82b4;
 }
 
-#top_up_menu ul li:hover {
-	background: url(../../images/menu_02.gif);
+.top_up_menu_ul_li:hover {
+
+}
+
+.top_up_menu_ul_li_a {
+		background: url(../../images/menu_02.gif);
 	height: 21px;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -370,14 +251,11 @@ html {
 	margin-left: 3px;
 	list-style: none;
 	cursor: pointer;
-}
-
-#top_up_menu ul li a {
 	line-height: 20px;
 	font-weight: bold;
 }
 
-#top_up_menu ul li a:hover {
+.top_up_menu_ul_li_a:hover {
 	text-decoration: none;
 	color: #2496ec;
 }
@@ -418,6 +296,7 @@ html {
 
 #top_down_center { /* z-index:3; */
 	float: left;
+	padding-top: 20px;
 }
 
 #top_down_right {
