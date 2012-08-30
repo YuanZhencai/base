@@ -57,46 +57,46 @@ a:active {
 
 
 /*----------二级菜单样式开始------------------*/
-#nav {
+.nav {
 	line-height: 24px !important;
 	list-style-type: none !important;
 	background: #666 !important;
 }
 
-#nav a {
+.nav a {
 	display: block !important;
 	width: 100px !important;
 	text-align: center !important;
 }
 
-#nav a:link {
+.nav a:link {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-#nav a:visited {
+.nav a:visited {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-#nav a:hover {
+.nav a:hover {
 	color: #2496ec !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-#nav li {
+.nav li {
 	float: left !important;
 	width: 100px !important;
 }
 
-#nav li a:hover {
+.nav li a:hover {
 	background-image: url(../../images/nav-a-1.png) !important;
 }
 
-#nav li ul {
+.nav li ul {
 	border: 1px solid #CCCCCC !important;
 	line-height: 27px !important;
 	list-style-type: none !important;
@@ -106,13 +106,13 @@ a:active {
 	position: absolute !important;
 }
 
-#nav li ul li {
+.nav li ul li {
 	float: left !important;
 	width: 180px !important;
 	background: #f1f5f8 !important;
 }
 
-#nav li ul a {
+.nav li ul a {
 	display: block !important;
 	width: 180px !important;
 	w\idth: 156px !important;
@@ -120,28 +120,28 @@ a:active {
 	padding-left: 24px !important;
 }
 
-#nav li ul a:link {
+.nav li ul a:link {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 }
 
-#nav li ul a:visited {
+.nav li ul a:visited {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 }
 
-#nav li ul a:hover {
+.nav li ul a:hover {
 	color: #2496ec !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 	background-image: url(../../images/nav-a-2.png) !important;
 }
 
-#nav li:hover ul {
+.nav li:hover ul {
 	left: auto !important;
 }
 
-#nav li.sfhover ul {
+.nav li.sfhover ul {
 	left: auto !important;
 }
 /*----------二级菜单样式结束------------------*/
@@ -213,6 +213,8 @@ a:active {
 	position: absolute;
 	margin-top: 0px;
 	padding-top: 11px;
+	list-style: none;
+	float:left;
 }
 
 .top_up_menu_ul_li_A {
@@ -227,7 +229,8 @@ a:active {
 }
 
 .top_up_menu_ul_li {
-
+float:left;
+position:relative;
 }
 
 .top_up_menu_ul_li_A a {
@@ -294,9 +297,13 @@ a:active {
 	float: left
 }
 
-#top_down_center { /* z-index:3; */
+.top_down_center { /* z-index:3; */
+	display: none;
 	float: left;
-	padding-top: 20px;
+	position:fixed;
+	top: 32px;
+	min-height: 10px;
+	max-height:24px;
 }
 
 #top_down_right {

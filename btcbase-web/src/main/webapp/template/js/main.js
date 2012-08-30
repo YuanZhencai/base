@@ -1,6 +1,15 @@
 var defualtCheck2="";
+
 // 菜单栏效果
  $(document).ready(function () {
+	 $(".top_up_menu_ul_li_a").click(function(){
+			$(".top_down_center").hide();											 
+			//$(this).children("div").show();
+			$(this).parent().children("div").show();
+		});
+		
+	 
+	 /*----------------------------*/
 	/* 此代码执行后的DOM完全加载 */
 	
 	/* 获取系统当前时间 */

@@ -38,10 +38,10 @@
 						<ul class="top_up_menu_ul"> 
 							<c:forEach var="first" items="#{applicationScope.resTree.children}" >
 								<li class="top_up_menu_ul_li">
-									<p:commandLink value="#{first.data.name}" ajax="false" styleClass="top_up_menu_ul_li_a"/>
+									<a href="#"  class="top_up_menu_ul_li_a">#{first.data.name}</a>
 									
-					<div id="top_down_center" style="z-index: 1">				
-						<ul id="nav">
+					<div class="top_down_center" style="z-index: 1">				
+						<ul class="nav">
 							<c:forEach  var="second" items="#{first.children}">
 									<li>
 											<a id="#{second.data.code}" href="#">#{second.data.name}</a>

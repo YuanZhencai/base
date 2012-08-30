@@ -1,0 +1,8 @@
+
+Feature List:
+    - Resource维护。便于开发人员维护Resource
+    - Role管理及为Role分配Resource
+    - User管理及为User分配Role
+    - Dict管理，实现Dict的Cache存储
+    - 添加Tree的collection
+    - 用Tree来存储Resource，基于Tree来实现template页面菜单展示
