@@ -2,8 +2,8 @@ var defualtCheck2="";
 
 // 菜单栏效果
  $(document).ready(function () {
-	 $(".top_up_menu_ul_li_a").click(function(){
-			$(".top_down_center").hide();											 
+	 $(".top_menu_ul_li_a").click(function(){
+			$(".nav_bar").hide();											 
 			//$(this).children("div").show();
 			$(this).parent().children("div").show();
 		});

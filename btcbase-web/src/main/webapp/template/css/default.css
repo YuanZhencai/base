@@ -57,46 +57,46 @@ a:active {
 
 
 /*----------二级菜单样式开始------------------*/
-.nav {
+.nav_bar_ul {
 	line-height: 24px !important;
 	list-style-type: none !important;
 	background: #666 !important;
 }
 
-.nav a {
+.nav_bar_ul a {
 	display: block !important;
 	width: 100px !important;
 	text-align: center !important;
 }
 
-.nav a:link {
+.nav_bar_ul a:link {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-.nav a:visited {
+.nav_bar_ul a:visited {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-.nav a:hover {
+.nav_bar_ul a:hover {
 	color: #2496ec !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 }
 
-.nav li {
+.nav_bar_ul li {
 	float: left !important;
 	width: 100px !important;
 }
 
-.nav li a:hover {
+.nav_bar_ul li a:hover {
 	background-image: url(../../images/nav-a-1.png) !important;
 }
 
-.nav li ul {
+.nav_bar_ul li ul {
 	border: 1px solid #CCCCCC !important;
 	line-height: 27px !important;
 	list-style-type: none !important;
@@ -106,13 +106,13 @@ a:active {
 	position: absolute !important;
 }
 
-.nav li ul li {
+.nav_bar_ul li ul li {
 	float: left !important;
 	width: 180px !important;
 	background: #f1f5f8 !important;
 }
 
-.nav li ul a {
+.nav_bar_ul li ul a {
 	display: block !important;
 	width: 180px !important;
 	w\idth: 156px !important;
@@ -120,28 +120,28 @@ a:active {
 	padding-left: 24px !important;
 }
 
-.nav li ul a:link {
+.nav_bar_ul li ul a:link {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 }
 
-.nav li ul a:visited {
+.nav_bar_ul li ul a:visited {
 	color: #4d90bf !important;
 	text-decoration: none !important;
 }
 
-.nav li ul a:hover {
+.nav_bar_ul li ul a:hover {
 	color: #2496ec !important;
 	text-decoration: none !important;
 	font-weight: bold !important;
 	background-image: url(../../images/nav-a-2.png) !important;
 }
 
-.nav li:hover ul {
+.nav_bar_ul li:hover ul {
 	left: auto !important;
 }
 
-.nav li.sfhover ul {
+.nav_bar_ul li.sfhover ul {
 	left: auto !important;
 }
 /*----------二级菜单样式结束------------------*/
@@ -205,11 +205,11 @@ a:active {
 	float: right;
 }
 
-#top_up_menu { /*height:18px;margin-top:11px;*/
+#top_menu { /*height:18px;margin-top:11px;*/
 	float: left;
 }
 
-.top_up_menu_ul {
+.top_menu_ul {
 	position: absolute;
 	margin-top: 0px;
 	padding-top: 11px;
@@ -217,7 +217,7 @@ a:active {
 	float:left;
 }
 
-.top_up_menu_ul_li_A {
+.top_menu_ul_li_A {
 	background: url(../../images/menu_03.gif);
 	height: 21px;
 	padding-right: 10px;
@@ -228,24 +228,24 @@ a:active {
 	cursor: pointer;
 }
 
-.top_up_menu_ul_li {
+.top_menu_ul_li {
 float:left;
 position:relative;
 }
 
-.top_up_menu_ul_li_A a {
+.top_menu_ul_li_A a {
 	color: #FFFFFF;
 }
 
-.top_up_menu_ul_li_a {
+.top_menu_ul_li_a {
 	color: #3c82b4;
 }
 
-.top_up_menu_ul_li:hover {
+.top_menu_ul_li:hover {
 
 }
 
-.top_up_menu_ul_li_a {
+.top_menu_ul_li_a {
 		background: url(../../images/menu_02.gif);
 	height: 21px;
 	padding-right: 10px;
@@ -258,7 +258,7 @@ position:relative;
 	font-weight: bold;
 }
 
-.top_up_menu_ul_li_a:hover {
+.top_menu_ul_li_a:hover {
 	text-decoration: none;
 	color: #2496ec;
 }
@@ -297,7 +297,7 @@ position:relative;
 	float: left
 }
 
-.top_down_center { /* z-index:3; */
+.nav_bar { /* z-index:3; */
 	display: none;
 	float: left;
 	position:fixed;

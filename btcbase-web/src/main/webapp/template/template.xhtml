@@ -5,6 +5,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:shiro="http://shiro.apache.org/tags">
 	<f:view contentType="text/html">
 	<h:head>
@@ -33,30 +34,30 @@
 					</div>
 				</div>
 
-				<div id="top_up_menu">
+				<div id="top_menu">
 					<h:form prependId="false" id="up_menu">
-						<ul class="top_up_menu_ul"> 
+						<ul class="top_menu_ul"> 
 							<c:forEach var="first" items="#{applicationScope.resTree.children}" >
-								<li class="top_up_menu_ul_li">
-									<a href="#"  class="top_up_menu_ul_li_a">#{first.data.name}</a>
+								<li class="top_menu_ul_li">
+									<a href="#"  class="top_menu_ul_li_a">#{first.data.name}</a>
 									
-					<div class="top_down_center" style="z-index: 1">				
-						<ul class="nav">
+					<div class="nav_bar" style="z-index: 1">				
+						<ul class="nav_bar_ul">
 							<c:forEach  var="second" items="#{first.children}">
-									<li>
-											<a id="#{second.data.code}" href="#">#{second.data.name}</a>
-											<ul>
-												<c:forEach var="third" items="#{second.children}">
-															<li id="#{third.data.code}">
-																<a id="#{third.data.code}" href="#{request.contextPath}#{third.data.uri}">#{third.data.name}</a>
-															</li>
-												</c:forEach>
-											</ul>
-									</li>
+								<li>
+									<c:if test="#{sencond.data}"></c:if>
+									<a id="#{second.data.code}" href="#{second.data.uri==''?'#':request.contextPath}#{second.data.uri==''?'':second.data.uri}">#{second.data.name}</a>
+									<ul>
+										<c:forEach var="third" items="#{second.children}">
+											<li id="#{third.data.code}">
+												<a id="#{third.data.code}" href="#{request.contextPath}#{third.data.uri}">#{third.data.name}</a>
+											</li>
+										</c:forEach>
+									</ul>
+								</li>
 							</c:forEach>
 						</ul>
 					</div>
-									
 									
 									
 								</li>
