@@ -15,5 +15,8 @@
 			<var>msgs</var>
 		</resource-bundle>
 	</application>
-
+	
+	<lifecycle> 
+	  <phase-listener>com.wcs.commons.security.event.ResourceMonitorPhaseListener</phase-listener> 
+	</lifecycle>
 </faces-config>

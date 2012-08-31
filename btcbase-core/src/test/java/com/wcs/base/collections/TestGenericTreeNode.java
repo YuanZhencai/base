@@ -27,7 +27,7 @@ public class TestGenericTreeNode {
     @Test
     public void TestNodeHasZeroChildrenOnNewNodeCreation() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
-        assertEquals(node.getNumberOfChildren(), 0);
+        assertEquals(node.getChildCount(), 0);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class TestGenericTreeNode {
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
         node.addChild(child);
-        assertEquals(node.getNumberOfChildren(), 1);
+        assertEquals(node.getChildCount(), 1);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class TestGenericTreeNode {
 
         node.removeChildAt(0);
 
-        assertEquals(node.getNumberOfChildren(), 1);
+        assertEquals(node.getChildCount(), 1);
     }
 
     @Test(expected = java.lang.IndexOutOfBoundsException.class)

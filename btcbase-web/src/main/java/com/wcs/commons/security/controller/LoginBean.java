@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -26,25 +26,22 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.wcs.base.util.JSFUtils;
+import com.wcs.base.util.MessageUtils;
+import com.wcs.commons.conf.WebappConfig;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.service.LoginService;
 import com.wcs.commons.security.service.ResourceCache;
-import com.wcs.base.util.JSFUtils;
-import com.wcs.base.util.MessageUtils;
 
 /**
- * <p>Project: btcbase-web</p> 
- * <p>Title: </p> 
- * <p>Description: </p> 
- * <p>Copyright: Copyright 2011-2020.All rights reserved.</p> 
- * <p>Company: wcs.com</p> 
- * @author guanjianghuai
+ * 
+ * @author Chris Guan
  */
-@Named
-@ConversationScoped
+@ManagedBean
+@SessionScoped
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
+	final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
 	@Inject
 	private LoginService loginService;
@@ -91,7 +88,7 @@ public class LoginBean implements Serializable {
 		List<List<Resource>> allResList = initAllResources();
 		JSFUtils.getSession().put("user", adAccount);
 		JSFUtils.getSession().put("allResList", allResList);
-		JSFUtils.getSession().put("selectId", 2); // 选中的菜单
+		JSFUtils.getSession().put(WebappConfig.NEXT_DISPLAY_RES_CODE, 2); // 选中的菜单
 
 		return LOGIN_SUCCESS;
 	}
@@ -135,8 +132,9 @@ public class LoginBean implements Serializable {
 	 * @param selectId
 	 * @return
 	 */
-	public String changeMenu(Long selectId) {
-		JSFUtils.getSession().put("selectId", selectId);
-		return LOGIN_SUCCESS;
+	public String select(String selectedResCode, String uri) {
+		logger.debug("LoginBean=>select()");
+		JSFUtils.getSession().put(WebappConfig.NEXT_DISPLAY_RES_CODE, selectedResCode);
+		return uri;
 	}
 }

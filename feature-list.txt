@@ -1,8 +1,18 @@
+Todo List:
+    - 菜单定位
+    - 资源添加同级资源
+    - controller层对Service层的异常处理
+    - JSF页面消息提示
+    - 将GenericTree 和 PF TreeNode 结合在一起，让PF可以直接用Resource缓存
+
 
 Feature List:
     - Resource维护。便于开发人员维护Resource
     - Role管理及为Role分配Resource
     - User管理及为User分配Role
     - Dict管理，实现Dict的Cache存储
+    - 异常功能整理
     - 添加Tree的collection
     - 用Tree来存储Resource，基于Tree来实现template页面菜单展示
+    - 将TreeNode改为支持 Generic
+    - 资源缓存优化(AppMap,ResourceCache都采用Tree结构，共用一棵树)

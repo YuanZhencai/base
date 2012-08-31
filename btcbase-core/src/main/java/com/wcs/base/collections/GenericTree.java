@@ -30,7 +30,7 @@ public class GenericTree<T> {
     }
 
     private int auxiliaryGetNumberOfNodes(GenericTreeNode<T> node) {
-        int numberOfNodes = node.getNumberOfChildren();
+        int numberOfNodes = node.getChildCount();
 
         for(GenericTreeNode<T> child : node.getChildren()) {
             numberOfNodes += auxiliaryGetNumberOfNodes(child);
@@ -63,7 +63,7 @@ public class GenericTree<T> {
 
         else if(currentNode.hasChildren()) {
             i = 0;
-            while(returnNode == null && i < currentNode.getNumberOfChildren()) {
+            while(returnNode == null && i < currentNode.getChildCount()) {
                 returnNode = auxiliaryFind(currentNode.getChildAt(i), dataToFind);
                 i++;
             }
@@ -76,6 +76,14 @@ public class GenericTree<T> {
         return (root == null);
     }
 
+    /**
+     * 遍历，默认为前序遍历
+     * @return 返回 Node List
+     */
+    public List<GenericTreeNode<T>> build() {
+        return this.build(GenericTreeTraversalOrderEnum.PRE_ORDER);
+    }
+    
     public List<GenericTreeNode<T>> build(GenericTreeTraversalOrderEnum traversalOrder) {
         List<GenericTreeNode<T>> returnList = null;
 

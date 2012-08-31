@@ -16,8 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.wcs.base.collections.GenericTree;
+import com.wcs.base.collections.GenericTreeNode;
 import com.wcs.base.service.EntityReader;
+import com.wcs.base.util.CollectionUtils;
 import com.wcs.commons.security.model.Resource;
+import com.wcs.commons.security.vo.ResourceTree;
 
 /**
  * revision 19085 可以恢复到没有Tree
@@ -30,7 +34,10 @@ import com.wcs.commons.security.model.Resource;
 public class ResourceCache {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
+	private ResourceTree tree = new ResourceTree();
 	private List<Resource> cache = new ArrayList<Resource>();
+	
+	private GenericTreeNode<Resource> root = null;
 
 	@EJB(beanName="EntityReader")
 	private EntityReader entityReader;
@@ -40,7 +47,29 @@ public class ResourceCache {
     public void initResourceCache() {
 		String sql = "SELECT r FROM Resource r";
 		cache = this.entityReader.findList(sql);
+		/**
+		 * 1.构建root节点
+		 * 2.从root节点开始，递归构建tree
+		 */
+		root = new GenericTreeNode<Resource>(new Resource(0L,"root","root",null), null);
+		this.buildTree(loadSubResources(0L), root);	// 第一级Resource的parentId默认为0L 
+		tree.setRoot(root);
 	}
+	
+	/**
+	 * 用来维护Resource，采用递归方式实现
+	 * @param subResList 给定的父节点的儿子资源列表
+	 * @param parentNode 父节点
+	 */
+    private void buildTree(List<Resource> subResList,GenericTreeNode<Resource> parentNode){
+        for (Resource r : subResList){
+        	GenericTreeNode<Resource> node = new GenericTreeNode<Resource>(r, parentNode);
+            List<Resource> subList = this.loadSubResources(r.getId());
+            //System.out.printf("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
+            if (CollectionUtils.isNotEmpty(subList))
+                buildTree(subList,node);
+        }
+    }
 	
 	/**
 	 * 装载系统的资源
@@ -106,4 +135,21 @@ public class ResourceCache {
         }
         return true;
     }
+
+	public ResourceTree getTree() {
+		return tree;
+	}
+
+	public void setTree(ResourceTree tree) {
+		this.tree = tree;
+	}
+
+	public GenericTreeNode<Resource> getRoot() {
+		return root;
+	}
+
+	public void setRoot(GenericTreeNode<Resource> root) {
+		this.root = root;
+	}
+    
 }

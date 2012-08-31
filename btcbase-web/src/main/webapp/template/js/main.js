@@ -3,6 +3,8 @@ var defualtCheck2="";
 // 菜单栏效果
  $(document).ready(function () {
 	 $(".top_menu_ul_li_a").click(function(){
+		 $(".top_menu_ul_li_a").removeClass("active");
+		 $(this).addClass("active");
 			$(".nav_bar").hide();											 
 			//$(this).children("div").show();
 			$(this).parent().children("div").show();

@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -22,6 +23,7 @@ import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
 import com.wcs.base.util.MessageUtils;
+import com.wcs.commons.conf.WebappConfig;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.service.ResourceCache;
@@ -45,17 +47,19 @@ public class ResourceBean implements Serializable {
     }
 
 	@EJB
-	private ResourceCache resourceCache;
+	public ResourceCache resourceCache;
 	@EJB
 	private ResourceService resourceService;
 	@EJB
-	private EntityWriter entityWriter;
+	public EntityWriter entityWriter;
+	@Inject
+	WebappConfig config;
 
     private TreeNode root = null; // 资源树
 	private TreeNode selectedNode; // 选中节点
 	private TreeNode[] selectedNodes; // checkbox
     //private Resource newResource = new Resource(); // 节点操作资源
-    private Resource selectedResource; // 节点操作资源
+    public Resource selectedResource; // 节点操作资源
     
     private OpMode opMode;
 
@@ -146,58 +150,43 @@ public class ResourceBean implements Serializable {
      * 添加子资源
      */
     public void add() {
-        // code 唯一判断 (暂不做)
-
-        // seqNo 唯一判断 (暂不做)
-
         try {
-            this.entityWriter.create(selectedResource);
+            resourceService.addResource(selectedResource);
+            //config.initResTree();
+            init();	// 更新页面数据(Resource-Tree)
             MessageUtils.addSuccessMessage("resMsg", "添加资源成功！");
         } catch (Exception e) {
             e.printStackTrace();
             MessageUtils.addErrorMessage("resMsg", "添加资源失败，请检查！");
         }
-
-        // 更新页面数据
-        resourceCache.initResourceCache();
-        this.init();
     }
-
     /**
-     * 修改资源
-     */
-    public void edit() {
-        try {
-            // code 唯一判断
-            if (!resourceCache.isUniqueCode(selectedResource)){
-                MessageUtils.addSuccessMessage("resMsg", "code 不唯一！");
-                return;
-            }
-            // seqNo 唯一判断
-            if (!resourceCache.isUniqueSeqNo(selectedResource)){
-                MessageUtils.addSuccessMessage("resMsg", "seqNo 不唯一！");
-                return;
-            }
-            // 修改当前资源
-
-            entityWriter.update(selectedResource);
-            MessageUtils.addSuccessMessage("resMsg", "修改资源成功！");
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.addErrorMessage("resMsg", "修改资源失败！");
-        }finally {
-            // 更新Resource Cache 和 Resource-Tree
-            resourceCache.initResourceCache();
-            this.init();
-        }
-    }
-
+	 * 修改资源
+	 */
+	public void edit() {
+	    try {
+	        // 修改当前资源
+	        resourceService.updateResource(selectedResource);
+	        //config.initResTree();
+	        init();	// 更新页面数据(Resource-Tree)
+	        MessageUtils.addSuccessMessage("resMsg", "修改资源成功！");
+	    }catch (TransactionException e) {
+	        //e.printStackTrace();
+	        MessageUtils.addErrorMessage("resMsg", e.getMessage());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        MessageUtils.addErrorMessage("resMsg", "修改资源失败！");
+	    }
+	}	
+	
     /**
      * 删除资源
      */
     public void delete() {
         try {
             this.resourceService.deleteResource(selectedResource);
+            //config.initResTree();
+            init();	// 更新页面数据(Resource-Tree)
             MessageUtils.addSuccessMessage("resMsg", "删除资源成功！");
         } catch(TransactionException te){
             MessageUtils.addErrorMessage("resMsg", "删除资源失败, 请检查！"+te.getMessage());
@@ -206,8 +195,8 @@ public class ResourceBean implements Serializable {
             MessageUtils.addErrorMessage("resMsg", "删除资源失败, 请检查！");
         }
 
-        // 更新页面数据(Resource-Tree)
-        init();
+        
+        
     }
 
     /**

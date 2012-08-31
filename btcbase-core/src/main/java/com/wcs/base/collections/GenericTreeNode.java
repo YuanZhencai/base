@@ -20,21 +20,41 @@ public class GenericTreeNode<T> {
         this();
         setData(data);
     }
+    
+	public GenericTreeNode(T data, GenericTreeNode<T> parent) {
+		this.setData(data);
+		children = new ArrayList<GenericTreeNode<T>>();
+		this.parent = parent;
+		if(this.parent != null)
+			this.parent.getChildren().add(this);
+	}
 
     public GenericTreeNode<T> getParent() {
         return this.parent;
     }
+    
+	public void setParent(GenericTreeNode<T> parent) {
+        if(this.parent != null) {
+            this.parent.getChildren().remove(this);
+        }
+        
+        this.parent = parent;
+        
+        if(this.parent != null) {
+            this.parent.getChildren().add(this);
+        }
+	}    
 
     public List<GenericTreeNode<T>> getChildren() {
         return this.children;
     }
 
-    public int getNumberOfChildren() {
+    public int getChildCount() {
         return getChildren().size();
     }
 
     public boolean hasChildren() {
-        return (getNumberOfChildren() > 0);
+        return (getChildCount() > 0);
     }
 
     public void setChildren(List<GenericTreeNode<T>> children) {
@@ -66,6 +86,13 @@ public class GenericTreeNode<T> {
     public GenericTreeNode<T> getChildAt(int index) throws IndexOutOfBoundsException {
         return children.get(index);
     }
+    
+	public boolean isLeaf() {
+		if(children == null)
+			return true;
+		
+		return children.isEmpty();
+	}
 
     public T getData() {
         return this.data;
@@ -76,7 +103,10 @@ public class GenericTreeNode<T> {
     }
 
     public String toString() {
-        return getData().toString();
+		if(data != null)
+			return data.toString();
+		else
+			return super.toString();
     }
 
     @Override

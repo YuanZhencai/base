@@ -14,6 +14,7 @@ import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
+import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.RoleResource;
@@ -64,6 +65,34 @@ public class ResourceService {
 		return entityReader.findList("SELECT res FROM RoleResource rr JOIN rr.resource res WHERE rr.role.id=?1", role.getId());
 	}
 
+	/**
+	 * 添加资源，并更新缓存
+	 */
+	public void addResource(Resource resource){
+        // code 唯一判断 (暂不做)
+
+        // seqNo 唯一判断 (暂不做)
+		
+		this.entityWriter.create(resource);
+		resourceCache.initResourceCache();	//更新Resource Cache
+	}
+	
+	/**
+	 * 添加资源，并更新缓存
+	 */
+	public void updateResource(Resource resource){
+        // code 唯一判断
+        if (!resourceCache.isUniqueCode(resource)){
+        	throw new TransactionException("code 不唯一！");
+        }
+        // seqNo 唯一判断
+        if (!resourceCache.isUniqueSeqNo(resource)){
+        	throw new TransactionException("seqNo 不唯一！");
+        }
+        // 修改当前资源
+        entityWriter.update(resource);
+        resourceCache.initResourceCache();	//更新Resource Cache
+	}
 	
 	/**
 	 * 删除当前选中资源
@@ -85,5 +114,7 @@ public class ResourceService {
 				break;
 			}
 		}
-	}	
+	}
+
+	
 }

@@ -47,6 +47,24 @@ public class Resource extends IdEntity {
 	
 	@Transient
 	private Integer level;
+	
+	public Resource(){}
+	
+	public Resource(Long id, String code, String name, Long parentId){
+		this(code,name,parentId,null,ResourceType.MENU,null);
+		this.setId(id);
+	}
+	
+	public Resource(String code, String name, Long parentId, Short seqNo,
+			ResourceType type, String uri) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.parentId = parentId;
+		this.seqNo = seqNo;
+		this.type = type;
+		this.uri = uri;
+	}
 
 	//--------------------- setter & getter -------------------//
 	

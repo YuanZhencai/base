@@ -37,20 +37,27 @@
 				<div id="top_menu">
 					<h:form prependId="false" id="up_menu">
 						<ul class="top_menu_ul"> 
-							<c:forEach var="first" items="#{applicationScope.resTree.children}" >
+							<c:forEach var="first" items="#{applicationScope.resTree.root.children}" >
 								<li class="top_menu_ul_li">
-									<a href="#"  class="top_menu_ul_li_a">#{first.data.name}</a>
+									<a href="#" class="top_menu_ul_li_a">#{first.data.name}</a>
 									
 					<div class="nav_bar" style="z-index: 1">				
 						<ul class="nav_bar_ul">
 							<c:forEach  var="second" items="#{first.children}">
 								<li>
-									<c:if test="#{sencond.data}"></c:if>
-									<a id="#{second.data.code}" href="#{second.data.uri==''?'#':request.contextPath}#{second.data.uri==''?'':second.data.uri}">#{second.data.name}</a>
+									<c:choose>
+										<c:when test="#{second.data.uri==''}">
+											<h:commandLink value="#{second.data.name}"/>
+										</c:when>
+										<c:otherwise>
+											<h:commandLink value="#{second.data.name}" action="#{loginBean.select(second.data.code,second.data.uri)}" />
+										</c:otherwise>
+									</c:choose>									
+
 									<ul>
 										<c:forEach var="third" items="#{second.children}">
 											<li id="#{third.data.code}">
-												<a id="#{third.data.code}" href="#{request.contextPath}#{third.data.uri}">#{third.data.name}</a>
+												<h:commandLink id="#{fn:replace(third.data.code,':','_')}" value="#{third.data.name}" action="#{loginBean.select(third.data.code,third.data.uri)}" />
 											</li>
 										</c:forEach>
 									</ul>
@@ -58,7 +65,6 @@
 							</c:forEach>
 						</ul>
 					</div>
-									
 									
 								</li>
 							</c:forEach>
