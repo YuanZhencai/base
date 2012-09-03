@@ -185,7 +185,6 @@ a:active {
 #top_up_left {
 	width: 370px;
 	height: 32px;
-	background: url(images/main_01.gif);
 	float: left;
 }
 
@@ -363,106 +362,6 @@ position:relative;
 	margin-right: 5px;
 }
 
-
-
-/*---------目录菜单样式设置开始-----------*/
-/*
-.menuA
-{
-	position:absolute; 
-    width:170px;
-	left:0px; 
-	top:0px; 
-	bottom:0px; 
-    border-left:solid 1px #7cb9dd;
-    border-right:solid 1px #7cb9dd;
-    background:#d5e8f6;
-	overflow:auto;
-}
-.menuB
-{
-	position:absolute; 
-    width:158px; 
-	left:6px; 
-	top:20px; 
-	bottom:16px; 
-    border:solid 1px #7cb9dd; 
-    background:#fff;
-	overflow:auto;
-}
-
-ul{
-	margin:0;
-	padding:0;
-}
-
-li{
-	list-style:none;
-	text-align:left;
-}
-
-li.menu{
-	padding:0px 0;
-	width:100%;
-}
-
-li.button a{
-	display:block;
-	font-family:BPreplay,Arial,Helvetica,sans-serif;
-	font-size:12px;
-	height:24px;
-	overflow:hidden;
-	padding:0px 0px 0;
-	position:relative;
-	width:158px;
-	cursor:pointer;
-}
-
-li.button a:hover{
-	text-decoration:none;
-}
-
-li.button a span{
-	height:22px;
-	position:absolute;
-	top:6px;
-	left:30px;
-	display:block;
-}
-
-li.button a.green{background:url(../../images/main_33.gif); color:#436800;}
-
-li.button a:hover span
-{
-    font-weight:bold;
-}
-
-.dropdown{
-	display:none;
-	padding-top:4px;
-	padding-left:2px;
-	width:154px;
-}
-
-.dropdown ul li{
-	background-color:#fff;
-	border:1px solid #d5e8f6;
-	color:#CCCCCC;
-	margin:4px 0;
-	padding:4px 30px;
-}
-
-a, a:visited {
-	color:#0196e3;
-	text-decoration:none;
-	outline:none;
-}
-
-a:hover{
-	text-decoration:underline;
-}
-*/
-/*---------目录菜单样式设置结束-----------*/
 
 /*---------面板样式开始------------------*/
 .panel1 {

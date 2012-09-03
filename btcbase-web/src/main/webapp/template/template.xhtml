@@ -39,7 +39,7 @@
 						<ul class="top_menu_ul"> 
 							<c:forEach var="first" items="#{applicationScope.resTree.root.children}" >
 								<li class="top_menu_ul_li">
-									<a href="#" class="top_menu_ul_li_a">#{first.data.name}</a>
+									<a href="#"  class="top_menu_ul_li_a" style="#{first.selected==true?'background:#79B900':''}">#{first.data.name}</a>
 									
 					<div class="nav_bar" style="z-index: 1">				
 						<ul class="nav_bar_ul">
@@ -50,14 +50,14 @@
 											<h:commandLink value="#{second.data.name}"/>
 										</c:when>
 										<c:otherwise>
-											<h:commandLink value="#{second.data.name}" action="#{loginBean.select(second.data.code,second.data.uri)}" />
+											<p:commandLink value="#{second.data.name}" style="#{second.selected==true?'background:#79B900':''}" action="#{loginBean.select(second.data.code,second.data.uri)}" ajax="false"/>
 										</c:otherwise>
 									</c:choose>									
 
 									<ul>
 										<c:forEach var="third" items="#{second.children}">
 											<li id="#{third.data.code}">
-												<h:commandLink id="#{fn:replace(third.data.code,':','_')}" value="#{third.data.name}" action="#{loginBean.select(third.data.code,third.data.uri)}" />
+												<p:commandLink id="#{fn:replace(third.data.code,':','_')}" value="#{third.data.name}" action="#{loginBean.select(third.data.code,third.data.uri)}" ajax="false"/>
 											</li>
 										</c:forEach>
 									</ul>

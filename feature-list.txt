@@ -1,9 +1,12 @@
 Todo List:
     - 菜单定位
+    - 去掉Service层的缓存
     - 资源添加同级资源
     - controller层对Service层的异常处理
     - JSF页面消息提示
     - 将GenericTree 和 PF TreeNode 结合在一起，让PF可以直接用Resource缓存
+    - 开发文档编写
+    - 去掉web.xml 编码过滤器
 
 
 Feature List:

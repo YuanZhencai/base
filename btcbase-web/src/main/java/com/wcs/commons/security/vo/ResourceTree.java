@@ -68,7 +68,7 @@ public class ResourceTree extends GenericTree<Resource>{
 		else if (currentNode.hasChildren()) {
 			i = 0;
 			while (returnNode == null && i < currentNode.getChildCount()) {
-				returnNode = findByCode(currentNode.getChildAt(i),uri);
+				returnNode = findByUri(currentNode.getChildAt(i),uri);
 				i++;
 			}
 		}
@@ -87,6 +87,7 @@ public class ResourceTree extends GenericTree<Resource>{
 		if (currentNode!=null){
 			// 获得父节点列表
 			this.findParentChain(chain,currentNode);
+			chain.remove(chain.size()-1);  // 去掉 root （Resource(0,'root','root',null) )
 			Collections.reverse(chain);
 		}
 		return chain;
@@ -105,5 +106,23 @@ public class ResourceTree extends GenericTree<Resource>{
 		}
 	}
 	
+	/**
+	 * 设置当前节点的所有父节点被选中（包括其本身）
+	 * @param currentNode 
+	 */
+	public void setSelectedNode(GenericTreeNode<Resource> currentNode){
+		currentNode.setSelected(true);
+		GenericTreeNode<Resource> parent = currentNode.getParent();
+		
+		if (parent!=null){
+			setSelectedNode(parent);
+		}
+	}
 	
+	public void clearAllSelected(){
+		List<GenericTreeNode<Resource>> list = this.build();
+		for (GenericTreeNode<Resource> node: list){
+			node.setSelected(false);
+		}
+	}
 }

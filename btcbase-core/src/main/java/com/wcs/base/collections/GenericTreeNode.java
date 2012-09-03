@@ -10,8 +10,18 @@ public class GenericTreeNode<T> {
     private T data;
     private List<GenericTreeNode<T>> children;
     private GenericTreeNode<T> parent;
+    
+    private boolean selected;
 
-    public GenericTreeNode() {
+    public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	public GenericTreeNode() {
         super();
         children = new ArrayList<GenericTreeNode<T>>();
     }
