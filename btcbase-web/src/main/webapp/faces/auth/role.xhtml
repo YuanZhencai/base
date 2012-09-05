@@ -56,7 +56,7 @@
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.instance}" />
 							</p:commandButton>
 
-							<p:commandButton action="#{resourceBean.setAllocatedResources(role)}" title="分配资源"
+							<p:commandButton action="#{resourceBean.toAllocResources(role)}" title="分配资源"
 									oncomplete="role_resource_dialog.show();" icon="ui-icon ui-icon-person"
 									update=":dlgAllocRes">
 								<f:setPropertyActionListener value="#{role}" target="#{roleBean.instance}" />

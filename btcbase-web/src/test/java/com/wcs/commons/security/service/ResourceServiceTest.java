@@ -3,9 +3,10 @@ package com.wcs.commons.security.service;
 import javax.ejb.EJB;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.wcs.base.test.BaseTest;
-import com.wcs.commons.security.service.ResourceCache;
 
 /**
  * <p>Project: btcbase-web</p> 
@@ -16,6 +17,7 @@ import com.wcs.commons.security.service.ResourceCache;
  * @author guanjianghuai
  */
 public class ResourceServiceTest extends BaseTest{
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@EJB
 	private ResourceCache resourceCache;
@@ -31,7 +33,7 @@ public class ResourceServiceTest extends BaseTest{
 	public void testSearch(){
 //		List<Resource> list = resourceService.findAllSysResource();
 //		for(int i=0;i<list.size();i++){
-//			System.out.println(list.get(i).getName());
+//			logger.debug(list.get(i).getName());
 //		}
 	}
 	

@@ -1,15 +1,45 @@
 var defualtCheck2="";
 
+function loc(context,resCode){
+	$.ajax({
+        type: "GET",
+        url: context+"/menuloc?resCode="+resCode,
+        async: false,
+        success: function(data) {
+        },
+        error: function(e) {
+            alert("系统错误，菜单资源无法定位。");
+        }
+    });
+}
+
+function ative_located_menu(){
+	var codes = $("#resIdChain").val();
+	var codeList = codes.replace(/[ \[\]]/g,'').split(',');
+
+	//  定位菜单
+	for (var i=0;i<codeList.length;i++){
+		//alert("#"+codeList[i]+"#");
+		//alert("#"+codeList[i].replace(' ','')+"#");
+		$("#"+codeList[i]).addClass("active");
+	};
+	// 显示被定位的导航栏
+	$("#"+codeList[0]).parent().children("div").show();
+}
+
 // 菜单栏效果
  $(document).ready(function () {
 	 $(".top_menu_ul_li_a").click(function(){
 		 $(".top_menu_ul_li_a").removeClass("active");
 		 $(this).addClass("active");
-			$(".nav_bar").hide();											 
+			$(".nav_bar").hide();
 			//$(this).children("div").show();
 			$(this).parent().children("div").show();
 		});
 		
+	 // 定位菜单
+	 ative_located_menu();
+	 
 	 
 	 /*----------------------------*/
 	/* 此代码执行后的DOM完全加载 */
@@ -33,17 +63,6 @@ var defualtCheck2="";
 		/* 防止违约事件（这将是导航到链接的地址浏览器） */
         e.preventDefault();
     });
-			
-	/* 模拟鼠标点击事件--> 设置选中一级菜单 */
-	//
-    if($("#menuTwo").val()!=null&&$("#menuTwo").val()!=""&&$("#menuOne").val()!=null&&$("#menuOne").val()!=""){
-	// $("#"+$("#menuOne").val()).trigger("click");
-    var url=$("#requestContextPath").val();
-	$("#"+$("#menuOne").val()).css("background-image","url("+url+"/images/nav-a-1.png)");
-	$("#"+$("#menuOne").val()).css("color","#FFFFFF");
-	/*-> 设置选中二级菜单样式*/
-	$("#"+$("#menuTwo").val()).css("background-image","url("+url+"/images/nav-a-2.png)");
-    }
 	
 	/* 页面加载时设置按钮提示框 */
 	$("button").tooltip({
@@ -146,7 +165,7 @@ function LiStyleOut(obj) {
 function request(paras){ 
 	var url = location.href; 
 	var paraString = url.substring(url.indexOf("?")+1,url.length).split("&"); 
-	var paraObj = {} 
+	var paraObj = {};
  	for (i=0; j=paraString[i]; i++){ 
 		paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length); 
     } 

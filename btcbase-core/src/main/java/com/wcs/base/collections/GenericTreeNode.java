@@ -8,18 +8,8 @@ import java.util.regex.Pattern;
 public class GenericTreeNode<T> {
 
     private T data;
-    private List<GenericTreeNode<T>> children;
     private GenericTreeNode<T> parent;
-    
-    private boolean selected;
-
-    public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    private List<GenericTreeNode<T>> children;
 
 	public GenericTreeNode() {
         super();

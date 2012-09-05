@@ -58,7 +58,7 @@
 							<p:commandButton title="删除" oncomplete="confirmation.show()" icon="ui-icon ui-icon-close">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>
-							<p:commandButton title="分配角色" action="#{roleBean.loadRoles(user)}"  update=":dialogForm:userRolesPanel"
+							<p:commandButton title="分配角色" action="#{roleBean.toAllocRoles(user)}"  update=":dialogForm:userRolesPanel"
 								oncomplete="userRoleDialog.show()"  icon="ui-icon ui-icon-wrench">
 								<f:setPropertyActionListener value="#{user}" target="#{userBean.instance}" />
 							</p:commandButton>

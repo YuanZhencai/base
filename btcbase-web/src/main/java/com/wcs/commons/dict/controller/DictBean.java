@@ -34,7 +34,7 @@ public class DictBean implements Serializable {
     
     private static final long MAX_SIZE = 100;
     private final LoadingCache<String, List<Dict>> cache;   //category缓存
-  
+
     @EJB
     DictService dictService;
     

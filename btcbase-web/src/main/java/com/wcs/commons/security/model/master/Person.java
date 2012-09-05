@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.google.common.collect.Lists;
 
@@ -59,6 +60,9 @@ public class Person implements Serializable {
 
 	@Column(length=200)
 	private String telno;
+	
+	@Transient
+	private String adAcccount;
 
 	@ManyToMany
 	@JoinTable(name = "PS", joinColumns = { @JoinColumn(name = "pid") }, inverseJoinColumns = { @JoinColumn(name = "sid") })

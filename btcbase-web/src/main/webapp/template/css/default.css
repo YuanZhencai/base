@@ -96,6 +96,10 @@ a:active {
 	background-image: url(../../images/nav-a-1.png) !important;
 }
 
+.nav_bar_ul li a.active{
+	background: #ADFF2F;
+}
+
 .nav_bar_ul li ul {
 	border: 1px solid #CCCCCC !important;
 	line-height: 27px !important;
@@ -118,6 +122,10 @@ a:active {
 	w\idth: 156px !important;
 	text-align: left !important;
 	padding-left: 24px !important;
+}
+
+.nav_bar_ul li ul li a.active{
+	background: #ADFF2F;
 }
 
 .nav_bar_ul li ul a:link {
@@ -209,7 +217,7 @@ a:active {
 }
 
 .top_menu_ul_li a.active{
-	background: #79B900;
+	background: #ADFF2F;
 }
 
 .top_menu_ul {
@@ -242,7 +250,6 @@ position:relative;
 
 .top_menu_ul_li_a {
 	color: #3c82b4;
-	
 }
 
 .top_menu_ul_li:hover {

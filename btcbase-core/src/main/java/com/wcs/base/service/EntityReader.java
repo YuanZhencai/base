@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NonUniqueResultException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,23 +40,29 @@ public class EntityReader extends QueryCreator {
     }
 
     /**
-     * 按JPQL查询唯一对象.
+     * 按JPQL查询唯一对象. 没有找到结果时，返回null；当有多个结果时，抛出 NonUniqueResultException 异常。
      *
      * @param values 数量可变的参数,按顺序绑定.
      */
     @SuppressWarnings("unchecked")
 	public <X> X findUnique(final String jpql, final Object... values) {
-        return (X) createQuery(jpql, values).getSingleResult();
+        List<X> results = createQuery(jpql, values).getResultList();
+        if (results.isEmpty()) return null;
+        else if (results.size() == 1) return results.get(0);
+        throw new NonUniqueResultException();
     }
 
    /**
-     * 按JPQL查询唯一对象.
+     * 按JPQL查询唯一对象. 没有找到结果时，返回null；当有多个结果时，抛出 NonUniqueResultException 异常。
      *
      * @param values 命名参数,按名称绑定.
      */
     @SuppressWarnings("unchecked")
 	public <X> X findUnique(final String jpql, final Map<String, ?> values) {
-        return (X) createQuery(jpql, values).getSingleResult();
+        List<X> results = createQuery(jpql, values).getResultList();
+        if (results.isEmpty()) return null;
+        else if (results.size() == 1) return results.get(0);
+        throw new NonUniqueResultException();
     }
 
    /**

@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
+import com.wcs.commons.security.model.RoleResource;
 import com.wcs.commons.security.model.User;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.util.CollectionUtils;
@@ -31,10 +32,9 @@ public abstract class AbstractUserService {
     * 通过用户名(adAccount)查询唯一用户
     */
     public User findUser(String adAccount) {
-        String jpql = "SELECT u FROM User u WHERE u.adAccount = ?1";
-        List<User> list = entityReader.findList(jpql, adAccount);
-        if (CollectionUtils.isEmpty(list)) return null;
-        return list.get(0);
+        String jpql = "SELECT new User(u.id,u.adAccount,p) FROM User u, Person p"
+        		+ " WHERE p.id=u.pernr AND u.defunctInd='N' AND p.defunctInd='N' and u.adAccount = ?1";
+        return entityReader.findUnique(jpql, adAccount);
     }
     
    /**
@@ -61,5 +61,14 @@ public abstract class AbstractUserService {
 		List<Resource> resourceList = entityReader.findList(jpql, roleList);
 		return resourceList;
 	}
+	
+    /**
+     * 查找某一 Role 的所有可访问的 Resource
+     */
+    public List<RoleResource> findResources(Long roleId) {
+        String jpql = "SELECT p FROM RoleResource p WHERE p.role.id = ?1";
+        List<RoleResource> permissions = entityReader.findList(jpql, roleId);
+        return permissions;
+    }
 
 }

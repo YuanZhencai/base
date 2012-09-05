@@ -25,6 +25,7 @@
 		<ui:insert name="styleAndScript"></ui:insert>
 	</h:head>
 	<h:body>
+	<input type="text" id="resIdChain" value="#{sessionScope.resIdChain}" />
 		<div class="top" style="z-index: 3">
 			<div id="top_up">
 				<div id="top_up_left">
@@ -39,7 +40,7 @@
 						<ul class="top_menu_ul"> 
 							<c:forEach var="first" items="#{applicationScope.resTree.root.children}" >
 								<li class="top_menu_ul_li">
-									<a href="#"  class="top_menu_ul_li_a" style="#{first.selected==true?'background:#79B900':''}">#{first.data.name}</a>
+								<a id="#{first.data.elementId}" href="#" class="top_menu_ul_li_a" >#{first.data.name}</a>
 									
 					<div class="nav_bar" style="z-index: 1">				
 						<ul class="nav_bar_ul">
@@ -47,17 +48,19 @@
 								<li>
 									<c:choose>
 										<c:when test="#{second.data.uri==''}">
-											<h:commandLink value="#{second.data.name}"/>
+											<a id="#{second.data.elementId}" href="#">#{second.data.name}</a>
 										</c:when>
 										<c:otherwise>
-											<p:commandLink value="#{second.data.name}" style="#{second.selected==true?'background:#79B900':''}" action="#{loginBean.select(second.data.code,second.data.uri)}" ajax="false"/>
+											<a id="#{second.data.elementId}" href="#{request.contextPath}#{second.data.uri}"
+												onclick="loc('#{request.contextPath}','#{second.data.code}')" >#{second.data.name}</a>
 										</c:otherwise>
 									</c:choose>									
 
 									<ul>
 										<c:forEach var="third" items="#{second.children}">
 											<li id="#{third.data.code}">
-												<p:commandLink id="#{fn:replace(third.data.code,':','_')}" value="#{third.data.name}" action="#{loginBean.select(third.data.code,third.data.uri)}" ajax="false"/>
+												<a id="#{third.data.elementId}" href="#{request.contextPath}#{third.data.uri}" 
+													onclick="loc('#{request.contextPath}','#{third.data.code}')">#{third.data.name}</a>
 											</li>
 										</c:forEach>
 									</ul>
@@ -103,10 +106,9 @@
 		</div>
 
 		<div id="main_id" class="main">
-			<ui:insert name="content">
-				<ui:include src="/main.xhtml" />
-			</ui:insert>
+			<ui:insert name="content"></ui:insert>
 		</div>
+		
 		<div class="bottom">
 			<div id="down_left">
 				<img src="#{request.contextPath}/images/logo_15.gif" alt="" />&copy;2011
@@ -119,6 +121,7 @@
 				&nbsp;&nbsp;&nbsp;
 			</div>
 		</div>
+		
 		<p:ajaxStatus id="ajaxSubmit" onsuccess="showTooltip();" >
 			<f:facet name="start">
 				<div class="ajaxStatus">
@@ -133,15 +136,17 @@
 				<h:outputText value="" />
 			</f:facet>
 		</p:ajaxStatus>
+		
 		<div id="submitDiv" style="display:none;">
-		<div class="ajaxStatus" >
-			<span>
-				<h:graphicImage value="/template/img/loading.gif" />
-				<br/>
-				<label><h:outputText value="数据加载中,请稍候..."/></label>
-			</span>
+			<div class="ajaxStatus" >
+				<span>
+					<h:graphicImage value="/template/img/loading.gif" />
+					<br/>
+					<label><h:outputText value="数据加载中,请稍候..."/></label>
+				</span>
+			</div>
 		</div>
-		</div>
+		
 	</h:body>
 </f:view>
 </html>

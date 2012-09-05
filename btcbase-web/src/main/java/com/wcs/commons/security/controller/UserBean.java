@@ -36,16 +36,14 @@ public class UserBean implements Serializable {
     private Map<String, Object> filterMap = Maps.newHashMapWithExpectedSize(4); // 查询条件Map封装
     private LazyDataModel<User> lazyModel;
     private User instance = new User(); // 当前角色对象
-    private List<Person> persons = new ArrayList<Person>();		// adAccount LIKE对应的person 列表
+    private List<Person> persons = new ArrayList<Person>();		// adAccount LIKE对应的person 列表，用于Add Page    
     
     @Inject
     private UserService userService;
-    @EJB
-    private EntityWriter entityWriter;
 
     @PostConstruct
     public void init() {
-    	logger.info("UserBean=>init()");
+    	logger.info("init() - @PostConstruct");
         list();
     }
 
@@ -81,7 +79,7 @@ public class UserBean implements Serializable {
     	try{
     		userService.addUser(pernr);
     	} catch (TransactionException te){
-    		te.printStackTrace();
+    		logger.debug( te.getMessage() );
     		//MessageUtils.addMessage("", te.getMessage());
     	}
     }

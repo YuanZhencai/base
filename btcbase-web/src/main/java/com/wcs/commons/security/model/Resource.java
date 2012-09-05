@@ -46,7 +46,7 @@ public class Resource extends IdEntity {
 	private List<RoleResource> roleResources;*/
 	
 	@Transient
-	private Integer level;
+	private String elementId;
 	
 	public Resource(){}
 	
@@ -116,6 +116,14 @@ public class Resource extends IdEntity {
 		this.uri = uri;
 	}
 
+	public String getElementId() {
+		return elementId;
+	}
+
+	public void setElementId(String elementId) {
+		this.elementId = elementId;
+	}
+
 /*	public List<RoleResource> getRoleResources() {
 		return roleResources;
 	}
@@ -124,12 +132,4 @@ public class Resource extends IdEntity {
 		this.roleResources = roleResources;
 	}*/
 
-	public Integer getLevel() {
-		return level;
-	}
-
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
-	
 }

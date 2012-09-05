@@ -28,6 +28,7 @@ import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.service.ResourceCache;
 import com.wcs.commons.security.service.ResourceService;
+import com.wcs.commons.security.vo.ResourceNode;
 
 /**
  * 
@@ -37,7 +38,7 @@ import com.wcs.commons.security.service.ResourceService;
 @ViewScoped
 public class ResourceBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public enum OpMode{
         ADD("新增"),EDIT("修改"),VIEW("查看");
@@ -65,9 +66,10 @@ public class ResourceBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		logger.info("初始化资源树 Tree");
-        root = new DefaultTreeNode("root", null);
-        this.buildTree(resourceCache.loadSubResources(0L), root);
+		logger.debug("@PostConstruct init()");
+//        root = new DefaultTreeNode("root", null);
+//        this.buildTree(resourceCache.loadSubResources(0L), root);
+		root = (ResourceNode)config.getTree().getRoot();
 	}
 
 	/**
@@ -80,13 +82,13 @@ public class ResourceBean implements Serializable {
         for (Resource r : subResList){
             TreeNode node = new DefaultTreeNode(r, parentNode);
             List<Resource> subList = resourceCache.loadSubResources(r.getId());
-            //System.out.printf("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
+            logger.debug("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
             if (CollectionUtils.isNotEmpty(subList))
                 buildTree(subList,node);
         }
     }
     
-    public void setAllocatedResources(Role role){
+    public void toAllocResources(Role role){
     	clearChecked(root);	// 清空 Tree 原有所有节点的 check 状态
     	List<Resource> allocatedResList = resourceService.findResources(role);
     	for (Resource res : allocatedResList){

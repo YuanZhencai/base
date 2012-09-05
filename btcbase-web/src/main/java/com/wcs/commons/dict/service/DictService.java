@@ -33,8 +33,8 @@ public class DictService {
 		this.dicts = this.findAllDicts();	// 从DB装载所有的 Dict item
 	}
 	
-	public List<Dict> findAllDicts(){
-		return this.entityReader.findList("SELECT d FROM Dict d");
+	private List<Dict> findAllDicts(){
+		return entityReader.findList("SELECT d FROM Dict d");
 	}
 	
 

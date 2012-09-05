@@ -70,7 +70,7 @@ public class RoleService {
      * @param roleList 新分配的 Role 列表
      */
     public void allocRoles(User user, List<Role> roleList) {
-    	Validate.isTrue(user==null);
+    	Validate.isTrue(user!=null);
     	User u = entityReader.findUnique(User.class, user.getId());  // 得到持久化的User
     	List<Role> userRoles = u.getRoleList();
     	

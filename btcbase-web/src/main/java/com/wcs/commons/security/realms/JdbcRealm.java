@@ -1,15 +1,9 @@
 package com.wcs.commons.security.realms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,14 +12,16 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 
-import com.google.common.collect.Lists;
+import com.wcs.base.util.ContainerUtils;
+import com.wcs.commons.conf.WebappConfig;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.RoleResource;
 import com.wcs.commons.security.model.User;
-import com.wcs.commons.security.service.LoginService;
-import com.wcs.base.util.ContainerUtils;
+import com.wcs.commons.security.service.UserService;
 
 /**
  * <p>Project: btcbase-web</p> 
@@ -38,20 +34,29 @@ import com.wcs.base.util.ContainerUtils;
 @SuppressWarnings("serial")
 public class JdbcRealm extends AuthorizingRealm implements Serializable {
 	
-	private LoginService loginService;
+	private UserService userService;
 
 	/**
 	 * 认证回调函数, 登录时调用
+	 * 1.解析得到用户名/密码
+	 * 2.校验数据库中是否存在此用户/密码
+	 * 3.将用户信息存入session中
 	 */
 	@Override
 	public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 		// 获取界面传递过来的认证信息（用户名/密码）
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		// 校验认证信息的合法性
-		loginService = ContainerUtils.getBean(LoginService.class);
-		User user = loginService.findUser(token.getUsername()); //adAccount
+		userService = ContainerUtils.getBean(UserService.class);
+		User user = userService.findUser(token.getUsername()); //adAccount
 		
-		return user==null ? null : new SimpleAuthenticationInfo(token.getUsername(), "", getName()); //密码为空
+		if (user==null) return null;
+		
+		Subject currentUser = SecurityUtils.getSubject();
+		Session session = currentUser.getSession();
+		session.setAttribute(WebappConfig.SESSION_CURRENT_USER, user);	// 包含User,Person两个实体的信息
+		
+		return new SimpleAuthenticationInfo(token.getUsername(), "", getName()); //密码为空;
 	}
 
 	/**
@@ -63,13 +68,13 @@ public class JdbcRealm extends AuthorizingRealm implements Serializable {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		
 		// 查询登录用户的授权资源列表
-		loginService = ContainerUtils.getBean(LoginService.class);
+		userService = ContainerUtils.getBean(UserService.class);
 		
-		List<Role> roles = loginService.findRoles(adAccount);
+		List<Role> roles = userService.findRoles(adAccount);
 		
 		for (Role role : roles){
 			info.addRole(role.getCode());    // 定义 Role check
-			List<RoleResource> permissions = loginService.findPermissions(role.getId());
+			List<RoleResource> permissions = userService.findResources(role.getId());
 			for (RoleResource p : permissions){
 				info.addStringPermission(p.getCode());  // 定义 Permission check
 			}

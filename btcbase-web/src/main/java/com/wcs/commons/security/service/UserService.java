@@ -31,7 +31,9 @@ public class UserService extends AbstractUserService {
 	@EJB
 	EntityWriter entityWriter;
     /**
-     * 通过用户属性查询用户
+     * 通过用户账户、姓名、电话模糊匹配用户信息。需要联合User 和 Person两个实体一起来查询。
+     * 如果关联上PU一起查询，逻辑上更严格。
+     * 
      * @param filterMap 存放用户属性的过滤条件
      * @return 返回用户的分页数据
      */
@@ -43,7 +45,6 @@ public class UserService extends AbstractUserService {
 		.append("/~ and p.nachn LIKE {nachn} ~/")
 		.append("/~ and p.telno LIKE {telno} ~/")
 		.append(" order by u.adAccount");
-		logger.debug("UserService=>findUsers(): "+xql.toString());
 	    return entityReader.findXqlPage(xql.toString(), filterMap);
 	}
 	
@@ -75,6 +76,8 @@ public class UserService extends AbstractUserService {
 	}
 	
 	/**
+	 * 被添加到应用系统的User必须同时存在CasUsr 和 Person 两个实体中，即User在 PU 表中必须存在，才能添加到系统。
+	 * 
 	 * 1.通过 pernr 在PU中查询出对应的 adAccount
 	 * 2.检查 pernr，adAccount 联合确定的用户在 User 中是否已经存在
 	 * 3.添加User
@@ -84,7 +87,7 @@ public class UserService extends AbstractUserService {
 	public User addUser(String pernr){
 		// 通过给定的 pernr , 在PU中查询出 adAccount
 		String adAccount = entityReader.findUnique("SELECT pu.id FROM PU pu WHERE pu.pernr=?1", pernr);
-		User user = entityReader.findUnique("SELECT u FROM User u WHERE u.adAccount=?1 and u.pernr=?2");
+		User user = entityReader.findUnique("SELECT u FROM User u WHERE u.adAccount=?1 and u.pernr=?2", adAccount,pernr);
 		if (user != null){
 			throw new TransactionException("用户（User）已经存在，请不要重复添加。");
 		}

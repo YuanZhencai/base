@@ -13,9 +13,6 @@ import javax.persistence.*;
 public class PU implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="DEFUNCT_IND", length=1)
-	private String defunctInd;
-
 	@Id
 	@Column(length=50)  
 	private String id;  // User->AD_Account
@@ -23,8 +20,10 @@ public class PU implements Serializable {
 	@Column(length=20)   // Person->ID
 	private String pernr;
 
-    public PU() {
-    }
+	@Column(name="DEFUNCT_IND", length=1)
+	private String defunctInd;
+
+    public PU() {}
 
 	public String getDefunctInd() {
 		return this.defunctInd;

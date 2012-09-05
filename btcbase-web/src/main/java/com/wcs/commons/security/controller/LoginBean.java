@@ -1,21 +1,12 @@
 package com.wcs.commons.security.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.inject.Inject;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
@@ -24,14 +15,9 @@ import org.apache.shiro.util.Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.wcs.base.util.JSFUtils;
 import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.conf.WebappConfig;
-import com.wcs.commons.security.model.Resource;
-import com.wcs.commons.security.service.LoginService;
-import com.wcs.commons.security.service.ResourceCache;
 
 /**
  * 
@@ -43,21 +29,16 @@ public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	final Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
-	@Inject
-	private LoginService loginService;
+	private final String LOGIN_SUCCESS = "/faces/main.xhtml";
+	private final String LOGIN_PAGE = "/faces/login.xhtml";
+
 	
-	@EJB
-	ResourceCache resourceCache;
-
-	private final String LOGIN_SUCCESS = "/template/template.xhtml";
-	private final String LOGIN_PAGE = "/login.xhtml";
-
 	/**
 	 * user login
 	 */
 	public String userLogin() {
 		// 用户认证
-		String adAccount = JSFUtils.getRequestParam("loginName");
+		String adAccount = JSFUtils.getRequestParam("adAccount");
 		
 		// 装入INI配置, 设置为VM静态Singleton
 		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
@@ -69,61 +50,26 @@ public class LoginBean implements Serializable {
 		token.setRememberMe(true);
 		try {
 			currentUser.login(token);
-		} catch (UnknownAccountException uae) {
-			logger.info("There is no user with username of " + token.getPrincipal());
-			MessageUtils.addErrorMessage("longmessgeId", "用户无效，请检查！");
-			return LOGIN_PAGE;
-		} catch (IncorrectCredentialsException ice) {
-			logger.info("Password for account " + token.getPrincipal() + " was incorrect!");
-			return LOGIN_PAGE;
-		} catch (LockedAccountException lae) {
-			logger.info("The account for username " + token.getPrincipal() + " is locked.  " + "Please contact your administrator to unlock it.");
-			return LOGIN_PAGE;
 		} catch (AuthenticationException ae) {
-			ae.printStackTrace();
+			currentUser.getSession().removeAttribute(WebappConfig.SESSION_CURRENT_USER); // remove 掉user session 信息
+			MessageUtils.addErrorMessage("longmessgeId", "用户或密码无效！");
+			//ae.printStackTrace();
 			return LOGIN_PAGE;
 		}
 		
-		// 初始化系统资源
-		List<List<Resource>> allResList = initAllResources();
-		JSFUtils.getSession().put("user", adAccount);
-		JSFUtils.getSession().put("allResList", allResList);
-		JSFUtils.getSession().put(WebappConfig.NEXT_DISPLAY_RES_CODE, 2); // 选中的菜单
+		// 设置登录后默认的选中菜单为"Demos"
+		JSFUtils.getSession().put(WebappConfig.SESSION_NEXT_DISPLAY_RES_CODE, "base:demos"); 
 
 		return LOGIN_SUCCESS;
 	}
-
-	/**
-	 * Init all sys resource
-     * @return
-     */
-    private List<List<Resource>> initAllResources() {
-        List<Resource> resList = resourceCache.loadAllResources();
-        Map<String, List<Resource>> allResMap = Maps.newHashMap();
-        
-        for (Resource r : resList) {
-            String level = "level" + r.getLevel();
-            List<Resource> list = allResMap.get(level);
-            if (CollectionUtils.isEmpty(list)) {
-                allResMap.put(level, new ArrayList<Resource>());
-            }
-            allResMap.get(level).add(r);
-        }
-        
-        List<List<Resource>> allResList = Lists.newArrayList();
-        for (int i = 0; i < allResMap.size(); i++) {
-            allResList.add(allResMap.get("level" + i));
-        }
-        return allResList;
-    }
+	
 
     /**
 	 * 注销用户
 	 */
 	public String doLogout() {
-		// 关闭Session
 		Subject currentUser = SecurityUtils.getSubject();
-		currentUser.logout();
+		currentUser.logout();	// 关闭Session
 		return LOGIN_PAGE;
 	}
 
@@ -134,7 +80,7 @@ public class LoginBean implements Serializable {
 	 */
 	public String select(String selectedResCode, String uri) {
 		logger.debug("LoginBean=>select()");
-		JSFUtils.getSession().put(WebappConfig.NEXT_DISPLAY_RES_CODE, selectedResCode);
+		JSFUtils.getSession().put(WebappConfig.SESSION_NEXT_DISPLAY_RES_CODE, selectedResCode);
 		return uri;
 	}
 }

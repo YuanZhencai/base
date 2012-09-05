@@ -9,7 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.service.ResourceCache;
+import com.wcs.commons.security.vo.ResourceNode;
 import com.wcs.commons.security.vo.ResourceTree;
 
 /**
@@ -20,9 +22,11 @@ import com.wcs.commons.security.vo.ResourceTree;
 @ApplicationScoped
 public class WebappConfig {
 
-	public final static String RES_TREE = "resTree";
-	public final static String NEXT_DISPLAY_RES_CODE = "nextDisplayResCode";
-	public final static String NEXT_DISPLAY_RES_PARENT_CODES = "nextDisplayParentResCodes";
+	public final static String RES_TREE = "resTree";		// 整个系统的资源树
+	public final static String SESSION_RES_ID_CHAIN = "resIdChain";	// 从root节点到本节点的节点链
+	
+	public final static String SESSION_NEXT_DISPLAY_RES_CODE = "nextDisplayResCode";
+	public final static String SESSION_CURRENT_USER = "currentUser";
 	
 	private Map<String, Object> appMap;
 	
@@ -42,7 +46,14 @@ public class WebappConfig {
 		ExternalContext ec = context.getExternalContext();
 		this.appMap = ec.getApplicationMap();
 		
-		tree = resourceCache.getTree();
+		/**
+		 * 1.构建root节点
+		 * 2.从root节点开始，递归构建tree
+		 */
+		tree = new ResourceTree();		// tree初始化
+		ResourceNode root = new ResourceNode(new Resource(0L,"root","root",null), null);  // root
+		resourceCache.buildTree(root);
+		tree.setRoot(root);
 		
 		appMap.put(WebappConfig.RES_TREE, tree);
 	}
@@ -52,4 +63,11 @@ public class WebappConfig {
 		return appMap;
 	}
 	
+	public ResourceTree getTree() {
+		return tree;
+	}
+
+	public void setTree(ResourceTree tree) {
+		this.tree = tree;
+	}
 }

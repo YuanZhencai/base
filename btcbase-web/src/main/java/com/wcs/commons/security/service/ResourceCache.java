@@ -16,15 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.wcs.base.collections.GenericTree;
-import com.wcs.base.collections.GenericTreeNode;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.util.CollectionUtils;
 import com.wcs.commons.security.model.Resource;
-import com.wcs.commons.security.vo.ResourceTree;
+import com.wcs.commons.security.vo.ResourceNode;
 
 /**
- * revision 19085 可以恢复到没有Tree
  * 
  * @author Chris Guan
  */
@@ -34,11 +31,8 @@ import com.wcs.commons.security.vo.ResourceTree;
 public class ResourceCache {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private ResourceTree tree = new ResourceTree();
 	private List<Resource> cache = new ArrayList<Resource>();
 	
-	private GenericTreeNode<Resource> root = null;
-
 	@EJB(beanName="EntityReader")
 	private EntityReader entityReader;
 	
@@ -47,25 +41,25 @@ public class ResourceCache {
     public void initResourceCache() {
 		String sql = "SELECT r FROM Resource r";
 		cache = this.entityReader.findList(sql);
-		/**
-		 * 1.构建root节点
-		 * 2.从root节点开始，递归构建tree
-		 */
-		root = new GenericTreeNode<Resource>(new Resource(0L,"root","root",null), null);
-		this.buildTree(loadSubResources(0L), root);	// 第一级Resource的parentId默认为0L 
-		tree.setRoot(root);
 	}
 	
+	public void buildTree(ResourceNode root){
+		this.buildTree(this.loadSubResources(0L), root);	// 第一级Resource的parentId默认为0L 
+	}
 	/**
 	 * 用来维护Resource，采用递归方式实现
 	 * @param subResList 给定的父节点的儿子资源列表
 	 * @param parentNode 父节点
 	 */
-    private void buildTree(List<Resource> subResList,GenericTreeNode<Resource> parentNode){
+	private void buildTree(List<Resource> subResList,ResourceNode parentNode){
         for (Resource r : subResList){
-        	GenericTreeNode<Resource> node = new GenericTreeNode<Resource>(r, parentNode);
+        	logger.debug("res-name="+r.getName());
+        	
+        	// 生成 elementId (将 ':' 替换成 '_')
+        	r.setElementId( r.getCode().replaceAll(":", "_") );
+        	ResourceNode node = new ResourceNode(r, parentNode);
             List<Resource> subList = this.loadSubResources(r.getId());
-            //System.out.printf("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
+            logger.debug("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
             if (CollectionUtils.isNotEmpty(subList))
                 buildTree(subList,node);
         }
@@ -120,7 +114,7 @@ public class ResourceCache {
         for (Resource r : brotherResList){
             // 和原seqNo不相同，且此节点不是本原点
             if (r.getSeqNo().equals(resource.getSeqNo()) && !r.getId().equals(resource.getId())){
-                //System.out.println("节点SeqNo不唯一");
+            	logger.debug("节点SeqNo不唯一");
                 return false;
             }
         }
@@ -135,21 +129,5 @@ public class ResourceCache {
         }
         return true;
     }
-
-	public ResourceTree getTree() {
-		return tree;
-	}
-
-	public void setTree(ResourceTree tree) {
-		this.tree = tree;
-	}
-
-	public GenericTreeNode<Resource> getRoot() {
-		return root;
-	}
-
-	public void setRoot(GenericTreeNode<Resource> root) {
-		this.root = root;
-	}
     
 }

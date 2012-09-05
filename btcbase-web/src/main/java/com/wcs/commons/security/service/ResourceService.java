@@ -14,7 +14,6 @@ import com.wcs.base.exception.TransactionException;
 import com.wcs.base.service.EntityReader;
 import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.CollectionUtils;
-import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.RoleResource;

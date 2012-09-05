@@ -19,20 +19,24 @@ import com.wcs.commons.security.model.Resource;
  */
 public class ResourceNode extends GenericTreeNode<Resource> implements TreeNode{
 	
+	public static final String DEFAULT_TYPE = "default";
+	
+	private String type;
+	
 	private boolean expanded;
 
     private boolean selected;
     
     private boolean selectable = true;
     
+    private boolean located = true;
+    
     //public GenericTreeNode(T data, GenericTreeNode<T> parent) 
 	public ResourceNode(Resource data, TreeNode parent) {
-    	//super(data,parent);
-		
-		this.setData(data);
-		this.setParent(parent);
-		if(this.getParent() != null)
-			this.getParent().getChildren().add(this);
+    	super(data,(ResourceNode)parent);
+		this.type = DEFAULT_TYPE;
+//		this.setData(data);
+//		this.setParent(parent);
     }
 
 	public boolean isExpanded() {
@@ -61,7 +65,7 @@ public class ResourceNode extends GenericTreeNode<Resource> implements TreeNode{
 	
 	@Override
     public ResourceNode getParent() {
-        return this.getParent();
+        return (ResourceNode)super.getParent();
     }
 
     /**
@@ -71,27 +75,39 @@ public class ResourceNode extends GenericTreeNode<Resource> implements TreeNode{
      */
 	@Override
     public List getChildren() {
-    	return this.getChildren();
+    	return super.getChildren();
     }
 
 	@Override
 	public String getType() {
-		return this.getType();
+		return this.type;
 	}
 
 	@Override
 	public void setParent(TreeNode treeNode) {
-		this.setParent(treeNode);
+		super.setParent((GenericTreeNode)treeNode);
 	}
 
 	@Override
 	public int getChildCount() {
-		return this.getChildCount();
+		return super.getChildCount();
 	}
 
 	@Override
 	public boolean isLeaf() {
-		return this.isLeaf();
+		return super.isLeaf();
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public boolean isLocated() {
+		return located;
+	}
+
+	public void setLocated(boolean located) {
+		this.located = located;
 	}
 
 }

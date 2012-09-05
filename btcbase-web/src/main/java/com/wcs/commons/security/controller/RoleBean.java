@@ -50,7 +50,6 @@ public class RoleBean implements Serializable {
 	private TreeNode[] selectedNodes;// 节点数组
 	
 	private DualListModel<Role> listModel = new DualListModel<Role>();
-
 	
 	@SuppressWarnings("unused")
 	@PostConstruct
@@ -115,7 +114,7 @@ public class RoleBean implements Serializable {
 	 * 
 	 * @param selectedUser
 	 */
-	public void loadRoles(User selectedUser){
+	public void toAllocRoles(User selectedUser){
         List<Role> allRoles = roleService.findAllRoles();
         List<Role> userRoles = roleService.findRoles(selectedUser);
         for (Role role : userRoles) {
@@ -135,7 +134,6 @@ public class RoleBean implements Serializable {
         roleService.allocRoles(selectedUser, roleList);
 	}
     
-
 	
 	//-------------------------------- setter & getter -----------------------------//
 	
