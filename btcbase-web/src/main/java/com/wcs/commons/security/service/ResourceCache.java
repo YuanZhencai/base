@@ -52,14 +52,12 @@ public class ResourceCache {
 	 * @param parentNode 父节点
 	 */
 	private void buildTree(List<Resource> subResList,ResourceNode parentNode){
-        for (Resource r : subResList){
-        	logger.debug("res-name="+r.getName());
-        	
+        for (Resource r : subResList){        	
         	// 生成 elementId (将 ':' 替换成 '_')
         	r.setElementId( r.getCode().replaceAll(":", "_") );
         	ResourceNode node = new ResourceNode(r, parentNode);
             List<Resource> subList = this.loadSubResources(r.getId());
-            logger.debug("buildTreeTable:: parentId=%d, subList.size=%d", r.getId(), subList.size());
+            //logger.debug("buildTree:: parentId={}, subList.size={}", r.getId(), subList.size());
             if (CollectionUtils.isNotEmpty(subList))
                 buildTree(subList,node);
         }

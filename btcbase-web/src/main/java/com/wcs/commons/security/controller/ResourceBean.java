@@ -59,14 +59,13 @@ public class ResourceBean implements Serializable {
     private TreeNode root = null; // 资源树
 	private TreeNode selectedNode; // 选中节点
 	private TreeNode[] selectedNodes; // checkbox
-    //private Resource newResource = new Resource(); // 节点操作资源
     public Resource selectedResource; // 节点操作资源
     
     private OpMode opMode;
 
 	@PostConstruct
 	public void init() {
-		logger.debug("@PostConstruct init()");
+		//logger.debug("@PostConstruct init()");
 //        root = new DefaultTreeNode("root", null);
 //        this.buildTree(resourceCache.loadSubResources(0L), root);
 		root = (ResourceNode)config.getTree().getRoot();

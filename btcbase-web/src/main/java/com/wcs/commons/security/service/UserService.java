@@ -39,12 +39,14 @@ public class UserService extends AbstractUserService {
      */
 	public LazyDataModel<User> findUsers(Map<String, Object> filterMap) {
 		StringBuilder xql = new StringBuilder();
-		xql.append("SELECT new User(u.id,u.adAccount,p) FROM User u, Person p ")
-		.append(" WHERE p.id=u.pernr AND u.defunctInd='N' AND p.defunctInd='N' ")
-		.append("/~ and u.adAccount LIKE {adAccount} ~/")
-		.append("/~ and p.nachn LIKE {nachn} ~/")
-		.append("/~ and p.telno LIKE {telno} ~/")
-		.append(" order by u.adAccount");
+//		xql.append("SELECT new User(u.id,u.adAccount,p) FROM User u, Person p ")
+		xql.append("SELECT new User(u.id, u.adAccount,u.defunctInd,p.id, p.bukrs, p.celno, p.defunctInd,p.email, p.gesch, p.icnum, p.kostl,p.nachn, p.name2, p.orgeh, p.telno)")
+			.append(" FROM User u, Person p ")
+			.append(" WHERE p.id=u.pernr AND u.defunctInd='N' AND p.defunctInd='N' ")
+			.append("/~ and u.adAccount LIKE {adAccount} ~/")
+			.append("/~ and p.nachn LIKE {nachn} ~/")
+			.append("/~ and p.telno LIKE {telno} ~/")
+			.append(" order by u.adAccount");
 	    return entityReader.findXqlPage(xql.toString(), filterMap);
 	}
 	

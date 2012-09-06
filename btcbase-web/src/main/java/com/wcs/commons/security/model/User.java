@@ -54,6 +54,29 @@ public class User extends IdEntity {
 		this.adAccount=adAccount;
 		this.person = person;
 	}
+	
+	public User(Long id, String adAccount, String userDefunctInd,
+			String personId, String bukrs, String celno, String personDefunctInd,
+			String email, String gesch, String icnum, String kostl,
+			String nachn, String name2, String orgeh, String telno) {
+		
+		this.setId(id);
+		this.setAdAccount(adAccount);
+		this.setDefunctInd(userDefunctInd);
+		
+		person.setId ( personId );
+		person.setBukrs(bukrs);
+		person.setCelno(celno);
+		person.setDefunctInd(personDefunctInd);
+		person.setEmail(email);
+		person.setGesch(gesch);
+		person.setIcnum(icnum);
+		person.setKostl(kostl);
+		person.setNachn(nachn);
+		person.setName2(name2);
+		person.setOrgeh(orgeh);
+		person.setTelno(telno);
+	}
 
 	//--------------------- setter & getter -------------------//
 	

@@ -78,11 +78,13 @@
 					<h:form prependId="false" id="up_center">
 						<ul>
 							<li><img src="#{request.contextPath}/images/icons/exit.gif" />
-								<h:commandLink action="#{loginBean.doLogout}">注销</h:commandLink>
+								<h:commandLink action="#{loginBean.logout}">注销</h:commandLink>
 							</li>
 							<li><img src="#{request.contextPath}/images/icons/help.gif" />帮助</li>
-							<li><img
-								src="#{request.contextPath}/images/icons/mytable.gif" /><a href="#{request.contextPath}/template/template.xhtml">桌面</a></li>
+							<li>
+								<img src="#{request.contextPath}/images/icons/mytable.gif" />
+								<a href="#{request.contextPath}/faces/main.xhtml">桌面</a>
+							</li>
 						</ul>
 					</h:form>
 				</div>
@@ -90,13 +92,12 @@
 			</div>
 			<div id="top_down" style="z-index: 2">
 				<div id="top_down_left">
-					<h:inputHidden id="requestContextPath"
-						value="#{request.contextPath}" />
+					<h:inputHidden id="requestContextPath" value="#{request.contextPath}" />
 				</div>
 				
 				<div id="top_down_right">
-					<span class="img"> <img
-						src="#{request.contextPath}/images/user.gif" alt="" />
+					<span class="img">
+						<img src="#{request.contextPath}/images/user.gif" alt="" />
 					</span> 
 					<span class="fon">
 						当前用户：<h:outputText value="${sessionScope.user.name}" />

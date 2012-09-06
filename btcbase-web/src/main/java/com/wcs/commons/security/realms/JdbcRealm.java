@@ -17,6 +17,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 import com.wcs.base.util.ContainerUtils;
+import com.wcs.base.util.JSFUtils;
 import com.wcs.commons.conf.WebappConfig;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.RoleResource;

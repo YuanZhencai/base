@@ -9,9 +9,7 @@
 	xmlns:shiro="http://shiro.apache.org/tags">
 
 	<ui:define name="title">角色查询</ui:define>
-	<ui:define name="styleAndScript">
-		<script type="text/javascript" src="#{request.contextPath}/scripts/material.js"/>
-	</ui:define>
+	<ui:define name="styleAndScript"></ui:define>
 	<ui:define name="content">
 	
 		<h:form id="roleTableForm" prependId="false">
@@ -20,8 +18,7 @@
 					<img src="#{request.contextPath}/images/icons/tabTitle.gif" alt="" />
 					<h:outputLabel value="角色管理  " />
 					<div class="header_title_right">
-						<img src="#{request.contextPath}/images/icons/shortcuts.gif"
-							alt="" />
+						<img src="#{request.contextPath}/images/icons/shortcuts.gif" alt="" />
 						<p:commandLink value="添加角色"
 							update=":frmInputRole:grdInputRoleDetail, :frmInputRole:msgInput"
 							oncomplete="dlgInputRole.show()" action="#{roleBean.toAdd}"/>

@@ -34,16 +34,16 @@ body{TEXT-ALIGN: center;}
 		<h:messages />
 		
 		<input type="text" id="adAccount" name="adAccount"/>
-		<h:commandButton value="登录(填写)" action="#{loginBean.userLogin}" styleClass="input_1"/>
+		<h:commandButton value="登录(填写)" action="#{loginBean.login}" styleClass="input_1"/>
 		<br/>
 		
 		<p>请选择用户</p>
 		
-		<h:commandButton id="fnadmin" value="fnadmin" action="#{loginBean.userLogin}" onclick="login(this.id)" styleClass="input_1"/>
+		<h:commandButton id="fnadmin" value="fnadmin" action="#{loginBean.login}" onclick="login(this.id)" styleClass="input_1"/>
 		<br/>
-		<h:commandButton id="xiafei" value="xiafei" action="#{loginBean.userLogin}" onclick="login(this.id)" styleClass="input_1"/>
+		<h:commandButton id="xiafei" value="xiafei" action="#{loginBean.login}" onclick="login(this.id)" styleClass="input_1"/>
 		<br/>
-		<h:commandButton id="JMS" value="JMS" action="#{loginBean.userLogin}" onclick="login(this.id)" styleClass="input_1"/>
+		<h:commandButton id="JMS" value="JMS" action="#{loginBean.login}" onclick="login(this.id)" styleClass="input_1"/>
 		<br/>
 
 	</h:form>

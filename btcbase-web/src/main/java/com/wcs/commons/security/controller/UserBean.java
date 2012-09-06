@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -17,8 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.wcs.base.exception.TransactionException;
-import com.wcs.base.service.EntityWriter;
-import com.wcs.base.util.MessageUtils;
 import com.wcs.commons.security.model.User;
 import com.wcs.commons.security.model.master.Person;
 import com.wcs.commons.security.service.UserService;
@@ -43,7 +40,7 @@ public class UserBean implements Serializable {
 
     @PostConstruct
     public void init() {
-    	logger.info("init() - @PostConstruct");
+    	logger.debug("init() - @PostConstruct");
         list();
     }
 
