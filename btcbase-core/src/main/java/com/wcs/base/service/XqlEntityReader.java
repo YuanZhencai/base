@@ -98,17 +98,17 @@ public class XqlEntityReader extends EntityReader {
     /**
      * 用法参考
      *
-     * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
+     * @param xql      基于 xsqlbuilder 样式的类SQL语句.
      * @param filterMap 参数集合，从页面上以Map形式传过来的属性集合.
      * @return paramMap  回调的参数列表，Map的key剔除了前缀
-     * @see EntityService#findXsqlPage
+     * @see XqlEntityReader#findXqlPage
      */
-    public Map<String, Object> buildParamMap(String xsql, Map<String, Object> filterMap) {
+    public Map<String, Object> buildParamMap(String xql, Map<String, Object> filterMap) {
         // 得到需要动态构建的字段
         List<String> avialableKeys = Lists.newArrayList();
 
         Pattern p = Pattern.compile("\\{(.+?)\\}");
-        Matcher m = p.matcher(xsql);
+        Matcher m = p.matcher(xql);
 
         while (m.find()) {
             avialableKeys.add(m.group(1));

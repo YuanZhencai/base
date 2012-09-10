@@ -2,10 +2,12 @@ package com.wcs.base.controller;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 
 import com.wcs.base.entity.IdEntity;
-import com.wcs.base.service.EntityService;
+import com.wcs.base.service.EntityReader;
+import com.wcs.base.service.EntityWriter;
 import com.wcs.base.util.ReflectionUtils;
 /**
  * 
@@ -20,7 +22,10 @@ public abstract class AbstractBaseBean<T extends IdEntity> implements Serializab
     protected Long id;
     protected T instance; // currentEntity
     @Inject
-    protected EntityService entityService;
+    protected EntityWriter entityWriter;
+    
+    @EJB(beanName="EntityReader")
+    EntityReader entityReader;
 
     protected void initInstance() {
         if (instance == null) {
@@ -33,7 +38,7 @@ public abstract class AbstractBaseBean<T extends IdEntity> implements Serializab
     }
 
     public T loadInstance() {
-        return entityService.findUnique(getClassType(), getId());
+        return entityReader.findUnique(getClassType(), getId());
     }
 
     public T createInstance() {
@@ -48,10 +53,10 @@ public abstract class AbstractBaseBean<T extends IdEntity> implements Serializab
     public void saveEntity() {
         if (idIsEmpty()) {
 
-            entityService.update(getInstance());
+            entityWriter.update(getInstance());
         } else {
             this.getInstance().setId(null);// 修改人：liaowei
-            entityService.create(getInstance());
+            entityWriter.create(getInstance());
         }
     }
 

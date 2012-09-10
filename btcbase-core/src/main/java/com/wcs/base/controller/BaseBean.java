@@ -38,7 +38,7 @@ public class BaseBean<T extends BaseEntity>  extends AbstractBaseBean<T> {
     public void deleteEntity() {
         T entity = getInstance();
         entity.setDefunctInd('Y');
-        entityService.update(entity);
+        entityWriter.update(entity);
     }
 	
 	/**
@@ -46,7 +46,7 @@ public class BaseBean<T extends BaseEntity>  extends AbstractBaseBean<T> {
 	 * @return
 	 */
 	public boolean isManaged() {
-		return entityService.isManaged(getInstance());
+		return entityWriter.isManaged(getInstance());
 	}
 
 

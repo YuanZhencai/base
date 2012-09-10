@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.wcs.base.service.EntityService;
+import com.wcs.base.service.PagingEntityReader;
 import com.wcs.showcase.crud.model.Product;
 
 /** 
@@ -29,15 +29,15 @@ import com.wcs.showcase.crud.model.Product;
 public class ProductService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	public EntityService es;
+	@EJB
+	public PagingEntityReader reader;
 	
     /**
      * 查询所有的商品信息
      * @return List<Product>
      */
     public List<Product> search() {
-    	List<Product> list = es.findAll(Product.class);
+    	List<Product> list = reader.findList("SELECT p FROM Product p");
     	
 		return  list;	
 	}	
@@ -54,15 +54,7 @@ public class ProductService implements Serializable {
 	        .append(" /~ and p.price >= {smallPrice} ~/")
 	        .append(" /~ and p.price <= {bigPrice} ~/");
 	    
-	    return es.findXsqlPage(xsql.toString(), filterMap);
+	    return reader.findXqlPage(xsql.toString(), filterMap);
 	}
-	
-	
-	//-------------------- setter & getter --------------------//
-	
-	public void setEntityService(EntityService entityService) {
-		this.es = entityService;
-	}
-	
 
 }

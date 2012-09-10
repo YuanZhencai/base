@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.wcs.base.service.EntityService;
+import com.wcs.base.service.PagingEntityReader;
 import com.wcs.showcase.crud.model.Teacher;
 
 /** 
@@ -25,14 +25,14 @@ import com.wcs.showcase.crud.model.Teacher;
 public class TeacherService implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private EntityService entityService;
+	@EJB
+	private PagingEntityReader entityReader;
 
     /**
      * 查询所有的人员信息
      */
     public List<Teacher> search() {
-    	List<Teacher> list = entityService.findAll(Teacher.class);
+    	List<Teacher> list = entityReader.findList("SELECT t FROM Teacher t");
     	
 		return  list;	
 	}	
@@ -48,13 +48,6 @@ public class TeacherService implements Serializable {
 	        .append(" /~ and p.sex like {sex} ~/ ")
 	        .append(" /~ and p.birthday >= {startBirthday} ~/")
 	        .append(" /~ and p.birthday <= {endBirthday} ~/");
-	    return entityService.findXsqlPage(xql.toString(), filterMap);
+	    return entityReader.findXqlPage(xql.toString(), filterMap);
 	}
-
-	//-------------------- setter & getter --------------------//
-	
-	public void setEntityService(EntityService entityService) {
-		this.entityService = entityService;
-	}
-	
 }
