@@ -29,12 +29,6 @@
         </dependency>
 
 		<!-- utils -->
-        <dependency>
-            <groupId>rapid</groupId>
-            <artifactId>xsqlbuilder</artifactId>
-            <optional>true</optional>
-        </dependency>
-         
 		<dependency>
 			<groupId>ch.qos.cal10n</groupId>
 			<artifactId>cal10n-api</artifactId>

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javacommon.xsqlbuilder.XsqlBuilder;
-
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,6 +14,7 @@ import org.primefaces.model.SortOrder;
 
 import com.wcs.base.conf.SystemConfiguration;
 import com.wcs.base.entity.IdEntity;
+import com.wcs.base.ql.util.XqlBuilder;
 import com.wcs.base.util.Validate;
 
 
@@ -259,24 +258,30 @@ public class PagingEntityReader extends XqlEntityReader {
      */
     @SuppressWarnings("unchecked")
     public <T> LazyDataModel<T> findXqlPage(final String xql, final Map<String, Object> filterMap) {
-        Map<String, Object> paramMap = new HashMap<String,Object>();      
-        paramMap = this.buildParamMap(xql, filterMap);
+    	XqlBuilder builder = new XqlBuilder();
+    	String jpql = builder.makeJpql(xql, filterMap);
+    	
+        //Map<String, Object> paramMap = new HashMap<String,Object>();      
+        //paramMap = this.buildParamMap(xql, filterMap);
         
         // 构建 JPQL 语句
-        XsqlBuilder builder = new XsqlBuilder();
-        String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
+        //XsqlBuilder builder = new XsqlBuilder();
+        //String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
         
-        return this.findPage(jpql, paramMap);
+        return this.findPage(jpql, filterMap);
     }
-    
-    public Object[] xqlToJpql(final String xql, final Map<String, Object> filterMap){
-        Map<String, Object> paramMap = new HashMap<String,Object>();      
-        paramMap = this.buildParamMap(xql, filterMap);
-        
-        // 构建 JPQL 语句
-        XsqlBuilder builder = new XsqlBuilder();
-        String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
-        return new Object[]{jpql,paramMap};
-    }
+//    
+//    public Object[] xqlToJpql(final String xql, final Map<String, Object> filterMap){
+//    	XqlBuilder builder = new XqlBuilder();
+//    	String jpql = builder.makeJpql(xql, filterMap);
+//    	
+//        //Map<String, Object> paramMap = new HashMap<String,Object>();      
+//        //paramMap = this.buildParamMap(xql, filterMap);
+//        
+//        // 构建 JPQL 语句
+//        //XsqlBuilder builder = new XsqlBuilder();
+//        //String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
+//        return new Object[]{jpql,filterMap};
+//    }
 
 }

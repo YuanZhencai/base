@@ -4,12 +4,11 @@ import java.util.List;
 
 import javax.ejb.EJB;
 
+import com.wcs.base.service.EntityReader;
 import com.wcs.commons.security.model.Resource;
 import com.wcs.commons.security.model.Role;
 import com.wcs.commons.security.model.RoleResource;
 import com.wcs.commons.security.model.User;
-import com.wcs.base.service.EntityReader;
-import com.wcs.base.util.CollectionUtils;
 
 /**
  * 
@@ -32,8 +31,9 @@ public abstract class AbstractUserService {
     * 通过用户名(adAccount)查询唯一用户
     */
     public User findUser(String adAccount) {
-        String jpql = "SELECT new User(u.id,u.adAccount,p) FROM User u, Person p"
-        		+ " WHERE p.id=u.pernr AND u.defunctInd='N' AND p.defunctInd='N' and u.adAccount = ?1";
+        String jpql = "SELECT new com.wcs.commons.security.model.User(u.id, u.adAccount,u.defunctInd,p.id, p.bukrs, p.celno, p.defunctInd,p.email, p.gesch, p.icnum, p.kostl,p.nachn, p.name2, p.orgeh, p.telno)"
+            + " FROM User u, Person p"
+        	+ " WHERE p.id=u.pernr AND u.defunctInd='N' AND p.defunctInd='N' and u.adAccount = ?1";
         return entityReader.findUnique(jpql, adAccount);
     }
     

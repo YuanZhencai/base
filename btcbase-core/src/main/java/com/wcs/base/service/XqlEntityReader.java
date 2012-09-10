@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javacommon.xsqlbuilder.XsqlBuilder;
+//import javacommon.xsqlbuilder.XsqlBuilder;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wcs.base.controller.PropertyFilter.PropertyType;
+import com.wcs.base.ql.util.XqlBuilder;
 import com.wcs.base.util.ReflectionUtils;
 import com.wcs.base.util.StringUtils;
 import com.wcs.base.util.Validate;
@@ -80,19 +81,22 @@ public class XqlEntityReader extends EntityReader {
      * 根据查询XSQL与参数结合创建Query对象.
      * 与 findModelByMap() 函数可进行更加灵活的操作.
      *
-     * @param xsql      基于 xsqlbuilder 样式的类SQL语句.
+     * @param xql      基于 xsqlbuilder 样式的类SQL语句.
      * @param filterMap 参数集合，从页面上以Map形式传过来的属性集合.
      * @return 返回 javax.persistence.Query 对象
      */
-    public Query createXqlQuery(String xsql, Map<String, Object> filterMap) {
-        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
-        paramMap = this.buildParamMap(xsql, filterMap);
+    public Query createXqlQuery(String xql, Map<String, Object> filterMap) {
+    	XqlBuilder builder = new XqlBuilder();
+    	String jpql = builder.makeJpql(xql, filterMap);
+    	
+        //Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
+        //paramMap = this.buildParamMap(xql, filterMap);
         
         // 构建 JPQL 语句
-        XsqlBuilder builder = new XsqlBuilder();
-        String jpql = builder.generateHql(xsql, paramMap).getXsql().toString();
+        //XsqlBuilder builder = new XsqlBuilder();
+        //String jpql = builder.generateHql(xql, paramMap).getXsql().toString();
 
-        return createQuery(jpql, paramMap);
+        return createQuery(jpql, filterMap);
     }
 
     /**
