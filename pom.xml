@@ -125,6 +125,11 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		
+	  	<repository>
+	   		<id>thirdparty</id>
+	    	<url>http://10.229.14.10:8080/nexus/content/repositories/thirdparty</url>
+	  	</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -301,6 +306,147 @@
 			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- cr -->
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>com.azalea.ufl.barcode</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		 <!-- 
+		<dependency>
+		  <groupId>commons-collections</groupId>
+		  <artifactId>commons-collections</artifactId>
+		  <version>3.1</version>
+		</dependency>
+			  -->
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>	
+		 <!-- 
+		<dependency>
+		  <groupId>commons-lang</groupId>
+		  <artifactId>commons-lang</artifactId>
+		  <version>2.1</version>
+		</dependency>	
+		  -->
+		<!-- 
+		<dependency>
+			<groupId>crystal-report</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>2.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/commons-logging.jar</systemPath>
+		</dependency>			
+		 -->			
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>CrystalCommon2</artifactId>
+		  <version>1.0</version>
+		</dependency>	
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>CrystalReportsRuntime</artifactId>
+		  <version>1.0</version>
+		</dependency>	
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>cvom</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>DatabaseConnectors</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>derby</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>icu4j</artifactId>
+		  <version>1.0</version>
+		</dependency>			
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>jai_imageio</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>JDBInterface</artifactId>
+		  <version>1.0</version>
+		</dependency>	
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>jrcerom</artifactId>
+		  <version>1.0</version>
+		</dependency>			
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>keycodeDecoder</artifactId>
+		  <version>1.0</version>
+		</dependency>			
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>logging</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<!-- 
+		<dependency>
+			<groupId>crystal-report</groupId>
+			<artifactId>log4j</artifactId>
+			<version>2.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/log4j.jar</systemPath>
+		</dependency>			
+		 -->
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>pfjgraphics</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>QueryBuilder</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>webreporting</artifactId>
+		  <version>1.0</version>
+		</dependency>	
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>webreporting-jsf</artifactId>
+		  <version>1.0</version>
+		</dependency>		
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>XMLConnector</artifactId>
+		  <version>1.0</version>
+		</dependency>			
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>xpp3</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.businessobjects</groupId>
+		  <artifactId>Xtreme</artifactId>
+		  <version>1.0</version>
+		</dependency>	
+		
 	</dependencies>
 
 	<dependencyManagement>
