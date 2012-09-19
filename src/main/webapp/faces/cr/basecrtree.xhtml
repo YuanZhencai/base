@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form id="form">
+		<p:tree id="treeSingle" value="#{crTreeBean.loadTreeNodeAction()}" var="node"
+			selectionMode="single" selection="#{crTreeBean.selectedNode}">
+			
+        <p:ajax event="expand" update=":form:messages" listener="#{crTreeBean.onNodeExpand}" />  
+        <p:ajax event="collapse" update=":form:messages" listener="#{crTreeBean.onNodeCollapse}" />  
+        <p:ajax event="select" update="messages" listener="#{crTreeBean.onNodeSelect}" oncomplete="handleSeletedRequest(xhr, status, args)"/>  
+        <p:ajax event="unselect" update=":form:messages" listener="#{crTreeBean.onNodeUnselect}" />
+         
+			<p:treeNode>
+				<h:outputText value="#{node.getName()}" />
+			</p:treeNode>
+		</p:tree>
+
+		<p:commandButton value="Display Selected" update="messages"
+			actionListener="#{crTreeBean.displaySelectedSingle}" id="btnDisplay" />
+
+	</h:form>
+
+
+	<script type="text/javascript">  
+    function handleSeletedRequest(xhr, status, args) {  
+        var callBackParam = args.selectedName;
+    	document.getElementById('criframe').src='#{facesContext.externalContext.requestContextPath}/BaseCRHandler?rpt='+callBackParam;
+    }  
+</script>
+</ui:composition>
+
+

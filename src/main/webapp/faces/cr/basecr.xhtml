@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/template/template.xhtml">
+
+<style>
+	body {
+		background: #F1F6FA;
+	}
+	
+	#welcome {
+		width: 100%;
+		text-align: center;
+	}
+</style>
+
+	<ui:define name="content">
+		<p:growl id="messages" showDetail="true" showSummary="true" life="10000" /> 
+		<p:layout
+			style="min-height:99%;max-height:99%;min-width:500px;max-width:99%;margin-top:5px;margin-left:15px;margin-right:15px;"
+			id="layout">
+
+			<p:layoutUnit style="height:100%;" position="west" resizable="true"
+				size="236" minSize="20" rendered="true" collapsible="true">
+				<ui:include src="basecrtree.xhtml" />
+			</p:layoutUnit>
+
+			<p:layoutUnit style="height: 100%;" position="center" id="centerLayoutUnit">
+				<iframe name="criframe" id="criframe" width="100%" height="100%" src=""></iframe>
+			</p:layoutUnit>
+		</p:layout>
+	</ui:define>
+</ui:composition>
