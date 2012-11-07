@@ -75,6 +75,7 @@ public class BaseCrServiceImp{
 		nameList.add("Custom Functions.rpt");
 		nameList.add("HelloWorldRpt.rpt");
 		nameList.add("Statement of Account.rpt");
+		nameList.add("竞品市场报表.rpt");
 		for (String name : nameList) {
 			BaseCrVo baseCrVo = new BaseCrVo();
 			baseCrVo.setName(name);
