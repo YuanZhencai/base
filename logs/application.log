@@ -1,0 +1,48 @@
+2013-01-06 12:22:02,146 - [INFO] - from play in main 
+Listening for HTTP on port 9000...
+
+2013-01-06 12:22:12,554 - [INFO] - from play in play-akka.actor.default-dispatcher-1 
+Application started (Dev)
+
+2013-01-06 12:32:55,817 - [INFO] - from play in play-akka.actor.default-dispatcher-5 
+Application started (Dev)
+
+2013-01-06 12:47:37,364 - [INFO] - from play in play-akka.actor.default-dispatcher-6 
+Application started (Dev)
+
+2013-01-06 12:50:48,035 - [INFO] - from play in play-akka.actor.default-dispatcher-7 
+Application started (Dev)
+
+2013-01-06 12:51:27,833 - [INFO] - from play in play-akka.actor.default-dispatcher-8 
+Application started (Dev)
+
+2013-01-06 12:52:41,210 - [INFO] - from play in play-akka.actor.default-dispatcher-9 
+Application started (Dev)
+
+2013-01-06 12:53:12,240 - [INFO] - from play in play-akka.actor.default-dispatcher-10 
+Application started (Dev)
+
+2013-01-06 12:55:19,060 - [INFO] - from play in play-akka.actor.default-dispatcher-12 
+Application started (Dev)
+
+2013-01-06 12:56:54,695 - [INFO] - from play in play-akka.actor.default-dispatcher-12 
+Application started (Dev)
+
+2013-01-06 12:58:38,260 - [INFO] - from play in play-akka.actor.default-dispatcher-15 
+Application started (Dev)
+
+2013-01-06 12:59:22,200 - [INFO] - from play in play-akka.actor.default-dispatcher-17 
+Application started (Dev)
+
+2013-01-06 13:02:59,280 - [INFO] - from play in play-akka.actor.default-dispatcher-18 
+Application started (Dev)
+
+2013-01-06 13:05:04,409 - [INFO] - from play in play-akka.actor.default-dispatcher-19 
+Application started (Dev)
+
+2013-01-06 13:14:01,357 - [INFO] - from play in play-akka.actor.default-dispatcher-24 
+Application started (Dev)
+
+2013-01-06 13:14:21,876 - [INFO] - from play in play-akka.actor.default-dispatcher-25 
+Application started (Dev)
+
