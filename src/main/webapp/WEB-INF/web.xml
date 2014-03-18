@@ -52,10 +52,7 @@
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
 			<param-value>
-				<!-- prd 
-				https://cas.wilmar.cn/login-->
-				<!-- uat -->
-				http://10.228.191.203:9084/castest/login
+				http://localhost:8080/cas/login
 			</param-value>
 		</init-param>
 		<init-param>
@@ -80,10 +77,7 @@
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
 			<param-value>
-				<!-- prd 
-				https://cas.wilmar.cn-->
-				<!-- uat -->
-				http://10.228.191.203:9084/castest
+				http://localhost:8080/cas
 			</param-value>
 		</init-param>
 		<init-param>
