@@ -14,4 +14,42 @@
 			<var>msgs</var>
 		</resource-bundle>
 	</application>
+	
+	<lifecycle>
+		<phase-listener>autosave.AutoSaveListener</phase-listener>
+	</lifecycle>
+
+	<navigation-rule>
+		<from-view-id>/SupportForm.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>submit</from-outcome>
+			<to-view-id>/SupportConfirm.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<managed-bean>
+		<managed-bean-name>repositoryWrapper</managed-bean-name>
+		<managed-bean-class>autosave.RepositoryWrapper</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+		<managed-property>
+			<property-name>repository</property-name>
+			<value>#{loadedRepository}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>maxDataMaps</property-name>
+			<value>100</value>
+		</managed-property>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>viewRestorer</managed-bean-name>
+		<managed-bean-class>autosave.ViewRestorer</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>supportBean</managed-bean-name>
+		<managed-bean-class>autosave.SupportBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 </faces-config>

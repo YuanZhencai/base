@@ -40,6 +40,21 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- autosave -->
+	<filter>
+        <filter-name>BrowserIdFilter</filter-name>
+        <filter-class>autosave.BrowserIdFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>BrowserIdFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+     <listener>
+        <listener-class>autosave.DataMapPersistence</listener-class>
+    </listener>
+    
 	<!-- CAS -->
 	<filter>
 		<filter-name>CAS Single Sign Out Filter</filter-name>
@@ -176,6 +191,16 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+        <servlet-name>FacesServlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FacesServlet</servlet-name>
+        <url-pattern>*.faces</url-pattern>
+    </servlet-mapping>
 
 	<!-- welcome-page -->
 	<welcome-file-list>
