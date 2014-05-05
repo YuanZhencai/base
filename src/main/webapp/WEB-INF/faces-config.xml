@@ -15,8 +15,8 @@
 		</resource-bundle>
 	</application>
 	
-	<lifecycle>
-		<phase-listener>autosave.AutoSaveListener</phase-listener>
+	<!-- <lifecycle>
+		<phase-listener>com.wcs.autosave.AutoSaveListener</phase-listener>
 	</lifecycle>
 
 	<navigation-rule>
@@ -29,7 +29,7 @@
 
 	<managed-bean>
 		<managed-bean-name>repositoryWrapper</managed-bean-name>
-		<managed-bean-class>autosave.RepositoryWrapper</managed-bean-class>
+		<managed-bean-class>com.wcs.autosave.RepositoryWrapper</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 		<managed-property>
 			<property-name>repository</property-name>
@@ -43,13 +43,13 @@
 
 	<managed-bean>
 		<managed-bean-name>viewRestorer</managed-bean-name>
-		<managed-bean-class>autosave.ViewRestorer</managed-bean-class>
+		<managed-bean-class>com.wcs.autosave.ViewRestorer</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
 	<managed-bean>
 		<managed-bean-name>supportBean</managed-bean-name>
-		<managed-bean-class>autosave.SupportBean</managed-bean-class>
+		<managed-bean-class>com.wcs.autosave.SupportBean</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
+	</managed-bean> -->
 </faces-config>

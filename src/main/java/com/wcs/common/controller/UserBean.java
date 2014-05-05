@@ -1,6 +1,7 @@
 package com.wcs.common.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import javax.faces.validator.ValidatorException;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.LoginService;
+import com.wcs.cache.Cache;
+import com.wcs.cache.DataCache;
 import com.wcs.common.controller.helper.PageModel;
 import com.wcs.common.controller.vo.RoleVo;
 import com.wcs.common.controller.vo.UsermstrFormItemsVo;
@@ -32,6 +35,8 @@ public class UserBean {
 
 	@EJB
 	UserService userService;
+	@EJB
+	DataCache dataCache;
 	@EJB
 	LoginService loginService;
 
@@ -78,6 +83,15 @@ public class UserBean {
 		this.tempAdAccount = usermstr.getAdAccount();
 	}
 
+	public void saveCache(){
+		Cache obj = new Cache();
+		obj.setValue(usermstr);
+		String key = new Date().getTime() + "";
+		dataCache.set(key, obj );
+		Cache cache = dataCache.get(key);
+		System.out.println("[cache]" + ((Usermstr)cache.getValue()).getAdAccount());
+	}
+	
 	public void valid(FacesContext context, UIComponent component,
 			java.lang.Object value) throws ValidatorException {
 		if ("adAccount".equals(component.getId())) {
