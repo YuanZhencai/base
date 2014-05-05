@@ -19,7 +19,7 @@ public class DataCache implements Serializable {
 
 
 	@EJB
-	private FileCacheService cacheService;
+	private CacheInterface cacheService;
 	
 	@PostConstruct
 	private void init() {

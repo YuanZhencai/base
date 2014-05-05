@@ -1,7 +1,6 @@
 package com.wcs.common.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,8 +73,11 @@ public class UserBean {
 	public void reset() {
 		usermstrFormItemsVo = new UsermstrFormItemsVo();
 	}
-	
+
 	public void updateUser() {
+		String key = loginService.getCurrentUserName() + "_" + selectedUsermstrVo.getUsermstr().getAdAccount();
+		Cache cache = dataCache.get(key);
+		this.selectedUsermstrVo = cache == null ? selectedUsermstrVo : (UsermstrVo) cache.getValue();
 		this.usermstr = selectedUsermstrVo.getUsermstr();
 		this.p = selectedUsermstrVo.getP();
 
@@ -83,15 +85,13 @@ public class UserBean {
 		this.tempAdAccount = usermstr.getAdAccount();
 	}
 
-	public void saveCache(){
+	public void saveCache() {
+		String key = loginService.getCurrentUserName() + "_" + usermstr.getAdAccount();
 		Cache obj = new Cache();
-		obj.setValue(usermstr);
-		String key = new Date().getTime() + "";
-		dataCache.set(key, obj );
-		Cache cache = dataCache.get(key);
-		System.out.println("[cache]" + ((Usermstr)cache.getValue()).getAdAccount());
+		obj.setValue(selectedUsermstrVo);
+		dataCache.set(key, obj);
 	}
-	
+
 	public void valid(FacesContext context, UIComponent component,
 			java.lang.Object value) throws ValidatorException {
 		if ("adAccount".equals(component.getId())) {
@@ -267,7 +267,7 @@ public class UserBean {
 	public void setMethod(String method) {
 		this.method = method;
 	}
-	
+
 	public String getBukrsName() {
 		return bukrsName;
 	}

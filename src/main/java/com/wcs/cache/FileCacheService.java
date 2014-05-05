@@ -16,6 +16,8 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wcs.base.util.JSFUtils;
+
 
 /** 
 * <p>Project: btcbase</p> 
@@ -29,7 +31,7 @@ import org.slf4j.LoggerFactory;
 public class FileCacheService implements CacheInterface {
 	private static Logger logger = LoggerFactory.getLogger(FileCacheService.class);
 
-	private static final String CACHE_FOLDER = "C:\\Users\\Yuan\\Desktop\\WCS\\base\\src\\main\\webapp\\faces\\cache\\";
+	private static final String CACHE_FOLDER = JSFUtils.getRealPath() + "\\faces\\cache\\";
 
 	@Override
 	public void putCache(String key, Cache obj) {

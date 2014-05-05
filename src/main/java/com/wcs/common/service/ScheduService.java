@@ -24,13 +24,13 @@ public class ScheduService implements Serializable {
 
     @PostConstruct
     public void init() {
-        this.syncTask();
+//        this.syncTask();
     }
 
     /**
      * <p>Description: 执行同步任务</p>
      */
-   @Schedule(hour="0",dayOfWeek="*")
+//   @Schedule(hour="0",dayOfWeek="*")
     public void syncTask() {
         syncService.process();
 
