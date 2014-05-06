@@ -8,22 +8,22 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 @Stateless
-public class DataCache implements Serializable {
+public class CacheManagerService implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Logger logger = Logger.getLogger(DataCache.class.getName());
+	Logger logger = Logger.getLogger(CacheManagerService.class.getName());
 
 
-	@EJB
+	@EJB(beanName = "FileCacheService")
 	private CacheInterface cacheService;
 	
 	@PostConstruct
 	private void init() {
-		logger.info("DataCache.init()");
+		logger.info("CacheManagerService.init()");
 	}
 
 	public void clear() {

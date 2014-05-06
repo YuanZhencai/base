@@ -17,8 +17,10 @@ import javax.faces.validator.ValidatorException;
 import org.primefaces.model.LazyDataModel;
 
 import com.wcs.base.service.LoginService;
+import com.wcs.base.util.JSFUtils;
 import com.wcs.cache.Cache;
-import com.wcs.cache.DataCache;
+import com.wcs.cache.CacheManagerService;
+import com.wcs.cache.FileCacheService;
 import com.wcs.common.controller.helper.PageModel;
 import com.wcs.common.controller.vo.RoleVo;
 import com.wcs.common.controller.vo.UsermstrFormItemsVo;
@@ -35,7 +37,7 @@ public class UserBean {
 	@EJB
 	UserService userService;
 	@EJB
-	DataCache dataCache;
+	CacheManagerService cacheManagerService;
 	@EJB
 	LoginService loginService;
 
@@ -76,7 +78,7 @@ public class UserBean {
 
 	public void updateUser() {
 		String key = loginService.getCurrentUserName() + "_" + selectedUsermstrVo.getUsermstr().getAdAccount();
-		Cache cache = dataCache.get(key);
+		Cache cache = cacheManagerService.get(key);
 		this.selectedUsermstrVo = cache == null ? selectedUsermstrVo : (UsermstrVo) cache.getValue();
 		this.usermstr = selectedUsermstrVo.getUsermstr();
 		this.p = selectedUsermstrVo.getP();
@@ -89,7 +91,7 @@ public class UserBean {
 		String key = loginService.getCurrentUserName() + "_" + usermstr.getAdAccount();
 		Cache obj = new Cache();
 		obj.setValue(selectedUsermstrVo);
-		dataCache.set(key, obj);
+		cacheManagerService.set(key, obj);
 	}
 
 	public void valid(FacesContext context, UIComponent component,

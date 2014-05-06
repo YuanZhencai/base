@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
 import org.slf4j.Logger;
@@ -31,13 +32,30 @@ import com.wcs.base.util.JSFUtils;
 public class FileCacheService implements CacheInterface {
 	private static Logger logger = LoggerFactory.getLogger(FileCacheService.class);
 
-	private static final String CACHE_FOLDER = JSFUtils.getRealPath() + "\\faces\\cache\\";
+	private static final String CACHE_FOLDER = "cache";
 
+	private static String cacheFolderPath = null;
+	
+	@PostConstruct
+	private void init() {
+		cacheFolderPath = getCacheFolderPath();
+	}
+
+	private String getCacheFolderPath(){
+		String folderPath = JSFUtils.getRootPath() + File.separator + CACHE_FOLDER + File.separator;
+		File file = new File(folderPath);
+		if(file != null && !file.exists()){
+			file.mkdir();
+		}
+		logger.info("[Cache Folder Path]" + folderPath);
+		return folderPath;
+	}
+	
 	@Override
 	public void putCache(String key, Cache obj) {
 		// TODO Auto-generated method stub
 		try {
-			FileOutputStream cacheFileOs = new FileOutputStream(CACHE_FOLDER + key);
+			FileOutputStream cacheFileOs = new FileOutputStream(cacheFolderPath+ key);
 			ObjectOutputStream os = new ObjectOutputStream(cacheFileOs);
 			os.writeObject(obj);
 			os.close();
@@ -48,11 +66,12 @@ public class FileCacheService implements CacheInterface {
 
 	@Override
 	public Cache getCache(String key) {
+		getCacheFolderPath();
 		// TODO Auto-generated method stub
 		Cache cache;
 		ObjectInputStream ois = null;
 		try {
-			FileInputStream cacheFileIs = new FileInputStream(CACHE_FOLDER + key);// ("foo.ser");
+			FileInputStream cacheFileIs = new FileInputStream(cacheFolderPath + key);
 			ois = new ObjectInputStream(cacheFileIs);
 			cache = (Cache) ois.readObject();
 			return cache;
@@ -74,7 +93,7 @@ public class FileCacheService implements CacheInterface {
 
 	@Override
 	public void removeCache(String key) {
-		File file = new File(CACHE_FOLDER + key);
+		File file = new File(cacheFolderPath + key);
 		if (file != null && file.isFile()) {
 			file.delete();
 		}
@@ -82,7 +101,7 @@ public class FileCacheService implements CacheInterface {
 
 	@Override
 	public void clear() {
-		File cacheFolder = new File(CACHE_FOLDER);
+		File cacheFolder = new File(cacheFolderPath);
 		if (cacheFolder.isDirectory()) {
 			File[] files = cacheFolder.listFiles();
 			for (File file : files) {
@@ -96,7 +115,7 @@ public class FileCacheService implements CacheInterface {
 
 	@Override
 	public void bulkRemove(String prefix) {
-		File cacheFolder = new File(CACHE_FOLDER);
+		File cacheFolder = new File(cacheFolderPath);
 		if (cacheFolder.isDirectory()) {
 			File[] files = cacheFolder.listFiles();
 			for (File file : files) {
@@ -107,13 +126,4 @@ public class FileCacheService implements CacheInterface {
 		}
 	}
 
-	public static void main(String[] args) {
-		FileCacheService service = new FileCacheService();
-//		Cache obj = new Cache();
-//		obj.setValue("liqing1_10201_10202");
-//		service.putCache("liqing1_10201_10202", obj );
-//		Cache cache = service.getCache("liqing1_10201_10202");
-//		System.out.println("[cache]" + cache.getValue());
-		service.removeCache("liqing1_10201_10202");
-	}
 }

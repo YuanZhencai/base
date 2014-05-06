@@ -1,5 +1,6 @@
 package com.wcs.base.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -82,5 +83,9 @@ public class JSFUtils {
 	
 	public static String getRealPath(){
 		return getRequest().getSession().getServletContext().getRealPath("/");
+	}
+	
+	public static String getRootPath(){
+		return System.getProperty("user.dir");
 	}
 }
