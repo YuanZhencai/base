@@ -1,4 +1,4 @@
-/** * FileCache.java 
+/** * FileCacheService.java 
  * Created on 2014年5月5日 下午4:15:03 
  */
 
@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wcs.base.util.JSFUtils;
-
 
 /** 
 * <p>Project: btcbase</p> 
@@ -53,13 +52,21 @@ public class FileCacheService implements CacheInterface {
 	
 	@Override
 	public void putCache(String key, Cache obj) {
+		ObjectOutputStream os = null;
 		try {
 			FileOutputStream cacheFileOs = new FileOutputStream(cacheFolderPath+ key);
-			ObjectOutputStream os = new ObjectOutputStream(cacheFileOs);
+			os = new ObjectOutputStream(cacheFileOs);
 			os.writeObject(obj);
-			os.close();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e) {
+					logger.error(e.getMessage(), e);
+				}
+			}
 		}
 	}
 
@@ -67,11 +74,15 @@ public class FileCacheService implements CacheInterface {
 	public Cache getCache(String key) {
 		Cache cache;
 		ObjectInputStream ois = null;
+		String cacheFileName = cacheFolderPath + key;
+		File cacheFile = new File(cacheFileName);
 		try {
-			FileInputStream cacheFileIs = new FileInputStream(cacheFolderPath + key);
-			ois = new ObjectInputStream(cacheFileIs);
-			cache = (Cache) ois.readObject();
-			return cache;
+			if (cacheFile != null && cacheFile.exists()) {
+				FileInputStream cacheFileIs = new FileInputStream(cacheFileName);
+				ois = new ObjectInputStream(cacheFileIs);
+				cache = (Cache) ois.readObject();
+				return cache;
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		} finally {
@@ -120,5 +131,5 @@ public class FileCacheService implements CacheInterface {
 			}
 		}
 	}
-
+	
 }
