@@ -53,7 +53,6 @@ public class FileCacheService implements CacheInterface {
 	
 	@Override
 	public void putCache(String key, Cache obj) {
-		// TODO Auto-generated method stub
 		try {
 			FileOutputStream cacheFileOs = new FileOutputStream(cacheFolderPath+ key);
 			ObjectOutputStream os = new ObjectOutputStream(cacheFileOs);
@@ -66,8 +65,6 @@ public class FileCacheService implements CacheInterface {
 
 	@Override
 	public Cache getCache(String key) {
-		getCacheFolderPath();
-		// TODO Auto-generated method stub
 		Cache cache;
 		ObjectInputStream ois = null;
 		try {
@@ -76,14 +73,12 @@ public class FileCacheService implements CacheInterface {
 			cache = (Cache) ois.readObject();
 			return cache;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.error(e.getMessage(), e);
 		} finally {
 			if (ois != null) {
 				try {
 					ois.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					logger.error(e.getMessage(), e);
 				}
 			}
