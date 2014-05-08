@@ -4,6 +4,7 @@
 
 package com.wcs.demo.goc.facade;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** 
@@ -16,6 +17,11 @@ import org.junit.Test;
 */
 public class ComputerTest {
 
+	@BeforeClass
+	public static void init() {
+		System.out.println("外观模式");
+	}
+	
 	@Test
 	public void testStartup() {
 		Computer computer = new Computer();

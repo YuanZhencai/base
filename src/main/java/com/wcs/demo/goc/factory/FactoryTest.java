@@ -4,6 +4,7 @@
 
 package com.wcs.demo.goc.factory;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /** 
@@ -16,6 +17,11 @@ import org.junit.Test;
  */
 
 public class FactoryTest {
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("工厂模式");
+	}
 
 	@Test
 	public void testSampleFactory() {

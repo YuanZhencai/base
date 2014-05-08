@@ -4,6 +4,7 @@
 
 package com.wcs.demo.goc.command.television;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -16,6 +17,11 @@ import org.junit.Test;
 * @author <a href="mailto:yuanzhencai@wcs-global.com">Yuan</a> 
 */
 public class TelevisionTest {
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("命令模式：电视机遥控器");
+	}
 
 	@Test
 	public void testOpen() {

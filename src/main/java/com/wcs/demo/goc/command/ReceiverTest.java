@@ -4,9 +4,15 @@
 
 package com.wcs.demo.goc.command;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ReceiverTest {
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("命令模式");
+	}
 
 	@Test
 	public void testActionCommand() {
