@@ -4,9 +4,6 @@
 
 package com.wcs.demo.goc.command.report;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +61,10 @@ public class ReportTest {
 			r.setUri("uri" + i);
 			data.add(r);
 		}
+		ReportInvoker reportInvoker = SingletonReportInvoker.getInstance();
 		Report report = new ResourceReport(data);
 		Command command = new SummeryCommand(report);
-		ReportInvoker reportInvoker = new ReportInvoker(command);
+		reportInvoker.setCommand(command);
 		//summery
 		reportInvoker.excute();
 		command = new UploadCommand(report);

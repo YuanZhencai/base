@@ -19,8 +19,12 @@ public class ReportInvoker {
 	
 	private Command command = null;
 	
-	public ReportInvoker(Command command) {
+	public ReportInvoker() {
 		System.out.println("ReportInvoker.ReportInvoker()");
+	}
+	
+	public ReportInvoker(Command command) {
+		System.out.println("ReportInvoker.ReportInvoker() " + command.getClass().getSimpleName());
 		this.setCommand(command);
 	}
 
