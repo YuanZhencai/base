@@ -5,7 +5,6 @@
 package com.wcs.demo.goc.command.report;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.wcs.common.model.Resourcemstr;
@@ -22,6 +21,7 @@ import com.wcs.demo.goc.strategy.report.jasper.SummeryInterface;
  */
 
 public class Report {
+	private String absolutePath = null;
 
 	public Report() {
 		System.out.println("Report.Report()");
@@ -39,10 +39,18 @@ public class Report {
 			data.add(r);
 		}
 		SummeryInterface summery = new ResourceSummery(data);
-		summery.summery();
+		this.absolutePath = summery.summery();
 	}
 	
 	public void upload() {
 		System.out.println("Report.upload()");
+	}
+
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
 	}
 }

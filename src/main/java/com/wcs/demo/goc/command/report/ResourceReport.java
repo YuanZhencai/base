@@ -38,7 +38,7 @@ public class ResourceReport extends Report {
 	@Override
 	public void summery() {
 		SummeryInterface summery = new ResourceSummery(data);
-		summery.summery();
+		setAbsolutePath(summery.summery());
 	}
 
 	@Override

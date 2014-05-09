@@ -36,6 +36,19 @@ public class ReportTest {
 	
 	@Test
 	public void testResourceSummery() {
+		resourceSummery();
+	}
+	
+	@Test
+	public void testResourceUpload() {
+		// summery
+		String resourceName = resourceSummery();
+		// upload resource report
+		resourceUpload(resourceName);
+	}
+
+
+	private String resourceSummery() {
 		List<Resourcemstr> data = new ArrayList<Resourcemstr>();
 		Resourcemstr r = null;
 		for (int i = 0; i < 10; i++) {
@@ -49,13 +62,16 @@ public class ReportTest {
 		Command command = new SummeryCommand(report);
 		ReportInvoker reportInvoker = new ReportInvoker(command);
 		reportInvoker.excute();
+		String absolutePath = report.getAbsolutePath();
+		System.out.println("[Report Path]"+absolutePath);
+		return absolutePath;
 	}
 	
-	@Test
-	public void testResourceUpload() {
+	
+	private void resourceUpload(String filePath) {
 		FileInputStream is = null;
 		try {
-			is = new FileInputStream("Resource1399606636540.xls");
+			is = new FileInputStream(filePath);
 			Report report = new ResourceReport(is);
 			Command command = new UploadCommand(report);
 			ReportInvoker reportInvoker = new ReportInvoker(command);

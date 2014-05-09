@@ -21,11 +21,19 @@ public class ReportInvoker {
 	
 	public ReportInvoker(Command command) {
 		System.out.println("ReportInvoker.ReportInvoker()");
-		this.command = command;
+		this.setCommand(command);
 	}
 
 	public void excute() {
-		System.out.println("ReportInvoker.excute() " + command.getClass().getSimpleName());
-		command.exe();
+		System.out.println("ReportInvoker.excute() " + getCommand().getClass().getSimpleName());
+		getCommand().exe();
+	}
+
+	public Command getCommand() {
+		return command;
+	}
+
+	public void setCommand(Command command) {
+		this.command = command;
 	}
 }
