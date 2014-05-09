@@ -18,8 +18,15 @@ import org.junit.Test;
 public class AdapterTest {
 
 	@Test
-	public void testAdapter() {
+	public void testClassAdapter() {
 		Targetable target = new Adapter();  
+		target.method1();
+		target.method2();
+	}
+	
+	@Test
+	public void testObjectAdapter() {
+		Targetable target =  new Wrapper(new Source()); 
 		target.method1();
 		target.method2();
 	}

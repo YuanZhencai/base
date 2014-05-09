@@ -14,6 +14,10 @@ package com.wcs.demo.goc.adapter;
  */
 
 public class Adapter extends Source implements Targetable {
+	
+	public Adapter() {
+		System.out.println("Adapter.Adapter() " + "类的适配器模式");
+	}
 
 	@Override
 	public void method2() {
