@@ -2,7 +2,7 @@
  * Created on 2014年5月9日 下午4:53:12 
  */
 
-package com.wcs.demo.goc.bserver;
+package com.wcs.demo.goc.observer;
 
 import org.junit.Test;
 
