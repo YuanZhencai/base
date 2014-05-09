@@ -15,6 +15,6 @@ package com.wcs.demo.goc.strategy.report.jasper;
 
 public interface SummeryInterface {
 
-	public void summery();
+	public String summery();
 	
 }

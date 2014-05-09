@@ -23,16 +23,14 @@ import com.wcs.demo.goc.strategy.report.jasper.SummeryInterface;
 public class ResourceReport extends Report {
 	
 	private List<Resourcemstr> data = null;
-	private InputStream is = null;
+	
+	public ResourceReport() {
+		System.out.println("ResourceReport.ResourceReport()");
+	}
 	
 	public ResourceReport(List<Resourcemstr> data) {
 		System.out.println("ResourceReport.ResourceReport()");
 		this.data = data;
-	}
-	
-	public ResourceReport(InputStream is) {
-		System.out.println("ResourceReport.ResourceReport()");
-		this.is = is;
 	}
 
 	@Override
@@ -43,7 +41,15 @@ public class ResourceReport extends Report {
 
 	@Override
 	public void upload() {
-		System.out.println("ResourceReport.upload() " + is.toString());
+		System.out.println("ResourceReport.upload() " + getAbsolutePath());
+	}
+
+	public List<Resourcemstr> getData() {
+		return data;
+	}
+
+	public void setData(List<Resourcemstr> data) {
+		this.data = data;
 	}
 
 	

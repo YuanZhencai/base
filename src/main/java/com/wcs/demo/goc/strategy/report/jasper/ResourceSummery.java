@@ -24,7 +24,7 @@ public class ResourceSummery extends AbstractSummery implements SummeryInterface
 	}
 
 	@Override
-	public void summery() {
+	public String summery() {
 		OutputStream os = null;
 		try {
 			String name = REPORT_NAME + new Date().getTime() + ".xls";
@@ -33,9 +33,11 @@ public class ResourceSummery extends AbstractSummery implements SummeryInterface
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			createXlsReport(TEMPLATE_NAME, data, os, parameters);
 			System.out.println("ResourceSummery.summery() " + file.getAbsolutePath());
+			return file.getAbsolutePath();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 
