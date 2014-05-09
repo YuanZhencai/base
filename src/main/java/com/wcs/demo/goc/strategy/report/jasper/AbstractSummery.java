@@ -69,7 +69,7 @@ public abstract class AbstractSummery {
 	private static void exportReport(String templateRealPath, JRDataSource dataSource, Map<String, Object> parameters, JRAbstractExporter exporter) {
 		logger.debug("[templatePath]" + templateRealPath);
 		try {
-			JasperPrint jasperPrint = JasperFillManager.fillReport(templateRealPath, parameters, dataSource);
+			JasperPrint jasperPrint = JasperFillManager.fillReport(System.getProperty("user.dir") + templateRealPath, parameters, dataSource);
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			exporter.exportReport();
 		} catch (Exception e) {
