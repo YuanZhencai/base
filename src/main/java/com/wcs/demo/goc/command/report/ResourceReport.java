@@ -4,7 +4,6 @@
 
 package com.wcs.demo.goc.command.report;
 
-import java.io.InputStream;
 import java.util.List;
 
 import com.wcs.common.model.Resourcemstr;
