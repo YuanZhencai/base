@@ -41,4 +41,8 @@ public class Report {
 		SummeryInterface summery = new ResourceSummery(data);
 		summery.summery();
 	}
+	
+	public void upload() {
+		System.out.println("Report.upload()");
+	}
 }

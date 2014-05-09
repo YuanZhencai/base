@@ -4,12 +4,16 @@
 
 package com.wcs.demo.goc.command.report;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.wcs.common.model.Resourcemstr;
+import com.wcs.demo.goc.command.Command;
 
 /** 
  * <p>Project: btcbase</p> 
@@ -42,9 +46,32 @@ public class ReportTest {
 			data.add(r);
 		}
 		Report report = new ResourceReport(data);
-		SummeryCommand command = new SummeryCommand(report);
+		Command command = new SummeryCommand(report);
 		ReportInvoker reportInvoker = new ReportInvoker(command);
 		reportInvoker.excute();
+	}
+	
+	@Test
+	public void testResourceUpload() {
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream("Resource1399606636540.xls");
+			Report report = new ResourceReport(is);
+			Command command = new UploadCommand(report);
+			ReportInvoker reportInvoker = new ReportInvoker(command);
+			reportInvoker.excute();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

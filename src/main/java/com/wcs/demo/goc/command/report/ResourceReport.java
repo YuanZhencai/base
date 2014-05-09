@@ -4,7 +4,7 @@
 
 package com.wcs.demo.goc.command.report;
 
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
 
 import com.wcs.common.model.Resourcemstr;
@@ -23,10 +23,16 @@ import com.wcs.demo.goc.strategy.report.jasper.SummeryInterface;
 public class ResourceReport extends Report {
 	
 	private List<Resourcemstr> data = null;
+	private InputStream is = null;
 	
 	public ResourceReport(List<Resourcemstr> data) {
 		System.out.println("ResourceReport.ResourceReport()");
 		this.data = data;
+	}
+	
+	public ResourceReport(InputStream is) {
+		System.out.println("ResourceReport.ResourceReport()");
+		this.is = is;
 	}
 
 	@Override
@@ -35,4 +41,10 @@ public class ResourceReport extends Report {
 		summery.summery();
 	}
 
+	@Override
+	public void upload() {
+		System.out.println("ResourceReport.upload() " + is.toString());
+	}
+
+	
 }
