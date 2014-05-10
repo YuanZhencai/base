@@ -1,15 +1,27 @@
 package com.wcs.demo.goc.bridge.workflow;
 
-public class Workflow {
+import com.wcs.demo.goc.bridge.workflow.node.Node;
+import com.wcs.demo.goc.bridge.workflow.route.Route;
+
+public abstract class Workflow {
 
 	private String type;
 	
 	private Route route;
 	
+	private Node node;
+	
 	public void dispatch() {
-		getRoute().excute();
 	}
 
+	public String getResult(){
+		Node node = getNode();
+		String currentSeqNo = node.getSeqNo();
+		node.excute();
+		String nextSeqNo = node.getSeqNo();
+		return currentSeqNo + " → " + nextSeqNo;
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -24,6 +36,14 @@ public class Workflow {
 
 	public void setRoute(Route route) {
 		this.route = route;
+	}
+
+	public Node getNode() {
+		return node;
+	}
+
+	public void setNode(Node node) {
+		this.node = node;
 	}
 
 	

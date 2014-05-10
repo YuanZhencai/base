@@ -1,4 +1,4 @@
-package com.wcs.demo.goc.bridge.workflow;
+package com.wcs.demo.goc.bridge.workflow.route;
 
 public class ReportRoute12 extends Route {
 	

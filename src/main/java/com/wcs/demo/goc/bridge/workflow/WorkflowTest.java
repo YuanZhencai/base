@@ -2,6 +2,14 @@ package com.wcs.demo.goc.bridge.workflow;
 
 import org.junit.Test;
 
+import com.wcs.demo.goc.bridge.workflow.node.CheckDocNode;
+import com.wcs.demo.goc.bridge.workflow.node.Node;
+import com.wcs.demo.goc.bridge.workflow.route.DocRoute01;
+import com.wcs.demo.goc.bridge.workflow.route.DocRoute12;
+import com.wcs.demo.goc.bridge.workflow.route.ReportRoute01;
+import com.wcs.demo.goc.bridge.workflow.route.ReportRoute12;
+import com.wcs.demo.goc.bridge.workflow.route.Route;
+
 public class WorkflowTest {
 
 	@Test
@@ -41,6 +49,29 @@ public class WorkflowTest {
 		reportFlow.setRoute(reportRoute12);
 		// 流程执行
 		reportFlow.dispatch();
+		
+	}
+	
+	@Test
+	public void testCheckDocFlow() {
+		// 文档流程
+		Workflow checkDocFlow = new CheckDocFlow();
+		// 节点0
+		Node node = new CheckDocNode("节点0", "0");
+		// 节点0  通过
+		node.setStatus("PASS");
+		
+		// 流程将要从 节点 0 执行到 节点 1
+		checkDocFlow.setNode(node);
+		// 流程执行
+		checkDocFlow.dispatch();
+		
+		// 节点1  通过
+		node.setStatus("PASS");
+		// 流程执行
+		checkDocFlow.dispatch();
+		
+		
 		
 	}
 
