@@ -16,5 +16,33 @@ public class ApplyNode extends Node {
 		// find next seq no
 		setSeqNo(findSeqNoBy());
 	}
+
+	@Override
+	public void showButtonsBySeqNo() {
+		switch (Integer.valueOf(getSeqNo())) {
+		case 0:
+			addNode0Buttons();
+			break;
+		case 1:
+			addNode1Buttons();
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+	
+	public void addNode0Buttons(){
+		clearButtons();
+		addButton("CreateButton");
+		addButton("CloseButton");
+	}
+	
+	public void addNode1Buttons(){
+		clearButtons();
+		addButton("PassButton");
+		addButton("CloseButton");
+	}
 	
 }

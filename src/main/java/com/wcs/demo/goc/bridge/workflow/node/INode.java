@@ -4,4 +4,6 @@ public interface INode {
 
 	public void excute();
 	
+	public void showButtonsBySeqNo();
+	
 }

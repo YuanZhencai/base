@@ -7,7 +7,7 @@ public class CheckDocNode extends Node {
 		setName(name);
 		setSeqNo(seqNo);
 	}
-
+	
 	@Override
 	public void excute() {
 		// save data to db
@@ -15,6 +15,12 @@ public class CheckDocNode extends Node {
 		
 		// find next seq no
 		setSeqNo(findSeqNoBy());
+	}
+
+	@Override
+	public void showButtonsBySeqNo() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -1,5 +1,8 @@
 package com.wcs.demo.goc.bridge.workflow.node;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public abstract class Node implements INode {
 
@@ -8,6 +11,25 @@ public abstract class Node implements INode {
 	private String seqNo;
 	
 	private String type;
+	
+	private Set<String> buttons = new HashSet<String>();
+	
+	public void addButton(String button) {
+		buttons.add(button);
+	}
+	
+	public void removeButton(String button) {
+		buttons.remove(button);
+	}
+	
+	public void hasButton(String button) {
+		buttons.contains(button);
+	}
+	
+	public void clearButtons() {
+		buttons.clear();
+	}
+	
 	
 	@Override
 	public void excute() {
