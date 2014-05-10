@@ -19,6 +19,8 @@ public abstract class Node implements INode {
 		DOC_1_PASS("2"),
 		REPORT_0_PASS("1"),
 		REPORT_1_PASS("2"),
+		APPLY_0_PASS("1"),
+		APPLY_1_PASS("2"),
 		CHECKDOC_0_PASS("1"),
 		CHECKDOC_1_PASS("2");
 
