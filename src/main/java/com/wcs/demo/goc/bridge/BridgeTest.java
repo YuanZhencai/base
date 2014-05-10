@@ -1,8 +1,15 @@
 package com.wcs.demo.goc.bridge;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BridgeTest {
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("桥接模式：开关和电器");
+	}
+	
 
 	@Test
 	public void testBridge() {

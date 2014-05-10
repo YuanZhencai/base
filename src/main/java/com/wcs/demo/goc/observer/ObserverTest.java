@@ -4,6 +4,7 @@
 
 package com.wcs.demo.goc.observer;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -16,7 +17,12 @@ import org.junit.Test;
 * @author <a href="mailto:yuanzhencai@wcs-global.com">Yuan</a> 
 */
 public class ObserverTest {
-
+	
+	@BeforeClass
+	public static void init() {
+		System.out.println("观察者模式");
+	}
+	
 	@Test
 	public void testOperate() {
 		Subject sub = new MySubject();
