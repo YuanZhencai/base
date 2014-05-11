@@ -36,7 +36,7 @@ public class WorkflowTest {
 
 	@Test
 	public void testReportflow() {
-		// 申请流程
+		// 报表流程
 		ReportFlow reportFlow = new ReportFlow();
 		// 汇总报表节点
 		Node node = new ReportNode0();
@@ -55,18 +55,18 @@ public class WorkflowTest {
 		// 当前节点为 上传报表节点
 		currentNode = (ReportNode) reportFlow.getNode();
 
-		// 当前节点 即节点1 显示的 按钮
+		// 当前节点 即 上传报表节点 显示的 按钮
 		currentNode.getButtons();
-		// 当前节点 即 节点1 通过
+		// 当前节点 即 上传报表节点通过
 		currentNode.setStatus("PASS");
 		// 通过后上传 汇总的报表
 		currentNode.setReport(report);
 		// 流程执行
 		reportFlow.dispatch();
 
-		// 当前节点为 节点2
+		// 当前节点为 完成报表节点
 		currentNode = (ReportNode) reportFlow.getNode();
-		// 当前节点 即节点2 显示的 按钮
+		// 当前节点 即 完成报表节点 显示的 按钮
 		currentNode.getButtons();
 		currentNode.setStatus("COMPLETE");
 		// 流程完成
