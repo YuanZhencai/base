@@ -1,4 +1,6 @@
-package com.wcs.demo.goc.bridge.workflow.node;
+package com.wcs.demo.goc.bridge.workflow.node.checkdoc;
+
+import com.wcs.demo.goc.bridge.workflow.node.Node;
 
 public class CheckDocNode extends Node {
 	

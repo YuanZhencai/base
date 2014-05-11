@@ -2,11 +2,11 @@ package com.wcs.demo.goc.bridge.workflow;
 
 import org.junit.Test;
 
-import com.wcs.demo.goc.bridge.workflow.node.ApplyNode0;
-import com.wcs.demo.goc.bridge.workflow.node.CheckDocNode;
 import com.wcs.demo.goc.bridge.workflow.node.Node;
-import com.wcs.demo.goc.bridge.workflow.node.ReportNode;
-import com.wcs.demo.goc.bridge.workflow.node.ReportNode0;
+import com.wcs.demo.goc.bridge.workflow.node.apply.ApplyNode0;
+import com.wcs.demo.goc.bridge.workflow.node.checkdoc.CheckDocNode;
+import com.wcs.demo.goc.bridge.workflow.node.report.ReportNode;
+import com.wcs.demo.goc.bridge.workflow.node.report.ReportNode0;
 import com.wcs.demo.goc.bridge.workflow.route.DocRoute01;
 import com.wcs.demo.goc.bridge.workflow.route.DocRoute12;
 import com.wcs.demo.goc.bridge.workflow.route.Route;

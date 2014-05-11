@@ -1,7 +1,7 @@
 package com.wcs.demo.goc.bridge.workflow;
 
 import com.wcs.demo.goc.bridge.workflow.node.Node;
-import com.wcs.demo.goc.bridge.workflow.node.ReportNode;
+import com.wcs.demo.goc.bridge.workflow.node.report.ReportNode;
 import com.wcs.demo.goc.command.report.Report;
 
 public class ReportFlow extends Workflow {

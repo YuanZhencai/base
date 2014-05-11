@@ -1,14 +1,14 @@
-package com.wcs.demo.goc.bridge.workflow.node;
+package com.wcs.demo.goc.bridge.workflow.node.apply;
 
-public class ApplyNode2 extends ApplyNode {
+public class ApplyNode1 extends ApplyNode {
 	
-	public ApplyNode2() {
-		super("节点2", "2");
+	public ApplyNode1() {
+		super("节点1", "1");
 		this.showButtons();
 	}
 	
-	public ApplyNode2(String name) {
-		super(name, "2");
+	public ApplyNode1(String name) {
+		super(name, "1");
 	}
 
 	@Override
@@ -23,7 +23,6 @@ public class ApplyNode2 extends ApplyNode {
 	public void showButtons() {
 		super.showButtons();
 		addButton("PassButton");
-		addButton("RejectButton");
 	}
 
 }

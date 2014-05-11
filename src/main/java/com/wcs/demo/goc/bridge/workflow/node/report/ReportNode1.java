@@ -1,4 +1,4 @@
-package com.wcs.demo.goc.bridge.workflow.node;
+package com.wcs.demo.goc.bridge.workflow.node.report;
 
 import com.wcs.demo.goc.command.Command;
 import com.wcs.demo.goc.command.report.Report;

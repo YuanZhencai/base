@@ -1,4 +1,4 @@
-package com.wcs.demo.goc.bridge.workflow.node;
+package com.wcs.demo.goc.bridge.workflow.node.apply;
 
 public class ApplyNode0 extends ApplyNode {
 	

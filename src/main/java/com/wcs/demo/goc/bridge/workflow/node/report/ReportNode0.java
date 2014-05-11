@@ -1,4 +1,4 @@
-package com.wcs.demo.goc.bridge.workflow.node;
+package com.wcs.demo.goc.bridge.workflow.node.report;
 
 import java.util.ArrayList;
 import java.util.List;
