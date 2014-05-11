@@ -1,6 +1,7 @@
 package com.wcs.demo.goc.bridge.workflow;
 
 import com.wcs.demo.goc.bridge.workflow.node.Node;
+import com.wcs.demo.goc.bridge.workflow.node.SeqNode;
 import com.wcs.demo.goc.bridge.workflow.route.Route;
 
 public abstract class Workflow {
@@ -13,28 +14,22 @@ public abstract class Workflow {
 	
 	public void dispatch() {
 	}
-
+	
 	public String getResult(){
 		Node node = getNode();
+		Node nextNode = findNextNodeByCurrentNode(node);
 		String currentSeqNo = node.getSeqNo();
 		node.excute();
 		String nextSeqNo = node.getSeqNo();
-		Node nextNode = findNextNode();
 		if(nextNode != null) {
 			setNode(nextNode);
 		}
 		return currentSeqNo + " → " + nextSeqNo;
 	}
 	
-	public Node findNextNode() {
-		String nextNode = node.getType() + "Node" + node.getSeqNo();
-		String className = node.getClass().getPackage().getName()+ "." + nextNode;
-		try {
-			return (Node) Class.forName(className).newInstance();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return null; 
+	public Node findNextNodeByCurrentNode(Node node) {
+		String f_s_s = node.getType() + "_" + node.getSeqNo() + "_" + node.getStatus();
+		return Enum.valueOf(SeqNode.class, f_s_s).getValue();
 	}
 	
 	public String getType() {

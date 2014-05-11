@@ -59,14 +59,14 @@ public abstract class Node implements INode {
 		CheckDoc_0_PASS("1"),
 		CheckDoc_1_PASS("2");
 
-		private String seqNo;
+		private String seqNode;
 
-		SeqNo(String end) {
-			this.seqNo = end;
+		SeqNo(String seqNo) {
+			this.seqNode = seqNo;
 		}
 		
 		public String getValue() {
-			return seqNo;
+			return seqNode;
 		}
 
 	}
