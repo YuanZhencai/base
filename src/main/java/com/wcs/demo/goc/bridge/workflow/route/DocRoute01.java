@@ -13,7 +13,7 @@ public class DocRoute01 extends Route {
 	}
 
 	@Override
-	public void excute() {
+	public void gateway() {
 		
 		System.out.println(getName() + " excute result " + getResult("DOC"));
 

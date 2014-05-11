@@ -1,5 +1,7 @@
 package com.wcs.demo.goc.bridge.workflow.node.report;
 
+import com.wcs.demo.goc.bridge.workflow.route.ReportRoute;
+
 
 public class ReportNode2 extends ReportNode {
 	
@@ -14,7 +16,9 @@ public class ReportNode2 extends ReportNode {
 
 	@Override
 	public void excute() {
-		System.out.println(getType() + " 完成");
+		ReportRoute route =  (ReportRoute) createRoute();
+		route.gateway();
+		System.out.println("发送消息：" + getName() + " 完成了");
 	}
 
 	@Override

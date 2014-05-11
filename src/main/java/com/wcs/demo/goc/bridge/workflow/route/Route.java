@@ -10,7 +10,7 @@ public abstract class Route implements IRoute {
 	private String status;
 
 	@Override
-	public void excute() {
+	public void gateway() {
 
 	}
 

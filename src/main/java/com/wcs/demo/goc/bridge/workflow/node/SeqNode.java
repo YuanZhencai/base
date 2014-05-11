@@ -12,14 +12,14 @@ public enum SeqNode {
 	Report_1_PASS(new ReportNode2()),
 	Report_2_COMPLETE(new ReportNode2());
 
-	private Node seqNo;
+	private Node seqNode;
 
-	SeqNode(Node seqNo) {
-		this.seqNo = seqNo;
+	SeqNode(Node seqNode) {
+		this.seqNode = seqNode;
 	}
 	
 	public Node getValue() {
-		return seqNo;
+		return seqNode;
 	}
 
 }

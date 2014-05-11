@@ -8,7 +8,7 @@ public class DocFlow extends Workflow {
 
 	@Override
 	public void dispatch() {
-		getRoute().excute();
+		getRoute().gateway();
 		System.out.println(getType() + " dispatch " + getRoute().getName());
 	}
 

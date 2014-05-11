@@ -3,6 +3,9 @@ package com.wcs.demo.goc.bridge.workflow.node;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wcs.demo.goc.bridge.workflow.route.Route;
+import com.wcs.demo.goc.bridge.workflow.route.RouteFactory;
+
 
 public abstract class Node implements INode {
 
@@ -11,6 +14,7 @@ public abstract class Node implements INode {
 	private String seqNo;
 	
 	private String type;
+	private Route route;
 	
 	private Set<String> buttons = new HashSet<String>();
 	
@@ -85,5 +89,17 @@ public abstract class Node implements INode {
 		this.seqNo = seqNo;
 	}
 
-	
+	public Route createRoute() {
+		route = RouteFactory.getInstance().create(this);
+		return route;
+	}
+
+	public Route getRoute() {
+		return route;
+	}
+
+	public void setRoute(Route route) {
+		this.route = route;
+	}
+
 }
