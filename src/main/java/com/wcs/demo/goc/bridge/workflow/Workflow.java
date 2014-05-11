@@ -19,7 +19,22 @@ public abstract class Workflow {
 		String currentSeqNo = node.getSeqNo();
 		node.excute();
 		String nextSeqNo = node.getSeqNo();
+		Node nextNode = findNextNode();
+		if(nextNode != null) {
+			setNode(nextNode);
+		}
 		return currentSeqNo + " → " + nextSeqNo;
+	}
+	
+	public Node findNextNode() {
+		String nextNode = node.getType() + "Node" + node.getSeqNo();
+		String className = node.getClass().getPackage().getName()+ "." + nextNode;
+		try {
+			return (Node) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return null; 
 	}
 	
 	public String getType() {

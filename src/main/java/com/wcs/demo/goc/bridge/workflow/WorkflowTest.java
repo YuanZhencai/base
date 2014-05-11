@@ -2,7 +2,7 @@ package com.wcs.demo.goc.bridge.workflow;
 
 import org.junit.Test;
 
-import com.wcs.demo.goc.bridge.workflow.node.ApplyNode;
+import com.wcs.demo.goc.bridge.workflow.node.ApplyNode0;
 import com.wcs.demo.goc.bridge.workflow.node.CheckDocNode;
 import com.wcs.demo.goc.bridge.workflow.node.Node;
 import com.wcs.demo.goc.bridge.workflow.route.DocRoute01;
@@ -55,7 +55,7 @@ public class WorkflowTest {
 	
 	@Test
 	public void testCheckDocFlow() {
-		// 文档流程
+		// 文档检入流程
 		Workflow checkDocFlow = new CheckDocFlow();
 		// 节点0
 		Node node = new CheckDocNode("节点0", "0");
@@ -78,24 +78,35 @@ public class WorkflowTest {
 	
 	@Test
 	public void testApplyFlow() {
-		// 文档流程
+		// 申请流程
 		Workflow applyFlow = new ApplyFlow();
 		// 节点0
-		Node node = new ApplyNode("节点0", "0");
-		// 节点0  通过
-		node.setStatus("PASS");
-		
-		// 流程将要从 节点 0 执行到 节点 1
+		Node node = new ApplyNode0("节点0");
+		// 流程  在 节点 0 
 		applyFlow.setNode(node);
+		// 当前节点 节点0
+		Node currentNode = applyFlow.getNode();
+		// 当前节点 即节点0 显示的 按钮
+		currentNode.getButtons();
+		// 当前节点 即 节点0 通过
+		currentNode.setStatus("PASS");
+		
+		// 流程执行
+		applyFlow.dispatch();
+		// 当前节点为 节点1
+		currentNode = applyFlow.getNode();
+		
+		// 当前节点 即节点1 显示的 按钮
+		currentNode.getButtons();
+		// 当前节点 即 节点1  通过
+		currentNode.setStatus("PASS");
 		// 流程执行
 		applyFlow.dispatch();
 		
-		// 节点1  通过
-		node.setStatus("PASS");
-		// 流程执行
-		applyFlow.dispatch();
-		
-		
+		// 当前节点为 节点2
+		currentNode = applyFlow.getNode();
+		// 当前节点 即节点2 显示的 按钮
+		currentNode.getButtons();
 		
 	}
 

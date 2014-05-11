@@ -3,7 +3,7 @@ package com.wcs.demo.goc.bridge.workflow.node;
 public class CheckDocNode extends Node {
 	
 	public CheckDocNode(String name, String seqNo) {
-		setType("CHECKDOC");
+		setType("CheckDoc");
 		setName(name);
 		setSeqNo(seqNo);
 	}
@@ -18,7 +18,7 @@ public class CheckDocNode extends Node {
 	}
 
 	@Override
-	public void showButtonsBySeqNo() {
+	public void showButtons() {
 		// TODO Auto-generated method stub
 		
 	}

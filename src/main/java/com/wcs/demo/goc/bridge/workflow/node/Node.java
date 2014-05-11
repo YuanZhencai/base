@@ -30,21 +30,34 @@ public abstract class Node implements INode {
 		buttons.clear();
 	}
 	
+	public void getButtons() {
+		for (String button : buttons) {
+			System.out.println(name + " 显示 " + button);
+		}
+	}
 	
 	@Override
 	public void excute() {
 		
 	}
 	
+	
+	@Override
+	public void showButtons() {
+		// 清空 按钮
+		clearButtons();
+	}
+
+
 	public enum SeqNo {
 		DOC_0_PASS("1"),
 		DOC_1_PASS("2"),
 		REPORT_0_PASS("1"),
 		REPORT_1_PASS("2"),
-		APPLY_0_PASS("1"),
-		APPLY_1_PASS("2"),
-		CHECKDOC_0_PASS("1"),
-		CHECKDOC_1_PASS("2");
+		Apply_0_PASS("1"),
+		Apply_1_PASS("2"),
+		CheckDoc_0_PASS("1"),
+		CheckDoc_1_PASS("2");
 
 		private String seqNo;
 

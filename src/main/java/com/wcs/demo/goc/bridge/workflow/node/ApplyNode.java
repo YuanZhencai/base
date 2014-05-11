@@ -3,7 +3,7 @@ package com.wcs.demo.goc.bridge.workflow.node;
 public class ApplyNode extends Node {
 	
 	public ApplyNode(String name, String seqNo) {
-		setType("APPLY");
+		setType("Apply");
 		setName(name);
 		setSeqNo(seqNo);
 	}
@@ -14,35 +14,17 @@ public class ApplyNode extends Node {
 		// ...
 		
 		// find next seq no
-		setSeqNo(findSeqNoBy());
+		String nextSeqNo = findSeqNoBy();
+		setSeqNo(nextSeqNo);
 	}
 
 	@Override
-	public void showButtonsBySeqNo() {
-		switch (Integer.valueOf(getSeqNo())) {
-		case 0:
-			addNode0Buttons();
-			break;
-		case 1:
-			addNode1Buttons();
-			break;
+	public void showButtons() {
+		super.showButtons();
+		// 显示关闭按钮
+		addButton("CloseButton");
+	}
+	
+	
 
-		default:
-			break;
-		}
-		
-	}
-	
-	public void addNode0Buttons(){
-		clearButtons();
-		addButton("CreateButton");
-		addButton("CloseButton");
-	}
-	
-	public void addNode1Buttons(){
-		clearButtons();
-		addButton("PassButton");
-		addButton("CloseButton");
-	}
-	
 }
