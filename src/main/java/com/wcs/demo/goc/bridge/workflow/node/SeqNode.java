@@ -2,7 +2,10 @@ package com.wcs.demo.goc.bridge.workflow.node;
 
 public enum SeqNode {
 	Apply_0_PASS(new ApplyNode1()),
-	Apply_1_PASS(new ApplyNode2());
+	Apply_1_PASS(new ApplyNode2()),
+	Report_0_PASS(new ReportNode1()),
+	Report_1_PASS(new ReportNode2()),
+	Report_2_COMPLETE(new ReportNode2());
 
 	private Node seqNo;
 
