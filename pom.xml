@@ -342,6 +342,12 @@
 			<artifactId>activemq-ra</artifactId>
 			<version>5.4.3</version>
 		</dependency>
+		<!-- postgresql -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

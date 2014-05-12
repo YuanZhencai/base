@@ -5,54 +5,54 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * The persistent class for the WF_INSTANCEMSTR database table.
  * 
  */
 @Entity
-@Table(name="WF_INSTANCEMSTR")
-@NamedQuery(name="WfInstancemstr.findAll", query="SELECT w FROM WfInstancemstr w")
+@Table(name = "WF_INSTANCEMSTR")
+@NamedQuery(name = "WfInstancemstr.findAll", query = "SELECT w FROM WfInstancemstr w")
 public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="CREATED_BY")
+	@Column(name = "CREATED_BY")
 	private String createdBy;
 
-	@Column(name="CREATED_DATETIME")
+	@Column(name = "CREATED_DATETIME")
 	private Date createdDatetime;
 
-	@Column(name="DEFUNCT_IND")
+	@Column(name = "DEFUNCT_IND")
 	private String defunctInd;
 
-	@Column(name="\"NO\"")
 	private String no;
 
-	@Column(name="REQUEST_BY")
+	@Column(name = "REQUEST_BY")
 	private String requestBy;
 
 	private String status;
 
-	@Column(name="SUBMIT_DATETIME")
+	@Column(name = "SUBMIT_DATETIME")
 	private Date submitDatetime;
 
-	@Column(name="\"TYPE\"")
 	private String type;
 
-	@Column(name="UPDATED_BY")
+	@Column(name = "UPDATED_BY")
 	private String updatedBy;
 
-	@Column(name="UPDATED_DATETIME")
+	@Column(name = "UPDATED_DATETIME")
 	private Date updatedDatetime;
 
-	//bi-directional many-to-one association to WfInstancemstrProperty
-	@OneToMany(mappedBy="wfInstancemstr")
-	private List<WfInstancemstrProperty> wfInstancemstrProperties;
+	// bi-directional many-to-one association to WfInstancemstrProperty
+	@OneToMany(mappedBy = "wfInstancemstr", cascade = CascadeType.ALL)
+	@MapKeyColumn(name = "NAME")
+	private Map<String, WfInstancemstrProperty> wfInstancemstrProperties = new HashMap<String, WfInstancemstrProperty>();
 
-	//bi-directional many-to-one association to WfStepmstr
-	@OneToMany(mappedBy="wfInstancemstr")
+	// bi-directional many-to-one association to WfStepmstr
+	@OneToMany(mappedBy = "wfInstancemstr")
 	private List<WfStepmstr> wfStepmstrs;
 
 	public WfInstancemstr() {
@@ -138,25 +138,20 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 		this.updatedDatetime = updatedDatetime;
 	}
 
-	public List<WfInstancemstrProperty> getWfInstancemstrProperties() {
-		return this.wfInstancemstrProperties;
-	}
-
-	public void setWfInstancemstrProperties(List<WfInstancemstrProperty> wfInstancemstrProperties) {
-		this.wfInstancemstrProperties = wfInstancemstrProperties;
-	}
-
 	public WfInstancemstrProperty addWfInstancemstrProperty(WfInstancemstrProperty wfInstancemstrProperty) {
-		getWfInstancemstrProperties().add(wfInstancemstrProperty);
+		getWfInstancemstrProperties().put(wfInstancemstrProperty.getName(), wfInstancemstrProperty);
 		wfInstancemstrProperty.setWfInstancemstr(this);
 
 		return wfInstancemstrProperty;
 	}
+	
+	public WfInstancemstrProperty getWfInstancemstrProperty(String name) {
+		return getWfInstancemstrProperties().get(name);
+	}
 
 	public WfInstancemstrProperty removeWfInstancemstrProperty(WfInstancemstrProperty wfInstancemstrProperty) {
-		getWfInstancemstrProperties().remove(wfInstancemstrProperty);
+		getWfInstancemstrProperties().remove(wfInstancemstrProperty.getName());
 		wfInstancemstrProperty.setWfInstancemstr(null);
-
 		return wfInstancemstrProperty;
 	}
 
@@ -180,6 +175,14 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 		wfStepmstr.setWfInstancemstr(null);
 
 		return wfStepmstr;
+	}
+
+	public Map<String, WfInstancemstrProperty> getWfInstancemstrProperties() {
+		return wfInstancemstrProperties;
+	}
+
+	public void setWfInstancemstrProperties(Map<String, WfInstancemstrProperty> wfInstancemstrProperties) {
+		this.wfInstancemstrProperties = wfInstancemstrProperties;
 	}
 
 }

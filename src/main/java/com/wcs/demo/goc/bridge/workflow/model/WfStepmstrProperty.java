@@ -16,7 +16,6 @@ public class WfStepmstrProperty extends com.wcs.base.model.IdEntity implements S
 
 	private String name;
 
-	@Column(name="\"VALUE\"")
 	private String value;
 
 	//bi-directional many-to-one association to WfStepmstr

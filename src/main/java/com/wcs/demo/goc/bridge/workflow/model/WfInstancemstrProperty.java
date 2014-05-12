@@ -16,7 +16,6 @@ public class WfInstancemstrProperty extends com.wcs.base.model.IdEntity implemen
 
 	private String name;
 
-	@Column(name="\"VALUE\"")
 	private String value;
 
 	//bi-directional many-to-one association to WfInstancemstr
