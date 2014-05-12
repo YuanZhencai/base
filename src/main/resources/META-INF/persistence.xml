@@ -8,6 +8,10 @@
 			<!-- ${db.jndi} -->
 			BTCBASE
 		</jta-data-source>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstrProperty</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstrProperty</class>
         <properties>
 		</properties>
 	</persistence-unit>
