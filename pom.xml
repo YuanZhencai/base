@@ -13,9 +13,9 @@
 		<profile>
 			<!-- mvn clean compile package -Pdev -->
 			<id>dev</id>
-			<activation>
+			<!-- <activation>
 				<activeByDefault>true</activeByDefault>
-			</activation>
+			</activation> -->
 			<properties>
 				<db.jndi>TIH</db.jndi>
 				<!-- MODIF LOCAL IP -->
@@ -34,7 +34,9 @@
 
 		<profile>
 			<id>arquillian-glassfish-remote</id>
-			<!-- <activation> <activeByDefault>true</activeByDefault> </activation> -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>org.jboss.spec</groupId>
@@ -175,17 +177,21 @@
 			<artifactId>cas-client-core</artifactId>
 			<version>3.1.12</version>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>6.0</version>
 			<type>jar</type>
 			<scope>provided</scope>
+		</dependency> -->
+
+		<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-all-6.0</artifactId>
+			<version>3.0.1.Final</version>
+			<type>jar</type>
+			<scope>test</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-all-6.0</artifactId> 
-			<version>3.0.1.Final</version> <type>jar</type> <scope>test</scope> </dependency> -->
-
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
@@ -229,6 +235,11 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>rome</groupId>
@@ -324,6 +335,12 @@
 			<groupId>org.jboss.shrinkwrap.resolver</groupId>
 			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- activemq-ra -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-ra</artifactId>
+			<version>5.4.3</version>
 		</dependency>
 	</dependencies>
 
