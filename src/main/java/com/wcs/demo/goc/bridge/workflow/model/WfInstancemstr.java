@@ -1,8 +1,10 @@
 package com.wcs.demo.goc.bridge.workflow.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,7 +22,7 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 	private String createdBy;
 
 	@Column(name="CREATED_DATETIME")
-	private Timestamp createdDatetime;
+	private Date createdDatetime;
 
 	@Column(name="DEFUNCT_IND")
 	private String defunctInd;
@@ -34,7 +36,7 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 	private String status;
 
 	@Column(name="SUBMIT_DATETIME")
-	private Timestamp submitDatetime;
+	private Date submitDatetime;
 
 	@Column(name="\"TYPE\"")
 	private String type;
@@ -43,7 +45,7 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 	private String updatedBy;
 
 	@Column(name="UPDATED_DATETIME")
-	private Timestamp updatedDatetime;
+	private Date updatedDatetime;
 
 	//bi-directional many-to-one association to WfInstancemstrProperty
 	@OneToMany(mappedBy="wfInstancemstr")
@@ -64,11 +66,11 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 		this.createdBy = createdBy;
 	}
 
-	public Timestamp getCreatedDatetime() {
+	public Date getCreatedDatetime() {
 		return this.createdDatetime;
 	}
 
-	public void setCreatedDatetime(Timestamp createdDatetime) {
+	public void setCreatedDatetime(Date createdDatetime) {
 		this.createdDatetime = createdDatetime;
 	}
 
@@ -104,11 +106,11 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 		this.status = status;
 	}
 
-	public Timestamp getSubmitDatetime() {
+	public Date getSubmitDatetime() {
 		return this.submitDatetime;
 	}
 
-	public void setSubmitDatetime(Timestamp submitDatetime) {
+	public void setSubmitDatetime(Date submitDatetime) {
 		this.submitDatetime = submitDatetime;
 	}
 
@@ -128,11 +130,11 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 		this.updatedBy = updatedBy;
 	}
 
-	public Timestamp getUpdatedDatetime() {
+	public Date getUpdatedDatetime() {
 		return this.updatedDatetime;
 	}
 
-	public void setUpdatedDatetime(Timestamp updatedDatetime) {
+	public void setUpdatedDatetime(Date updatedDatetime) {
 		this.updatedDatetime = updatedDatetime;
 	}
 

@@ -1,8 +1,10 @@
 package com.wcs.demo.goc.bridge.workflow.model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,13 +24,13 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 	private String code;
 
 	@Column(name="COMPLETED_DATETIME")
-	private Timestamp completedDatetime;
+	private Date completedDatetime;
 
 	@Column(name="CREATED_BY")
 	private String createdBy;
 
 	@Column(name="CREATED_DATETIME")
-	private Timestamp createdDatetime;
+	private Date createdDatetime;
 
 	@Column(name="DEAL_METHOD")
 	private String dealMethod;
@@ -45,7 +47,7 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 	private String updatedBy;
 
 	@Column(name="UPDATED_DATETIME")
-	private Timestamp updatedDatetime;
+	private Date updatedDatetime;
 
 	//bi-directional many-to-one association to WfInstancemstr
 	@ManyToOne
@@ -75,11 +77,11 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 		this.code = code;
 	}
 
-	public Timestamp getCompletedDatetime() {
+	public Date getCompletedDatetime() {
 		return this.completedDatetime;
 	}
 
-	public void setCompletedDatetime(Timestamp completedDatetime) {
+	public void setCompletedDatetime(Date completedDatetime) {
 		this.completedDatetime = completedDatetime;
 	}
 
@@ -91,11 +93,11 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 		this.createdBy = createdBy;
 	}
 
-	public Timestamp getCreatedDatetime() {
+	public Date getCreatedDatetime() {
 		return this.createdDatetime;
 	}
 
-	public void setCreatedDatetime(Timestamp createdDatetime) {
+	public void setCreatedDatetime(Date createdDatetime) {
 		this.createdDatetime = createdDatetime;
 	}
 
@@ -139,11 +141,11 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 		this.updatedBy = updatedBy;
 	}
 
-	public Timestamp getUpdatedDatetime() {
+	public Date getUpdatedDatetime() {
 		return this.updatedDatetime;
 	}
 
-	public void setUpdatedDatetime(Timestamp updatedDatetime) {
+	public void setUpdatedDatetime(Date updatedDatetime) {
 		this.updatedDatetime = updatedDatetime;
 	}
 

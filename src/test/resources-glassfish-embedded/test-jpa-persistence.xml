@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="BTCBASE" transaction-type="RESOURCE_LOCAL">
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstrProperty</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstrProperty</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.ibm.db2.jcc.DB2Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:db2:/192.168.16.128:50001/base" />
+			<property name="javax.persistence.jdbc.user" value="db2tih" />
+			<property name="javax.persistence.jdbc.password" value="yzc.1234" />
+
+			<!-- EclipseLink should create the database schema automatically -->
+			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode"
+				value="database" />
+		</properties>
+	</persistence-unit>
+</persistence>
