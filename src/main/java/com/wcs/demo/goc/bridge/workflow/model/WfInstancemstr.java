@@ -139,6 +139,10 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 	}
 
 	public WfInstancemstrProperty addWfInstancemstrProperty(WfInstancemstrProperty wfInstancemstrProperty) {
+		WfInstancemstrProperty instancemstrProperty = getWfInstancemstrProperty(wfInstancemstrProperty.getName());
+		if(instancemstrProperty != null) {
+			removeWfInstancemstrProperty(instancemstrProperty);
+		}
 		getWfInstancemstrProperties().put(wfInstancemstrProperty.getName(), wfInstancemstrProperty);
 		wfInstancemstrProperty.setWfInstancemstr(this);
 

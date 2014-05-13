@@ -15,15 +15,15 @@
 		<properties>
 		</properties>
 	</persistence-unit>
-	<persistence-unit name="sample" transaction-type="RESOURCE_LOCAL">
-	    <class>com.wcs.base.model.IdEntity</class>
-	    <class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr</class>
+	<persistence-unit name="sample_postgre" transaction-type="RESOURCE_LOCAL">
+		<class>com.wcs.base.model.IdEntity</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr</class>
 		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstrProperty</class>
 		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstr</class>
 		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstrProperty</class>
-	    <class>com.wcs.common.model.P</class>
-	    <properties>
-	        <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+		<class>com.wcs.common.model.P</class>
+		<properties>
+			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
 			<property name="openjpa.ConnectionURL" value="jdbc:postgresql://127.0.0.1:5432/sample" />
 			<property name="openjpa.ConnectionDriverName" value="org.postgresql.Driver" />
 			<property name="openjpa.ConnectionUserName" value="postgres" />
@@ -35,5 +35,26 @@
 			<property name="eclipselink.ddl-generation.output-mode"
 				value="database" />
 		</properties>
-		</persistence-unit>
+	</persistence-unit>
+	<persistence-unit name="sample_db2" transaction-type="RESOURCE_LOCAL">
+		<class>com.wcs.base.model.IdEntity</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfInstancemstrProperty</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstr</class>
+		<class>com.wcs.demo.goc.bridge.workflow.model.WfStepmstrProperty</class>
+		<class>com.wcs.common.model.P</class>
+		<properties>
+			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
+			<property name="openjpa.ConnectionURL" value="jdbc:db2://127.0.0.1:50000/base" />
+			<property name="openjpa.ConnectionDriverName" value="com.ibm.db2.jcc.DB2Driver" />
+			<property name="openjpa.ConnectionUserName" value="Yuan" />
+			<property name="openjpa.ConnectionPassword" value="19900115" />
+			<property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO" />
+
+			<!-- EclipseLink should create the database schema automatically -->
+			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode"
+				value="database" />
+		</properties>
+	</persistence-unit>
 </persistence>
