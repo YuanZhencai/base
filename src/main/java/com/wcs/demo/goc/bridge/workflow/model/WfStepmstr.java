@@ -5,7 +5,9 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -56,7 +58,8 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 
 	//bi-directional many-to-one association to WfStepmstrProperty
 	@OneToMany(mappedBy="wfStepmstr")
-	private List<WfStepmstrProperty> wfStepmstrProperties;
+	@MapKeyColumn(name = "NAME")
+	private Map<String, WfStepmstrProperty> wfStepmstrProperties = new HashMap<String, WfStepmstrProperty>();
 
 	public WfStepmstr() {
 	}
@@ -157,25 +160,31 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 		this.wfInstancemstr = wfInstancemstr;
 	}
 
-	public List<WfStepmstrProperty> getWfStepmstrProperties() {
-		return this.wfStepmstrProperties;
+	public Map<String, WfStepmstrProperty> getWfStepmstrProperties() {
+		return wfStepmstrProperties;
 	}
 
-	public void setWfStepmstrProperties(List<WfStepmstrProperty> wfStepmstrProperties) {
+	public void setWfStepmstrProperties(Map<String, WfStepmstrProperty> wfStepmstrProperties) {
 		this.wfStepmstrProperties = wfStepmstrProperties;
 	}
 
 	public WfStepmstrProperty addWfStepmstrProperty(WfStepmstrProperty wfStepmstrProperty) {
-		getWfStepmstrProperties().add(wfStepmstrProperty);
+		WfStepmstrProperty stepProperty = getWfStepmstrProperty(wfStepmstrProperty.getName());
+		if(stepProperty != null) {
+			removeWfStepmstrProperty(stepProperty);
+		}
+		getWfStepmstrProperties().put(wfStepmstrProperty.getName(), wfStepmstrProperty);
 		wfStepmstrProperty.setWfStepmstr(this);
-
 		return wfStepmstrProperty;
 	}
-
+	
+	public WfStepmstrProperty getWfStepmstrProperty(String name) {
+		return getWfStepmstrProperties().get(name);
+	}
+	
 	public WfStepmstrProperty removeWfStepmstrProperty(WfStepmstrProperty wfStepmstrProperty) {
-		getWfStepmstrProperties().remove(wfStepmstrProperty);
+		getWfStepmstrProperties().remove(wfStepmstrProperty.getName());
 		wfStepmstrProperty.setWfStepmstr(null);
-
 		return wfStepmstrProperty;
 	}
 
