@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,10 +53,26 @@ public class WfInstancemstr extends com.wcs.base.model.IdEntity implements Seria
 	private Map<String, WfInstancemstrProperty> wfInstancemstrProperties = new HashMap<String, WfInstancemstrProperty>();
 
 	// bi-directional many-to-one association to WfStepmstr
-	@OneToMany(mappedBy = "wfInstancemstr")
-	private List<WfStepmstr> wfStepmstrs;
+	@OneToMany(mappedBy = "wfInstancemstr", cascade = CascadeType.ALL)
+	private List<WfStepmstr> wfStepmstrs = new ArrayList<WfStepmstr>();
 
 	public WfInstancemstr() {
+	}
+	
+	public void put(String name, String value) {
+		WfInstancemstrProperty property = this.wfInstancemstrProperties.get(name);
+		if (property == null) {
+			property = new WfInstancemstrProperty();
+			property.setName(name);
+		}
+		property.setValue(value);
+		property.setWfInstancemstr(this);
+		this.wfInstancemstrProperties.put(name, property);
+	}
+	
+	public String get(String name) {
+		WfInstancemstrProperty property = this.wfInstancemstrProperties.get(name);
+		return property == null ? null : property.getValue();
 	}
 
 	public String getCreatedBy() {

@@ -1,13 +1,19 @@
 package com.wcs.demo.goc.bridge.workflow.model;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -57,11 +63,27 @@ public class WfStepmstr extends com.wcs.base.model.IdEntity implements Serializa
 	private WfInstancemstr wfInstancemstr;
 
 	//bi-directional many-to-one association to WfStepmstrProperty
-	@OneToMany(mappedBy="wfStepmstr")
+	@OneToMany(mappedBy="wfStepmstr", cascade = CascadeType.ALL)
 	@MapKeyColumn(name = "NAME")
 	private Map<String, WfStepmstrProperty> wfStepmstrProperties = new HashMap<String, WfStepmstrProperty>();
 
 	public WfStepmstr() {
+	}
+	
+	public void put(String name, String value) {
+		WfStepmstrProperty property = this.wfStepmstrProperties.get(name);
+		if (property == null) {
+			property = new WfStepmstrProperty();
+			property.setName(name);
+		}
+		property.setValue(value);
+		property.setWfStepmstr(this);
+		this.wfStepmstrProperties.put(name, property);
+	}
+	
+	public String get(String name) {
+		WfStepmstrProperty property = this.wfStepmstrProperties.get(name);
+		return property == null ? null : property.getValue();
 	}
 
 	public String getChargedBy() {
