@@ -21,6 +21,15 @@
 				<!-- MODIF LOCAL IP -->
 				<cas.client.url>http://127.0.0.1:9080</cas.client.url>
 			</properties>
+			<dependencies>
+			    <dependency>
+					<groupId>javax</groupId>
+					<artifactId>javaee-web-api</artifactId>
+					<version>6.0</version>
+					<type>jar</type>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
 			<!-- mvn clean compile package -Ptest -->
@@ -28,6 +37,15 @@
 			<properties>
 				<db.jndi>TIHQA</db.jndi>
 			</properties>
+			<dependencies>
+			    <dependency>
+					<groupId>javax</groupId>
+					<artifactId>javaee-web-api</artifactId>
+					<version>6.0</version>
+					<type>jar</type>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
 			<modules>
 			</modules>
 		</profile>
@@ -177,21 +195,21 @@
 			<artifactId>cas-client-core</artifactId>
 			<version>3.1.12</version>
 		</dependency>
-	<!-- 	<dependency>
+		<!-- <dependency>
 			<groupId>javax</groupId>
-			<artifactId>javaee-web-api</artifactId>
+			<artifactId>javaee-web-all</artifactId>
 			<version>6.0</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-all-6.0</artifactId>
 			<version>3.0.1.Final</version>
 			<type>jar</type>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
