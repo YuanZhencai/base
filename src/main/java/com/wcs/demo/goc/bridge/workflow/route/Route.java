@@ -1,5 +1,7 @@
 package com.wcs.demo.goc.bridge.workflow.route;
 
+import com.wcs.demo.goc.bridge.workflow.model.WfStepmstr;
+
 
 public abstract class Route implements IRoute {
 
@@ -8,6 +10,8 @@ public abstract class Route implements IRoute {
 	private String start;
 	private String end;
 	private String status;
+	
+	private WfStepmstr step;
 
 	@Override
 	public void gateway() {
@@ -73,9 +77,17 @@ public abstract class Route implements IRoute {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(Enum.valueOf(RouteEnd.class, "DOC_0_P").getEnd());
 	}
 
+	public WfStepmstr getStep() {
+		return step;
+	}
+
+	public void setStep(WfStepmstr step) {
+		this.step = step;
+	}
+	
 }

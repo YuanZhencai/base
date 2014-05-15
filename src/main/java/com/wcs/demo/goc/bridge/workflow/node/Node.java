@@ -3,6 +3,7 @@ package com.wcs.demo.goc.bridge.workflow.node;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.wcs.demo.goc.bridge.workflow.model.WfStepmstr;
 import com.wcs.demo.goc.bridge.workflow.route.Route;
 import com.wcs.demo.goc.bridge.workflow.route.RouteFactory;
 
@@ -15,6 +16,8 @@ public abstract class Node implements INode {
 	
 	private String type;
 	private Route route;
+	
+	private WfStepmstr step;
 	
 	private Set<String> buttons = new HashSet<String>();
 	
@@ -100,6 +103,14 @@ public abstract class Node implements INode {
 
 	public void setRoute(Route route) {
 		this.route = route;
+	}
+
+	public WfStepmstr getStep() {
+		return step;
+	}
+
+	public void setStep(WfStepmstr step) {
+		this.step = step;
 	}
 
 }

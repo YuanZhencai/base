@@ -1,12 +1,12 @@
 package com.wcs.demo.goc.bridge.workflow.node.report;
 
+import com.wcs.demo.goc.bridge.workflow.model.WfStepmstr;
 import com.wcs.demo.goc.bridge.workflow.route.ReportRoute;
-import com.wcs.demo.goc.bridge.workflow.route.Route;
 
 public class ReportNode0 extends ReportNode {
 	
 	public ReportNode0() {
-		super("汇总报表节点", "0");
+		super("报表流程创建节点", "0");
 		this.showButtons();
 	}
 	
@@ -16,18 +16,19 @@ public class ReportNode0 extends ReportNode {
 
 	@Override
 	public void excute() {
+		WfStepmstr step = getStep();
+		step.setDealMethod(getStatus());
+		step.setName(getName());
 		ReportRoute route =  (ReportRoute) createRoute();
+		route.setStep(step);
 		route.gateway();
-		setReport(route.getReport());
-		System.out.println("发送消息：" + getName() + "创建了一张报表，" + getReport().getAbsolutePath());
+		System.out.println(getName() + "：执行成功");
 	}
 
 	@Override
 	public void showButtons() {
 		super.showButtons();
 		addButton("CreateButton");
-		// 汇总按钮
-		addButton("SummeryButton");
 	}
 
 	public static void main(String[] args) {

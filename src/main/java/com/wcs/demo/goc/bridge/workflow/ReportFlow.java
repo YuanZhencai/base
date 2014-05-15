@@ -15,8 +15,8 @@ public class ReportFlow extends Workflow {
 	@Override
 	public void dispatch() {
 		ReportNode reportNode = (ReportNode) getNode();
-		Node nextNode = findNextNodeByCurrentNode(reportNode);
 		reportNode.excute();
+		Node nextNode = findNextNodeByCurrentNode(reportNode);
 		if(nextNode != null) {
 			setNode(nextNode);
 		}
