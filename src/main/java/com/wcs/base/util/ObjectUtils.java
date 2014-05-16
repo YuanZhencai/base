@@ -219,7 +219,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	 * @see java.util.Arrays#equals
 	 */
 	public static boolean nullSafeEquals(Object o1, Object o2) {
-		if (o1 == o2) {
+		if (o1.equals(o2)) {
 			return true;
 		}
 		if (o1 == null || o2 == null) {
@@ -852,7 +852,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	 * enclosed in curly braces (<code>"{}"</code>). Adjacent elements are
 	 * separated by the characters <code>", "</code> (a comma followed by a
 	 * space). Returns <code>"null"</code> if <code>array</code> is
-	 * <code>null</code>.
+	 * <code>null</code>.DocumentServiceDocumentServiceDocumentService
 	 * 
 	 * @param array
 	 *            the array to build a String representation for
@@ -914,19 +914,11 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	}
 
 	public static boolean isValidCollection(Collection collection) {
-		if (null != collection && 0 != collection.size()) {
-			return true;
-		} else {
-			return false;
-		}
+		return null != collection && 0 != collection.size();
 	}
 
 	public static boolean isEqualsSize(Collection res, Collection des) {
-		if (res.size() == des.size()) {
-			return true;
-		} else {
-			return false;
-		}
+		return res.size() == des.size();
 	}
 
 	public static boolean isNullString(String str) {
@@ -937,35 +929,19 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	}
 
 	public static boolean isValidNumber(Integer number) {
-		if (null != number && 0 < number) {
-			return true;
-		} else {
-			return false;
-		}
+		return null != number && 0 < number;
 	}
 
 	public static boolean isValidNumber(Double number) {
-		if (null != number && 0 < number) {
-			return true;
-		} else {
-			return false;
-		}
+		return null != number && 0 < number;
 	}
 
 	public static boolean isValidNumber(Long number) {
-		if (null != number && 0 < number) {
-			return true;
-		} else {
-			return false;
-		}
+		return null != number && 0 < number;
 	}
 
 	public static boolean isValidNumber(Short number) {
-		if (null != number && 0 < number) {
-			return true;
-		} else {
-			return false;
-		}
+		return null != number && 0 < number;
 	}
 
 	public static boolean isValidNumber(String number) {
@@ -979,11 +955,7 @@ public abstract class ObjectUtils extends org.apache.commons.lang.ObjectUtils {
 	}
 
 	public static boolean isValidStr(String str) {
-		if (null != str && !"".equalsIgnoreCase(str) && !"null".equals(str)) {
-			return true;
-		}else{
-			return false;
-		}
+		return null != str && !"".equalsIgnoreCase(str) && !"null".equals(str);
 	}
 
 }

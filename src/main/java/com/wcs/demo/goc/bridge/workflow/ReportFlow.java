@@ -1,5 +1,6 @@
 package com.wcs.demo.goc.bridge.workflow;
 
+import com.wcs.demo.goc.bridge.workflow.model.WfStepmstr;
 import com.wcs.demo.goc.bridge.workflow.node.Node;
 import com.wcs.demo.goc.bridge.workflow.node.report.ReportNode;
 import com.wcs.demo.goc.command.report.Report;
@@ -17,7 +18,9 @@ public class ReportFlow extends Workflow {
 		ReportNode reportNode = (ReportNode) getNode();
 		reportNode.excute();
 		Node nextNode = findNextNodeByCurrentNode(reportNode);
-		reportNode.getStep().setCode(nextNode.getSeqNo());
+		WfStepmstr step = reportNode.getStep();
+		step.setCode(nextNode.getSeqNo());
+		nextNode.setStep(step);
 		if(nextNode != null) {
 			setNode(nextNode);
 		}

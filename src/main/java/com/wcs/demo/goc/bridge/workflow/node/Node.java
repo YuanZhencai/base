@@ -16,6 +16,8 @@ public abstract class Node implements INode {
 	
 	private String type;
 	private Route route;
+	private String chargedBy;
+	private String tracker;
 	
 	private WfStepmstr step;
 	
@@ -111,6 +113,22 @@ public abstract class Node implements INode {
 
 	public void setStep(WfStepmstr step) {
 		this.step = step;
+	}
+
+	public String getChargedBy() {
+		return chargedBy;
+	}
+
+	public void setChargedBy(String chargedBy) {
+		this.chargedBy = chargedBy;
+	}
+
+	public String getTracker() {
+		return tracker;
+	}
+
+	public void setTracker(String tracker) {
+		this.tracker = tracker;
 	}
 
 }

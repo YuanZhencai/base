@@ -25,7 +25,7 @@ import com.wcs.common.model.Resourcemstr;
 import com.wcs.common.model.Rolemstr;
 
 /**
- * <p>Project: btcbase</p>
+ * <p>Project: tih</p>
  * <p>Description: </p>
  * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
  * <p>All Rights Reserved.</p>
@@ -34,10 +34,7 @@ import com.wcs.common.model.Rolemstr;
 @SuppressWarnings("serial")
 public class BaseAuthorizingRealm extends AuthorizingRealm implements Serializable{
 
-//	@EJB
-//	private LoginService loginService;
-	
-	private static final Logger logger = Logger.getLogger(BaseAuthorizingRealm.class.getName());
+	private Logger logger = Logger.getLogger(BaseAuthorizingRealm.class.getName());
 	/**
 	 * 鉴权
 	 * @see org.apache.shiro.realm.AuthorizingRealm#doGetAuthorizationInfo(org.apache.shiro.subject.PrincipalCollection)
@@ -45,8 +42,6 @@ public class BaseAuthorizingRealm extends AuthorizingRealm implements Serializab
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		logger.log(Level.INFO, "doGetAuthorizationInfo...principals:" + principals.toString());
-		String loginName = (String) principals.fromRealm(getName()).iterator().next();
-		// find user by loginName;
 		List<String> p = getPermissions();
 		List<String> r = getRoles();
 		if (p != null || r != null) {
@@ -57,21 +52,20 @@ public class BaseAuthorizingRealm extends AuthorizingRealm implements Serializab
 			if (r != null) {
 				info.addRoles(r);
 			}
-			//logger.log(Level.INFO, "permission:" + info.getStringPermissions() == null ? null : info.getStringPermissions().toString());
-			//logger.log(Level.INFO, "roles:" + info.getRoles() == null ? null : info.getRoles().toString());
 			return info;
 		}
 		return null;
 	}
 	
 	private List<String> getPermissions() {
-		Object obj_rs = SecurityUtils.getSubject().getSession().getAttribute(LoginService.SESSION_KEY_RESOURCES);
-		if (obj_rs != null && ((List<Resourcemstr>) obj_rs).size() > 0) {
+		Object objrs = SecurityUtils.getSubject().getSession().getAttribute(LoginService.SESSION_KEY_RESOURCES);
+		if (objrs != null && ((List<Resourcemstr>) objrs).size() > 0) {
 			List<String> p = new ArrayList<String>();
-			List<Resourcemstr> resources = (List<Resourcemstr>) obj_rs;
+			List<Resourcemstr> resources = (List<Resourcemstr>) objrs;
 			for (Resourcemstr rs : resources) {
-				if(rs.getCode()!=null && !rs.getCode().isEmpty())
-				p.add(rs.getCode());
+				if(rs.getCode()!=null && !rs.getCode().isEmpty()){
+					p.add(rs.getCode());
+				}
 			}
 			if(!p.isEmpty()){
 				return p;
@@ -81,13 +75,14 @@ public class BaseAuthorizingRealm extends AuthorizingRealm implements Serializab
 	}
 	
 	private List<String> getRoles() {
-		Object obj_ro = SecurityUtils.getSubject().getSession().getAttribute(LoginService.SESSION_KEY_ROLES);
-		if (obj_ro != null && ((List<Rolemstr>) obj_ro).size() > 0) {
+		Object objro = SecurityUtils.getSubject().getSession().getAttribute(LoginService.SESSION_KEY_ROLES);
+		if (objro != null && ((List<Rolemstr>) objro).size() > 0) {
 			List<String> r = new ArrayList<String>();
-			List<Rolemstr> roles = (List<Rolemstr>) obj_ro;
+			List<Rolemstr> roles = (List<Rolemstr>) objro;
 			for (Rolemstr rs : roles) {
-				if(rs.getCode()!=null)
-				r.add(rs.getCode());
+				if(rs.getCode()!=null) {
+				    r.add(rs.getCode());
+				}
 			}
 			if(!r.isEmpty()){
 				return r;
@@ -106,11 +101,7 @@ public class BaseAuthorizingRealm extends AuthorizingRealm implements Serializab
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		logger.log(Level.INFO, "doGetAuthenticationInfo...token.getUsername:" + token.getUsername());
 		// find user by token.getUsername()
-		if (true) {
-			return new SimpleAuthenticationInfo(token.getUsername(), "", getName());
-		} else {
-			return null;
-		}
+		return new SimpleAuthenticationInfo(token.getUsername(), "", getName());
 	}
 
 }

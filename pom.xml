@@ -375,6 +375,19 @@
 			<artifactId>db2jcc_license_cu</artifactId>
 			<version>9.0</version>
 		</dependency>
+		<!-- utils xsqlbuilder -->
+		<dependency>
+			<groupId>rapid</groupId>
+			<artifactId>xsqlbuilder</artifactId>
+			<version>1.0.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/xsqlbuilder-1.0.4.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r09</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

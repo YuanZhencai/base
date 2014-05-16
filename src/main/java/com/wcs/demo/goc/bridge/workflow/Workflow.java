@@ -15,11 +15,12 @@ public abstract class Workflow {
 	public void dispatch() {
 	}
 	
-	public String getResult(){
+	public String doDispatch(){
 		Node node = getNode();
 		Node nextNode = findNextNodeByCurrentNode(node);
 		String currentSeqNo = node.getSeqNo();
 		node.excute();
+		nextNode.setStep(node.getStep());
 		String nextSeqNo = node.getSeqNo();
 		if(nextNode != null) {
 			setNode(nextNode);

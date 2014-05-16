@@ -9,7 +9,7 @@ public class ApplyFlow extends Workflow {
 
 	@Override
 	public void dispatch() {
-		System.out.println(getType() + " dispatch " + getResult());
+		System.out.println(getType() + " dispatch " + doDispatch());
 	}
 
 	

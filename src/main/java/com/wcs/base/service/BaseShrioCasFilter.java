@@ -30,7 +30,7 @@ import org.apache.shiro.subject.Subject;
 
 
 /**
- * <p>Project: btcbase</p>
+ * <p>Project: tih</p>
  * <p>Description: </p>
  * <p>Copyright (c) 2012 Wilmar Consultancy Services</p>
  * <p>All Rights Reserved.</p>
@@ -40,17 +40,13 @@ public class BaseShrioCasFilter implements Filter {
 
 	private Logger logger = Logger.getLogger(BaseShrioCasFilter.class.getName());
 	
-	public static final String NOT_APP_USER_ERROR_PAGE = "/btcbase/error.jsp";
-	
-	private final String DEFAULT_PASSWORD = "";
+	private static final String DEFAULT_PASSWORD = "";
 
-	
 	@EJB
 	private LoginService loginService;
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -59,55 +55,56 @@ public class BaseShrioCasFilter implements Filter {
 		logger.log(Level.INFO, BaseShrioCasFilter.class.getName()+" doFilter：" + ((HttpServletRequest) request).getUserPrincipal());
 		Object userPrincipal = ((HttpServletRequest) request).getUserPrincipal();
 		String userId = userPrincipal == null ? null : userPrincipal.toString();
-		//TODO NO CASE 
-//		userId = "wilmar_cas";
 		HttpSession session = ((HttpServletRequest) request).getSession(true);
 		if (session.getAttribute(LoginService.SESSION_KEY_CURRENTUSR) == null && userId != null) {
-			session.setAttribute(LoginService.SESSION_KEY_CURRENTUSR, doLogin(userId,response));
+			session.setAttribute(LoginService.SESSION_KEY_CURRENTUSR, doLogin(userId));
 		}
-		logger.log(Level.INFO, "session:" + session.getId() + ",currentUser is " + session.getAttribute(LoginService.SESSION_KEY_CURRENTUSR));
-		filterChain.doFilter(request, response);
+		if(session.getAttribute(LoginService.SESSION_KEY_CURRENTUSR) == null){
+			String project=((HttpServletRequest)request).getContextPath();
+			((HttpServletResponse) response).sendRedirect(project+"/error.xhtml");
+		}else{
+			logger.log(Level.INFO, "session:" + session.getId() + ",currentUser is " + session.getAttribute(LoginService.SESSION_KEY_CURRENTUSR));
+			filterChain.doFilter(request, response);
+		}
 	}
 	
-	private Subject doLogin(String userId,ServletResponse response) throws IOException {
+	private Subject doLogin(String userId) throws IOException {
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
-			if (userId == null) {// not login
+			if (userId == null) {
+			    // not login
 				logger.log(Level.INFO, BaseShrioCasFilter.class.getName() + " currentUser.logout()");
 				currentUser.logout();
 				return null;
 			} else {
 				logger.log(Level.INFO, "MyShrioCasFilter currentUser.login(" + userId + ")");
 				currentUser.login(new UsernamePasswordToken(userId, DEFAULT_PASSWORD));
-				// judge is btcbase user?
+				// judge is tih user?
 				if (loginService.isAppUser(userId)) {
 					logger.log(Level.INFO, userId + " is validated user for the app!");
 					return currentUser;
 				} else {
 					logger.log(Level.INFO, userId + " is invalidated user for the app!");
-					((HttpServletResponse) response).sendRedirect(NOT_APP_USER_ERROR_PAGE);
 					return null;
 				}
-				// }
 			}
 		} catch (UnknownAccountException uae) {
-			uae.printStackTrace();
+		    logger.log(Level.SEVERE, "", uae);
 		} catch (IncorrectCredentialsException ice) {
-			ice.printStackTrace();
+		    logger.log(Level.SEVERE, "", ice);
 		} catch (LockedAccountException lae) {
-			lae.printStackTrace();
+		    logger.log(Level.SEVERE, "", lae);
 		} catch (ExcessiveAttemptsException eae) {
-			eae.printStackTrace();
+		    logger.log(Level.SEVERE, "", eae);
 		} catch (AuthenticationException ae) {
-			// unexpected error?
-			ae.printStackTrace();
+		    // unexpected error?
+		    logger.log(Level.SEVERE, "", ae);
 		}
 		return null;
 	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
 

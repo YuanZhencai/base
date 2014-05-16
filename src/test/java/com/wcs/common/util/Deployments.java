@@ -49,6 +49,8 @@ public class Deployments {
 				.addAsLibraries(resolver.artifact("org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven").resolveAsFiles())
 				.addAsWebResource(new File(WEBAPP_SRC, "index.jsp"))
 				.addAsResource(new File(RESOURCE_SRC,"default.properties"))
+				.addAsResource(new File(RESOURCE_SRC,"log4j.properties"))
 				.addAsResource("test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
+	
 }
