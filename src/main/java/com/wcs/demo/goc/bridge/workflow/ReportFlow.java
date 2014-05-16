@@ -17,6 +17,7 @@ public class ReportFlow extends Workflow {
 		ReportNode reportNode = (ReportNode) getNode();
 		reportNode.excute();
 		Node nextNode = findNextNodeByCurrentNode(reportNode);
+		reportNode.getStep().setCode(nextNode.getSeqNo());
 		if(nextNode != null) {
 			setNode(nextNode);
 		}

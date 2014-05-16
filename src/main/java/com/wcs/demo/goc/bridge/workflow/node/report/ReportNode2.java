@@ -12,6 +12,7 @@ public class ReportNode2 extends ReportNode {
 	
 	public ReportNode2(String name) {
 		super(name, "2");
+		this.showButtons();
 	}
 
 	@Override

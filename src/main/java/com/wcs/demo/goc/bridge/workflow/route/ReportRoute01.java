@@ -29,6 +29,10 @@ public class ReportRoute01 extends ReportRoute {
 		String no = createFlow("ReportFlow", step.getDealMethod(), step.getChargedBy());
 		System.out.println("[No]" + no);
 		step.getWfInstancemstr().setNo(no);
+		Report summeryReport = summeryReport();
+		setReport(summeryReport);
+		step.put("FileId", summeryReport.getId());
+		step.put("FilePath", summeryReport.getAbsolutePath());
 	}
 	
 	public String createFlow(String flowType, String status, String chargedBy) {

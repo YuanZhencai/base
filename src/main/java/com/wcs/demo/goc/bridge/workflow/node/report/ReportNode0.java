@@ -12,6 +12,7 @@ public class ReportNode0 extends ReportNode {
 	
 	public ReportNode0(String name) {
 		super(name, "0");
+		this.showButtons();
 	}
 
 	@Override
@@ -29,6 +30,7 @@ public class ReportNode0 extends ReportNode {
 	public void showButtons() {
 		super.showButtons();
 		addButton("CreateButton");
+		addButton("SummeryButton");
 	}
 
 	public static void main(String[] args) {

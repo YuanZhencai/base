@@ -21,6 +21,7 @@ import com.wcs.demo.goc.strategy.report.jasper.SummeryInterface;
  */
 
 public class Report {
+	private String id = null;
 	private String absolutePath = null;
 
 	public Report() {
@@ -52,5 +53,13 @@ public class Report {
 
 	public void setAbsolutePath(String absolutePath) {
 		this.absolutePath = absolutePath;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

@@ -5,6 +5,7 @@
 package com.wcs.demo.goc.command.report;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.wcs.common.model.Resourcemstr;
 import com.wcs.demo.goc.strategy.report.jasper.ResourceSummery;
@@ -35,6 +36,7 @@ public class ResourceReport extends Report {
 	@Override
 	public void summery() {
 		SummeryInterface summery = new ResourceSummery(data);
+		setId("{" + UUID.randomUUID().toString().toUpperCase() + "}");
 		setAbsolutePath(summery.summery());
 	}
 

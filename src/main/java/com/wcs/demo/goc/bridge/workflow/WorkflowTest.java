@@ -1,6 +1,7 @@
 package com.wcs.demo.goc.bridge.workflow;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import com.wcs.common.consts.DictConsts;
 import com.wcs.demo.goc.bridge.workflow.model.WfInstancemstr;
 import com.wcs.demo.goc.bridge.workflow.model.WfStepmstr;
 import com.wcs.demo.goc.bridge.workflow.node.Node;
+import com.wcs.demo.goc.bridge.workflow.node.SeqNode;
 import com.wcs.demo.goc.bridge.workflow.node.apply.ApplyNode0;
 import com.wcs.demo.goc.bridge.workflow.node.checkdoc.CheckDocNode;
 import com.wcs.demo.goc.bridge.workflow.node.report.ReportNode;
@@ -201,7 +203,7 @@ public class WorkflowTest {
 	}
 	
 	@Test
-	public void testReportflow_1() {
+	public void testReportflow_create() {
 		WfStepmstr step = saveReportflow();
 		step.setDealMethod("CREATE");
 		step.setChargedBy("汇总报表人");
@@ -209,8 +211,35 @@ public class WorkflowTest {
 		createReportflow(step);
 	}
 	
+	public Workflow findFlowById(Long wfid) {
+		EntityManager em = DBConnection.getInstance().getEntityManager("sample_db2");
+		WfInstancemstr wf = em.find(WfInstancemstr.class, wfid);
+		ReportFlow reportFlow = new ReportFlow();
+		List<WfStepmstr> steps = wf.getWfStepmstrs();
+		WfStepmstr lastStep = steps.get(steps.size()-1);
+		Report report = new Report();
+		report.setId(lastStep.get("FileId"));
+		report.setAbsolutePath(lastStep.get("FilePath"));
+		ReportNode node = (ReportNode) Enum.valueOf(SeqNode.class, "Report_" + lastStep.getCode()).getValue();
+		node.setReport(report);
+		reportFlow.setNode(node);
+		return reportFlow;
+	}
+	
 	@Test
-	public void testReportflow_create() {
+	public void testReportflow_find() {
+		Workflow workflow = findFlowById(589L);
+		ReportNode node = (ReportNode) workflow.getNode();
+		node.getButtons();
+		Report report = node.getReport();
+		System.out.println("[name]" + node.getName());
+		System.out.println("[reportId]" + report.getId());
+		System.out.println("[reportPath]" + report.getAbsolutePath());
+		
+	}
+	
+	@Test
+	public void testReportflow_0() {
 		// 报表流程
 		ReportFlow reportFlow = new ReportFlow();
 		Node node = new ReportNode0("报表流程创建节点");
