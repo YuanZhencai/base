@@ -14,9 +14,7 @@ public class TaskTest {
 	public void testRun() {
 		Timer timer = new Timer();
 		Task task1 = new Task();
-		task1.setName("task1");
 		Task task2 = new Task();
-		task2.setName("task2");
 		timer.schedule(task1, 1000, 2000);
 		timer.scheduleAtFixedRate(task2, 2000, 3000);
 		while (true) {

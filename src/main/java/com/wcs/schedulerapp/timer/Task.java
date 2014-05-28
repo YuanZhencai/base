@@ -1,10 +1,12 @@
 /** * Task.java 
-* Created on 2014年5月28日 上午11:05:32 
+* Created on 2014年5月28日 下午5:04:22 
 */
 
 package com.wcs.schedulerapp.timer;
 
 import java.util.TimerTask;
+
+import com.wcs.schedulerapp.common.JobInfo;
 
 /** 
  * <p>Project: btcbase</p> 
@@ -16,19 +18,19 @@ import java.util.TimerTask;
  */
 
 public class Task extends TimerTask {
-	private String name;
+	private JobInfo jobInfo;
 
 	@Override
 	public void run() {
-		System.out.println(name + " Task.run()");
+		System.out.println("Task.run()");
 	}
 
-	public String getName() {
-		return name;
+	public JobInfo getJobInfo() {
+		return jobInfo;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setJobInfo(JobInfo jobInfo) {
+		this.jobInfo = jobInfo;
 	}
 
 }
