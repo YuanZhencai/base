@@ -44,7 +44,10 @@ public class ComparatorTest {
 		list.add(3);
 		Collections.sort(list, new Comparator<Integer>() {
 			public int compare(Integer i1, Integer i2) {
-				return i1 - i2;
+				if( i1 > i2) return -1;
+				if( i1 == i2) return 0;
+				if( i1 < i2) return 1;
+				return 0;
 			}
 		});
 		
